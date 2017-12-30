@@ -1,0 +1,53 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MB_Studio.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="setNames" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;#Set1&lt;/string&gt;
+  &lt;string&gt;#Set2&lt;/string&gt;
+  &lt;string&gt;#Set3&lt;/string&gt;
+  &lt;string&gt;#Set4&lt;/string&gt;
+  &lt;string&gt;#Set5&lt;/string&gt;
+  &lt;string&gt;#Set6&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="setAttribs" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;0|0|0|0|0|0&lt;/string&gt;
+  &lt;string&gt;0|0|0|0|0|0&lt;/string&gt;
+  &lt;string&gt;0|0|0|0|0|0&lt;/string&gt;
+  &lt;string&gt;0|0|0|0|0|0&lt;/string&gt;
+  &lt;string&gt;0|0|0|0|0|0&lt;/string&gt;
+  &lt;string&gt;0|0|0|0|0|0&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="setItems" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="setItemsFlags" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="projectsFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Projects\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
