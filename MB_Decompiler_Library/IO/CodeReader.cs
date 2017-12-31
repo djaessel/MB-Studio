@@ -2040,6 +2040,168 @@ namespace MB_Decompiler_Library.IO
             return codeLine;
         }
 
+        private static bool ArrayContainsString(string[] array, string s)
+        {
+            bool found = false;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].Equals(s))
+                {
+                    found = true;
+                    i = array.Length;
+                }
+            }
+            return found;
+        }
+
+        private static int ArrayIndexOfString(string[] array, string s)
+        {
+            int idx = -1;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].Equals(s))
+                {
+                    idx = i;
+                    i = array.Length;
+                }
+            }
+            return idx;
+        }
+
+        public static string GetCompiledCodeLines(string[] lines)
+        {
+            int usedLines = 0;
+            string ret = string.Empty;//" " + lines.Length;
+            foreach (string line in lines)
+            {
+                if (line.Length != 0)
+                {
+                    if (line.Contains("(") && line.Contains("),"))
+                    {
+                        ret += ' ' + GetCompiledCodeLine(line);
+                        usedLines++;
+                    }
+                }
+            }
+            ret = " " + usedLines + ret;
+            return ret;
+        }
+
+        private static string GetCompiledCodeLine(string codeLine)
+        {
+            codeLine = codeLine.Trim().TrimStart('(').TrimEnd(')', ',');
+            char[] cc = codeLine.ToCharArray();
+            codeLine = string.Empty;
+            bool textMode = false;
+            for (int i = 0; i < cc.Length; i++)
+            {
+                if (cc[i] == '\"')
+                    textMode = !textMode;
+                if (!textMode || cc[i] != ' ')
+                    codeLine += cc[i].ToString();
+            }
+
+            string[] parts = codeLine.Split(',');
+            List<string> partXX = new List<string> { parts[0], (parts.Length - 1).ToString() };
+            for (int i = 1; i < parts.Length; i++)
+                partXX.Add(parts[i]);
+            parts = partXX.ToArray();
+
+            string[] declarations = codeDeclarations.ToArray();
+
+            if (ArrayContainsString(declarations, parts[0]))
+                parts[0] = codeValue[ArrayIndexOfString(declarations, parts[0])].ToString();
+            else if (parts[0].Contains("|"))
+            {
+                ulong border1 = (ulong)1 + int.MaxValue, border2 = border1 / 2;
+                string[] tmp = parts[0].Split('|');
+                ulong u = 0ul;
+                if (tmp[0].Equals("neg"))
+                    u += border1;
+                else if (tmp[0].Equals("this_or_next"))
+                    u += border2;
+                if (tmp[1].Equals("this_or_next"))
+                {
+                    u += border2;
+                    if (ArrayContainsString(declarations, tmp[2]))
+                        u += codeValue[ArrayIndexOfString(declarations, tmp[2])];
+                    else
+                        System.Windows.Forms.MessageBox.Show("FATAL ERROR! - 0x9913", "ERROR");
+                }
+                else if (ArrayContainsString(declarations, tmp[1]))
+                    u += codeValue[ArrayIndexOfString(declarations, tmp[1])];
+                else
+                    System.Windows.Forms.MessageBox.Show("FATAL ERROR! - 0x9914", "ERROR");
+            }
+
+            for (int i = 2; i < parts.Length; i++)
+            {
+                parts[i] = parts[i].Trim(' ', '\"');
+
+                //if (code >= LOCAL_MIN && code < LOCAL_MAX)
+                //    codeLine += localVariableInterpreter.Interpret(codeLine, code, codeIndex); // Sollte noch verfeinert werden --> EXCHANGE OBJECTS        // OLD: ":var" + (code - LOCAL_MIN + 1)
+                /*else */if (!ImportantMethods.IsNumericGZ(parts[i]))
+                    if (ImportantMethods.IsNumericGZ(parts[i].Replace("reg", string.Empty)))
+                        parts[i] = (REG0 + ulong.Parse(parts[i].Replace("reg", string.Empty))).ToString();
+                else if (ArrayContainsString(QuickStrings, parts[i]))
+                    parts[i] = (QUICKSTRING_MIN + (ulong)ArrayIndexOfString(QuickStrings, parts[i])).ToString();
+                else if (ArrayContainsString(GlobalVariables, parts[i]))
+                    parts[i] = (GLOBAL_MIN + (ulong)ArrayIndexOfString(GlobalVariables, parts[i])).ToString();
+                else if (ArrayContainsString(Scripts, parts[i]))
+                    parts[i] = (SCRIPT_MIN + (ulong)ArrayIndexOfString(Scripts, parts[i])).ToString();
+                else if (ArrayContainsString(SceneProps, parts[i]))
+                    parts[i] = (SPR_MIN + (ulong)ArrayIndexOfString(SceneProps, parts[i])).ToString();
+                else if (ArrayContainsString(Strings, parts[i]))
+                    parts[i] = (STRING_MIN + (ulong)ArrayIndexOfString(Strings, parts[i])).ToString();
+                else if (ArrayContainsString(Factions, parts[i]))
+                    parts[i] = (FAC_MIN + (ulong)ArrayIndexOfString(Factions, parts[i])).ToString();
+                else if (ArrayContainsString(Troops, parts[i]))
+                    parts[i] = (TRP_PLAYER + (ulong)ArrayIndexOfString(Troops, parts[i])).ToString();
+                else if (ArrayContainsString(Presentations, parts[i]))
+                    parts[i] = (PRSNT_MIN + (ulong)ArrayIndexOfString(Presentations, parts[i])).ToString();
+                else if (ArrayContainsString(Scenes, parts[i]))
+                    parts[i] = (SCENE_MIN + (ulong)ArrayIndexOfString(Scenes, parts[i])).ToString();
+                else if (ArrayContainsString(Meshes, parts[i]))
+                    parts[i] = (MESH_MIN + (ulong)ArrayIndexOfString(Meshes, parts[i])).ToString();
+                else if (ArrayContainsString(Items, parts[i]))
+                    parts[i] = (ITM_MIN + (ulong)ArrayIndexOfString(Items, parts[i])).ToString();
+                else if (ArrayContainsString(Parties, parts[i]))
+                    parts[i] = (P_MAIN_PARTY + (ulong)ArrayIndexOfString(Parties, parts[i])).ToString();
+                else if (ArrayContainsString(PartyTemplates, parts[i]))
+                    parts[i] = (PT_MIN + (ulong)ArrayIndexOfString(PartyTemplates, parts[i])).ToString();
+                else if (ArrayContainsString(MissionTemplates, parts[i]))
+                    parts[i] = (MT_MIN + (ulong)ArrayIndexOfString(MissionTemplates, parts[i])).ToString();
+                else if (ArrayContainsString(Animations, parts[i]))
+                    parts[i] = (ANIM_MIN + (ulong)ArrayIndexOfString(Animations, parts[i])).ToString();
+                else if (ArrayContainsString(Skills, parts[i]))
+                    parts[i] = (SKL_MIN + (ulong)ArrayIndexOfString(Skills, parts[i])).ToString();
+                else if (ArrayContainsString(Sounds, parts[i]))
+                    parts[i] = (SND_MIN + (ulong)ArrayIndexOfString(Sounds, parts[i])).ToString();
+                else if (ArrayContainsString(ParticleSystems, parts[i]))
+                    parts[i] = (PSYS_MIN + (ulong)ArrayIndexOfString(ParticleSystems, parts[i])).ToString();
+                else if (ArrayContainsString(GameMenus, parts[i]))
+                    parts[i] = (MENU_MIN + (ulong)ArrayIndexOfString(GameMenus, parts[i])).ToString();
+                else if (ArrayContainsString(Quests, parts[i]))
+                    parts[i] = (QUEST_MIN + (ulong)ArrayIndexOfString(Quests, parts[i])).ToString();
+                else if (ArrayContainsString(TableauMaterials, parts[i]))
+                    parts[i] = (TABLEAU_MAT_MIN + (ulong)ArrayIndexOfString(TableauMaterials, parts[i])).ToString();
+                else if (ArrayContainsString(Tracks, parts[i]))
+                    parts[i] = (TRACK_MIN + (ulong)ArrayIndexOfString(Tracks, parts[i])).ToString();
+                else if (ImportantMethods.IsNumericGZ(parts[i]))
+                    parts[i] = (ulong.MaxValue + (ulong)(int.Parse(parts[i]) + 1)).ToString();
+                else if (ConstantsFinder.ContainsConst(parts[i]))
+                    parts[i] = ConstantsFinder.TranslateConst(parts[i]).ToString();
+                else
+                    System.Windows.Forms.MessageBox.Show("FATAL ERROR! 0x9912" + Environment.NewLine + parts[i], "ERROR");
+            }
+
+            codeLine = string.Empty;
+            foreach (string part in parts)
+                codeLine += part + ' ';
+
+            return codeLine.TrimEnd();
+        }
+
         private static MissionTemplate DecompileMissionTemplateCode(string[] headerX, List<string[]> entryPoints, List<string[]> triggers)
         {
             MissionTemplate newMissionTemplate = null;

@@ -13,7 +13,7 @@ using System.ComponentModel;
 namespace MB_Studio
 {
     public partial class ToolForm : SpecialForm 
-    // DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!!
+    // DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!! - am Ende abstract
     {
         #region Attributes
 
@@ -26,6 +26,7 @@ namespace MB_Studio
         protected List<string[]> translations = new List<string[]>();
         protected List<Skriptum> types = new List<Skriptum>();
         protected List<string> typesIDs = new List<string>();
+        
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
         // delegate for the UI updater
@@ -121,11 +122,13 @@ namespace MB_Studio
                 typeSelect_lb.Items.Add(typeID);
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 translations.Add(new string[2]);
+
             typeSelect_lb.SelectedIndex = 0;
+
             //ResetControls();
         }
 
-        protected virtual Skriptum GetNewTypeFromClass(string[] raw_data)
+        protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
         {
             throw new NotImplementedException();
         }
@@ -327,14 +330,15 @@ namespace MB_Studio
             if (!searchType_SearchTextBox.Text.Contains("Search ...") && searchType_SearchTextBox.Text.Length > 0)
             {
                 foreach (Skriptum type in types)
+                {
                     if (type.ID.Contains(searchType_SearchTextBox.Text) || type.ID.Contains(searchType_SearchTextBox.Text))
                     {
                         string typeID = type.ID;
                         //if (type.ObjectTyp != ObjectType.ITEM)
                             typeID = Prefix + typeID;
-                        typeSelect_lb.Items.Add(Prefix + type.ID);
+                        typeSelect_lb.Items.Add(Prefix + type.ID);//2 times prefix ???
                     }
-
+                }
             }
             else
             {
@@ -343,7 +347,7 @@ namespace MB_Studio
                     string typeID = type.ID;
                     //if (type.ObjectTyp != ObjectType.ITEM)
                         typeID = Prefix + typeID;
-                    typeSelect_lb.Items.Add(Prefix + type.ID);
+                    typeSelect_lb.Items.Add(Prefix + type.ID);//2 times prefix ???s
                 }
             }
         }
@@ -373,45 +377,52 @@ namespace MB_Studio
             name_txt.ResetText();
             plural_name_txt.ResetText();
 
+            List<string> excluded = new List<string>() { language_cbb.Name };
+
             foreach (Control groupC in toolPanel.Controls)
                 if (GetNameEndOfControl(groupC).Equals("gb"))
-                    ResetGroupBox((GroupBox)groupC);
+                    ResetGroupBox((GroupBox)groupC, excluded);
 
             singleNameTranslation_txt.ResetText();
             pluralNameTranslation_txt.ResetText();
         }
 
-        protected virtual void ResetGroupBox(GroupBox groupBox)
+        protected virtual void ResetGroupBox(GroupBox groupBox, List<string> exclude = null)
         {
+            if (exclude == null)
+                exclude = new List<string>();
             foreach (Control c in groupBox.Controls)
             {
-                string nameEnd = GetNameEndOfControl(c);
-                if (nameEnd.Equals("txt"))
-                    c.Text = "0";
-                else if (nameEnd.Equals("num") || nameEnd.Equals("numeric"))
-                    ((NumericUpDown)c).Value = 0;
-                else if (nameEnd.Equals("lb"))
+                if (!exclude.Contains(c.Name))
                 {
-                    ListBox lb = (ListBox)c;
-                    if (lb.Items.Count > 0)
-                        lb.SelectedIndex = 0;
+                    string nameEnd = GetNameEndOfControl(c);
+                    if (nameEnd.Equals("txt"))
+                        c.Text = "0";
+                    else if (nameEnd.Equals("num") || nameEnd.Equals("numeric"))
+                        ((NumericUpDown)c).Value = 0;
+                    else if (nameEnd.Equals("lb"))
+                    {
+                        ListBox lb = (ListBox)c;
+                        if (lb.Items.Count > 0)
+                            lb.SelectedIndex = 0;
+                    }
+                    else if (nameEnd.Equals("cbb"))
+                    {
+                        ComboBox cbb = (ComboBox)c;
+                        if (cbb.Items.Count > 0)
+                            cbb.SelectedIndex = 0;
+                    }
+                    else if (nameEnd.Equals("rb"))
+                        ((RadioButton)c).Checked = false;
+                    else if (nameEnd.Equals("cb"))
+                        ((CheckBox)c).CheckState = CheckState.Unchecked;
+                    else if (nameEnd.Equals("gb"))
+                        ResetGroupBox((GroupBox)c);
+                    else if (nameEnd.Equals("SearchTextBox"))
+                        c.Text = "Search ...";
+                    else if (nameEnd.Equals("rtb") || nameEnd.Equals("text"))
+                        c.Text = string.Empty;
                 }
-                else if (nameEnd.Equals("cbb"))
-                {
-                    ComboBox cbb = (ComboBox)c;
-                    if (cbb.Items.Count > 0)
-                        cbb.SelectedIndex = 0;
-                }
-                else if (nameEnd.Equals("rb"))
-                    ((RadioButton)c).Checked = false;
-                else if (nameEnd.Equals("cb"))
-                    ((CheckBox)c).CheckState = CheckState.Unchecked;
-                else if (nameEnd.Equals("gb"))
-                    ResetGroupBox((GroupBox)c);
-                else if (nameEnd.Equals("SearchTextBox"))
-                    c.Text = "Search ...";
-                else if (nameEnd.Equals("rtb") || nameEnd.Equals("text"))
-                    c.Text = string.Empty;
             }
         }
 
@@ -420,16 +431,19 @@ namespace MB_Studio
             ResetControls();
 
             id_txt.Text = type.ID;
-            //name_txt.Text = type.Name; //implement later
+            //name_txt.Text = type.Name; //maybe implement later
 
             #region Translation
 
+            for (int i = 0; i < translations.Count; i++)
+                translations[i] = new string[2];
+
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 PrepareLanguageByIndex(i);
-            if (language_cbb.SelectedIndex != 0)
-                language_cbb.SelectedIndex = 0; // other code is in the SelectedIndex Changed Event
+            if (language_cbb.SelectedIndex != Properties.Settings.Default.languageIndex)
+                language_cbb.SelectedIndex = Properties.Settings.Default.languageIndex; // other code is in the SelectedIndex Changed Event
             else
-                Language_cbb_SelectedIndexChanged();
+                Language_cbb_SelectedIndexChanged(); //Rethink
 
             #endregion
         }
@@ -473,7 +487,7 @@ namespace MB_Studio
                     MessageBox.Show("ERROR: 0xf3" + Environment.NewLine + "This index isn't correct --> Please contact the publisher!");
             }
             else
-                Console.WriteLine("Warning: Not saved!");
+                Console.WriteLine("Warning: Not saved yet!");
         }
 
         #endregion
@@ -483,63 +497,71 @@ namespace MB_Studio
         private void PrepareLanguageByIndex(int index, bool plural = false)
         {
             string[] tmp;
-            bool foundTroopSingle = false;
-            bool foundTroopPlural = !plural; //ObjectType == ObjectType.ITEM; // because Item plurals are most times the same
+            bool foundSingleName = false;
+            bool foundPluralName = !plural; //ObjectType == ObjectType.ITEM; // because Item plurals are most times the same
             string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(index));
             if (File.Exists(filePath))
             {
-                //MessageBox.Show(filePath);
                 using (StreamReader sr = new StreamReader(filePath))
                 {
-                    while (!sr.EndOfStream && (!foundTroopSingle || !foundTroopPlural))
+                    while (!sr.EndOfStream && (!foundSingleName || !foundPluralName))
                     {
                         tmp = sr.ReadLine().Split('|');
-                        if (!foundTroopSingle)
+                        if (!foundSingleName)
                         {
                             if (tmp[0].Equals(Prefix + id_txt.Text) && tmp.Length > 1)
                             {
-                                translations[index][0] = tmp[1];  //singleNameTranslation_txt.Text = tmp[1];
-                                foundTroopSingle = true;
+                                translations[index][0] = tmp[1]; //singleNameTranslation_txt.Text = tmp[1];
+                                foundSingleName = true;
                             }
                         }
-                        if (!foundTroopPlural)
+                        if (!foundPluralName)
                         {
                             if (tmp[0].Equals(Prefix + id_txt.Text + "_pl") && tmp.Length > 1)
                             {
-                                translations[index][1] = tmp[1];  //pluralNameTranslation_txt.Text = tmp[1];
-                                foundTroopPlural = true;
+                                translations[index][1] = tmp[1]; //pluralNameTranslation_txt.Text = tmp[1];
+                                foundPluralName = true;
                             }
                         }
                     }
-                }
+                }  
             }
             //else
             //    MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
         }
 
-        private void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
+        protected virtual void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
         {
             if (translations.Count > 0)
             {
                 string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT);
-                singleNameTranslation_txt.Text = translations[language_cbb.SelectedIndex][0];
-                pluralNameTranslation_txt.Text = translations[language_cbb.SelectedIndex][1];
+                int index = language_cbb.SelectedIndex;
+                if (translations[index][0] != null)
+                    singleNameTranslation_txt.Text = translations[index][0];
+                else
+                    singleNameTranslation_txt.Text = name_txt.Text;
+                if (translations[index][1] != null)
+                    pluralNameTranslation_txt.Text = translations[index][1];
+                else if (plural_name_txt.Visible)
+                    pluralNameTranslation_txt.Text = plural_name_txt.Text;
+                else
+                    plural_name_txt.ResetText();
                 fileSaver = new FileSaver(Path.GetDirectoryName(filePath), Path.GetFileName(filePath));
             }
         }
 
-        private string GetLanguageFromIndex(int index) { return language_cbb.Items[index].ToString().Split('(')[0].TrimEnd(); }
+        protected string GetLanguageFromIndex(int index) { return language_cbb.Items[index].ToString().Split('(')[0].TrimEnd(); }
 
-        private string CurrentLanguage { get { return GetLanguageFromIndex(language_cbb.SelectedIndex); } }
+        protected string CurrentLanguage { get { return GetLanguageFromIndex(language_cbb.SelectedIndex); } }
 
-        private string GetSecondFilePath(string fileFormat, string language = null)
+        protected string GetSecondFilePath(string fileFormat, string language = null)
         {
             if (language == null)
                 language = CurrentLanguage;
             return "languages\\" + language + "\\" + GetCorrectFileName() + fileFormat;
         }
 
-        private string GetCorrectFileName()
+        protected string GetCorrectFileName()
         {
             string filename = CodeReader.Files[ObjectTypeID].Split('.')[0];
             if (filename.Equals("menus"))
@@ -553,7 +575,7 @@ namespace MB_Studio
             return filename;
         }
 
-        private void Save_translation_btn_Click(object sender, EventArgs e)
+        protected virtual void Save_translation_btn_Click(object sender, EventArgs e)
         {
             List<string> list = new List<string>();
             string id = id_txt.Text.Replace(' ', '_');

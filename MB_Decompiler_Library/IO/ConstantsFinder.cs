@@ -1,5 +1,6 @@
 ﻿using importantLib;
 using skillhunter;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -53,8 +54,8 @@ namespace MB_Decompiler_Library.Objects.Support
                 }
             }
             constants = constantsX.ToArray();
-            if (File.Exists("test.txt"))
-                File.Delete("test.txt");
+            //if (File.Exists("test.txt"))
+            //    File.Delete("test.txt");
         }
 
         public static string FindConst(string codeLine, ulong code) // jetzt muss noch mit der code Zahl die entsprechende Variabble / Konstante ausgefiltert werden und zudem noch ob es sich um einen false-positive handelt!
@@ -147,12 +148,39 @@ namespace MB_Decompiler_Library.Objects.Support
                     //Console.WriteLine(")");
                 }
             }
-            if (names.Count == 1) // RETHINK !!!
-                codeLine = names[0];
-            else
+            //if (names.Count == 1) // RETHINK !!!
+            //    codeLine = names[0];
+            //else
                 codeLine = code.ToString();
             return codeLine;
         }
 
+        public static bool ContainsConst(string constant)
+        {
+            bool found = false;
+            for (int i = 0; i < constants.Length; i++)
+            {
+                if (constants[i].Name.Equals(constant))
+                {
+                    found = true;
+                    i = constants.Length;
+                }
+            }
+            return found;
+        }
+
+        public static decimal TranslateConst(string constant)
+        {
+            decimal d = decimal.MinusOne;
+            for (int i = 0; i < constants.Length; i++)
+            {
+                if (constants[i].Name.Equals(constant))
+                {
+                    d = constants[i].Value;
+                    i = constants.Length;
+                }
+            }
+            return d;
+        }
     }
 }

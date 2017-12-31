@@ -505,7 +505,7 @@ namespace MB_Studio
                 + GetCFlags() + " "
                 + price_num.Value + " "
                 + GetModBits() + " "
-                + weight_num.Value + " "
+                + GetFixedFKZ(CodeReader.Repl_CommaWDot(weight_num.Value.ToString())) + " "
                 + abundance_num.Value + " "
                 + head_armor_num.Value + " "
                 + body_armor_num.Value + " "
@@ -516,8 +516,8 @@ namespace MB_Studio
                 + missile_speed_num.Value + " "
                 + weapon_length_num.Value + " "
                 + max_ammo_num.Value + " "
-                + thrust_damage_num.Value + " "
-                + swing_damage_num.Value;
+                + ((int)thrust_damage_num.Value | thrust_damage_type_cbb.SelectedIndex << 8).ToString() + " "
+                + ((int)swing_damage_num.Value | swing_damage_type_cbb.SelectedIndex << 8).ToString();
 
             tmp += ';' + GetFactions();
 
@@ -950,7 +950,7 @@ namespace MB_Studio
 
             if (itcf_reload_pistol_cb.Checked)
                 cflags |= 0x0000007000000000;
-            if (itcf_reload_pistol_cb.Checked)
+            if (itcf_reload_musket_cb.Checked)
                 cflags |= 0x0000008000000000;
 
             if (itcf_parry_forward_onehanded_cb.Checked)
@@ -1067,12 +1067,37 @@ namespace MB_Studio
             return facS;
         }
 
+        private string GetFixedFKZ(string s)
+        {
+            if (!s.Contains("."))
+                s += ".";
+            string[] tmp = s.Split('.');
+            int count = tmp[1].Length;
+            for (int i = 0; i < (6 - count); i++)
+                s += "0";
+            return s;
+        }
+
         private string GetTrigger()
         {
             string triggerS = itemTrigger.Count.ToString();
+            TriggerSelector triggerSelector = new TriggerSelector(ObjectType);
+            List<string> list = new List<string>(triggerSelector.TriggerNames);
 
             foreach (SimpleTrigger strigger in itemTrigger)
-                triggerS += ";" + strigger.CheckInterval + ' ' + strigger.ConsequencesBlock; //Compile first!!!
+            {
+                triggerS += ";";
+                if (!ImportantMethods.IsNumeric(strigger.CheckInterval, true))
+                {
+                    if (list.Contains(strigger.CheckInterval))
+                        triggerS += GetFixedFKZ(triggerSelector.TriggerCheckIntervals[list.IndexOf(strigger.CheckInterval)].ToString());
+                    else
+                        MessageBox.Show("ERROR! - 0x9915" + Environment.NewLine + strigger.CheckInterval, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                }
+                else
+                    triggerS += GetFixedFKZ(strigger.CheckInterval);
+                triggerS += CodeReader.GetCompiledCodeLines(strigger.ConsequencesBlock);
+            }
 
             return triggerS;
         }

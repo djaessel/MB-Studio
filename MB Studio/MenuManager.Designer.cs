@@ -70,7 +70,6 @@
             this.mno_Text_lbl = new System.Windows.Forms.Label();
             this.mno_Text_text = new System.Windows.Forms.TextBox();
             this.newMenuOption_btn = new System.Windows.Forms.Button();
-            this.showDesigner_btn = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
@@ -692,45 +691,13 @@
             this.newMenuOption_btn.UseVisualStyleBackColor = false;
             this.newMenuOption_btn.Visible = false;
             // 
-            // showDesigner_btn
-            // 
-            this.showDesigner_btn.BackColor = System.Drawing.Color.DimGray;
-            this.showDesigner_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showDesigner_btn.Location = new System.Drawing.Point(410, 82);
-            this.showDesigner_btn.Name = "showDesigner_btn";
-            this.showDesigner_btn.Size = new System.Drawing.Size(384, 25);
-            this.showDesigner_btn.TabIndex = 38;
-            this.showDesigner_btn.Tag = "250";
-            this.showDesigner_btn.Text = "Designer";
-            this.showDesigner_btn.UseVisualStyleBackColor = false;
-            this.showDesigner_btn.Visible = false;
-            this.showDesigner_btn.Click += new System.EventHandler(this.ShowDesigner_btn_Click);
-            // 
             // MenuManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(814, 306);
-            this.Controls.Add(this.showDesigner_btn);
             this.Name = "MenuManager";
             this.Opacity = 1D;
             this.Text = "MenuManager";
-            this.Controls.SetChildIndex(this.id_txt, 0);
-            this.Controls.SetChildIndex(this.id_lbl, 0);
-            this.Controls.SetChildIndex(this.name_txt, 0);
-            this.Controls.SetChildIndex(this.name_lbl, 0);
-            this.Controls.SetChildIndex(this.plural_name_txt, 0);
-            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
-            this.Controls.SetChildIndex(this.title_lbl, 0);
-            this.Controls.SetChildIndex(this.exit_btn, 0);
-            this.Controls.SetChildIndex(this.min_btn, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
-            this.Controls.SetChildIndex(this.closeAll_btn, 0);
-            this.Controls.SetChildIndex(this.save_btn, 0);
-            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
-            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
-            this.Controls.SetChildIndex(this.toolPanel, 0);
-            this.Controls.SetChildIndex(this.showDesigner_btn, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
@@ -763,7 +730,6 @@
         private System.Windows.Forms.Button showGroup_3_btn;
         private System.Windows.Forms.GroupBox groupBox_3_gb;
         private System.Windows.Forms.Button newMenuOption_btn;
-        private System.Windows.Forms.Button showDesigner_btn;
         private System.Windows.Forms.RichTextBox opCodes_rtb;
         private System.Windows.Forms.CheckBox mnf_enable_hot_keys_cb;
         private System.Windows.Forms.CheckBox mnf_auto_enter_cb;

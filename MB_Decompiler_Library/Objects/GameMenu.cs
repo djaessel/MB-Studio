@@ -120,6 +120,8 @@ namespace MB_Decompiler_Library.Objects
                 flags = flags.Substring(1);
         }
 
+        public void SetText(string text) { this.text = text; }
+
         public static GameMenuOption[] DecompileGameMenuOptions(string[] optionsCode, int count)
         {
             GameMenuOption[] gameMenuOptions = new GameMenuOption[count];

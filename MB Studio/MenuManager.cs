@@ -5,14 +5,17 @@ using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace MB_Studio
 {
     public partial class MenuManager : ToolForm
     {
         private bool colorOverrideMode = false;
+        private const byte LANGUAGE_EN_GZ = 2;
         private GameMenuOption[] currentGameMenuOptions;
         private MenuDesigner designer;
+        private string[] mno_translations;
 
         public MenuManager() : base(Skriptum.ObjectType.GAME_MENU)
         {
@@ -22,6 +25,8 @@ namespace MB_Studio
 
         protected override void LoadSettingsAndLists(bool loadSavedTypes = true)
         {
+            mno_translations = new string[sbyte.MaxValue + 1];
+
             base.LoadSettingsAndLists(loadSavedTypes);
 
             designer = new MenuDesigner();
@@ -36,23 +41,33 @@ namespace MB_Studio
             ResetControls();
         }
 
+        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
+        {
+            return new GameMenu(raw_data);
+        }
+
         #region Setups
 
         protected override void ResetControls()
         {
+            string s = name_txt.Text;
+
             base.ResetControls();
 
-
+            name_txt.Text = s;
         }
 
         protected override void SetupType(Skriptum type)
         {
+            GameMenu menu = (GameMenu)type;
+            mno_translations = new string[menu.MenuOptions.Length];
+            name_txt.Text = menu.Text;
+
             base.SetupType(type);
 
-            GameMenu menu = (GameMenu)type;
-
-            if (typeSelect_lb.SelectedIndex - 1 < types.Count && typeSelect_lb.SelectedIndex >= 0)
-                designer.UpdateGameMenu((GameMenu)types[typeSelect_lb.SelectedIndex - 1], menu.TextColor);
+            //int idx = typeSelect_lb.SelectedIndex - 1;
+            //if (idx < types.Count && idx >= 0)
+            //    designer.UpdateGameMenu((GameMenu)types[idx], menu.TextColor);
 
             #region Group2 - Flags & Textcolor & Meshname
 
@@ -115,7 +130,6 @@ namespace MB_Studio
             menuOptions_lb.SelectedIndex = 0;
 
             #endregion
-
         }
 
         #endregion
@@ -124,53 +138,35 @@ namespace MB_Studio
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0] + " " + GetFlags();
+            string tmp = values[0] + GetFlags();
 
-            language_cbb.SelectedItem = "en (English)";
-            tmp += " " + singleNameTranslation_txt.Text.Replace(' ', '_');
+            //language_cbb.SelectedIndex = LANGUAGE_EN_GZ;
+            //tmp += ' ' + singleNameTranslation_txt.Text.Replace(' ', '_');
+            tmp += ' ' + name_txt.Text.Replace(' ', '_');
 
-            tmp += " " + meshName_txt.Text;
-
-            tmp += GetNumbersFromCode(mno_Condition_rtb.Lines);
-
+            tmp += ' ' + meshName_txt.Text;
+            tmp += CodeReader.GetCompiledCodeLines(opCodes_rtb.Lines);
             tmp += " " + (menuOptions_lb.Items.Count - 1);
-
             tmp += ';';
 
             for (int i = 0; i < currentGameMenuOptions.Length; i++)
             {
                 tmp += " " + currentGameMenuOptions[i].Name;
-                tmp += GetNumbersFromCode(currentGameMenuOptions[i].ConditionBlock);
-                tmp += " " + currentGameMenuOptions[i].Text.Replace(' ', '_') + " ";
-                tmp += GetNumbersFromCode(currentGameMenuOptions[i].ConsequenceBlock);
+                tmp += CodeReader.GetCompiledCodeLines(currentGameMenuOptions[i].ConditionBlock);
+                tmp += " " + currentGameMenuOptions[i].Text.Replace(' ', '_');
+                tmp += CodeReader.GetCompiledCodeLines(currentGameMenuOptions[i].ConsequenceBlock);
                 tmp += " " + currentGameMenuOptions[i].DoorText.Replace(' ', '_') + " ";
             }
-
-            //tmp += ';';
 
             values.Clear();
             values = new List<string>(tmp.Split(';'));
 
             string[] valuesX = values.ToArray();
-            foreach (string var in valuesX)
-            {
-                System.Windows.Forms.MessageBox.Show(var);
-            }
-            
-            //GameMenu m = new GameMenu(valuesX);
+            GameMenu m = new GameMenu(valuesX);
 
-            //MB_Studio.SavePseudoCodeByType(m, valuesX);
+            MB_Studio.SavePseudoCodeByType(m, valuesX);
 
-            //base.SaveTypeByIndex(values, selectedIndex, m);
-        }
-
-        private string GetNumbersFromCode(string[] lines)
-        {
-            string ret = string.Empty;
-
-            ret = " [CODE_GOES_HERE]"; // WRITE COMPILER CLASS IN IO FROM LIBRARY
-
-            return ret;
+            base.SaveTypeByIndex(values, selectedIndex, m);
         }
 
         #region Calculations
@@ -204,16 +200,6 @@ namespace MB_Studio
         #endregion
 
         #endregion
-
-        private void ShowDesigner_btn_Click(object sender, EventArgs e)
-        {
-            int selectedIndex = typeSelect_lb.SelectedIndex;
-            if (selectedIndex + 1 < types.Count && selectedIndex >= 0)
-            {
-                //maybe check for background_image in script and flags
-                new MenuDesigner((GameMenu)types[selectedIndex + 1]).Show();
-            }
-        }
 
         private void HexColor_txt_TextChanged(object sender, EventArgs e)
         {
@@ -274,7 +260,6 @@ namespace MB_Studio
                     hexCode += SkillHunter.Dec2Hex(green_num.Value).Substring(6);
                     hexCode += SkillHunter.Dec2Hex(blue_num.Value).Substring(6);
                     hexColor_txt.Text = hexCode;
-
                 }
             }
             textColor_lbl.BackColor = Color.FromArgb((int)alpha_num.Value, (int)red_num.Value, (int)green_num.Value, (int)blue_num.Value);
@@ -311,11 +296,89 @@ namespace MB_Studio
             }
         }
 
-        private void Language_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        private void PrepareOptionsLanguage()
         {
-            if (language_cbb.SelectedItem.ToString().Equals("en (English)"))
+            string[] tmp;
+            bool found;
+            int index = typeSelect_lb.SelectedIndex - 1;
+            if (index >= 0)
             {
-                singleNameTranslation_txt.Text = ((GameMenu)types[typeSelect_lb.SelectedIndex - 1]).Text.Replace('_', ' ');
+                string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(language_cbb.SelectedIndex));
+                GameMenuOption[] mnos = ((GameMenu)types[index]).MenuOptions;
+                if (File.Exists(filePath))
+                {
+                    for (int i = 0; i < mnos.Length; i++)
+                    {
+                        tmp = null;
+                        found = false;
+                        using (StreamReader sr = new StreamReader(filePath))
+                        {
+                            while (!sr.EndOfStream && !found)
+                            {
+                                tmp = sr.ReadLine().Split('|');
+                                if (!found)
+                                {
+                                    if (tmp[0].Equals(mnos[i].Name) && tmp.Length > 1)
+                                    {
+                                        mno_translations[i] = tmp[1].Replace('_', ' ');
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (!found)
+                            mno_translations[i] = mnos[i].Text.Replace('_', ' ');
+                    }
+                }
+                //else
+                //    System.Windows.Forms.MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
+            }
+        }
+
+        protected override void Language_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            base.Language_cbb_SelectedIndexChanged(sender, e);
+
+            int idx = typeSelect_lb.SelectedIndex - 1;
+            if (idx >= 0)
+            {
+                GameMenu menu = (GameMenu)types[idx];
+
+                if (language_cbb.SelectedIndex == LANGUAGE_EN_GZ && singleNameTranslation_txt.Text.Length == 0)
+                    singleNameTranslation_txt.Text = menu.Text.Replace('_', ' ');
+
+                if (language_cbb.SelectedIndex >= 0 && designer != null)
+                {
+                    designer.UpdateGameMenuText(singleNameTranslation_txt.Text);
+                    PrepareOptionsLanguage();
+                    string[] a;
+                    if (mno_translations[0] != null)
+                    {
+                        a = CodeReader.GetStringArrayStartFromIndex(mno_translations, 0, mno_translations.Length - menu.MenuOptions.Length);
+                    }
+                    else
+                    {
+                        a = new string[menu.MenuOptions.Length];
+                        for (int i = 0; i < a.Length; i++)
+                            a[i] = menu.MenuOptions[i].Text.Replace('_', ' ');
+                    }
+                    designer.UpdateGameMenuOptionsTexts(a);
+                }
+            }
+        }
+
+        protected override void Save_translation_btn_Click(object sender, EventArgs e)
+        {
+            if (language_cbb.SelectedIndex != LANGUAGE_EN_GZ)
+            {
+                base.Save_translation_btn_Click(sender, e);
+            }
+            else
+            {
+                name_txt.Text = singleNameTranslation_txt.Text.Replace('_', ' ');
+                //int idx = typeSelect_lb.SelectedIndex - 1;
+                //if (idx >= 0)
+                //  ((GameMenu)types[idx]).SetText(singleNameTranslation_txt.Text.Replace(' ', '_'));
             }
         }
     }
