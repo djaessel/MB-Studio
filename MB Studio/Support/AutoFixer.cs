@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MB_Studio
+namespace MB_Studio.Support
 {
     public class AutoFixer
     {

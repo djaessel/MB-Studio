@@ -1,4 +1,4 @@
-﻿namespace MB_Studio
+﻿namespace MB_Studio.Support
 {
     partial class HeaderValueTool
     {

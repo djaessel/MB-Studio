@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using MB_Decompiler_Library.IO;
 using System.Collections.Generic;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     public partial class ImportsManagerGUI : Form
     {

@@ -1,6 +1,7 @@
 ﻿using importantLib;
 using MB_Decompiler;
 using MB_Decompiler_Library.IO;
+using MB_Studio.Support;
 using skillhunter;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.IO;
 using System.Windows.Forms;
 using static skillhunter.Skriptum;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     public partial class ProjectProperties : SpecialForm
     {

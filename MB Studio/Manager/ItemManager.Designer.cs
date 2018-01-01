@@ -1,4 +1,4 @@
-﻿namespace MB_Studio
+﻿namespace MB_Studio.Manager
 {
     partial class ItemManager
     {
@@ -173,6 +173,7 @@
             this.itcf_thrust_onehanded_cb = new System.Windows.Forms.CheckBox();
             this.showGroup_3_btn = new System.Windows.Forms.Button();
             this.groupBox_3_gb = new System.Windows.Forms.GroupBox();
+            this.show_column_lbl = new System.Windows.Forms.Label();
             this.delete_column_lbl = new System.Windows.Forms.Label();
             this.modifierBits_column_lbl = new System.Windows.Forms.Label();
             this.meshKind_column_lbl = new System.Windows.Forms.Label();
@@ -183,6 +184,8 @@
             this.groupBox_4_gb = new System.Windows.Forms.GroupBox();
             this.showGroup_5_btn = new System.Windows.Forms.Button();
             this.groupBox_5_gb = new System.Windows.Forms.GroupBox();
+            this.swing_damage_type_cbb = new System.Windows.Forms.ComboBox();
+            this.thrust_damage_type_cbb = new System.Windows.Forms.ComboBox();
             this.missile_speed_num = new System.Windows.Forms.NumericUpDown();
             this.missile_speed_lbl = new System.Windows.Forms.Label();
             this.body_armor_num = new System.Windows.Forms.NumericUpDown();
@@ -222,8 +225,7 @@
             this.consequence_lbl = new System.Windows.Forms.Label();
             this.consequence_rtb = new System.Windows.Forms.RichTextBox();
             this.condition_lbl = new System.Windows.Forms.Label();
-            this.thrust_damage_type_cbb = new System.Windows.Forms.ComboBox();
-            this.swing_damage_type_cbb = new System.Windows.Forms.ComboBox();
+            this._3DView_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_1_gb.SuspendLayout();
@@ -261,6 +263,10 @@
             this.groupBox_7_gb.SuspendLayout();
             this.SuspendLayout();
             // 
+            // typeSelect_lb
+            // 
+            this.typeSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TypeSelect_lb_SelectedIndexChanged);
+            // 
             // title_lbl
             // 
             this.title_lbl.Text = "ToolForm";
@@ -275,8 +281,8 @@
             // 
             // toolPanel
             // 
-            this.toolPanel.Controls.Add(this.groupBox_5_gb);
             this.toolPanel.Controls.Add(this.groupBox_3_gb);
+            this.toolPanel.Controls.Add(this.groupBox_5_gb);
             this.toolPanel.Controls.Add(this.groupBox_4_gb);
             this.toolPanel.Controls.Add(this.showGroup_7_btn);
             this.toolPanel.Controls.Add(this.groupBox_7_gb);
@@ -289,7 +295,7 @@
             this.toolPanel.Controls.Add(this.showGroup_3_btn);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Size = new System.Drawing.Size(778, 443);
+            this.toolPanel.Size = new System.Drawing.Size(778, 227);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_3_btn, 0);
@@ -302,10 +308,10 @@
             this.toolPanel.Controls.SetChildIndex(this.groupBox_7_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_7_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_4_gb, 0);
-            this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_5_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
             // 
             // pluralNameTranslation_lbl
             // 
@@ -2221,9 +2227,11 @@
             this.showGroup_3_btn.Tag = "-24";
             this.showGroup_3_btn.Text = "v";
             this.showGroup_3_btn.UseVisualStyleBackColor = false;
+            this.showGroup_3_btn.Click += new System.EventHandler(this.ShowGroup_3_btn_Click);
             // 
             // groupBox_3_gb
             // 
+            this.groupBox_3_gb.Controls.Add(this.show_column_lbl);
             this.groupBox_3_gb.Controls.Add(this.delete_column_lbl);
             this.groupBox_3_gb.Controls.Add(this.modifierBits_column_lbl);
             this.groupBox_3_gb.Controls.Add(this.meshKind_column_lbl);
@@ -2241,16 +2249,28 @@
             this.groupBox_3_gb.Tag = "";
             this.groupBox_3_gb.Text = "Meshs";
             // 
+            // show_column_lbl
+            // 
+            this.show_column_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.show_column_lbl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.show_column_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.show_column_lbl.Location = new System.Drawing.Point(571, 25);
+            this.show_column_lbl.Name = "show_column_lbl";
+            this.show_column_lbl.Size = new System.Drawing.Size(64, 20);
+            this.show_column_lbl.TabIndex = 5;
+            this.show_column_lbl.Text = "Show";
+            this.show_column_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // delete_column_lbl
             // 
             this.delete_column_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.delete_column_lbl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.delete_column_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.delete_column_lbl.Location = new System.Drawing.Point(571, 25);
+            this.delete_column_lbl.Location = new System.Drawing.Point(634, 25);
             this.delete_column_lbl.Name = "delete_column_lbl";
-            this.delete_column_lbl.Size = new System.Drawing.Size(42, 20);
+            this.delete_column_lbl.Size = new System.Drawing.Size(90, 20);
             this.delete_column_lbl.TabIndex = 4;
-            this.delete_column_lbl.Text = "DEL";
+            this.delete_column_lbl.Text = "Delete";
             this.delete_column_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // modifierBits_column_lbl
@@ -2395,6 +2415,40 @@
             this.groupBox_5_gb.TabStop = false;
             this.groupBox_5_gb.Tag = "";
             this.groupBox_5_gb.Text = "Stats && Price";
+            // 
+            // swing_damage_type_cbb
+            // 
+            this.swing_damage_type_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.swing_damage_type_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.swing_damage_type_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.swing_damage_type_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.swing_damage_type_cbb.FormattingEnabled = true;
+            this.swing_damage_type_cbb.ItemHeight = 16;
+            this.swing_damage_type_cbb.Items.AddRange(new object[] {
+            "cut",
+            "pierce",
+            "blunt"});
+            this.swing_damage_type_cbb.Location = new System.Drawing.Point(608, 151);
+            this.swing_damage_type_cbb.Name = "swing_damage_type_cbb";
+            this.swing_damage_type_cbb.Size = new System.Drawing.Size(110, 24);
+            this.swing_damage_type_cbb.TabIndex = 70;
+            // 
+            // thrust_damage_type_cbb
+            // 
+            this.thrust_damage_type_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.thrust_damage_type_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.thrust_damage_type_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.thrust_damage_type_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.thrust_damage_type_cbb.FormattingEnabled = true;
+            this.thrust_damage_type_cbb.ItemHeight = 16;
+            this.thrust_damage_type_cbb.Items.AddRange(new object[] {
+            "cut",
+            "pierce",
+            "blunt"});
+            this.thrust_damage_type_cbb.Location = new System.Drawing.Point(253, 152);
+            this.thrust_damage_type_cbb.Name = "thrust_damage_type_cbb";
+            this.thrust_damage_type_cbb.Size = new System.Drawing.Size(113, 24);
+            this.thrust_damage_type_cbb.TabIndex = 69;
             // 
             // missile_speed_num
             // 
@@ -2959,47 +3013,44 @@
             this.condition_lbl.TabIndex = 45;
             this.condition_lbl.Text = "Condition:";
             // 
-            // thrust_damage_type_cbb
+            // _3DView_btn
             // 
-            this.thrust_damage_type_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.thrust_damage_type_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.thrust_damage_type_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.thrust_damage_type_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.thrust_damage_type_cbb.FormattingEnabled = true;
-            this.thrust_damage_type_cbb.ItemHeight = 16;
-            this.thrust_damage_type_cbb.Items.AddRange(new object[] {
-            "cut",
-            "pierce",
-            "blunt"});
-            this.thrust_damage_type_cbb.Location = new System.Drawing.Point(253, 152);
-            this.thrust_damage_type_cbb.Name = "thrust_damage_type_cbb";
-            this.thrust_damage_type_cbb.Size = new System.Drawing.Size(113, 24);
-            this.thrust_damage_type_cbb.TabIndex = 69;
-            // 
-            // swing_damage_type_cbb
-            // 
-            this.swing_damage_type_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.swing_damage_type_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.swing_damage_type_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.swing_damage_type_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.swing_damage_type_cbb.FormattingEnabled = true;
-            this.swing_damage_type_cbb.ItemHeight = 16;
-            this.swing_damage_type_cbb.Items.AddRange(new object[] {
-            "cut",
-            "pierce",
-            "blunt"});
-            this.swing_damage_type_cbb.Location = new System.Drawing.Point(608, 151);
-            this.swing_damage_type_cbb.Name = "swing_damage_type_cbb";
-            this.swing_damage_type_cbb.Size = new System.Drawing.Size(110, 24);
-            this.swing_damage_type_cbb.TabIndex = 70;
+            this._3DView_btn.BackColor = System.Drawing.Color.DimGray;
+            this._3DView_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._3DView_btn.Location = new System.Drawing.Point(21, 147);
+            this._3DView_btn.Name = "_3DView_btn";
+            this._3DView_btn.Size = new System.Drawing.Size(100, 25);
+            this._3DView_btn.TabIndex = 37;
+            this._3DView_btn.Tag = "140";
+            this._3DView_btn.Text = "Enable 3D View";
+            this._3DView_btn.UseVisualStyleBackColor = false;
+            this._3DView_btn.Click += new System.EventHandler(this._3DView_btn_Click);
             // 
             // ItemManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(814, 633);
+            this.ClientSize = new System.Drawing.Size(814, 417);
+            this.Controls.Add(this._3DView_btn);
             this.Name = "ItemManager";
             this.Opacity = 1D;
             this.Text = "ItemManager";
+            this.Controls.SetChildIndex(this.id_txt, 0);
+            this.Controls.SetChildIndex(this.id_lbl, 0);
+            this.Controls.SetChildIndex(this.name_txt, 0);
+            this.Controls.SetChildIndex(this.name_lbl, 0);
+            this.Controls.SetChildIndex(this.plural_name_txt, 0);
+            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
+            this.Controls.SetChildIndex(this.title_lbl, 0);
+            this.Controls.SetChildIndex(this.exit_btn, 0);
+            this.Controls.SetChildIndex(this.min_btn, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
+            this.Controls.SetChildIndex(this.closeAll_btn, 0);
+            this.Controls.SetChildIndex(this.save_btn, 0);
+            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
+            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
+            this.Controls.SetChildIndex(this.toolPanel, 0);
+            this.Controls.SetChildIndex(this._3DView_btn, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
@@ -3256,5 +3307,7 @@
         private System.Windows.Forms.Button addTrigger_btn;
         private System.Windows.Forms.ComboBox thrust_damage_type_cbb;
         private System.Windows.Forms.ComboBox swing_damage_type_cbb;
+        private System.Windows.Forms.Button _3DView_btn;
+        private System.Windows.Forms.Label show_column_lbl;
     }
 }

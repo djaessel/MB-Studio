@@ -1,6 +1,6 @@
 ﻿using importantLib;
 
-namespace MB_Studio
+namespace MB_Studio.Manager
 {
     partial class TroopManager
     {

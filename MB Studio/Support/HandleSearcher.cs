@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace MB_Studio
+namespace MB_Studio.Support
 {
     class HandleSearcher
     {

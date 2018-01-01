@@ -2,21 +2,22 @@
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
+using MB_Studio.Main;
 using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace MB_Studio
+namespace MB_Studio.Manager
 {
-    public partial class PartyTemplateManager : ToolForm
+    public partial class PartyManager : ToolForm
     {
         private bool flagOverride = false;
         private bool setOverride = false;
 
         private List<int[]> memberValues = new List<int[]>();
 
-        public PartyTemplateManager() : base(Skriptum.ObjectType.PARTY_TEMPLATE)
+        public PartyManager() : base(Skriptum.ObjectType.PARTY)
         {
             //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
             InitializeComponent();
@@ -30,27 +31,13 @@ namespace MB_Studio
 
         protected override Skriptum GetNewTypeFromClass(string[] raw_data)
         {
-            return new PartyTemplate(raw_data);
+            return new Party(raw_data);
         }
 
-        protected override void LoadSettingsAndLists(bool loadSavedTypes = true)
+        /*protected override void LoadSettingsAndLists()
         {
-            base.LoadSettingsAndLists(loadSavedTypes);
-
-            no_label_rb.CheckedChanged += No_Label_CheckBox_CheckedChanged;
-            village_rb.CheckedChanged += Village_rb_CheckedChanged;
-            castle_rb.CheckedChanged += Castle_rb_CheckedChanged;
-            town_rb.CheckedChanged += Town_rb_CheckedChanged;
-            no_set_rb.CheckedChanged += No_Set_rb_CheckedChanged;
-
-            stack_troops_lb.SelectedIndexChanged += Stack_troops_lb_SelectedIndexChanged;
-            stackAddTroop_btn.Click += StackAddTroop_btn_Click;
-            is_prisoner_cb.CheckedChanged += Is_prisoner_cb_CheckedChanged;
-            stackTroopCount_txt.TextChanged += StackTroopCount_txt_TextChanged;
-            stackRemoveTroop_btn.Click += StackRemoveTroop_btn_Click;
-            stackUpTroop_btn.Click += StackUpTroop_btn_Click;
-            stackDownTroop_btn.Click += StackDownTroop_btn_Click;
-        }
+            base.LoadSettingsAndLists();
+        }*/
 
         protected override void InitializeControls()
         {
@@ -59,6 +46,10 @@ namespace MB_Studio
                 map_icon_cbb.Items.Add(mapIcon);
             foreach (string troop in CodeReader.Troops)
                 troops_lb.Items.Add(troop);
+            foreach (string pt in CodeReader.PartyTemplates)
+                party_template_cbb.Items.Add(pt);
+            foreach (string p in CodeReader.Parties)
+                ai_target_p_cbb.Items.Add(p);
             foreach (string fac in CodeReader.Factions)
                 faction_cbb.Items.Add(fac);
             for (int i = 1; i < CodeReader.GameMenus.Length; i++)
@@ -194,7 +185,7 @@ namespace MB_Studio
             setOverride = false;
         }
 
-        private void No_Set_rb_CheckedChanged(object sender, EventArgs e)
+        private void None_Set_rb_CheckedChanged(object sender, EventArgs e)
         {
             setOverride = true;
             if (no_set_rb.Checked && !flagOverride)
@@ -215,17 +206,19 @@ namespace MB_Studio
 
             no_set_rb.Checked = true;
             small_label_rb.Checked = true;
+            stack_troops_lb.Items.Clear();
         }
 
         protected override void SetupType(Skriptum type)
         {
             base.SetupType(type);
-            PartyTemplate partyTemplate = (PartyTemplate)type;
-            name_txt.Text = partyTemplate.PartyTemplateName;
+
+            Party party = (Party)type;
+            name_txt.Text = party.PartyName;
 
             #region GROUP2 - Flags
 
-            List<string> flags = new List<string>(partyTemplate.Flags.Split('|'));
+            List<string> flags = new List<string>(party.Flags.Split('|'));
             List<string> mapicons = new List<string>(CodeReader.MapIcons);
 
             map_icon_cbb.SelectedIndex = mapicons.IndexOf(flags[0]);
@@ -274,18 +267,25 @@ namespace MB_Studio
 
             #region GROUP3
 
-            menuID_cbb.SelectedIndex = partyTemplate.MenuID;
-            faction_cbb.SelectedIndex = partyTemplate.FactionID;
+            menuID_cbb.SelectedIndex = party.MenuID;
+            party_template_cbb.SelectedIndex = party.PartyTemplateID;
+            faction_cbb.SelectedIndex = party.FactionID;
+            ai_bhvr_cbb.SelectedIndex = party.AIBehavior;
+            ai_target_p_cbb.SelectedIndex = party.AITargetParty;
 
             #endregion
 
             #region GROUP4
 
-            char[] personality = SkillHunter.Dec2Hex(partyTemplate.Personality).ToString().Substring(5).ToCharArray();
+            char[] personality = SkillHunter.Dec2Hex(party.Personality).ToString().Substring(5).ToCharArray();
             courage_num.Value = int.Parse(personality[0].ToString());
             aggressiveness_num.Value = int.Parse(personality[1].ToString());
             if (personality[2] != '0')
                 banditness_cb.CheckState = CheckState.Checked;
+            double[] coords = party.InitialCoordinates;
+            x_axis_txt.Text = CodeReader.Repl_CommaWDot(coords[0].ToString());
+            y_axis_txt.Text = CodeReader.Repl_CommaWDot(coords[1].ToString());
+            direction_in_degrees_txt.Text = CodeReader.Repl_CommaWDot(party.PartyDirectionInDegrees.ToString());
 
             #endregion
 
@@ -293,21 +293,18 @@ namespace MB_Studio
 
             memberValues.Clear();
             stack_troops_lb.Items.Clear();
-            if (!partyTemplate.Members[0].Troop.Equals("-1"))
+            if (party.Members.Length > 0)
             {
-                foreach (PMember member in partyTemplate.Members)
+                foreach (PMember member in party.Members)
                 {
-                    if (!member.Troop.Equals("-1"))
-                    {
-                        stack_troops_lb.Items.Add(member.Troop);
-                        int[] values = new int[3];
-                        values[0] = member.MinimumTroops;
-                        values[1] = member.MaximumTroops;
-                        values[2] = member.Flags;
-                        memberValues.Add(values);
-                    }
+                    stack_troops_lb.Items.Add(member.Troop);
+                    int[] values = new int[3];
+                    values[0] = member.MinimumTroops;
+                    values[1] = member.MaximumTroops;
+                    values[2] = member.Flags;
+                    memberValues.Add(values);
                 }
-                if (partyTemplate.Members.Length > 0)
+                if (party.Members.Length > 0)
                     stack_troops_lb.SelectedIndex = 0;
             }
 
@@ -320,23 +317,25 @@ namespace MB_Studio
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " " + GetPersonality();
+            string tmp = "   " + values[0] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + party_template_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " ";
+            tmp += GetPersonality() + "  " + ai_bhvr_cbb.SelectedIndex + " " + ai_target_p_cbb.SelectedIndex + "  ";
+            tmp += x_axis_txt.Text + " " + y_axis_txt.Text + "      " + stack_troops_lb.Items.Count;
 
             for (int i = 0; i < stack_troops_lb.Items.Count; i++)
                 tmp += " " + GetIndexOfSkriptumByID("trp_" + stack_troops_lb.Items[i].ToString(), CodeReader.Troops) + " " + memberValues[i][0] + " " + memberValues[i][1] + " " + memberValues[i][2];
 
             // for invalid troops
-            for (int i = 0; i < 6 - stack_troops_lb.Items.Count; i++)
-                tmp += " -1 0 0 0";
+            //for (int i = 0; i < 6 - stack_troops_lb.Items.Count; i++)
+            //    values[0] += " -1 0 0 0";
             // for invalid troops
 
             values.Clear();
-            foreach (string value in tmp.Split())
-                values.Add(value);
-            values[0] = values[0].Substring(3);
-
+            values = new List<string>(tmp.Split())
+            {
+                direction_in_degrees_txt.Text
+            };
             string[] valuesX = values.ToArray();
-            PartyTemplate p = new PartyTemplate(valuesX);
+            Party p = new Party(valuesX);
 
             MB_Studio.SavePseudoCodeByType(p, valuesX);
 
@@ -359,7 +358,9 @@ namespace MB_Studio
 
         private ulong GetFlags()
         {
-            ulong flags = (ulong)map_icon_cbb.SelectedIndex;
+            ulong flags = 0;
+            if (map_icon_cbb.SelectedIndex >= 0)
+                flags += (ulong)map_icon_cbb.SelectedIndex;
 
             if (disabled_cb.Checked)
                 flags |= 0x00000100;

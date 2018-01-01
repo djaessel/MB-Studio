@@ -1,6 +1,6 @@
 ﻿using importantLib;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     partial class ProjectProperties
     {

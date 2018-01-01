@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace MB_Studio
+namespace MB_Studio.Support
 {
     public partial class HeaderValueTool : Form
     {

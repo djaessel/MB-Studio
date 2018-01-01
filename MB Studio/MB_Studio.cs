@@ -1,6 +1,8 @@
 ﻿using importantLib;
 using MB_Decompiler;
 using MB_Decompiler_Library.IO;
+using MB_Studio.Main;
+using MB_Studio.Manager;
 using skillhunter;
 using System;
 using System.Collections.Generic;

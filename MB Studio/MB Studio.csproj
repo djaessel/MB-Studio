@@ -135,62 +135,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoFixer.cs" />
-    <Compile Include="CreateProject.cs">
+    <Compile Include="Support\AutoFixer.cs" />
+    <Compile Include="Main\CreateProject.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MBOptions.cs">
+    <Compile Include="Main\MBOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MBOptions.Designer.cs">
+    <Compile Include="Main\MBOptions.Designer.cs">
       <DependentUpon>MBOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="MenuDesigner.cs">
+    <Compile Include="Manager\Support\MenuDesigner.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MenuDesigner.Designer.cs">
+    <Compile Include="Manager\Support\MenuDesigner.Designer.cs">
       <DependentUpon>MenuDesigner.cs</DependentUpon>
     </Compile>
-    <Compile Include="MenuManager.cs">
+    <Compile Include="Manager\MenuManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MenuManager.Designer.cs">
+    <Compile Include="Manager\MenuManager.Designer.cs">
       <DependentUpon>MenuManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="ItemManager.cs">
+    <Compile Include="Manager\ItemManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ItemManager.Designer.cs">
+    <Compile Include="Manager\ItemManager.Designer.cs">
       <DependentUpon>ItemManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectObject.cs">
+    <Compile Include="Main\ProjectObject.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ProjectObject.Designer.cs">
+    <Compile Include="Main\ProjectObject.Designer.cs">
       <DependentUpon>ProjectObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectProperties.cs">
+    <Compile Include="Main\ProjectProperties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProjectProperties.Designer.cs">
+    <Compile Include="Main\ProjectProperties.Designer.cs">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="HeaderValueTool.cs">
+    <Compile Include="Support\HeaderValueTool.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HeaderValueTool.Designer.cs">
+    <Compile Include="Support\HeaderValueTool.Designer.cs">
       <DependentUpon>HeaderValueTool.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImportsManagerGUI.cs">
+    <Compile Include="Main\ImportsManagerGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImportsManagerGUI.Designer.cs">
+    <Compile Include="Main\ImportsManagerGUI.Designer.cs">
       <DependentUpon>ImportsManagerGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Loader.cs">
+    <Compile Include="Main\Loader.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Loader.Designer.cs">
+    <Compile Include="Main\Loader.Designer.cs">
       <DependentUpon>Loader.cs</DependentUpon>
     </Compile>
     <Compile Include="MB_Studio.cs">
@@ -199,75 +199,75 @@
     <Compile Include="MB_Studio.Designer.cs">
       <DependentUpon>MB_Studio.cs</DependentUpon>
     </Compile>
-    <Compile Include="PartyManager.cs">
+    <Compile Include="Manager\PartyManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PartyManager.Designer.cs">
+    <Compile Include="Manager\PartyManager.Designer.cs">
       <DependentUpon>PartyManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="PartyTemplateManager.cs">
+    <Compile Include="Manager\PartyTemplateManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PartyTemplateManager.Designer.cs">
+    <Compile Include="Manager\PartyTemplateManager.Designer.cs">
       <DependentUpon>PartyTemplateManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToolForm.cs">
+    <Compile Include="Main\ToolForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ToolForm.Designer.cs">
+    <Compile Include="Main\ToolForm.Designer.cs">
       <DependentUpon>ToolForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TriggerSelector.cs">
+    <Compile Include="Manager\Support\TriggerSelector.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TriggerSelector.Designer.cs">
+    <Compile Include="Manager\Support\TriggerSelector.Designer.cs">
       <DependentUpon>TriggerSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="TroopManager.cs">
+    <Compile Include="Manager\TroopManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TroopManager.Designer.cs">
+    <Compile Include="Manager\TroopManager.Designer.cs">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CreateProject.resx">
+    <EmbeddedResource Include="Main\CreateProject.resx">
       <DependentUpon>CreateProject.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MBOptions.resx">
+    <EmbeddedResource Include="Main\MBOptions.resx">
       <DependentUpon>MBOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MenuDesigner.resx">
+    <EmbeddedResource Include="Manager\Support\MenuDesigner.resx">
       <DependentUpon>MenuDesigner.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MenuManager.resx">
+    <EmbeddedResource Include="Manager\MenuManager.resx">
       <DependentUpon>MenuManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ItemManager.resx">
+    <EmbeddedResource Include="Manager\ItemManager.resx">
       <DependentUpon>ItemManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectObject.resx">
+    <EmbeddedResource Include="Main\ProjectObject.resx">
       <DependentUpon>ProjectObject.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectProperties.resx">
+    <EmbeddedResource Include="Main\ProjectProperties.resx">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HeaderValueTool.resx">
+    <EmbeddedResource Include="Support\HeaderValueTool.resx">
       <DependentUpon>HeaderValueTool.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImportsManagerGUI.resx">
+    <EmbeddedResource Include="Main\ImportsManagerGUI.resx">
       <DependentUpon>ImportsManagerGUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Loader.resx">
+    <EmbeddedResource Include="Main\Loader.resx">
       <DependentUpon>Loader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MB_Studio.resx">
       <DependentUpon>MB_Studio.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PartyManager.resx">
+    <EmbeddedResource Include="Manager\PartyManager.resx">
       <DependentUpon>PartyManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PartyTemplateManager.resx">
+    <EmbeddedResource Include="Manager\PartyTemplateManager.resx">
       <DependentUpon>PartyTemplateManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -280,13 +280,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="ToolForm.resx">
+    <EmbeddedResource Include="Main\ToolForm.resx">
       <DependentUpon>ToolForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TriggerSelector.resx">
+    <EmbeddedResource Include="Manager\Support\TriggerSelector.resx">
       <DependentUpon>TriggerSelector.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TroopManager.resx">
+    <EmbeddedResource Include="Manager\TroopManager.resx">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="MB Studio_TemporaryKey.pfx" />

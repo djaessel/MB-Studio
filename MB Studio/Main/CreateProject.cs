@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     class CreateProject : SpecialFormBlack
     {

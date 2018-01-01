@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     public partial class ProjectObject : UserControl
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using importantLib;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     public partial class Loader : SplashForm
     {

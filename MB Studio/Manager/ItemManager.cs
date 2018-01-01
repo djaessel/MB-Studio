@@ -1,24 +1,40 @@
-﻿using importantLib;
+﻿using brfManager;
+using importantLib;
+using MB_Decompiler;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
+using MB_Studio.Main;
 using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
-namespace MB_Studio
+namespace MB_Studio.Manager
 {
     public partial class ItemManager : ToolForm
     {
+        #region Attributes
+
+        private bool show3D_Override = true;
+
         private int meshTag;
-        private const byte MESH_CONTROLS_COUNT = 5;//6 mit Bild falls möglich
+        private const byte MESH_CONTROLS_COUNT = 6;//5 ohne Bild
         private const byte MESH_INFO_CONTROLS_COUNT = 6;
         private const byte MESH_CONTROLS_TOP_HEIGHT = 32;
         private const byte MESH_CONTROLS_TOP_DEFAULT = 24;
 
+        //private Thread openBrfThread;
+        private OpenBrfManager openBrfManager = null;
+
         private List<int[]> memberValues = new List<int[]>();
         private List<SimpleTrigger> itemTrigger = new List<SimpleTrigger>();
+
+        #endregion
+
+        #region Loading
 
         public ItemManager() : base(Skriptum.ObjectType.ITEM)
         {
@@ -31,10 +47,16 @@ namespace MB_Studio
             return new Item(raw_data);
         }
 
-        /*protected override void LoadSettingsAndLists()
+        protected override void LoadSettingsAndLists(bool loadSavedTypes = true)
         {
-            base.LoadSettingsAndLists();
-        }*/
+            base.LoadSettingsAndLists(loadSavedTypes);
+
+            /*Invoke((MethodInvoker)delegate
+            {
+                openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
+                openBrfThread.Start();
+            });*/
+        }
 
         protected override void InitializeControls()
         {
@@ -48,6 +70,8 @@ namespace MB_Studio
 
             ResetControls();
         }
+
+        #endregion
 
         #region Setups
 
@@ -89,7 +113,7 @@ namespace MB_Studio
                 }
             }
 
-            Label[] labels = new Label[] { id_column_lbl, resourceName_column_lbl, meshKind_column_lbl, modifierBits_column_lbl, delete_column_lbl };
+            Label[] labels = new Label[] { id_column_lbl, resourceName_column_lbl, meshKind_column_lbl, modifierBits_column_lbl, show_column_lbl, delete_column_lbl };
             Button tmp_btn = addMesh_btn;
 
             groupBox_3_gb.Controls.Clear();
@@ -98,7 +122,8 @@ namespace MB_Studio
             resourceName_column_lbl = labels[1];
             meshKind_column_lbl = labels[2];
             modifierBits_column_lbl = labels[3];
-            delete_column_lbl = labels[4];
+            show_column_lbl = labels[4];
+            delete_column_lbl = labels[5];
 
             addMesh_btn = tmp_btn;
 
@@ -106,8 +131,8 @@ namespace MB_Studio
             groupBox_3_gb.Controls.Add(resourceName_column_lbl);
             groupBox_3_gb.Controls.Add(meshKind_column_lbl);
             groupBox_3_gb.Controls.Add(modifierBits_column_lbl);
+            groupBox_3_gb.Controls.Add(show_column_lbl);
             groupBox_3_gb.Controls.Add(delete_column_lbl);
-            //3d view
 
             groupBox_3_gb.Controls.Add(addMesh_btn);
 
@@ -339,6 +364,8 @@ namespace MB_Studio
 
             if (openChange)
                 showGroup_3_btn.PerformClick();
+
+            show3D_Override = false;
         }
 
         private int AddMeshControls(Item item, int i, bool normal = true)
@@ -414,6 +441,17 @@ namespace MB_Studio
                 Text = meshKind,
             };
 
+            CheckBox show_cb = new CheckBox
+            {
+                Name = "ixmesh_" + i + "_cb",
+                Text = string.Empty,
+                Tag = i,
+                Checked = true,
+                Size = new Size(show_column_lbl.Width / 2 - 8, MESH_CONTROLS_TOP_HEIGHT - 6),
+                Location = new Point(ixmesh2_txt.Left + ixmesh2_txt.Width + 8 + show_column_lbl.Width / 3, lastTopLocation + 1),
+            };
+            show_cb.CheckedChanged += Show_cb_CheckedChanged;
+
             // ixmesh_btn
             Button ixmesh_btn = new Button()
             {
@@ -423,7 +461,7 @@ namespace MB_Studio
                 FlatStyle = FlatStyle.Flat,
                 Size = new Size(delete_column_lbl.Width - 8, MESH_CONTROLS_TOP_HEIGHT - 6),
                 Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0),
-                Location = new Point(ixmesh2_txt.Left + ixmesh2_txt.Width + 8, lastTopLocation + 1),
+                Location = new Point(delete_column_lbl.Left + 4, lastTopLocation + 1),
             };
             ixmesh_btn.Click += Ixmesh_btn_Click;
 
@@ -431,16 +469,16 @@ namespace MB_Studio
             groupBox_3_gb.Controls.Add(ixmesh_txt);
             groupBox_3_gb.Controls.Add(ixmesh_cbb);
             groupBox_3_gb.Controls.Add(ixmesh2_txt);
+            groupBox_3_gb.Controls.Add(show_cb);
             groupBox_3_gb.Controls.Add(ixmesh_btn);
 
-            /*MessageBox.Show("ixmesh_lbl:" + ixmesh_lbl.Left + ":" + ixmesh_lbl.Width + Environment.NewLine
-              + "ixmesh_txt:" + ixmesh_txt.Left + ":" + ixmesh_txt.Width + Environment.NewLine
-              + "ixmesh_cbb:" + ixmesh_cbb.Left + ":" + ixmesh_cbb.Width + Environment.NewLine
-              + "ixmesh2_txt:" + ixmesh2_txt.Left + ":" + ixmesh2_txt.Width + Environment.NewLine
-              + "ixmesh_btn:" + ixmesh_btn.Left + ":" + ixmesh_btn.Width + Environment.NewLine
-              );*/
-
             return lastTopLocation;
+        }
+
+        private void Show_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!show3D_Override)
+                Change3DView();
         }
 
         private void Ixmesh_btn_Click(object sender, EventArgs e)
@@ -482,7 +520,7 @@ namespace MB_Studio
 
         private void AddMesh_btn_Click(object sender, EventArgs e)
         {
-            int index = typeSelect_lb.SelectedIndex - 1;
+            int index = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
             if (index >= 0 && index < types.Count)
             {
                 Item xitem = (Item)types[index];
@@ -530,7 +568,7 @@ namespace MB_Studio
 
             MB_Studio.SavePseudoCodeByType(i, valuesX);
 
-            //base.SaveTypeByIndex(values, selectedIndex, i);
+            base.SaveTypeByIndex(values, selectedIndex, i);
         }
 
         #region Calculations
@@ -1248,5 +1286,137 @@ namespace MB_Studio
 
         #endregion
 
+        #region OpenBrf
+
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            //if (openBrfThread != null)
+                KillOpenBrfThread();
+
+            base.OnHandleDestroyed(e);
+        }
+
+        //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
+        private void KillOpenBrfThread()
+        {
+            openBrfManager.Close();
+            //Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+        }
+
+        private void StartOpenBrfManager()
+        {
+            if (openBrfManager == null && _3DView_btn.Enabled)
+                Invoke((MethodInvoker)delegate { _3DView_btn.PerformClick(); });
+            else if (_3DView_btn.Enabled)
+            {
+                Invoke((MethodInvoker)delegate { _3DView_btn.Enabled = false; });
+                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
+                t.Start();
+            }
+        }
+
+        private void AddOpenBrfAsChildThread()
+        {
+            while (!openBrfManager.IsShown)
+                Thread.Sleep(10);
+            Invoke((MethodInvoker)delegate
+            {
+                openBrfManager.AddWindowHandleToControlsParent(this);
+
+                Thread.Sleep(50);
+
+                int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
+                if (idx >= 0)
+                    LoadMeshWithOpenBrf(((Item)types[idx]).Meshes[0].Split()[0]);
+
+                // Update UI
+                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
+
+                Console.WriteLine("Loaded 3D View successfully! - laut Programmablauf");
+            });
+        }
+
+        private void LoadMeshWithOpenBrf(string resourceName)
+        {
+            try
+            {
+                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ShowGroup_3_btn_Click(object sender, EventArgs e)
+        {
+            if (showGroup_3_btn.Text.Equals("v"))
+                StartOpenBrfManager();
+        }
+
+        private void _3DView_btn_Click(object sender, EventArgs e)
+        {
+            //Button _3DView_btn = (Button)sender;
+            if (openBrfManager == null && _3DView_btn.Enabled)
+            {
+                //_3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
+                _3DView_btn.Visible = false;
+
+                string mabPath = ProgramConsole.GetModuleInfoPath();
+                mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+                mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+                openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, mabPath);
+
+                showGroup_3_btn.PerformClick();
+
+                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                int result = openBrfManager.Show(MB_Studio.DebugMode);
+                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+            }
+        }
+
+        private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Change3DView();
+        }
+
+        private void Change3DView()
+        {
+            int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
+            if (idx >= 0 && openBrfManager != null)
+            {
+                string[] meshes = ((Item)types[idx]).Meshes.ToArray();
+                for (int i = 0; i < meshes.Length; i++)
+                    if (ShowMesh(i))
+                        openBrfManager.SelectItemNameByKind(meshes[i].Split()[0]);
+            }
+        }
+
+        private bool ShowMesh(int i)
+        {
+            bool b = false;
+            CheckBox[] w = groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ToArray();
+            if (w.Length != 0)
+                b = w[0].Checked;
+            else
+            {
+                for (int j = 0; j < groupBox_3_gb.Controls.Count; j++)
+                {
+                    string nameEnd = GetNameEndOfControl(groupBox_3_gb.Controls[j]);
+                    if (nameEnd.Equals("cb"))
+                    {
+                        if ((int)groupBox_3_gb.Controls[j].Tag == i)
+                        {
+                            b = ((CheckBox)groupBox_3_gb.Controls[j]).Checked;
+                            j = groupBox_3_gb.Controls.Count;
+                        }
+                    }
+                }
+            }
+            return b;
+        }
+
+        #endregion
     }
 }

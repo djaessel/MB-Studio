@@ -11,8 +11,9 @@ using System.Windows.Forms;
 using WarbandTranslator;
 using brfManager;
 using importantLib;
+using MB_Studio.Main;
 
-namespace MB_Studio
+namespace MB_Studio.Manager
 {
     public partial class TroopManager : SpecialForm
     {
@@ -21,6 +22,7 @@ namespace MB_Studio
         private FileSaver fileSaver;
 
         private Thread openBrfThread;
+        private OpenBrfManager openBrfManager = null;
 
         private const string FACE_CODE_ZERO = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
@@ -30,8 +32,6 @@ namespace MB_Studio
 
         private List<ulong> inventoryItemFlags = new List<ulong>();
         private List<string[]> translations = new List<string[]>();
-
-        private OpenBrfManager openBrfManager = null;
 
         // instance member to keep reference to splash form
         private SplashForm frmSplash;

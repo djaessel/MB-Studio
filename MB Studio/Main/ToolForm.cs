@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using WarbandTranslator;
 using System.ComponentModel;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     public partial class ToolForm : SpecialForm 
     // DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!! - am Ende abstract

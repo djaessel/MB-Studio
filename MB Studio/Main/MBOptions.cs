@@ -1,10 +1,11 @@
 ﻿using importantLib;
 using MB_Decompiler;
+using MB_Studio.Support;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace MB_Studio
+namespace MB_Studio.Main
 {
     public partial class MBOptions : SpecialForm
     {
