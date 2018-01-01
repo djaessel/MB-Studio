@@ -1340,7 +1340,9 @@ namespace MB_Studio.Manager
         {
             try
             {
-                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName));
+                /*Console.WriteLine("SUCCESS: " + */openBrfManager.AddMeshToTroopDummy(resourceName);//SelectItemNameByKind(resourceName));
+                Thread.Sleep(500);
+                openBrfManager.SelectItemNameByKind("JSYS");
             }
             catch (Exception ex)
             {
