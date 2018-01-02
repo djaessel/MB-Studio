@@ -1183,6 +1183,7 @@ namespace MB_Studio.Manager
                 try
                 {
                     string itemID = lb.SelectedItem.ToString().Split('-')[1].TrimStart();
+                    itemID = itemID.Substring(itemID.IndexOf('_') + 1);
                     for (int i = 0; i < itemsRList.Length; i++)
                     {
                         if (itemID.Equals(itemsRList[i].ID))
@@ -1213,20 +1214,18 @@ namespace MB_Studio.Manager
                 try
                 {
                     string itemID = lb.SelectedItem.ToString().Split('-')[1].TrimStart();
+                    itemID = itemID.Substring(itemID.IndexOf('_') + 1);
                     for (int i = 0; i < itemsRList.Length; i++)
                     {
                         if (itemID.Equals(itemsRList[i].ID))
                         {
                             for (int j = 0; j < itemsRList[i].Meshes.Count; j++)
                             {
-                                string sss = itemsRList[i].Meshes[j].Split()[0].Trim(); //0 was j
+                                string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("TEST - DUMMY MODE!");
-                                openBrfManager.AddMeshToTroopDummy(sss); // try to find a clue, why there is no skin in reference or what is going on! :D
+                                openBrfManager.AddMeshToTroopDummy(sss);
                             }
-                            Thread.Sleep(100);
-                            MessageBox.Show("START NOW!?");
-                            //openBrfManager.SelectItemNameByKind("JSYS"); // just for last item possible at the moment or for items in the same file it kind of works? - save in different file later!
                             i = itemsRList.Length;
                         }
                     }

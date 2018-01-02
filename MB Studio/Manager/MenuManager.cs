@@ -20,7 +20,7 @@ namespace MB_Studio.Manager
 
         public MenuManager() : base(Skriptum.ObjectType.GAME_MENU)
         {
-            types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
+            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
             InitializeComponent();
         }
 
@@ -139,7 +139,7 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0] + GetFlags();
+            string tmp = values[0].Split()[0] + " " + GetFlags();
 
             //language_cbb.SelectedIndex = LANGUAGE_EN_GZ;
             //tmp += ' ' + singleNameTranslation_txt.Text.Replace(' ', '_');

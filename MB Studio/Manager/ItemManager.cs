@@ -38,7 +38,7 @@ namespace MB_Studio.Manager
 
         public ItemManager() : base(Skriptum.ObjectType.ITEM)
         {
-            types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
+            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
             InitializeComponent();
         }
 
@@ -1290,7 +1290,7 @@ namespace MB_Studio.Manager
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            //if (openBrfThread != null)
+            if (openBrfManager != null)
                 KillOpenBrfThread();
 
             base.OnHandleDestroyed(e);

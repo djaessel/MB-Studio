@@ -77,7 +77,7 @@ namespace MB_Studio.Main
             // Show the splash form
             //if (!(DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime))
             //{
-                /*frmSplash = new Loader(this, false);
+                frmSplash = new Loader(this, false);
                 {
                     StartPosition = FormStartPosition.CenterScreen;
                 }
@@ -85,9 +85,9 @@ namespace MB_Studio.Main
             //}
 
             // Do some time consuming work in separate thread
-            /*Thread t = new Thread(new ThreadStart(LoadControlsAndSettings)) { IsBackground = true };
+            Thread t = new Thread(new ThreadStart(LoadControlsAndSettings)) { IsBackground = true };
             t.Start();/**/
-            LoadControlsAndSettings(); // USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING
+            //LoadControlsAndSettings(); // USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace MB_Studio.Main
         protected virtual void LoadSettingsAndLists(bool loadSavedTypes = true)
         {
             //if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
-            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in jeweiligen Forms, falls BUG NICHT gehoben!
+            types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in jeweiligen Forms, falls BUG NICHT gehoben!
 
             //bool loadSavedTypes = true; // maybe make this universal in MB Studio as option to select but default true
 

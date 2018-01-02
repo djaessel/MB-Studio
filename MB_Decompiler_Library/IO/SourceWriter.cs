@@ -612,7 +612,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.ITEM);
                 foreach (Item item in objects)
                 {
-                    wr.Write(Environment.NewLine + "[\"" + item.ID.Substring(4) + "\",\"" + item.Name + "\",[");
+                    wr.Write(Environment.NewLine + "[\"" + item.ID + "\",\"" + item.Name + "\",[");
                     for (int i = 0; i < item.Meshes.Count; i++)
                     {
                         string[] sp = item.Meshes[i].Trim().Split();
