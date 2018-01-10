@@ -29,6 +29,9 @@ namespace MB_Decompiler_Library.IO
         private static List<string> codeDeclarations = new List<string>();
         private static List<ulong> codeValue = new List<ulong>();
 
+        public static string[] CodeDeclarations { get { return codeDeclarations.ToArray(); } }
+        public static ulong[] CodeValues { get { return codeValue.ToArray(); } }
+
         #region Elements
 
         /*private static List<string> globalVariables = new List<string>(); // 0
@@ -133,68 +136,68 @@ namespace MB_Decompiler_Library.IO
         public const ulong QUICKSTRING_MIN = 1585267068834414592;
         public const ulong QUICKSTRING_MAX = 1600000000000000000;
 
-        private const ulong TRP_PLAYER = 360287970189639680;
-        private const ulong TROOP_MAX = 370000000000000000;
+        public const ulong TRP_PLAYER = 360287970189639680;
+        public const ulong TROOP_MAX = 370000000000000000;
 
-        private const ulong GLOBAL_MIN = 144115188075855872;
-        private const ulong GLOBAL_MAX = 145000000000000000;
+        public const ulong GLOBAL_MIN = 144115188075855872;
+        public const ulong GLOBAL_MAX = 145000000000000000;
 
-        private const ulong SCRIPT_MIN = 936748722493063168;
-        private const ulong SCRIPT_MAX = 940000000000000000;
+        public const ulong SCRIPT_MIN = 936748722493063168;
+        public const ulong SCRIPT_MAX = 940000000000000000;
 
-        private const ulong STRING_MIN = 216172782113783808;
-        private const ulong STRING_MAX = 217000000000000000;
+        public const ulong STRING_MIN = 216172782113783808;
+        public const ulong STRING_MAX = 217000000000000000;
 
-        private const ulong SPR_MIN = 1080863910568919040;
-        private const ulong SPR_MAX = 1100000000000000000;
+        public const ulong SPR_MIN = 1080863910568919040;
+        public const ulong SPR_MAX = 1100000000000000000;
 
-        private const ulong PRSNT_MIN = 1513209474796486656;
-        private const ulong PRSNT_MAX = 1513210000000000000;
+        public const ulong PRSNT_MIN = 1513209474796486656;
+        public const ulong PRSNT_MAX = 1513210000000000000;
 
-        private const ulong FAC_MIN = 432345564227567616;
-        private const ulong FAC_MAX = 433000000000000000;
+        public const ulong FAC_MIN = 432345564227567616;
+        public const ulong FAC_MAX = 433000000000000000;
 
-        private const ulong P_MAIN_PARTY = 648518346341351424;
-        private const ulong P_MAX = 648600000000000000;
+        public const ulong P_MAIN_PARTY = 648518346341351424;
+        public const ulong P_MAX = 648600000000000000;
 
-        private const ulong ITM_MIN = 288230376151711744;
-        private const ulong ITM_MAX = 290000000000000000;
+        public const ulong ITM_MIN = 288230376151711744;
+        public const ulong ITM_MAX = 290000000000000000;
 
-        private const ulong SCENE_MIN = 720575940379279360;
-        private const ulong SCENE_MAX = 720575940380000000;
+        public const ulong SCENE_MIN = 720575940379279360;
+        public const ulong SCENE_MAX = 720575940380000000;
 
-        private const ulong MESH_MIN = 1441151880758558720;
-        private const ulong MESH_MAX = 1450000000000000000;
+        public const ulong MESH_MIN = 1441151880758558720;
+        public const ulong MESH_MAX = 1450000000000000000;
 
-        private const ulong PT_MIN = 576460752303423488;
-        private const ulong PT_MAX = 576500000000000000;
+        public const ulong PT_MIN = 576460752303423488;
+        public const ulong PT_MAX = 576500000000000000;
 
-        private const ulong MT_MIN = 792633534417207296;
-        private const ulong MT_MAX = 792700000000000000;
+        public const ulong MT_MIN = 792633534417207296;
+        public const ulong MT_MAX = 792700000000000000;
 
-        private const ulong SKL_MIN = 1369094286720630784;
-        private const ulong SKL_MAX = 1369094286720700000;
+        public const ulong SKL_MIN = 1369094286720630784;
+        public const ulong SKL_MAX = 1369094286720700000;
 
-        private const ulong SND_MIN = 1152921504606846976;
-        private const ulong SND_MAX = 1152921504607000000;
+        public const ulong SND_MIN = 1152921504606846976;
+        public const ulong SND_MAX = 1152921504607000000;
 
-        private const ulong PSYS_MIN = 1008806316530991104;
-        private const ulong PSYS_MAX = 1009000000000000000;
+        public const ulong PSYS_MIN = 1008806316530991104;
+        public const ulong PSYS_MAX = 1009000000000000000;
 
-        private const ulong MENU_MIN = 864691128455135232;
-        private const ulong MENU_MAX = 865000000000000000;
+        public const ulong MENU_MIN = 864691128455135232;
+        public const ulong MENU_MAX = 865000000000000000;
 
-        private const ulong QUEST_MIN = 504403158265495552;
-        private const ulong QUEST_MAX = 504500000000000000;
+        public const ulong QUEST_MIN = 504403158265495552;
+        public const ulong QUEST_MAX = 504500000000000000;
 
-        private const ulong TABLEAU_MAT_MIN = 1729382256910270464;
-        private const ulong TABLEAU_MAT_MAX = 1730000000000000000;
+        public const ulong TABLEAU_MAT_MIN = 1729382256910270464;
+        public const ulong TABLEAU_MAT_MAX = 1730000000000000000;
 
-        private const ulong ANIM_MIN = 1801439850948198400;
-        private const ulong ANIM_MAX = 1810000000000000000; //private const ulong ANIM_MAX = ulong.MaxValue - int.MaxValue;
+        public const ulong ANIM_MIN = 1801439850948198400;
+        public const ulong ANIM_MAX = 1810000000000000000; //public const ulong ANIM_MAX = ulong.MaxValue - int.MaxValue;
 
-        private const ulong TRACK_MIN = 1657324662872342528;
-        private const ulong TRACK_MAX = 1660000000000000000;
+        public const ulong TRACK_MIN = 1657324662872342528;
+        public const ulong TRACK_MAX = 1660000000000000000;
 
         #endregion
 
@@ -2038,168 +2041,6 @@ namespace MB_Decompiler_Library.IO
             if (code < REG0 || code > REG127)
                 codeLine += '\"';
             return codeLine;
-        }
-
-        private static bool ArrayContainsString(string[] array, string s)
-        {
-            bool found = false;
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i].Equals(s))
-                {
-                    found = true;
-                    i = array.Length;
-                }
-            }
-            return found;
-        }
-
-        private static int ArrayIndexOfString(string[] array, string s)
-        {
-            int idx = -1;
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i].Equals(s))
-                {
-                    idx = i;
-                    i = array.Length;
-                }
-            }
-            return idx;
-        }
-
-        public static string GetCompiledCodeLines(string[] lines)
-        {
-            int usedLines = 0;
-            string ret = string.Empty;//" " + lines.Length;
-            foreach (string line in lines)
-            {
-                if (line.Length != 0)
-                {
-                    if (line.Contains("(") && line.Contains("),"))
-                    {
-                        ret += ' ' + GetCompiledCodeLine(line);
-                        usedLines++;
-                    }
-                }
-            }
-            ret = " " + usedLines + ret;
-            return ret;
-        }
-
-        private static string GetCompiledCodeLine(string codeLine)
-        {
-            codeLine = codeLine.Trim().TrimStart('(').TrimEnd(')', ',');
-            char[] cc = codeLine.ToCharArray();
-            codeLine = string.Empty;
-            bool textMode = false;
-            for (int i = 0; i < cc.Length; i++)
-            {
-                if (cc[i] == '\"')
-                    textMode = !textMode;
-                if (!textMode || cc[i] != ' ')
-                    codeLine += cc[i].ToString();
-            }
-
-            string[] parts = codeLine.Split(',');
-            List<string> partXX = new List<string> { parts[0], (parts.Length - 1).ToString() };
-            for (int i = 1; i < parts.Length; i++)
-                partXX.Add(parts[i]);
-            parts = partXX.ToArray();
-
-            string[] declarations = codeDeclarations.ToArray();
-
-            if (ArrayContainsString(declarations, parts[0]))
-                parts[0] = codeValue[ArrayIndexOfString(declarations, parts[0])].ToString();
-            else if (parts[0].Contains("|"))
-            {
-                ulong border1 = (ulong)1 + int.MaxValue, border2 = border1 / 2;
-                string[] tmp = parts[0].Split('|');
-                ulong u = 0ul;
-                if (tmp[0].Equals("neg"))
-                    u += border1;
-                else if (tmp[0].Equals("this_or_next"))
-                    u += border2;
-                if (tmp[1].Equals("this_or_next"))
-                {
-                    u += border2;
-                    if (ArrayContainsString(declarations, tmp[2]))
-                        u += codeValue[ArrayIndexOfString(declarations, tmp[2])];
-                    else
-                        System.Windows.Forms.MessageBox.Show("FATAL ERROR! - 0x9913", "ERROR");
-                }
-                else if (ArrayContainsString(declarations, tmp[1]))
-                    u += codeValue[ArrayIndexOfString(declarations, tmp[1])];
-                else
-                    System.Windows.Forms.MessageBox.Show("FATAL ERROR! - 0x9914", "ERROR");
-            }
-
-            for (int i = 2; i < parts.Length; i++)
-            {
-                parts[i] = parts[i].Trim(' ', '\"');
-
-                //if (code >= LOCAL_MIN && code < LOCAL_MAX)
-                //    codeLine += localVariableInterpreter.Interpret(codeLine, code, codeIndex); // Sollte noch verfeinert werden --> EXCHANGE OBJECTS        // OLD: ":var" + (code - LOCAL_MIN + 1)
-                /*else */if (!ImportantMethods.IsNumericGZ(parts[i]))
-                    if (ImportantMethods.IsNumericGZ(parts[i].Replace("reg", string.Empty)))
-                        parts[i] = (REG0 + ulong.Parse(parts[i].Replace("reg", string.Empty))).ToString();
-                else if (ArrayContainsString(QuickStrings, parts[i]))
-                    parts[i] = (QUICKSTRING_MIN + (ulong)ArrayIndexOfString(QuickStrings, parts[i])).ToString();
-                else if (ArrayContainsString(GlobalVariables, parts[i]))
-                    parts[i] = (GLOBAL_MIN + (ulong)ArrayIndexOfString(GlobalVariables, parts[i])).ToString();
-                else if (ArrayContainsString(Scripts, parts[i]))
-                    parts[i] = (SCRIPT_MIN + (ulong)ArrayIndexOfString(Scripts, parts[i])).ToString();
-                else if (ArrayContainsString(SceneProps, parts[i]))
-                    parts[i] = (SPR_MIN + (ulong)ArrayIndexOfString(SceneProps, parts[i])).ToString();
-                else if (ArrayContainsString(Strings, parts[i]))
-                    parts[i] = (STRING_MIN + (ulong)ArrayIndexOfString(Strings, parts[i])).ToString();
-                else if (ArrayContainsString(Factions, parts[i]))
-                    parts[i] = (FAC_MIN + (ulong)ArrayIndexOfString(Factions, parts[i])).ToString();
-                else if (ArrayContainsString(Troops, parts[i]))
-                    parts[i] = (TRP_PLAYER + (ulong)ArrayIndexOfString(Troops, parts[i])).ToString();
-                else if (ArrayContainsString(Presentations, parts[i]))
-                    parts[i] = (PRSNT_MIN + (ulong)ArrayIndexOfString(Presentations, parts[i])).ToString();
-                else if (ArrayContainsString(Scenes, parts[i]))
-                    parts[i] = (SCENE_MIN + (ulong)ArrayIndexOfString(Scenes, parts[i])).ToString();
-                else if (ArrayContainsString(Meshes, parts[i]))
-                    parts[i] = (MESH_MIN + (ulong)ArrayIndexOfString(Meshes, parts[i])).ToString();
-                else if (ArrayContainsString(Items, parts[i]))
-                    parts[i] = (ITM_MIN + (ulong)ArrayIndexOfString(Items, parts[i])).ToString();
-                else if (ArrayContainsString(Parties, parts[i]))
-                    parts[i] = (P_MAIN_PARTY + (ulong)ArrayIndexOfString(Parties, parts[i])).ToString();
-                else if (ArrayContainsString(PartyTemplates, parts[i]))
-                    parts[i] = (PT_MIN + (ulong)ArrayIndexOfString(PartyTemplates, parts[i])).ToString();
-                else if (ArrayContainsString(MissionTemplates, parts[i]))
-                    parts[i] = (MT_MIN + (ulong)ArrayIndexOfString(MissionTemplates, parts[i])).ToString();
-                else if (ArrayContainsString(Animations, parts[i]))
-                    parts[i] = (ANIM_MIN + (ulong)ArrayIndexOfString(Animations, parts[i])).ToString();
-                else if (ArrayContainsString(Skills, parts[i]))
-                    parts[i] = (SKL_MIN + (ulong)ArrayIndexOfString(Skills, parts[i])).ToString();
-                else if (ArrayContainsString(Sounds, parts[i]))
-                    parts[i] = (SND_MIN + (ulong)ArrayIndexOfString(Sounds, parts[i])).ToString();
-                else if (ArrayContainsString(ParticleSystems, parts[i]))
-                    parts[i] = (PSYS_MIN + (ulong)ArrayIndexOfString(ParticleSystems, parts[i])).ToString();
-                else if (ArrayContainsString(GameMenus, parts[i]))
-                    parts[i] = (MENU_MIN + (ulong)ArrayIndexOfString(GameMenus, parts[i])).ToString();
-                else if (ArrayContainsString(Quests, parts[i]))
-                    parts[i] = (QUEST_MIN + (ulong)ArrayIndexOfString(Quests, parts[i])).ToString();
-                else if (ArrayContainsString(TableauMaterials, parts[i]))
-                    parts[i] = (TABLEAU_MAT_MIN + (ulong)ArrayIndexOfString(TableauMaterials, parts[i])).ToString();
-                else if (ArrayContainsString(Tracks, parts[i]))
-                    parts[i] = (TRACK_MIN + (ulong)ArrayIndexOfString(Tracks, parts[i])).ToString();
-                else if (ImportantMethods.IsNumericGZ(parts[i]))
-                    parts[i] = (ulong.MaxValue + (ulong)(int.Parse(parts[i]) + 1)).ToString();
-                else if (ConstantsFinder.ContainsConst(parts[i]))
-                    parts[i] = ConstantsFinder.TranslateConst(parts[i]).ToString();
-                else
-                    System.Windows.Forms.MessageBox.Show("FATAL ERROR! 0x9912" + Environment.NewLine + parts[i], "ERROR");
-            }
-
-            codeLine = string.Empty;
-            foreach (string part in parts)
-                codeLine += part + ' ';
-
-            return codeLine.TrimEnd();
         }
 
         private static MissionTemplate DecompileMissionTemplateCode(string[] headerX, List<string[]> entryPoints, List<string[]> triggers)

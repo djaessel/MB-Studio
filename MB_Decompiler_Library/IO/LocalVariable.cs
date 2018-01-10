@@ -4,15 +4,16 @@ namespace MB_Decompiler_Library.Objects.Support
 {
     public class LocalVariable
     {
-        private string name;        // gold
-        //private string localName;   // gold1
-        private int internCount;  // 11 (Bei zum Beispiel 12 Variablen)
+        private string name;            // gold
+        private string localName;       // gold1
+        private int internCount;        // 11 (Bei zum Beispiel 12 Variablen)
         private int nameCount = 1;      // 1 (bei zum Beispiel 2 Gold Variablen) --> Variable 12 ist gold2
+
+        private List<int> codeLineIndicies = new List<int>();
 
         private static List<string> names = new List<string>();
         private static List<int> nameCounts = new List<int>();
         private static List<int> currentCounts = new List<int>();
-        private List<int> codeLineIndicies = new List<int>();
         private static List<string> defaultVariables = new List<string>();
 
         public LocalVariable(string name, int internCount, int codeIndex)
@@ -39,8 +40,17 @@ namespace MB_Decompiler_Library.Objects.Support
             else
             {
                 names.Add(name);
-                nameCounts.Add(nameCount); // just one as start value
+                nameCounts.Add(nameCount); // 1
             }
+
+            localName = name + nameCount;
+        }
+
+        public LocalVariable(string localName, int internCount)
+        {
+            this.localName = localName;
+            this.internCount = internCount;
+            currentCounts.Add(internCount);
         }
 
         public void AddCodeIndex(int codeIndex)
@@ -58,7 +68,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
         public static List<string> DefaultVariables { get { return defaultVariables; } }
 
-        public string LocalName { get { return name + nameCount; } }
+        public string LocalName { get { return localName; } }
 
         public int InternCount { get { return internCount; } }
 

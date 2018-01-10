@@ -67,9 +67,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="importantLib">
-      <HintPath>..\..\importantLib\importantLib\bin\Release\importantLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -80,6 +77,7 @@
     <Compile Include="IO\CodeWriter.cs" />
     <Compile Include="IO\DataBankList.cs" />
     <Compile Include="IO\ImportsManager.cs" />
+    <Compile Include="IO\SourceReader.cs" />
     <Compile Include="Objects\Animation.cs" />
     <Compile Include="Objects\Support\AnimationSequence.cs" />
     <Compile Include="Objects\Dialog.cs" />
@@ -124,6 +122,10 @@
     <Compile Include="IO\SourceWriter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\importantLib\importantLib\importantLib.csproj">
+      <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
+      <Name>importantLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\skillhunter\skillhunter\skillhunter.vbproj">
       <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
       <Name>skillhunter</Name>

@@ -86,6 +86,31 @@ namespace MB_Decompiler_Library.Objects.Support
             return parameterText;
         }
 
+        public ulong InterpretBack(string parameterText)
+        {
+            ulong parameter = ulong.MaxValue;
+
+            for (int i = 0; i < variables.Count; i++)
+            {
+                if (variables[i].LocalName.Equals(parameterText))
+                {
+                    parameter = (ulong)variables[i].InternCount + CodeReader.LOCAL_MIN;
+                    i = variables.Count;
+                }
+            }
+
+            if (parameter == ulong.MaxValue)
+            {
+                variables.Add(new LocalVariable(parameterText, variables.Count));
+                parameter = (ulong)variables.Count + CodeReader.LOCAL_MIN - 1;
+            }
+
+            //if (byte.TryParse(parameterText.Substring(DEFAULT_NAME.Length), out byte value))
+            //    parameter = value + CodeReader.LOCAL_MIN - 1;
+
+            return parameter;
+        }
+
         private string GetLVariableLocalName(int idx, int codeIndex)
         {
             string localName = DEFAULT_NAME + idx;

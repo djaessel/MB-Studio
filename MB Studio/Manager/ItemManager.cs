@@ -38,7 +38,7 @@ namespace MB_Studio.Manager
 
         public ItemManager() : base(Skriptum.ObjectType.ITEM)
         {
-            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
+            types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
             InitializeComponent();
         }
 
@@ -1134,7 +1134,7 @@ namespace MB_Studio.Manager
                 }
                 else
                     triggerS += GetFixedFKZ(strigger.CheckInterval);
-                triggerS += CodeReader.GetCompiledCodeLines(strigger.ConsequencesBlock);
+                triggerS += SourceReader.GetCompiledCodeLines(strigger.ConsequencesBlock);
             }
 
             return triggerS;
@@ -1340,8 +1340,9 @@ namespace MB_Studio.Manager
         {
             try
             {
-                /*Console.WriteLine("SUCCESS: " + */openBrfManager.AddMeshToTroopDummy(resourceName);//SelectItemNameByKind(resourceName));
-                Thread.Sleep(500);
+                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName));
+                //openBrfManager.AddMeshToTroopDummy(resourceName);
+                Thread.Sleep(125);
                 openBrfManager.SelectItemNameByKind("JSYS");
             }
             catch (Exception ex)

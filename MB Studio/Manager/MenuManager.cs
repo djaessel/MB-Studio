@@ -20,7 +20,7 @@ namespace MB_Studio.Manager
 
         public MenuManager() : base(Skriptum.ObjectType.GAME_MENU)
         {
-            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
+            types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
             InitializeComponent();
         }
 
@@ -146,16 +146,16 @@ namespace MB_Studio.Manager
             tmp += ' ' + name_txt.Text.Replace(' ', '_');
 
             tmp += ' ' + meshName_txt.Text;
-            tmp += CodeReader.GetCompiledCodeLines(opCodes_rtb.Lines);
+            tmp += SourceReader.GetCompiledCodeLines(opCodes_rtb.Lines);
             tmp += " " + (menuOptions_lb.Items.Count - 1);
             tmp += ';';
 
             for (int i = 0; i < currentGameMenuOptions.Length; i++)
             {
                 tmp += " " + currentGameMenuOptions[i].Name;
-                tmp += CodeReader.GetCompiledCodeLines(currentGameMenuOptions[i].ConditionBlock);
+                tmp += SourceReader.GetCompiledCodeLines(currentGameMenuOptions[i].ConditionBlock);
                 tmp += " " + currentGameMenuOptions[i].Text.Replace(' ', '_');
-                tmp += CodeReader.GetCompiledCodeLines(currentGameMenuOptions[i].ConsequenceBlock);
+                tmp += SourceReader.GetCompiledCodeLines(currentGameMenuOptions[i].ConsequenceBlock);
                 tmp += " " + currentGameMenuOptions[i].DoorText.Replace(' ', '_') + " ";
             }
 
