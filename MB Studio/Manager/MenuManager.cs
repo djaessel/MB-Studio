@@ -515,9 +515,15 @@ namespace MB_Studio.Manager
         private void TextColor_lbl_Click(object sender, EventArgs e)
         {
             colorDialog.ShowDialog();
-            Color c = colorDialog.Color;
-            SetHexCode(c.A, c.R, c.G, c.B);
-            textColor_lbl.BackColor = c;
+            if (colorDialog.Color != null)
+            {
+                if (!colorDialog.Color.Equals(default(Color)))
+                {
+                    Color c = colorDialog.Color;
+                    SetHexCode(c.A, c.R, c.G, c.B);
+                    textColor_lbl.BackColor = c;
+                }
+            }
         }
     }
 }
