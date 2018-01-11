@@ -7,14 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MB_Studio.Manager
 {
     public partial class MenuManager : ToolForm
     {
         private bool colorOverrideMode = false;
+        private bool mnoOverride = false;
+
+        private const string NEW_OPTION = " < new > ";
         private const byte LANGUAGE_EN_GZ = 2;
-        private List<GameMenuOption> currentGameMenuOptions;
+        private List<GameMenuOption> currentGameMenuOptions = new List<GameMenuOption>();
         private MenuDesigner designer;
         private string[] mno_translations;
 
@@ -38,6 +42,8 @@ namespace MB_Studio.Manager
             base.InitializeControls();
 
             importantLib.ImportantMethods.AddWindowHandleToControl(designer.Handle, Parent, Height, Width, Top);
+            mno_choose_lb.Items.Add(NEW_OPTION);
+            mno_ID_text.KeyUp += Mno_ID_text_KeyUp;
 
             ResetControls();
         }
@@ -125,8 +131,8 @@ namespace MB_Studio.Manager
             foreach (GameMenuOption mno in currentGameMenuOptions)
                 mno_choose_lb.Items.Add(mno.Name);
 
-            if (mno_choose_lb.Items.Count == 0)
-                mno_choose_lb.Items.Add("None");
+            //if (mno_choose_lb.Items.Count == 0)
+                mno_choose_lb.Items.Add(NEW_OPTION);
 
             mno_choose_lb.SelectedIndex = 0;
 
@@ -222,6 +228,11 @@ namespace MB_Studio.Manager
                     green_num.Value = int.Parse(SkillHunter.Hex2Dec("000000" + value.Substring(4, 2)).ToString());
                     blue_num.Value = int.Parse(SkillHunter.Hex2Dec("000000" + value.Substring(6, 2)).ToString());
 
+                    if (hexColor_txt.Text.Equals("0x00000000"))// default?
+                        textColor_lbl.BackColor = Color.Black;
+
+                    designer.UpdateGameMenuTextColor(textColor_lbl.BackColor);
+
                     colorOverrideMode = !colorOverrideMode; // false
                 }
                 else
@@ -249,50 +260,99 @@ namespace MB_Studio.Manager
             SetHexCode();
         }
 
-        private void SetHexCode()
+        private void SetHexCode(int alpha = -1, int red = -1, int green = -1, int blue = -1)
         {
+            if (alpha < 0)
+                alpha = (int)alpha_num.Value;
+            if (red < 0)
+                red = (int)red_num.Value;
+            if (green < 0)
+                green = (int)green_num.Value;
+            if (blue < 0)
+                blue = (int)blue_num.Value;
+
             if (!colorOverrideMode)
             {
                 if (hexColor_txt.Text.Length == 10)
                 {
+
                     string hexCode = "0x";
-                    hexCode += SkillHunter.Dec2Hex(alpha_num.Value).Substring(6);
-                    hexCode += SkillHunter.Dec2Hex(red_num.Value).Substring(6);
-                    hexCode += SkillHunter.Dec2Hex(green_num.Value).Substring(6);
-                    hexCode += SkillHunter.Dec2Hex(blue_num.Value).Substring(6);
+                    hexCode += SkillHunter.Dec2Hex(alpha).Substring(6);
+                    hexCode += SkillHunter.Dec2Hex(red).Substring(6);
+                    hexCode += SkillHunter.Dec2Hex(green).Substring(6);
+                    hexCode += SkillHunter.Dec2Hex(blue).Substring(6);
                     hexColor_txt.Text = hexCode;
                 }
+                else
+                    MessageBox.Show("ERROR - 0x9920 - COLOR_HEX_FORMAT", "ERROR");
             }
-            textColor_lbl.BackColor = Color.FromArgb((int)alpha_num.Value, (int)red_num.Value, (int)green_num.Value, (int)blue_num.Value);
+
+            textColor_lbl.BackColor = Color.FromArgb(alpha, red, green, blue);
+        }
+
+        private void Mno_ID_text_KeyUp(object sender, KeyEventArgs e)
+        {
+            string newId = mno_ID_text.Text.Trim();
+            if (e.KeyCode == Keys.Enter && newId.Length != 0)
+            {
+                int idx = mno_choose_lb.SelectedIndex;
+                if (idx >= 0 && !mno_choose_lb.SelectedItem.ToString().Equals(NEW_OPTION))
+                {
+                    GameMenuOption mno = currentGameMenuOptions[idx];
+                    mno = CreateGameMenuOption(newId, mno.Text, mno.ConditionBlock, mno.ConsequenceBlock, mno.DoorText);
+                    currentGameMenuOptions.RemoveAt(idx);
+                    currentGameMenuOptions.Insert(
+                        idx,
+                        mno
+                    );
+                    ChangeListBoxItemAtIndex(mno_choose_lb, idx, mno.Name);
+                }
+            }
+        }
+
+        private void ChangeListBoxItemAtIndex(ListBox lb, int index, string item)
+        {
+            mnoOverride = !mnoOverride;
+            lb.Items.RemoveAt(index);
+            lb.Items.Insert(index, item);
+            mnoOverride = !mnoOverride;
+            mno_choose_lb.SelectedIndex = index;
         }
 
         private void MenuOptions_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selIndex = mno_choose_lb.SelectedIndex;
-            bool isDefaultItem = mno_choose_lb.SelectedItem.ToString().Equals("None");
-            if (selIndex >= 0 && !isDefaultItem)
+            if (!mnoOverride)
             {
-                mno_ID_text.Text = currentGameMenuOptions[selIndex].Name;
-                mno_Text_text.Text = currentGameMenuOptions[selIndex].Text.Replace('_', ' ');
+                int selIndex = mno_choose_lb.SelectedIndex;
+                bool isDefaultItem = mno_choose_lb.SelectedItem.ToString().Equals(NEW_OPTION);
+                if (selIndex >= 0 && !isDefaultItem)
+                {
+                    addAndRemoveMenuOption_btn.Text = "REMOVE";
 
-                string tmp = string.Empty;
+                    mno_ID_text.Text = currentGameMenuOptions[selIndex].Name;
+                    mno_Text_text.Text = currentGameMenuOptions[selIndex].Text.Replace('_', ' ');
 
-                foreach (string codeLine in currentGameMenuOptions[selIndex].ConditionBlock)
-                    tmp += codeLine + Environment.NewLine;
-                mno_Condition_rtb.Text = tmp;
+                    string tmp = string.Empty;
 
-                tmp = string.Empty;
-                foreach (string codeLine in currentGameMenuOptions[selIndex].ConsequenceBlock)
-                    tmp += codeLine + Environment.NewLine;
-                mno_Consequence_rtb.Text = tmp;
+                    foreach (string codeLine in currentGameMenuOptions[selIndex].ConditionBlock)
+                        tmp += codeLine + Environment.NewLine;
+                    mno_Condition_rtb.Text = tmp;
 
-                mno_DoorText_text.Text = currentGameMenuOptions[selIndex].DoorText.Replace('_', ' ');
-            }
-            else if (isDefaultItem)
-            {
-                ResetGroupBox(options_gb);
-                mno_Text_text.Text = string.Empty;
-                mno_DoorText_text.Text = string.Empty;
+                    tmp = string.Empty;
+                    foreach (string codeLine in currentGameMenuOptions[selIndex].ConsequenceBlock)
+                        tmp += codeLine + Environment.NewLine;
+                    mno_Consequence_rtb.Text = tmp;
+
+                    mno_DoorText_text.Text = currentGameMenuOptions[selIndex].DoorText.Replace('_', ' ');
+                }
+                else if (isDefaultItem)
+                {
+                    ResetGroupBox(options_gb);
+                    mno_ID_text.Text = "mno_" + id_txt.Text + "_option_" + (currentGameMenuOptions.Count + 1);
+                    mno_Text_text.ResetText();
+                    mno_DoorText_text.ResetText();
+                    addAndRemoveMenuOption_btn.Text = "ADD";
+                }
             }
         }
 
@@ -384,46 +444,80 @@ namespace MB_Studio.Manager
 
         private void AddAndRemoveMenuOption_btn_Click(object sender, EventArgs e)
         {
+            int newIdx = -1;
             string name_id = mno_ID_text.Text.Replace(' ', '_');
             if (addAndRemoveMenuOption_btn.Text.Equals("ADD"))
             {
-                mno_choose_lb.Items.Add(name_id);
-
-                List<string> codes = new List<string>() { name_id };
-
-                string[] tmp = SourceReader.GetCompiledCodeLines(mno_Condition_rtb.Lines).Trim().Split();
-                codes.Add(tmp.Length.ToString());
-                codes.AddRange(tmp);
-
-                tmp = SourceReader.GetCompiledCodeLines(mno_Consequence_rtb.Lines).Trim().Split();
-                codes.Add(tmp.Length.ToString());
-                codes.AddRange(tmp);
-
-                codes.Add(mno_DoorText_text.Text.Replace(' ', '_'));
-
-                GameMenuOption mno = new GameMenuOption(codes.ToArray());
-
-                currentGameMenuOptions.Add(mno);
+                newIdx = mno_choose_lb.Items.Count - 1;
+                currentGameMenuOptions.Add(
+                    CreateGameMenuOption(name_id, mno_Text_text.Text, mno_Condition_rtb.Lines, mno_Consequence_rtb.Lines, mno_DoorText_text.Text)
+                );
+                mno_choose_lb.Items.Insert(newIdx, name_id);
+                mno_choose_lb.SelectedIndex = newIdx;
             }
             else
             {
-                int x = -1;
                 for (int i = 0; i < currentGameMenuOptions.Count; i++)
                 {
                     if (currentGameMenuOptions[i].Name.Equals(name_id))
                     {
-                        x = i;
+                        newIdx = i;
                         i = currentGameMenuOptions.Count;
                     }
                 }
-                if (x >= 0)
+                if (newIdx >= 0)
                 {
-                    currentGameMenuOptions.RemoveAt(x);
+                    currentGameMenuOptions.RemoveAt(newIdx);
+                    mno_choose_lb.Items.RemoveAt(newIdx);
                     if (currentGameMenuOptions.Count == 0)
-                        mno_choose_lb.Items.Add("None");
+                        mno_choose_lb.Items.Add(NEW_OPTION);
                     mno_choose_lb.SelectedIndex = 0;
                 }
             }
+        }
+
+        private GameMenuOption CreateGameMenuOption(string id, string text, string[] conditionLines, string[] consequenceLines, string doorText)
+        {
+            List<string> codes = new List<string>() { id.Trim().Replace(' ', '_') };
+
+            string[] tmp = SourceReader.GetCompiledCodeLines(conditionLines).Trim().Split();
+            codes.AddRange(tmp);
+
+            codes.Add(text.Replace(' ', '_'));
+
+            tmp = SourceReader.GetCompiledCodeLines(consequenceLines).Trim().Split();
+            codes.AddRange(tmp);
+
+            codes.Add(doorText.Replace(' ', '_'));
+
+            return new GameMenuOption(codes.ToArray());
+        }
+
+        private void Mno_ID_text_TextChanged(object sender, EventArgs e)
+        {
+            if (!mnoOverride)
+            {
+                string id = mno_ID_text.Text.Trim().Replace(' ', '_');
+
+                /*if (id.Length != 0)
+                    if (mno_choose_lb.Items.Count != 0)
+                        if (!mno_choose_lb.Items[0].ToString().Equals(NEW_OPTION))
+                            foreach (string item in mno_choose_lb.Items)
+                                if (item.Equals(id))
+                                    mno_choose_lb.SelectedItem = item;*/
+                                    
+                mnoOverride = !mnoOverride;//true
+                mno_ID_text.Text = id;
+                mnoOverride = !mnoOverride;//false
+            }
+        }
+
+        private void TextColor_lbl_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            Color c = colorDialog.Color;
+            SetHexCode(c.A, c.R, c.G, c.B);
+            textColor_lbl.BackColor = c;
         }
     }
 }

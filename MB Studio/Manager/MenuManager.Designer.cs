@@ -71,6 +71,7 @@
             this.mno_Text_text = new System.Windows.Forms.TextBox();
             this.addAndRemoveMenuOption_btn = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.dead_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_1_gb.SuspendLayout();
@@ -105,7 +106,7 @@
             this.toolPanel.Controls.Add(this.groupBox_3_gb);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Size = new System.Drawing.Size(778, 479);
+            this.toolPanel.Size = new System.Drawing.Size(778, 117);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
@@ -277,6 +278,7 @@
             this.textColor_lbl.Name = "textColor_lbl";
             this.textColor_lbl.Size = new System.Drawing.Size(48, 26);
             this.textColor_lbl.TabIndex = 33;
+            this.textColor_lbl.Click += new System.EventHandler(this.TextColor_lbl_Click);
             // 
             // blue_lbl
             // 
@@ -513,7 +515,7 @@
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
             this.groupBox_3_gb.Location = new System.Drawing.Point(39, 86);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
-            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 390);
+            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_3_gb.TabIndex = 29;
             this.groupBox_3_gb.TabStop = false;
             this.groupBox_3_gb.Tag = "";
@@ -547,6 +549,7 @@
             this.mno_ID_text.Name = "mno_ID_text";
             this.mno_ID_text.Size = new System.Drawing.Size(252, 22);
             this.mno_ID_text.TabIndex = 36;
+            this.mno_ID_text.TextChanged += new System.EventHandler(this.Mno_ID_text_TextChanged);
             // 
             // menuOptions_lbl
             // 
@@ -566,8 +569,6 @@
             this.mno_choose_lb.ForeColor = System.Drawing.Color.White;
             this.mno_choose_lb.FormattingEnabled = true;
             this.mno_choose_lb.ItemHeight = 20;
-            this.mno_choose_lb.Items.AddRange(new object[] {
-            "None"});
             this.mno_choose_lb.Location = new System.Drawing.Point(79, 33);
             this.mno_choose_lb.Name = "mno_choose_lb";
             this.mno_choose_lb.Size = new System.Drawing.Size(260, 22);
@@ -690,16 +691,52 @@
             this.addAndRemoveMenuOption_btn.Tag = "125";
             this.addAndRemoveMenuOption_btn.Text = "ADD";
             this.addAndRemoveMenuOption_btn.UseVisualStyleBackColor = false;
-            this.addAndRemoveMenuOption_btn.Visible = false;
             this.addAndRemoveMenuOption_btn.Click += new System.EventHandler(this.AddAndRemoveMenuOption_btn_Click);
+            // 
+            // colorDialog
+            // 
+            this.colorDialog.AnyColor = true;
+            this.colorDialog.FullOpen = true;
+            // 
+            // dead_btn
+            // 
+            this.dead_btn.BackColor = System.Drawing.Color.DimGray;
+            this.dead_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.dead_btn.Location = new System.Drawing.Point(21, 148);
+            this.dead_btn.Name = "dead_btn";
+            this.dead_btn.Size = new System.Drawing.Size(26, 25);
+            this.dead_btn.TabIndex = 0;
+            this.dead_btn.TabStop = false;
+            this.dead_btn.Tag = "";
+            this.dead_btn.UseVisualStyleBackColor = false;
+            this.dead_btn.Visible = false;
             // 
             // MenuManager
             // 
+            this.AcceptButton = this.dead_btn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(814, 669);
+            this.ClientSize = new System.Drawing.Size(814, 307);
+            this.Controls.Add(this.dead_btn);
             this.Name = "MenuManager";
             this.Opacity = 1D;
             this.Text = "MenuManager";
+            this.Controls.SetChildIndex(this.id_txt, 0);
+            this.Controls.SetChildIndex(this.id_lbl, 0);
+            this.Controls.SetChildIndex(this.name_txt, 0);
+            this.Controls.SetChildIndex(this.name_lbl, 0);
+            this.Controls.SetChildIndex(this.plural_name_txt, 0);
+            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
+            this.Controls.SetChildIndex(this.title_lbl, 0);
+            this.Controls.SetChildIndex(this.exit_btn, 0);
+            this.Controls.SetChildIndex(this.min_btn, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
+            this.Controls.SetChildIndex(this.closeAll_btn, 0);
+            this.Controls.SetChildIndex(this.save_btn, 0);
+            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
+            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
+            this.Controls.SetChildIndex(this.toolPanel, 0);
+            this.Controls.SetChildIndex(this.dead_btn, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
@@ -768,5 +805,6 @@
         private System.Windows.Forms.RichTextBox mno_Consequence_rtb;
         protected System.Windows.Forms.Label mno_Condition_lbl;
         private System.Windows.Forms.RichTextBox mno_Condition_rtb;
+        private System.Windows.Forms.Button dead_btn;
     }
 }
