@@ -1340,7 +1340,7 @@ namespace MB_Studio.Manager
         {
             try
             {
-                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName));
+                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName)); // change for multiple meshs somehow?
                 //openBrfManager.AddMeshToTroopDummy(resourceName);
                 Thread.Sleep(125);
                 openBrfManager.SelectItemNameByKind("JSYS");

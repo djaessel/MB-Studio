@@ -59,7 +59,7 @@
             this.mno_ID_lbl = new System.Windows.Forms.Label();
             this.mno_ID_text = new System.Windows.Forms.TextBox();
             this.menuOptions_lbl = new System.Windows.Forms.Label();
-            this.menuOptions_lb = new System.Windows.Forms.ListBox();
+            this.mno_choose_lb = new System.Windows.Forms.ListBox();
             this.options_gb = new System.Windows.Forms.GroupBox();
             this.mno_DoorText_lbl = new System.Windows.Forms.Label();
             this.mno_DoorText_text = new System.Windows.Forms.TextBox();
@@ -69,7 +69,7 @@
             this.mno_Condition_rtb = new System.Windows.Forms.RichTextBox();
             this.mno_Text_lbl = new System.Windows.Forms.Label();
             this.mno_Text_text = new System.Windows.Forms.TextBox();
-            this.newMenuOption_btn = new System.Windows.Forms.Button();
+            this.addAndRemoveMenuOption_btn = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
@@ -105,7 +105,7 @@
             this.toolPanel.Controls.Add(this.groupBox_3_gb);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Size = new System.Drawing.Size(778, 116);
+            this.toolPanel.Size = new System.Drawing.Size(778, 479);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
@@ -505,15 +505,15 @@
             this.groupBox_3_gb.Controls.Add(this.mno_ID_lbl);
             this.groupBox_3_gb.Controls.Add(this.mno_ID_text);
             this.groupBox_3_gb.Controls.Add(this.menuOptions_lbl);
-            this.groupBox_3_gb.Controls.Add(this.menuOptions_lb);
+            this.groupBox_3_gb.Controls.Add(this.mno_choose_lb);
             this.groupBox_3_gb.Controls.Add(this.options_gb);
-            this.groupBox_3_gb.Controls.Add(this.newMenuOption_btn);
+            this.groupBox_3_gb.Controls.Add(this.addAndRemoveMenuOption_btn);
             this.groupBox_3_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_3_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
             this.groupBox_3_gb.Location = new System.Drawing.Point(39, 86);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
-            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
+            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 390);
             this.groupBox_3_gb.TabIndex = 29;
             this.groupBox_3_gb.TabStop = false;
             this.groupBox_3_gb.Tag = "";
@@ -523,7 +523,7 @@
             // 
             this.mno_ID_InfoText_lbl.AutoSize = true;
             this.mno_ID_InfoText_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mno_ID_InfoText_lbl.Location = new System.Drawing.Point(460, 60);
+            this.mno_ID_InfoText_lbl.Location = new System.Drawing.Point(378, 54);
             this.mno_ID_InfoText_lbl.Name = "mno_ID_InfoText_lbl";
             this.mno_ID_InfoText_lbl.Size = new System.Drawing.Size(169, 13);
             this.mno_ID_InfoText_lbl.TabIndex = 38;
@@ -533,7 +533,7 @@
             // 
             this.mno_ID_lbl.AutoSize = true;
             this.mno_ID_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mno_ID_lbl.Location = new System.Drawing.Point(430, 40);
+            this.mno_ID_lbl.Location = new System.Drawing.Point(348, 34);
             this.mno_ID_lbl.Name = "mno_ID_lbl";
             this.mno_ID_lbl.Size = new System.Drawing.Size(27, 16);
             this.mno_ID_lbl.TabIndex = 37;
@@ -543,36 +543,36 @@
             // 
             this.mno_ID_text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mno_ID_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mno_ID_text.Location = new System.Drawing.Point(463, 38);
+            this.mno_ID_text.Location = new System.Drawing.Point(381, 32);
             this.mno_ID_text.Name = "mno_ID_text";
-            this.mno_ID_text.Size = new System.Drawing.Size(266, 22);
+            this.mno_ID_text.Size = new System.Drawing.Size(252, 22);
             this.mno_ID_text.TabIndex = 36;
             // 
             // menuOptions_lbl
             // 
             this.menuOptions_lbl.AutoSize = true;
             this.menuOptions_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.menuOptions_lbl.Location = new System.Drawing.Point(90, 40);
+            this.menuOptions_lbl.Location = new System.Drawing.Point(8, 34);
             this.menuOptions_lbl.Name = "menuOptions_lbl";
             this.menuOptions_lbl.Size = new System.Drawing.Size(65, 16);
             this.menuOptions_lbl.TabIndex = 34;
             this.menuOptions_lbl.Text = "Choose:";
             // 
-            // menuOptions_lb
+            // mno_choose_lb
             // 
-            this.menuOptions_lb.BackColor = System.Drawing.Color.DimGray;
-            this.menuOptions_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.menuOptions_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.menuOptions_lb.ForeColor = System.Drawing.Color.White;
-            this.menuOptions_lb.FormattingEnabled = true;
-            this.menuOptions_lb.ItemHeight = 16;
-            this.menuOptions_lb.Items.AddRange(new object[] {
-            "New"});
-            this.menuOptions_lb.Location = new System.Drawing.Point(161, 39);
-            this.menuOptions_lb.Name = "menuOptions_lb";
-            this.menuOptions_lb.Size = new System.Drawing.Size(260, 18);
-            this.menuOptions_lb.TabIndex = 33;
-            this.menuOptions_lb.SelectedIndexChanged += new System.EventHandler(this.MenuOptions_lb_SelectedIndexChanged);
+            this.mno_choose_lb.BackColor = System.Drawing.Color.DimGray;
+            this.mno_choose_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mno_choose_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mno_choose_lb.ForeColor = System.Drawing.Color.White;
+            this.mno_choose_lb.FormattingEnabled = true;
+            this.mno_choose_lb.ItemHeight = 20;
+            this.mno_choose_lb.Items.AddRange(new object[] {
+            "None"});
+            this.mno_choose_lb.Location = new System.Drawing.Point(79, 33);
+            this.mno_choose_lb.Name = "mno_choose_lb";
+            this.mno_choose_lb.Size = new System.Drawing.Size(260, 22);
+            this.mno_choose_lb.TabIndex = 33;
+            this.mno_choose_lb.SelectedIndexChanged += new System.EventHandler(this.MenuOptions_lb_SelectedIndexChanged);
             // 
             // options_gb
             // 
@@ -678,23 +678,25 @@
             this.mno_Text_text.Size = new System.Drawing.Size(604, 41);
             this.mno_Text_text.TabIndex = 38;
             // 
-            // newMenuOption_btn
+            // addAndRemoveMenuOption_btn
             // 
-            this.newMenuOption_btn.BackColor = System.Drawing.Color.DimGray;
-            this.newMenuOption_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.newMenuOption_btn.Location = new System.Drawing.Point(5, 28);
-            this.newMenuOption_btn.Name = "newMenuOption_btn";
-            this.newMenuOption_btn.Size = new System.Drawing.Size(79, 39);
-            this.newMenuOption_btn.TabIndex = 27;
-            this.newMenuOption_btn.Tag = "125";
-            this.newMenuOption_btn.Text = "New";
-            this.newMenuOption_btn.UseVisualStyleBackColor = false;
-            this.newMenuOption_btn.Visible = false;
+            this.addAndRemoveMenuOption_btn.BackColor = System.Drawing.Color.DimGray;
+            this.addAndRemoveMenuOption_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addAndRemoveMenuOption_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addAndRemoveMenuOption_btn.Location = new System.Drawing.Point(639, 31);
+            this.addAndRemoveMenuOption_btn.Name = "addAndRemoveMenuOption_btn";
+            this.addAndRemoveMenuOption_btn.Size = new System.Drawing.Size(92, 25);
+            this.addAndRemoveMenuOption_btn.TabIndex = 27;
+            this.addAndRemoveMenuOption_btn.Tag = "125";
+            this.addAndRemoveMenuOption_btn.Text = "ADD";
+            this.addAndRemoveMenuOption_btn.UseVisualStyleBackColor = false;
+            this.addAndRemoveMenuOption_btn.Visible = false;
+            this.addAndRemoveMenuOption_btn.Click += new System.EventHandler(this.AddAndRemoveMenuOption_btn_Click);
             // 
             // MenuManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(814, 306);
+            this.ClientSize = new System.Drawing.Size(814, 669);
             this.Name = "MenuManager";
             this.Opacity = 1D;
             this.Text = "MenuManager";
@@ -729,7 +731,7 @@
         private System.Windows.Forms.GroupBox groupBox_2_gb;
         private System.Windows.Forms.Button showGroup_3_btn;
         private System.Windows.Forms.GroupBox groupBox_3_gb;
-        private System.Windows.Forms.Button newMenuOption_btn;
+        private System.Windows.Forms.Button addAndRemoveMenuOption_btn;
         private System.Windows.Forms.RichTextBox opCodes_rtb;
         private System.Windows.Forms.CheckBox mnf_enable_hot_keys_cb;
         private System.Windows.Forms.CheckBox mnf_auto_enter_cb;
@@ -753,7 +755,7 @@
         private System.Windows.Forms.Label alpha_lbl;
         private System.Windows.Forms.NumericUpDown alpha_num;
         private System.Windows.Forms.GroupBox options_gb;
-        protected System.Windows.Forms.ListBox menuOptions_lb;
+        protected System.Windows.Forms.ListBox mno_choose_lb;
         protected System.Windows.Forms.Label menuOptions_lbl;
         protected System.Windows.Forms.Label mno_ID_InfoText_lbl;
         protected System.Windows.Forms.Label mno_ID_lbl;
