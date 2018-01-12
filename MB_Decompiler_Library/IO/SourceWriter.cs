@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
-using System.Windows.Forms;
 using skillhunter;
 using static skillhunter.Skriptum;
 
@@ -1565,7 +1564,7 @@ namespace MB_Decompiler_Library.IO
                     }
                     catch (Exception et)
                     {
-                        MessageBox.Show(et.ToString());
+                        System.Windows.Forms.MessageBox.Show(et.ToString());
                     }
                        
                     /*}

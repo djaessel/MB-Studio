@@ -1,13 +1,28 @@
 ﻿using importantLib;
+using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
+using skillhunter;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using static skillhunter.Skriptum;
 
 namespace MB_Decompiler_Library.IO
 {
     public class SourceReader
     {
+        private static string modPath = string.Empty; //SHOULD BE string.Empty in the Release Version!!!
+
         private static LocalVariableInterpreter localVariableInterpreter;
+
+        private string filePath;
+
+        public SourceReader(string filePath = null)
+        {
+            this.filePath = filePath;
+        }
+
+        public static string ModPath { get { return modPath; } }
 
         private static string GetNegationCode(string code)
         {
@@ -165,5 +180,828 @@ namespace MB_Decompiler_Library.IO
             return codeLine.TrimEnd();
         }
 
+        #region MainReader
+
+        public static string RemNTrimAllXtraSp(string s)
+        {
+            s = s.Replace('\t', ' ').Trim();
+            while (s.Contains("  "))
+                s = s.Replace("  ", " ");
+            return s;
+        }
+
+        public List<Skriptum> ReadObjectType(int objectType)
+        {
+            List<Skriptum> skriptums = new List<Skriptum>();
+            if (objectType == (int)ObjectType.SCRIPT)
+                foreach (Skriptum s in ReadScript())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.MISSION_TEMPLATE)
+                foreach (Skriptum s in ReadMissionTemplate())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.PRESENTATION)
+                foreach (Presentation p in ReadPresentation())
+                    skriptums.Add(p);
+            else if (objectType == (int)ObjectType.GAME_MENU)
+                foreach (GameMenu g in ReadGameMenu())
+                    skriptums.Add(g);
+            else if (objectType == (int)ObjectType.GAME_STRING)
+                foreach (GameString s in ReadString())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.SIMPLE_TRIGGER)
+                foreach (SimpleTrigger t in ReadSimpleTrigger())
+                    skriptums.Add(t);
+            else if (objectType == (int)ObjectType.TRIGGER)
+                foreach (Trigger t in ReadTrigger())
+                    skriptums.Add(t);
+            else if (objectType == (int)ObjectType.INFO_PAGE)
+                foreach (InfoPage p in ReadInfoPage())
+                    skriptums.Add(p);
+            else if (objectType == (int)ObjectType.SOUND)
+                foreach (Sound s in ReadSound())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.QUEST)
+                foreach (Quest q in ReadQuest())
+                    skriptums.Add(q);
+            else if (objectType == (int)ObjectType.SCENE)
+                foreach (Scene s in ReadScene())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.SCENE_PROP)
+                foreach (SceneProp s in ReadSceneProp())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.TABLEAU_MATERIAL)
+                foreach (TableauMaterial t in ReadTableauMaterial())
+                    skriptums.Add(t);
+            else if (objectType == (int)ObjectType.MUSIC)
+                foreach (Music m in ReadMusic())
+                    skriptums.Add(m);
+            else if (objectType == (int)ObjectType.MESH)
+                foreach (Mesh m in ReadMesh())
+                    skriptums.Add(m);
+            else if (objectType == (int)ObjectType.FACTION)
+                foreach (Faction f in ReadFaction())
+                    skriptums.Add(f);
+            else if (objectType == (int)ObjectType.MAP_ICON)
+                foreach (MapIcon m in ReadMapIcon())
+                    skriptums.Add(m);
+            else if (objectType == (int)ObjectType.ANIMATION)
+                foreach (Animation a in ReadAnimation())
+                    skriptums.Add(a);
+            else if (objectType == (int)ObjectType.PARTY_TEMPLATE)
+                foreach (PartyTemplate p in ReadPartyTemplate())
+                    skriptums.Add(p);
+            else if (objectType == (int)ObjectType.DIALOG)
+                foreach (Dialog d in ReadDialog())
+                    skriptums.Add(d);
+            else if (objectType == (int)ObjectType.PARTY)
+                foreach (Party p in ReadParty())
+                    skriptums.Add(p);
+            else if (objectType == (int)ObjectType.SKILL)
+                foreach (Skill s in ReadSkill())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.POST_FX)
+                foreach (PostFX p in ReadPostFX())
+                    skriptums.Add(p);
+            else if (objectType == (int)ObjectType.PARTICLE_SYSTEM)
+                foreach (ParticleSystem p in ReadParticleSystem())
+                    skriptums.Add(p);
+            else if (objectType == (int)ObjectType.SKIN)
+                foreach (Skin s in ReadSkin())
+                    skriptums.Add(s);
+            else if (objectType == (int)ObjectType.TROOP)
+                foreach (Troop t in ReadTroop())
+                    skriptums.Add(t);
+            else if (objectType == (int)ObjectType.ITEM)
+                foreach (Item itm in ReadItem())
+                    skriptums.Add(itm);
+            return skriptums;
+        }
+
+        public static List<List<Skriptum>> ReadAllObjects()
+        {
+            Reset();
+            List<List<Skriptum>> objects = new List<List<Skriptum>>();
+            for (int i = 0; i < Files.Length; i++)
+                objects.Add(new CodeReader(ModPath + Files[i]).ReadObjectType(i));
+            return objects;
+        }
+
+        public MissionTemplate[] ReadMissionTemplate()
+        {
+            string line;
+            string[] scriptLines;
+            MissionTemplate missionTemplate = null;
+            List<MissionTemplate> missionTemplates = new List<MissionTemplate>();
+            List<string[]> entryPoints = new List<string[]>();
+            List<string[]> triggers = new List<string[]>();
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                //objectsExpected += int.Parse(sr.ReadLine().Trim());
+                while (!sr.EndOfStream)
+                {
+                    line = sr.ReadLine();
+                    if (line.Contains("mst_"))
+                    {
+                        if (missionTemplate != null)
+                        {
+                            missionTemplates.Add(missionTemplate);
+                            entryPoints.Clear();
+                            triggers.Clear();
+                        }
+                        scriptLines = line.Split();
+                        line = sr.ReadLine().TrimEnd().Replace('_', ' ');
+                        missionTemplate = new MissionTemplate(new string[] { scriptLines[1], scriptLines[2], scriptLines[4], line });
+
+                        sr.ReadLine();
+                        line = sr.ReadLine();
+                        scriptLines = line.Split(' ');
+                        int max = int.Parse(scriptLines[0]);
+                        if (max > 0)
+                        {
+                            scriptLines = line.Substring(line.IndexOf(' ') + 1).Split();
+
+                            entryPoints.Add(scriptLines);
+
+                            for (int i = 1; i < max; i++)
+                                entryPoints.Add(sr.ReadLine().Split());
+
+                            max = int.Parse(sr.ReadLine());
+                        }
+                        else
+                            max = int.Parse(scriptLines[1]);
+
+                        for (int i = 0; i < max; i++)
+                            triggers.Add(sr.ReadLine().Split());
+
+                        missionTemplate = DecompileMissionTemplateCode(missionTemplate.HeaderInfo, entryPoints, triggers);
+                    }
+                }
+            }
+            if (missionTemplate != null)
+                missionTemplates.Add(missionTemplate);
+            //objectsRead += missionTemplates.Count;
+            return missionTemplates.ToArray();
+        }
+
+        public Presentation[] ReadPresentation()
+        {
+            string line;
+            string[] scriptLines;
+            Presentation presentation = null;
+            List<Presentation> presentations = new List<Presentation>();
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                //objectsExpected += int.Parse(sr.ReadLine());
+                while (!sr.EndOfStream)
+                {
+                    line = sr.ReadLine();
+                    if (line.Contains("prsnt_"))
+                    {
+                        if (presentation != null)
+                            presentations.Add(presentation);
+                        scriptLines = line.Split(' ');
+                        presentation = new Presentation(scriptLines[0].Substring(scriptLines[0].IndexOf('_') + 1), ulong.Parse(scriptLines[1]), int.Parse(scriptLines[2]), int.Parse(scriptLines[3]));
+                        for (int i = 0; i < presentation.SimpleTriggers.Length; i++)
+                        {
+                            scriptLines = sr.ReadLine().Split();
+                            SimpleTrigger simpleTrigger = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(scriptLines[0])));
+                            string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
+                            tmp[0] = "SIMPLE_TRIGGER";
+                            scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
+                            simpleTrigger.ConsequencesBlock = DecompileScriptCode(tmp, scriptLines);
+                            presentation.addSimpleTriggerToFreeIndex(simpleTrigger, i);
+                        }
+                    }
+                }
+            }
+            if (presentation != null)
+                presentations.Add(presentation);
+            //objectsRead += presentations.Count;
+            return presentations.ToArray();
+        }
+
+        public GameMenu[] ReadGameMenu()
+        {
+            string s;
+            List<GameMenu> game_menus = new List<GameMenu>();
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                //objectsExpected += int.Parse(sr.ReadLine().TrimStart());
+                while (!sr.EndOfStream)
+                {
+                    s = RemNTrimAllXtraSp(sr.ReadLine());
+                    if (s.Length > 1)
+                        game_menus.Add(new GameMenu(new string[] { s, RemNTrimAllXtraSp(sr.ReadLine()) }));
+                }
+            }
+            //objectsRead += game_menus.Count;
+            return game_menus.ToArray();
+        }
+
+        public Script[] ReadScript()
+        {
+            List<Script> scripts = new List<Script>();
+            string[] script = null;
+            string[] scriptLines;
+            string line;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                //objectsExpected += int.Parse(sr.ReadLine());
+                while (!sr.EndOfStream)
+                {
+                    line = sr.ReadLine();
+                    if (line.Length > 1)
+                    {
+                        if (ImportantMethods.IsNumericFKZ2(line.Substring(1, 1)))
+                        {
+                            scriptLines = line.Substring(1, line.Length - 2).Split();
+                            line = script[0];
+                            script = new string[int.Parse(scriptLines[0] + 1)];
+                            script[0] = line;
+                            //System.Windows.Forms.MessageBox.Show(line); // shows the script name
+                            script = DecompileScriptCode(script, scriptLines);
+                        }
+                        else
+                        {
+                            if (script != null)
+                                scripts.Add(new Script(script));
+                            script = new string[1];
+                            script[0] = line.Split()[0];
+                        }
+                    }
+                }
+            }
+            if (script != null)
+                scripts.Add(new Script(script));
+            //objectsRead += scripts.Count;
+            return scripts.ToArray();
+        }
+
+        public Troop[] ReadTroop()
+        {
+            string[] tempus = new string[7];
+            Troop[] troops;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int maxTroops = int.Parse(sr.ReadLine().TrimEnd());
+                troops = new Troop[maxTroops];
+                //objectsExpected += maxTroops;
+                for (int i = 0; i < maxTroops; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                        tempus[j] = sr.ReadLine();
+                    troops[i] = new Troop(tempus);
+                }
+            }
+            //objectsRead += troops.Length;
+            return troops;
+        }
+
+        public Item[] ReadItem()
+        {
+            int i = -1;
+            string tempus;
+            List<string> lines = new List<string>();
+            Item[] items;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int maxItems = int.Parse(sr.ReadLine());
+                //objectsExpected += maxItems;
+                items = new Item[maxItems];
+                while (!sr.EndOfStream)
+                {
+                    tempus = sr.ReadLine();
+                    if (tempus.Contains(" itm_"))
+                    {
+                        i++;
+                        lines.Clear();
+                        do
+                        {
+                            tempus = tempus.Replace('\t', ' ');
+                            while (tempus.Contains("  "))
+                                tempus = tempus.Replace("  ", " ");
+                            tempus = tempus.Trim();
+                            if (!tempus.Equals(string.Empty))
+                                lines.Add(tempus);
+                            tempus = sr.ReadLine().TrimStart();
+                        } while (!tempus.Equals(string.Empty) || lines.Count < 3);
+                        items[i] = new Item(lines.ToArray());
+                    }
+                }
+            }
+
+            //objectsRead += items.Length;
+            return items;
+        }
+
+        public GameString[] ReadString()
+        {
+            GameString[] strings;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                strings = new GameString[count];
+                for (int i = 0; i < strings.Length; i++)
+                    strings[i] = new GameString(sr.ReadLine().Substring(4).Split());
+            }
+            //objectsRead += strings.Length;
+            return strings;
+        }
+
+        public SimpleTrigger[] ReadSimpleTrigger()
+        {
+            string[] scriptLines;
+            SimpleTrigger[] simple_triggers;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                simple_triggers = new SimpleTrigger[count];
+                for (int i = 0; i < simple_triggers.Length; i++)
+                {
+                    scriptLines = sr.ReadLine().Split();
+                    simple_triggers[i] = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(scriptLines[0])));
+                    string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
+                    tmp[0] = "SIMPLE_TRIGGER";
+                    scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
+                    simple_triggers[i].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
+                }
+            }
+            //objectsRead += simple_triggers.Length;
+            return simple_triggers;
+        }
+
+        public Trigger[] ReadTrigger()
+        {
+            Trigger[] triggers;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                triggers = new Trigger[count];
+                for (int i = 0; i < triggers.Length; i++)
+                    triggers[i] = DecompileTrigger(sr.ReadLine().Split());
+            }
+            //objectsRead += triggers.Length;
+            return triggers;
+        }
+
+        public InfoPage[] ReadInfoPage()
+        {
+            InfoPage[] info_pages;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                info_pages = new InfoPage[count];
+                for (int i = 0; i < info_pages.Length; i++)
+                    info_pages[i] = new InfoPage(sr.ReadLine().Split());
+            }
+            //objectsRead += info_pages.Length;
+            return info_pages;
+        }
+
+        public Mesh[] ReadMesh()
+        {
+            Mesh[] meshes;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                meshes = new Mesh[count];
+                for (int i = 0; i < meshes.Length; i++)
+                    meshes[i] = new Mesh(sr.ReadLine().Substring(5).Split());
+            }
+            //objectsRead += meshes.Length;
+            return meshes;
+        }
+
+        public Music[] ReadMusic()
+        {
+            Music[] musicTracks;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                musicTracks = new Music[count];
+                for (int i = 0; i < musicTracks.Length; i++)
+                {
+                    string[] sts = sr.ReadLine().Split();
+                    musicTracks[i] = new Music(new string[] { Tracks[i].Substring(6), sts[0], sts[1], sts[2] });
+                }
+            }
+            //objectsRead += musicTracks.Length;
+            return musicTracks;
+        }
+
+        public Quest[] ReadQuest()
+        {
+            Quest[] quests;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                quests = new Quest[count];
+                for (int i = 0; i < quests.Length; i++)
+                    quests[i] = new Quest(sr.ReadLine().Substring(4).Split());
+            }
+            //objectsRead += quests.Length;
+            return quests;
+        }
+
+        public Sound[] ReadSound()
+        {
+            string line;
+            Sound[] sounds;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                sr.ReadLine();
+                do { line = sr.ReadLine(); } while (!ImportantMethods.IsNumericFKZ2(line));
+                int count = int.Parse(line);
+                //objectsExpected += count;
+                sounds = new Sound[count];
+                for (int i = 0; i < sounds.Length && !sr.EndOfStream; i++)
+                    sounds[i] = new Sound(sr.ReadLine().Substring(4).Split());
+            }
+            //objectsRead += sounds.Length;
+            return sounds;
+        }
+
+        public Scene[] ReadScene()
+        {
+            string firstLine;
+            string[] otherScenes, chestTroops, tmp;
+            Scene[] _scenes;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int tmpX;
+                int count = int.Parse(sr.ReadLine().TrimStart());
+                //objectsExpected += count;
+                _scenes = new Scene[count];
+                for (int i = 0; i < _scenes.Length; i++)
+                {
+                    firstLine = sr.ReadLine();
+                    tmp = sr.ReadLine().Substring(2).TrimEnd().Replace("  ", " ").Split();
+                    otherScenes = new string[int.Parse(tmp[0])];
+                    for (int j = 0; j < otherScenes.Length; j++)
+                    {
+                        tmpX = int.Parse(tmp[j + 1]);
+                        if (Scenes.Length > tmpX && tmpX >= 0)
+                            otherScenes[j] = Scenes[tmpX];
+                        else if (tmpX == 100000)
+                            otherScenes[j] = "exit";
+                        else
+                            otherScenes[j] = "(ERROR)" + tmpX; //CHECK!!!
+                    }
+                    tmp = sr.ReadLine().Substring(2).TrimEnd().Replace("  ", " ").Split();
+                    chestTroops = new string[int.Parse(tmp[0])];
+                    for (int j = 0; j < chestTroops.Length; j++)
+                        chestTroops[j] = Troops[int.Parse(tmp[j + 1])];
+                    _scenes[i] = new Scene(firstLine.Split(), otherScenes, chestTroops, sr.ReadLine().Trim());
+                }
+            }
+            //objectsRead += _scenes.Length;
+            return _scenes;
+        }
+
+        public TableauMaterial[] ReadTableauMaterial()
+        {
+            TableauMaterial[] tableaus;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                tableaus = new TableauMaterial[count];
+                for (int i = 0; i < tableaus.Length; i++)
+                    tableaus[i] = new TableauMaterial(sr.ReadLine().Substring(4).TrimEnd().Split());
+            }
+            //objectsRead += tableaus.Length;
+            return tableaus;
+        }
+
+        public SceneProp[] ReadSceneProp()
+        {
+            int tCount;
+            string[] lines;
+            SceneProp[] sceneProps;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine().TrimStart());
+                //objectsExpected += count;
+                sceneProps = new SceneProp[count];
+                for (int i = 0; i < sceneProps.Length; i++)
+                {
+                    string tmpSSS = sr.ReadLine().Replace("  ", " ").Replace('\t', ' ');
+                    while (tmpSSS.Contains("  "))
+                        tmpSSS = tmpSSS.Replace("  ", " ");
+                    lines = tmpSSS.Split();
+
+                    sceneProps[i] = new SceneProp(lines);
+                    tCount = int.Parse(lines[lines.Length - 1]);
+                    if (tCount > 0)
+                    {
+                        SimpleTrigger[] s_triggers = new SimpleTrigger[tCount];
+                        for (int j = 0; j < s_triggers.Length; j++)
+                        {
+                            lines = sr.ReadLine().Split();
+                            s_triggers[j] = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(lines[0])));
+                            string[] tmp = new string[int.Parse(lines[2]) + 1];
+                            tmp[0] = "SIMPLE_TRIGGER";
+                            lines = CodeReader.GetStringArrayStartFromIndex(lines, 2, 1);
+                            s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, lines), 1);
+                        }
+                        sceneProps[i].SimpleTriggers = s_triggers;
+                    }
+                    sr.ReadLine();
+                    sr.ReadLine();
+                }
+            }
+            //objectsRead += sceneProps.Length;
+            return sceneProps;
+        }
+
+        public Faction[] ReadFaction()
+        {
+            int c;
+            string line;
+            Faction[] _factions;
+            Faction.ResetIDs();
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                _factions = new Faction[count];
+                for (int i = 0; i < _factions.Length; i++)
+                {
+                    do { c = sr.Read(); } while ((char)c != 'f');
+                    _factions[i] = new Faction(((char)c + sr.ReadLine().TrimEnd()).Split());
+                    string[] sp = sr.ReadLine().Trim().Replace("  ", " ").Split();
+                    double[] dd = new double[sp.Length];
+                    for (int j = 0; j < sp.Length; j++)
+                        dd[j] = double.Parse(CodeReader.Repl_DotWComma(sp[j]));
+                    _factions[i].Relations = dd;
+                    c = sr.Read();
+                    if ((char)c != '0')
+                    {
+                        sr.Read();
+                        string[] tmp = new string[c];
+                        for (int j = 0; j < tmp.Length; j++)
+                        {
+                            line = string.Empty;
+                            do
+                            {
+                                c = sr.Read();
+                                line += (char)c;
+                            } while ((char)c != ' ');
+                            tmp[j] = line.TrimEnd();
+                        }
+                    }
+                }
+            }
+            //objectsRead += _factions.Length;
+            return _factions;
+        }
+
+        public MapIcon[] ReadMapIcon()
+        {
+            int tCount;
+            string[] sp;
+            MapIcon[] mapIcons;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                mapIcons = new MapIcon[count];
+                for (int i = 0; i < mapIcons.Length; i++)
+                {
+                    sp = sr.ReadLine().Split();
+                    tCount = int.Parse(sp[sp.Length - 1]);
+                    mapIcons[i] = new MapIcon(sp);
+                    if (tCount > 0)
+                    {
+                        SimpleTrigger[] s_triggers = new SimpleTrigger[tCount];
+                        for (int j = 0; j < s_triggers.Length; j++)
+                        {
+                            sp = sr.ReadLine().Split();
+                            s_triggers[j] = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(sp[0])));
+                            string[] tmp = new string[int.Parse(sp[2]) + 1];
+                            tmp[0] = "SIMPLE_TRIGGER";
+                            sp = CodeReader.GetStringArrayStartFromIndex(sp, 2, 1);
+                            s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, sp), 1);
+                        }
+                        mapIcons[i].SimpleTriggers = s_triggers;
+                    }
+                    sr.ReadLine();
+                    sr.ReadLine();
+                }
+            }
+            //objectsRead += mapIcons.Length;
+            return mapIcons;
+        }
+
+        public Animation[] ReadAnimation()
+        {
+            string[] sp;
+            Animation[] animations;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                animations = new Animation[count];
+                for (int i = 0; i < animations.Length; i++)
+                {
+                    sp = sr.ReadLine().Substring(1).Replace("  ", " ").Split();
+                    animations[i] = new Animation(sp);
+                    AnimationSequence[] sequences = new AnimationSequence[int.Parse(sp[sp.Length - 1])];
+                    for (int j = 0; j < sequences.Length; j++)
+                        sequences[j] = new AnimationSequence(sr.ReadLine().Trim().Replace("  ", " ").Split());
+                    animations[i].Sequences = sequences;
+                }
+            }
+            //objectsRead += animations.Length;
+            return animations;
+        }
+
+        public PartyTemplate[] ReadPartyTemplate()
+        {
+            PartyTemplate[] partyTemplates;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                partyTemplates = new PartyTemplate[count];
+                for (int i = 0; i < partyTemplates.Length; i++)
+                    partyTemplates[i] = new PartyTemplate(sr.ReadLine().Substring(3).TrimEnd().Split());
+            }
+            //objectsRead += partyTemplates.Length;
+            return partyTemplates;
+        }
+
+        public Dialog[] ReadDialog()
+        {
+            Dialog[] dialogs;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                dialogs = new Dialog[count];
+                for (int i = 0; i < dialogs.Length; i++)
+                    dialogs[i] = new Dialog(sr.ReadLine().Substring(5).TrimEnd().Split());
+            }
+            //objectsRead += dialogs.Length;
+            return dialogs;
+        }
+
+        public Party[] ReadParty()
+        {
+            string line;
+            Party[] parties;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine().Split()[0]);
+                //objectsExpected += count;
+                parties = new Party[count];
+                for (int i = 0; i < parties.Length; i++)
+                {
+                    line = sr.ReadLine().Trim();
+                    double degrees = double.Parse(CodeReader.Repl_DotWComma(sr.ReadLine()));
+                    degrees = Math.Round(degrees / (3.1415926 / 180d), 4);
+                    line += " " + degrees; // maybe check if values are still correct!
+                    parties[i] = new Party(line.Split());
+                }
+            }
+            //objectsRead += parties.Length;
+            return parties;
+        }
+
+        public Skill[] ReadSkill()
+        {
+            Skill[] skills;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                int count = int.Parse(sr.ReadLine().Split()[0]);
+                //objectsExpected += count;
+                skills = new Skill[count];
+                for (int i = 0; i < skills.Length; i++)
+                    skills[i] = new Skill(sr.ReadLine().Substring(4).Split());
+            }
+            //objectsRead += skills.Length;
+            return skills;
+        }
+
+        public PostFX[] ReadPostFX()
+        {
+            PostFX[] postfxs;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine().Split()[0]);
+                //objectsExpected += count;
+                postfxs = new PostFX[count];
+                for (int i = 0; i < postfxs.Length; i++)
+                    postfxs[i] = new PostFX(sr.ReadLine().Substring(4));
+            }
+            //objectsRead += postfxs.Length;
+            return postfxs;
+        }
+
+        public ParticleSystem[] ReadParticleSystem()
+        {
+            ParticleSystem[] particleSystems;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                particleSystems = new ParticleSystem[count];
+                for (int i = 0; i < particleSystems.Length; i++)
+                {
+                    List<string[]> list = new List<string[]>
+                    {
+                        sr.ReadLine().Substring(5).Replace("  ", ":").TrimEnd().Split(':'),
+                        sr.ReadLine().Replace("   ", " ").Split(' '),
+                        sr.ReadLine().Replace("   ", " ").Split(' '),
+                        sr.ReadLine().Replace("   ", " ").Split(' '),
+                        sr.ReadLine().Replace("   ", " ").Split(' '),
+                        sr.ReadLine().Replace("   ", " ").Split(' '),
+                        sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':'),
+                        sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':')
+                    };
+                    particleSystems[i] = new ParticleSystem(list);
+                }
+            }
+            //objectsRead += particleSystems.Length;
+            return particleSystems;
+        }
+
+        public Skin[] ReadSkin()
+        {
+            Skin[] skins;
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                sr.ReadLine();
+                int count = int.Parse(sr.ReadLine());
+                //objectsExpected += count;
+                skins = new Skin[count];
+                for (int i = 0; i < skins.Length; i++)
+                {
+                    List<string[]> list = new List<string[]>
+                    {
+                        sr.ReadLine().Split(),
+                        sr.ReadLine().TrimStart().Split(),
+                        sr.ReadLine().Trim().Split()
+                    };
+                    sr.ReadLine();
+                    list.Add(sr.ReadLine().Replace("  ", " ").Trim().Split());
+                    string[] sp = new string[int.Parse(sr.ReadLine().Trim())];
+                    for (int j = 0; j < sp.Length; j++)
+                        sp[j] = sr.ReadLine().Substring(2);
+                    sr.ReadLine();
+                    list.Add(sp);
+                    list.Add(sr.ReadLine().Replace("  ", " ").Trim().Split());
+                    list.Add(sr.ReadLine().Replace("  ", " ").Trim().Split());
+                    list.Add(sr.ReadLine().Replace("  ", " ").Trim().Split());
+                    list.Add(sr.ReadLine().Replace("  ", ":").Trim().Split(':'));
+                    list.Add(sr.ReadLine().Trim().Split());
+                    list.Add(sr.ReadLine().Split());
+                    count = int.Parse(sr.ReadLine());
+                    sr.ReadLine();
+                    if (count > 0)
+                    {
+                        list.Add(new string[] { count.ToString() });
+                        for (int j = 0; j < count; j++)
+                            list.Add(sr.ReadLine().Split());
+                    }
+                    else
+                        list.Add(new string[] { "0" });
+                    skins[i] = new Skin(list);
+                }
+            }
+            //objectsRead += skins.Length;
+            return skins;
+        }
+
+
+        #endregion
     }
 }
