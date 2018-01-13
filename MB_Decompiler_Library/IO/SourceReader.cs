@@ -442,54 +442,36 @@ namespace MB_Decompiler_Library.IO
             return game_menus.ToArray();
         }
 
-        public Script[] ReadScript()
+        public Script[] ReadScript() // ADDED 
         {
-            string line;
+            string line = string.Empty;
             List<Script> scripts = new List<Script>();
 
-            /*string[] script = null;
-            string[] scriptLines;
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                //objectsExpected += int.Parse(sr.ReadLine());
-                while (!sr.EndOfStream)
-                {
-                    line = sr.ReadLine();
-                    if (line.Length > 1)
-                    {
-                        if (ImportantMethods.IsNumericFKZ2(line.Substring(1, 1)))
-                        {
-                            scriptLines = line.Substring(1, line.Length - 2).Split();
-                            line = script[0];
-                            script = new string[int.Parse(scriptLines[0] + 1)];
-                            script[0] = line;
-                            //System.Windows.Forms.MessageBox.Show(line); // shows the script name
-                            script = DecompileScriptCode(script, scriptLines);
-                        }
-                        else
-                        {
-                            if (script != null)
-                                scripts.Add(new Script(script));
-                            script = new string[1];
-                            script[0] = line.Split()[0];
-                        }
-                    }
-                }
-            }
-            if (script != null)
-                scripts.Add(new Script(script));
-            //objectsRead += scripts.Count;*/
-
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                while (!sr.EndOfStream)
-                {
+                while (!sr.EndOfStream && !RemNTrimAllXtraSp(line).Replace(" ", string.Empty).StartsWith("scripts=["))
                     line = sr.ReadLine().Trim('\t', ' ');
-                    if (line.StartsWith("[\""))//better detection if needed!
+
+                line = line.Substring(9).Split('#')[0];
+
+                while (!sr.EndOfStream)
+                {
+                    if (line.StartsWith("(\"") && line.EndsWith("\"),"))
                     {
-                        // TODO: Code for script reading
+                        line = line.Substring(line.IndexOf('\"') + 1).Split('\"')[0];
+                        List<string> codeLines = new List<string>();
+                        string tmp = line;
+                        do
+                        {
+                            line = sr.ReadLine().Trim('\t', ' ');
+                            codeLines.Add(line.Split(']')[0]);
+                        } while (!line.Contains("]"));
+                        codeLines = new List<string>() { tmp };
+                        codeLines.AddRange(GetCompiledCodeLines(codeLines.ToArray()).Split());
+                        scripts.Add(new Script(codeLines.ToArray()));
                     }
+
+                    line = sr.ReadLine().Trim('\t', ' ').Split('#')[0];
                 }
             }
 
@@ -555,20 +537,27 @@ namespace MB_Decompiler_Library.IO
             return items;
         }
 
-        public GameString[] ReadString()
+        public GameString[] ReadString() // ADDED 
         {
-            GameString[] strings;
+            string line;
+            string[] sp;
+            List<GameString> strings = new List<GameString>();
             using (StreamReader sr = new StreamReader(filePath))
             {
                 sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                strings = new GameString[count];
-                for (int i = 0; i < strings.Length; i++)
-                    strings[i] = new GameString(sr.ReadLine().Substring(4).Split());
+                sr.ReadLine();
+                while (!sr.EndOfStream)
+                {
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if ((line.IndexOf("(\"") < line.IndexOf("#") || line.IndexOf("#") < 0) && line.StartsWith("(\"") && line.EndsWith("\"),"))
+                    {
+                        sp = line.Split('\"');
+                        sp = new string[] { sp[1], sp[3] };
+                        strings.Add(new GameString(sp));
+                    }
+                }
             }
-            //objectsRead += strings.Length;
-            return strings;
+            return strings.ToArray();
         }
 
         public SimpleTrigger[] ReadSimpleTrigger()
