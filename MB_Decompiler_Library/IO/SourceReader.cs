@@ -13,6 +13,11 @@ namespace MB_Decompiler_Library.IO
     {
         private static string modPath = string.Empty; //SHOULD BE string.Empty in the Release Version!!!
 
+        //change this to source files
+        public static readonly string[] Files = { "scripts.txt", "mission_templates.txt", "presentations.txt", "menus.txt", "troops.txt", "item_kinds1.txt", "strings.txt", "simple_triggers.txt",
+                "triggers.txt", "info_pages.txt", "meshes.txt", "music.txt", "quests.txt", "sounds.txt", "scene_props.txt", "tableau_materials.txt", "map_icons.txt", "conversation.txt",
+                "factions.txt", "actions.txt", "party_templates.txt", "parties.txt", "skills.txt", "postfx.txt", "skins.txt", "particle_systems.txt", "scenes.txt" };
+
         private static LocalVariableInterpreter localVariableInterpreter;
 
         private string filePath;
@@ -21,6 +26,8 @@ namespace MB_Decompiler_Library.IO
         {
             this.filePath = filePath;
         }
+
+        public static void SetModPath(string modPath) { SourceReader.modPath = modPath; }
 
         public static string ModPath { get { return modPath; } }
 
@@ -180,8 +187,42 @@ namespace MB_Decompiler_Library.IO
             return codeLine.TrimEnd();
         }
 
-        #region MainReader
+        /*public static void LoadAll()
+        {
+            //Reset();
 
+            ReadAndSetDeclarations();
+
+            elements.Add(ReadScriptNames());
+            elements.Add(ReadMissionTemplates());
+            elements.Add(ReadPresentations());
+            elements.Add(ReadGameMenus());
+            elements.Add(ReadTroops());
+            elements.Add(ReadItems());
+            elements.Add(ReadStrings());
+            elements.Add(ReadInfoPages());
+            elements.Add(ReadMeshes());
+            elements.Add(ReadTracks());
+            elements.Add(ReadQuests());
+            elements.Add(ReadSounds());
+            elements.Add(ReadSceneProps());
+            elements.Add(ReadTableauMaterials());
+            elements.Add(ReadMapIcons());
+            elements.Add(ReadFactions());
+            elements.Add(ReadAnimations());
+            elements.Add(ReadPartyTemplates());
+            elements.Add(ReadParties());
+            elements.Add(ReadSkills());
+            elements.Add(ReadPostFXParams());
+            elements.Add(ReadParticles());
+            elements.Add(ReadScenes());
+
+            elements.Add(ReadQuickStrings());
+            elements.Add(ReadGlobalVariables());
+        }*/
+
+        #region MainReader
+        
         public static string RemNTrimAllXtraSp(string s)
         {
             s = s.Replace('\t', ' ').Trim();
@@ -279,10 +320,10 @@ namespace MB_Decompiler_Library.IO
 
         public static List<List<Skriptum>> ReadAllObjects()
         {
-            Reset();
+            //Reset();
             List<List<Skriptum>> objects = new List<List<Skriptum>>();
             for (int i = 0; i < Files.Length; i++)
-                objects.Add(new CodeReader(ModPath + Files[i]).ReadObjectType(i));
+                objects.Add(new SourceReader(ModPath + Files[i]).ReadObjectType(i));
             return objects;
         }
 
@@ -334,7 +375,7 @@ namespace MB_Decompiler_Library.IO
                         for (int i = 0; i < max; i++)
                             triggers.Add(sr.ReadLine().Split());
 
-                        missionTemplate = DecompileMissionTemplateCode(missionTemplate.HeaderInfo, entryPoints, triggers);
+                        //missionTemplate = DecompileMissionTemplateCode(missionTemplate.HeaderInfo, entryPoints, triggers);
                     }
                 }
             }
@@ -370,7 +411,7 @@ namespace MB_Decompiler_Library.IO
                             string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
                             tmp[0] = "SIMPLE_TRIGGER";
                             scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
-                            simpleTrigger.ConsequencesBlock = DecompileScriptCode(tmp, scriptLines);
+                            //simpleTrigger.ConsequencesBlock = DecompileScriptCode(tmp, scriptLines);
                             presentation.addSimpleTriggerToFreeIndex(simpleTrigger, i);
                         }
                     }
@@ -403,10 +444,11 @@ namespace MB_Decompiler_Library.IO
 
         public Script[] ReadScript()
         {
-            List<Script> scripts = new List<Script>();
-            string[] script = null;
-            string[] scriptLines;
             string line;
+            List<Script> scripts = new List<Script>();
+
+            /*string[] script = null;
+            string[] scriptLines;
             using (StreamReader sr = new StreamReader(filePath))
             {
                 sr.ReadLine();
@@ -437,7 +479,20 @@ namespace MB_Decompiler_Library.IO
             }
             if (script != null)
                 scripts.Add(new Script(script));
-            //objectsRead += scripts.Count;
+            //objectsRead += scripts.Count;*/
+
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("[\""))//better detection if needed!
+                    {
+                        // TODO: Code for script reading
+                    }
+                }
+            }
+
             return scripts.ToArray();
         }
 
@@ -533,7 +588,7 @@ namespace MB_Decompiler_Library.IO
                     string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
                     tmp[0] = "SIMPLE_TRIGGER";
                     scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
-                    simple_triggers[i].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
+                    //simple_triggers[i].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
                 }
             }
             //objectsRead += simple_triggers.Length;
@@ -550,7 +605,7 @@ namespace MB_Decompiler_Library.IO
                 //objectsExpected += count;
                 triggers = new Trigger[count];
                 for (int i = 0; i < triggers.Length; i++)
-                    triggers[i] = DecompileTrigger(sr.ReadLine().Split());
+                    triggers[i] = null;//DecompileTrigger(sr.ReadLine().Split());
             }
             //objectsRead += triggers.Length;
             return triggers;
@@ -598,7 +653,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < musicTracks.Length; i++)
                 {
                     string[] sts = sr.ReadLine().Split();
-                    musicTracks[i] = new Music(new string[] { Tracks[i].Substring(6), sts[0], sts[1], sts[2] });
+                    //musicTracks[i] = new Music(new string[] { Tracks[i].Substring(6), sts[0], sts[1], sts[2] });
                 }
             }
             //objectsRead += musicTracks.Length;
@@ -648,7 +703,7 @@ namespace MB_Decompiler_Library.IO
             using (StreamReader sr = new StreamReader(filePath))
             {
                 sr.ReadLine();
-                int tmpX;
+                //int tmpX;
                 int count = int.Parse(sr.ReadLine().TrimStart());
                 //objectsExpected += count;
                 _scenes = new Scene[count];
@@ -659,18 +714,18 @@ namespace MB_Decompiler_Library.IO
                     otherScenes = new string[int.Parse(tmp[0])];
                     for (int j = 0; j < otherScenes.Length; j++)
                     {
-                        tmpX = int.Parse(tmp[j + 1]);
-                        if (Scenes.Length > tmpX && tmpX >= 0)
-                            otherScenes[j] = Scenes[tmpX];
-                        else if (tmpX == 100000)
-                            otherScenes[j] = "exit";
-                        else
-                            otherScenes[j] = "(ERROR)" + tmpX; //CHECK!!!
+                        //tmpX = int.Parse(tmp[j + 1]);
+                        //if (Scenes.Length > tmpX && tmpX >= 0)
+                        //    otherScenes[j] = Scenes[tmpX];
+                        //else if (tmpX == 100000)
+                        //    otherScenes[j] = "exit";
+                        //else
+                        //    otherScenes[j] = "(ERROR)" + tmpX; //CHECK!!!
                     }
                     tmp = sr.ReadLine().Substring(2).TrimEnd().Replace("  ", " ").Split();
                     chestTroops = new string[int.Parse(tmp[0])];
-                    for (int j = 0; j < chestTroops.Length; j++)
-                        chestTroops[j] = Troops[int.Parse(tmp[j + 1])];
+                    //for (int j = 0; j < chestTroops.Length; j++)
+                    //   chestTroops[j] = Troops[int.Parse(tmp[j + 1])];
                     _scenes[i] = new Scene(firstLine.Split(), otherScenes, chestTroops, sr.ReadLine().Trim());
                 }
             }
@@ -723,7 +778,7 @@ namespace MB_Decompiler_Library.IO
                             string[] tmp = new string[int.Parse(lines[2]) + 1];
                             tmp[0] = "SIMPLE_TRIGGER";
                             lines = CodeReader.GetStringArrayStartFromIndex(lines, 2, 1);
-                            s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, lines), 1);
+                            //s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, lines), 1);
                         }
                         sceneProps[i].SimpleTriggers = s_triggers;
                     }
@@ -804,7 +859,7 @@ namespace MB_Decompiler_Library.IO
                             string[] tmp = new string[int.Parse(sp[2]) + 1];
                             tmp[0] = "SIMPLE_TRIGGER";
                             sp = CodeReader.GetStringArrayStartFromIndex(sp, 2, 1);
-                            s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, sp), 1);
+                            //s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, sp), 1);
                         }
                         mapIcons[i].SimpleTriggers = s_triggers;
                     }
@@ -1000,7 +1055,6 @@ namespace MB_Decompiler_Library.IO
             //objectsRead += skins.Length;
             return skins;
         }
-
 
         #endregion
     }
