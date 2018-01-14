@@ -312,7 +312,7 @@ namespace MB_Studio.Manager
                 foreach (string t in trigger)
                 {
                     string[] scriptLines = t.Split();
-                    SimpleTrigger simpleTrigger = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(scriptLines[0])));
+                    SimpleTrigger simpleTrigger = new SimpleTrigger(scriptLines[0]);
                     string[] tmp = new string[int.Parse(scriptLines[1]) + 1];
                     tmp[0] = "SIMPLE_TRIGGER";
                     scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 1);
@@ -1167,7 +1167,7 @@ namespace MB_Studio.Manager
                         found = true;
                 if (!found)
                 {
-                    SimpleTrigger simpleTrigger = new SimpleTrigger(selector.SelectedCheckInterval);
+                    SimpleTrigger simpleTrigger = new SimpleTrigger(selector.SelectedCheckInterval.ToString());
                     itemTrigger.Add(simpleTrigger);
                     condition_cbb.Items.Add(selector.SelectedTrigger);
                     condition_cbb.SelectedIndex = 0;

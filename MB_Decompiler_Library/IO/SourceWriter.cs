@@ -641,7 +641,7 @@ namespace MB_Decompiler_Library.IO
                         for (int i = 0; i < item.Triggers.Count; i++)
                         {
                             string[] scriptLines = item.Triggers[i].Split();
-                            SimpleTrigger sTrigger = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(scriptLines[0])));
+                            SimpleTrigger sTrigger = new SimpleTrigger(scriptLines[0]);
                             string[] tmp = new string[int.Parse(scriptLines[1]) + 1];
                             scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 1);
                             tmp[0] = "SIMPLE_TRIGGER";

@@ -407,7 +407,7 @@ namespace MB_Decompiler_Library.IO
                         for (int i = 0; i < presentation.SimpleTriggers.Length; i++)
                         {
                             scriptLines = sr.ReadLine().Split();
-                            SimpleTrigger simpleTrigger = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(scriptLines[0])));
+                            SimpleTrigger simpleTrigger = new SimpleTrigger(scriptLines[0]);
                             string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
                             tmp[0] = "SIMPLE_TRIGGER";
                             scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
@@ -800,7 +800,7 @@ namespace MB_Decompiler_Library.IO
                         for (int j = 0; j < s_triggers.Length; j++)
                         {
                             lines = sr.ReadLine().Split();
-                            s_triggers[j] = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(lines[0])));
+                            s_triggers[j] = new SimpleTrigger(lines[0]);
                             string[] tmp = new string[int.Parse(lines[2]) + 1];
                             tmp[0] = "SIMPLE_TRIGGER";
                             lines = CodeReader.GetStringArrayStartFromIndex(lines, 2, 1);
@@ -881,7 +881,7 @@ namespace MB_Decompiler_Library.IO
                         for (int j = 0; j < s_triggers.Length; j++)
                         {
                             sp = sr.ReadLine().Split();
-                            s_triggers[j] = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(sp[0])));
+                            s_triggers[j] = new SimpleTrigger(sp[0]);
                             string[] tmp = new string[int.Parse(sp[2]) + 1];
                             tmp[0] = "SIMPLE_TRIGGER";
                             sp = CodeReader.GetStringArrayStartFromIndex(sp, 2, 1);
