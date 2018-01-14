@@ -467,7 +467,7 @@ namespace MB_Decompiler_Library.IO
                             codeLines.Add(line.Split(']')[0]);
                         } while (!line.Contains("]"));
                         codeLines = new List<string>() { tmp };
-                        codeLines.AddRange(GetCompiledCodeLines(codeLines.ToArray()).Split());
+                        codeLines.AddRange(CodeReader.GetStringArrayStartFromIndex(GetCompiledCodeLines(codeLines.ToArray()).Trim().Split(), 1));
                         scripts.Add(new Script(codeLines.ToArray()));
                     }
 
@@ -560,13 +560,15 @@ namespace MB_Decompiler_Library.IO
             return strings.ToArray();
         }
 
-        public SimpleTrigger[] ReadSimpleTrigger()
+        public SimpleTrigger[] ReadSimpleTrigger() // ADDED 
         {
-            string[] scriptLines;
-            SimpleTrigger[] simple_triggers;
+            string line;
+            //string[] scriptLines;
+            List<SimpleTrigger> simpleTriggers = new List<SimpleTrigger>();
+            List<string> codeLines = new List<string>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
+                /*sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 //objectsExpected += count;
                 simple_triggers = new SimpleTrigger[count];
@@ -578,10 +580,35 @@ namespace MB_Decompiler_Library.IO
                     tmp[0] = "SIMPLE_TRIGGER";
                     scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
                     //simple_triggers[i].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
+                }*/
+
+                do
+                {
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+                } while (!line.StartsWith("simple_triggers = ["));
+
+                while (!sr.EndOfStream)
+                {
+                    line = sr.ReadLine();
+                    if (line.IndexOf("#") < 0 || line.IndexOf("#") > line.IndexOf("(") && line.IndexOf("#") > line.IndexOf(","))
+                    {
+                        line = RemNTrimAllXtraSp(line);
+                        line = line.Substring(line.IndexOf("(") + 1).Split(',')[0].Trim();
+                        sr.ReadLine();
+                        SimpleTrigger simpleTrigger = new SimpleTrigger(line);
+                        codeLines.Clear();
+                        do
+                        {
+                            line = sr.ReadLine().Trim('\t', ' ');
+                            if (!line.Equals("]),"))
+                                codeLines.Add(line);
+                        } while (!line.Equals("]),"));
+                        simpleTrigger.ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(GetCompiledCodeLines(codeLines.ToArray()).Trim().Split(), 1);
+                        simpleTriggers.Add(simpleTrigger);
+                    }
                 }
             }
-            //objectsRead += simple_triggers.Length;
-            return simple_triggers;
+            return simpleTriggers.ToArray();
         }
 
         public Trigger[] ReadTrigger()
@@ -600,20 +627,30 @@ namespace MB_Decompiler_Library.IO
             return triggers;
         }
 
-        public InfoPage[] ReadInfoPage()
+        public InfoPage[] ReadInfoPage() // ADDED 
         {
-            InfoPage[] info_pages;
+            string line;
+            string[] sp;
+            List<InfoPage> infoPages = new List<InfoPage>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                info_pages = new InfoPage[count];
-                for (int i = 0; i < info_pages.Length; i++)
-                    info_pages[i] = new InfoPage(sr.ReadLine().Split());
+                do
+                {
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+                } while (!line.StartsWith("info_pages = ["));
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim();
+                    if (line.IndexOf("#") < 0 || line.IndexOf("#") > line.IndexOf("(\""))
+                    {
+                        sp = line.Split('\"');
+                        sp = new string[] { "ip_" + sp[1], sp[3], sp[5] };
+                        infoPages.Add(new InfoPage(sp));
+                    } 
+                }
             }
-            //objectsRead += info_pages.Length;
-            return info_pages;
+            return infoPages.ToArray();
         }
 
         public Mesh[] ReadMesh()

@@ -9,19 +9,22 @@ namespace MB_Decompiler_Library.Objects
 {
     public class SimpleTrigger : Skriptum
     {
-        private string check_Interval;
+        private string checkInterval;
         private string[] consquencesBlock;
 
         protected static List<IntervalCode> intervalCodes = new List<IntervalCode>();
 
-        public SimpleTrigger(double check_Interval, ObjectType objectType = ObjectType.SIMPLE_TRIGGER) : base("SIMPLE_TRIGGER", objectType)
+        public SimpleTrigger(string checkInterval, ObjectType objectType = ObjectType.SIMPLE_TRIGGER) : base("SIMPLE_TRIGGER", objectType)
         {
             if (intervalCodes.Count == 0)
                 InitializeIntervalCodes();
-            this.check_Interval = ReplaceIntervalWithCode(check_Interval);
+            if (ImportantMethods.IsNumeric(checkInterval, true))
+                this.checkInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(checkInterval)));
+            else
+                this.checkInterval = checkInterval;
         }
 
-        public string CheckInterval { get { return check_Interval; } }
+        public string CheckInterval { get { return checkInterval; } }
 
         public string[] ConsequencesBlock
         {

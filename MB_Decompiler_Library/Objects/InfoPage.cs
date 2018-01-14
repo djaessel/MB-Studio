@@ -1,5 +1,4 @@
-﻿using System;
-using skillhunter;
+﻿using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
