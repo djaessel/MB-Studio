@@ -779,20 +779,31 @@ namespace MB_Decompiler_Library.IO
             return musicTracks;
         }
 
-        public Quest[] ReadQuest()
+        public Quest[] ReadQuest() // ADDED 
         {
-            Quest[] quests;
+            string[] sp;
+            string line = string.Empty;
+            List<Quest> quests = new List<Quest>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                quests = new Quest[count];
-                for (int i = 0; i < quests.Length; i++)
-                    quests[i] = new Quest(sr.ReadLine().Substring(4).Split());
+                while (!sr.EndOfStream && !line.Equals("quests = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim();
+                    if (line.StartsWith("(\""))
+                    {
+                        while (!sr.EndOfStream && !line.Contains("),") && CodeReader.CountCharInString(line, '\"') == 6)
+                            line += sr.ReadLine();
+
+                        sp = line.Remove(line.IndexOf("),")).Substring(1).Trim().Split('\"');
+
+                        quests.Add(new Quest(new string[] { sp[1], sp[3], sp[4].Trim(',', ' ', '\n', '\r'), sp[5] }));
+                    }
+                }
             }
-            //objectsRead += quests.Length;
-            return quests;
+            return quests.ToArray();
         }
 
         public Sound[] ReadSound() // ADDED 
@@ -887,46 +898,118 @@ namespace MB_Decompiler_Library.IO
             return tableaus;
         }
 
-        public SceneProp[] ReadSceneProp()
+        public SceneProp[] ReadSceneProp() // ADDED 
         {
-            int tCount;
-            string[] lines;
-            SceneProp[] sceneProps;
+            int x = 0;
+            bool found = false;
+            string line = string.Empty;
+            List<SceneProp> sceneProps = new List<SceneProp>();
+            List<List<string>> definedTriggers = new List<List<string>>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine().TrimStart());
-                //objectsExpected += count;
-                sceneProps = new SceneProp[count];
-                for (int i = 0; i < sceneProps.Length; i++)
-                {
-                    string tmpSSS = sr.ReadLine().Replace("  ", " ").Replace('\t', ' ');
-                    while (tmpSSS.Contains("  "))
-                        tmpSSS = tmpSSS.Replace("  ", " ");
-                    lines = tmpSSS.Split();
+                //("light",sokf_invisible,"light_sphere","0", [
 
-                    sceneProps[i] = new SceneProp(lines);
-                    tCount = int.Parse(lines[lines.Length - 1]);
-                    if (tCount > 0)
+                while (!sr.EndOfStream && !found)
+                {
+                    line = sr.ReadLine();
+                    if (!line.Equals("scene_props = ["))
                     {
-                        SimpleTrigger[] s_triggers = new SimpleTrigger[tCount];
-                        for (int j = 0; j < s_triggers.Length; j++)
+                        if (line.Contains("="))
                         {
-                            lines = sr.ReadLine().Split();
-                            s_triggers[j] = new SimpleTrigger(lines[0]);
-                            string[] tmp = new string[int.Parse(lines[2]) + 1];
-                            tmp[0] = "SIMPLE_TRIGGER";
-                            lines = CodeReader.GetStringArrayStartFromIndex(lines, 2, 1);
-                            //s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, lines), 1);
+                            string[] tmp = line.Split('=');
+                            List<string> list = new List<string>
+                            {
+                                tmp[0].Trim(),
+                                tmp[1].Trim()
+                            };
+                            while (!line.Contains("])") && !sr.EndOfStream)
+                            {
+                                line = sr.ReadLine().Replace('\t', ' ').Trim();
+                                if (line.Length != 0)
+                                    list.Add(line);
+                            }
+                            definedTriggers.Add(list);
                         }
-                        sceneProps[i].SimpleTriggers = s_triggers;
                     }
-                    sr.ReadLine();
-                    sr.ReadLine();
+                    else
+                        found = true;
+                }
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    List<SimpleTrigger> sTriggerList = new List<SimpleTrigger>();
+                    if (line.StartsWith("(\"") && line.Contains("["))
+                    {
+                        string[] tmp = line.Split('\"');
+                        SceneProp sceneProp = new SceneProp(new string[] { tmp[1], tmp[2].Trim(',', '\t', ' '), tmp[3], tmp[5] });
+                        if (!line.Contains("]"))
+                        {
+                            x = 1;
+                            found = false;
+                            List<List<string>> triggers = new List<List<string>>();
+                            List<string> trigger = new List<string>();
+                            while (!sr.EndOfStream && !found)
+                            {
+                                line = sr.ReadLine().Trim('\t', ' ');
+                                if (line.Length != 0)
+                                    trigger.Add(line);
+
+                                int x2 = x;
+
+                                x += CodeReader.CountCharInString(line, '[');
+                                x -= CodeReader.CountCharInString(line, ']');
+
+                                if (x2 == 2 && x == 1)
+                                {
+                                    triggers.Add(trigger);
+                                    trigger = new List<string>();
+                                }
+
+                                found = x == 0;
+                            }
+
+                            foreach (List<string> t in triggers)
+                            {
+                                SimpleTrigger sTrigger = new SimpleTrigger(t[0].Trim('(', ',', ' '))
+                                {
+                                    ConsequencesBlock = GetCompiledCodeLines(CodeReader.GetStringArrayStartFromIndex(t.ToArray(), 2, 1)).Trim().Split()
+                                };
+                                sTriggerList.Add(sTrigger);
+                            }
+                        }
+                        else
+                        {
+                            string tmp2 = line.Replace('\t', ' ').Replace(" ", string.Empty);
+                            if (tmp2.IndexOf('[') + 1 != tmp2.IndexOf("]"))
+                            {
+                                tmp2 = line.Substring(line.IndexOf("[") + 1);
+                                tmp2 = tmp2.Remove(tmp2.IndexOf("]"));
+                                tmp = tmp2.Split(',');
+                                foreach (string trigger in tmp)
+                                {
+                                    for (int i = 0; i < definedTriggers.Count; i++)
+                                    {
+                                        if (definedTriggers[i][0].Equals(trigger))
+                                        {
+                                            SimpleTrigger sTrigger = new SimpleTrigger(definedTriggers[i][1].Trim('(', ',', ' '))
+                                            {
+                                                ConsequencesBlock = GetCompiledCodeLines(CodeReader.GetStringArrayStartFromIndex(definedTriggers[i].ToArray(), 2, 1)).Trim().Split()
+                                            };
+                                            sTriggerList.Add(sTrigger);
+                                            i = definedTriggers.Count;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        sceneProp.SimpleTriggers = sTriggerList.ToArray();
+                        sceneProps.Add(sceneProp);
+                    }
                 }
             }
-            //objectsRead += sceneProps.Length;
-            return sceneProps;
+            return sceneProps.ToArray();
         }
 
         public Faction[] ReadFaction()

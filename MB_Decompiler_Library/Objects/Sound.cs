@@ -58,6 +58,8 @@ namespace MB_Decompiler_Library.Objects
 
             if (flags.Length == 0)
                 flags = "0";
+            else
+                flags = flags.TrimEnd('|');
 
             this.flags = flags;
         }

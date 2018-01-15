@@ -762,7 +762,7 @@ namespace MB_Decompiler_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.QUEST); //wr.WriteLine("from header_quests import *");
                 foreach (Quest quest in objects)
-                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + quest.QuestName + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
+                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + quest.QuestName + "\", " + quest.FlagsGZ + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
                 wr.WriteLine(Environment.NewLine + "] # QUESTS END");
             }
             return objects.Count;
@@ -796,7 +796,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCENE_PROP);
                 foreach (SceneProp sceneProp in objects)
                 {
-                    wr.Write(Environment.NewLine + " (\"" + sceneProp.ID + "\", " + sceneProp.Flags + ", \"" + sceneProp.MeshName + "\", \"" + sceneProp.PhysicsObjectName + "\", [");
+                    wr.Write(Environment.NewLine + " (\"" + sceneProp.ID + "\", " + sceneProp.FlagsGZ + ", \"" + sceneProp.MeshName + "\", \"" + sceneProp.PhysicsObjectName + "\", [");
                     foreach (SimpleTrigger strigger in sceneProp.SimpleTriggers)
                     {
                         wr.WriteLine();
