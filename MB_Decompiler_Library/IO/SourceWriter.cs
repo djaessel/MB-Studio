@@ -775,7 +775,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SOUND); //wr.WriteLine("from header_sounds import *");
                 foreach (Sound sound in objects)
                 {
-                    wr.Write(" (\"" + sound.ID + "\", " + sound.Flags + ", ["); //("click", sf_2d|sf_vol_3,["drum_3.ogg"]),
+                    wr.Write(" (\"" + sound.ID + "\", " + sound.FlagsGZ + ", ["); //("click", sf_2d|sf_vol_3,["drum_3.ogg"]),
                     for (int i = 0; i < sound.SoundFiles.Length; i++)
                     {
                         wr.Write('\"' + sound.SoundFiles[i] + '\"');

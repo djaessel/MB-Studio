@@ -568,20 +568,6 @@ namespace MB_Decompiler_Library.IO
             List<string> codeLines = new List<string>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                /*sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                simple_triggers = new SimpleTrigger[count];
-                for (int i = 0; i < simple_triggers.Length; i++)
-                {
-                    scriptLines = sr.ReadLine().Split();
-                    simple_triggers[i] = new SimpleTrigger(double.Parse(CodeReader.Repl_DotWComma(scriptLines[0])));
-                    string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
-                    tmp[0] = "SIMPLE_TRIGGER";
-                    scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 2, 1);
-                    //simple_triggers[i].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
-                }*/
-
                 do
                 {
                     line = RemNTrimAllXtraSp(sr.ReadLine());
@@ -611,20 +597,121 @@ namespace MB_Decompiler_Library.IO
             return simpleTriggers.ToArray();
         }
 
-        public Trigger[] ReadTrigger()
+        public Trigger[] ReadTrigger() // ADDED 
         {
-            Trigger[] triggers;
+            bool newLine = false;
+            string line = string.Empty;
+            List<Trigger> triggers = new List<Trigger>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                triggers = new Trigger[count];
-                for (int i = 0; i < triggers.Length; i++)
-                    triggers[i] = null;//DecompileTrigger(sr.ReadLine().Split());
+                while (!sr.EndOfStream && !line.Equals("triggers = ["))
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+
+                while (!line.Equals("]") && !sr.EndOfStream)
+                {
+                    line = string.Empty;
+                    char tmp = (char)sr.Read();
+                    if (tmp == '(')
+                    {
+                        while (!sr.EndOfStream && tmp != '[')
+                        {
+                            tmp = (char)sr.Read();
+                            if (tmp != '#')
+                            {
+                                line += tmp;
+                            }
+                            else
+                            {
+                                newLine = false;
+                                while (!sr.EndOfStream && !newLine)
+                                {
+                                    tmp = (char)sr.Read();
+                                    newLine = tmp == '\n' || tmp == '\r';
+                                }
+                                if (newLine)
+                                {
+                                    tmp = (char)sr.Read();
+                                    if (tmp != '\n')
+                                        line += '\n';
+                                    line += tmp;
+                                }
+                            }
+                        }
+
+                        line = RemNTrimAllXtraSp(line).Replace(" ", string.Empty);
+                        string[] intervals = line.Remove(line.LastIndexOf(',')).Split(',');
+
+                        line = string.Empty;
+
+                        while (!sr.EndOfStream && tmp != ']')
+                        {
+                            tmp = (char)sr.Read();
+                            if (tmp != '#')
+                            {
+                                line += tmp;
+                            }
+                            else
+                            {
+                                newLine = false;
+                                while (!sr.EndOfStream && !newLine)
+                                {
+                                    tmp = (char)sr.Read();
+                                    newLine = tmp == '\n' || tmp == '\r';
+                                }
+                                if (newLine)
+                                {
+                                    tmp = (char)sr.Read();
+                                    if (tmp != '\n')
+                                        line += '\n';
+                                    line += tmp;
+                                }
+                            }
+                        }
+
+                        string[] conditionLines = GetCompiledCodeLines(line.Split('\n')).Trim().Split();
+
+                        line = string.Empty;
+
+                        while (!sr.EndOfStream && tmp != '[')
+                            tmp = (char)sr.Read();
+
+                        while (!sr.EndOfStream && tmp != ']')
+                        {
+                            tmp = (char)sr.Read();
+                            if (tmp != '#')
+                            {
+                                line += tmp;
+                            }
+                            else
+                            {
+                                newLine = false;
+                                while (!sr.EndOfStream && !newLine)
+                                {
+                                    tmp = (char)sr.Read();
+                                    newLine = tmp == '\n' || tmp == '\r';
+                                }
+                                if (newLine)
+                                {
+                                    tmp = (char)sr.Read();
+                                    if (tmp != '\n')
+                                        line += '\n';
+                                    line += tmp;
+                                }
+                            }
+                        }
+
+                        string[] consequenceLines = GetCompiledCodeLines(line.Split('\n')).Trim().Split();
+
+                        Trigger trigger = new Trigger(intervals[0], intervals[1], intervals[2])
+                        {
+                            ConditionBlock = conditionLines,
+                            ConsequencesBlock = consequenceLines
+                        };
+                        triggers.Add(trigger);
+                    }
+                } 
             }
-            //objectsRead += triggers.Length;
-            return triggers;
+            return triggers.ToArray();
         }
 
         public InfoPage[] ReadInfoPage() // ADDED 
@@ -653,19 +740,25 @@ namespace MB_Decompiler_Library.IO
             return infoPages.ToArray();
         }
 
-        public Mesh[] ReadMesh()
+        public Mesh[] ReadMesh() // ADDED 
         {
-            Mesh[] meshes;
+            string line = string.Empty;
+            List<Mesh> meshes = new List<Mesh>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                meshes = new Mesh[count];
-                for (int i = 0; i < meshes.Length; i++)
-                    meshes[i] = new Mesh(sr.ReadLine().Substring(5).Split());
+                while (!sr.EndOfStream && !line.Equals("meshes = ["))
+                    line = sr.ReadLine();
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+                    if (line.StartsWith("(\""))
+                    {
+                        line = line.TrimStart('(').Replace('\"', ' ').Replace(" ", string.Empty).Split(')')[0];
+                        meshes.Add(new Mesh(line.Split(',')));
+                    }
+                }
             }
-            //objectsRead += meshes.Length;
-            return meshes;
+            return meshes.ToArray();
         }
 
         public Music[] ReadMusic()
@@ -702,23 +795,43 @@ namespace MB_Decompiler_Library.IO
             return quests;
         }
 
-        public Sound[] ReadSound()
+        public Sound[] ReadSound() // ADDED 
         {
-            string line;
-            Sound[] sounds;
+            string[] xss = new string[3];
+            string line = string.Empty;
+            List<Sound> sounds = new List<Sound>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                sr.ReadLine();
-                do { line = sr.ReadLine(); } while (!ImportantMethods.IsNumericFKZ2(line));
-                int count = int.Parse(line);
-                //objectsExpected += count;
-                sounds = new Sound[count];
-                for (int i = 0; i < sounds.Length && !sr.EndOfStream; i++)
-                    sounds[i] = new Sound(sr.ReadLine().Substring(4).Split());
+                while (!sr.EndOfStream && !line.Equals("sounds = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+                    if (line.StartsWith("(\""))
+                    {
+                        line = line.Substring(1).Replace(" ", string.Empty);
+                        string tmp = line.Split('[')[0].Replace("\"", string.Empty);
+                        xss[0] = tmp.Split(',')[0];
+                        xss[1] = tmp.Split(',')[1];
+                        if (line.Contains("]"))
+                            xss[1] = line.Split('[')[1].Replace("\"", string.Empty).Split(']')[0].Trim(',', ' ').Replace(" ", string.Empty).Replace(',', ' '); // rethink trim
+                        else
+                        {
+                            line = line.Split('[')[1];
+                            while (!sr.EndOfStream && !line.Contains("]"))
+                                line += sr.ReadLine();
+                            string[] tmpX = line.Split('\"');
+                            line = string.Empty;
+                            for (int i = 1; i < tmpX.Length; i += 2)
+                                line += tmpX[i] + ' ';
+                            line.TrimEnd();
+                            xss[1] = line;
+                        }
+                    }
+                }
             }
-            //objectsRead += sounds.Length;
-            return sounds;
+            return sounds.ToArray();
         }
 
         public Scene[] ReadScene()
@@ -952,27 +1065,35 @@ namespace MB_Decompiler_Library.IO
             return dialogs;
         }
 
-        public Party[] ReadParty()
+        public Party[] ReadParty() // ADDED 
         {
-            string line;
-            Party[] parties;
+            bool hasDegrees;
+            string line = string.Empty;
+            string[] sp;
+            List<Party> parties = new List<Party>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine().Split()[0]);
-                //objectsExpected += count;
-                parties = new Party[count];
-                for (int i = 0; i < parties.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("parties = ["))
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
                     line = sr.ReadLine().Trim();
-                    double degrees = double.Parse(CodeReader.Repl_DotWComma(sr.ReadLine()));
-                    degrees = Math.Round(degrees / (3.1415926 / 180d), 4);
-                    line += " " + degrees; // maybe check if values are still correct!
-                    parties[i] = new Party(line.Split());
+                    if (line.StartsWith("(\""))
+                    {
+                        line = line.Remove(line.LastIndexOf("),")).Replace('[', '\t').Replace(']', '\t').Replace('\t', ' ');
+
+                        hasDegrees = line.Trim().EndsWith("]),");
+
+                        sp = line.Split(',');
+                        for (int i = 0; i < sp.Length; i++)
+                            sp[i] = sp[i].Trim();
+
+                        parties.Add(new Party(sp, hasDegrees));
+                    }
                 }
             }
-            //objectsRead += parties.Length;
-            return parties;
+            return parties.ToArray();
         }
 
         public Skill[] ReadSkill()
