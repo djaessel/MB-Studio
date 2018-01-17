@@ -491,7 +491,101 @@ namespace MB_Decompiler_Library.IO
                         sp = new string[2];
                         sp[0] = line;
 
-                        //game menu code here
+                        x = 0;
+
+                        int x2 = 0;
+                        //bool textMode = false;
+                        //bool codeMode = false;
+                        //List<string> texts = new List<string>();
+
+                        line = string.Empty;
+
+                        codeLines.Clear();
+
+                        while (!sr.EndOfStream && x != 0)
+                        {
+                            tmp = Char.ConvertFromUtf32(sr.Read()).Trim('\t', ' ');
+
+                            if (tmp.Equals("["))
+                                x++;
+                            else if (tmp.Equals("]"))
+                                x--;
+
+                            if (x == 1 && tmp.Length != 0)
+                            {
+                                if (tmp.Equals("("))
+                                    x2++;
+                                else if (tmp.Equals(")"))
+                                {
+                                    x2--;
+                                    if (x2 == 0)
+                                    {
+                                        codeLines.Add(line);//add mno code
+                                        line = string.Empty;
+                                    }
+                                }
+
+                                if (x2 == 1)
+                                {
+                                    /*if (textMode || codeMode)
+                                        line += tmp;
+
+                                    if (tmp.Equals("\""))
+                                    {
+                                        textMode = !textMode;
+                                        if (!textMode)
+                                        {
+                                            texts.Add(line.TrimEnd('\"').Trim('\t', ' '));
+                                            line = string.Empty;
+                                        }
+                                    }
+                                    else if (tmp.Equals("[") || tmp.Equals("]"))
+                                    {
+                                        codeMode = !codeMode;
+                                        if (!codeMode)
+                                        {
+                                            codeLines.Add(line.TrimEnd(']').Trim('\t', ' '));
+                                            line = string.Empty;
+                                        }
+                                    }*/
+                                    line += tmp;
+                                }
+                            }
+                        }
+
+                        string[] xxs = codeLines.ToArray();//source mno codes
+                        string[,] mno_codes = new string[codeLines.Count, 4];//for raw data
+                        line = sp[0];
+                        codeLines.Clear();
+
+                        for (int i = 0; i < xxs.Length; i++)
+                        {
+                            sp = xxs[i].Split('[');
+                            mno_codes[i, 0] = sp[0].Split('\"')[1].Replace(' ', '_');
+                            tmp = sp[1].Split(']')[0].Trim('\t', ' ').Replace('\r', '\n').Replace("\n\n", "\n").Trim('\n');
+                            mno_codes[i, 1] = GetCompiledCodeLines(tmp.Split('\n')).Trim();
+                            mno_codes[i, 2] = sp[1].Split(']')[1].Split('\"')[1].Replace('\r', '\\').Replace('\n', '\\').Replace("\\", string.Empty).Replace(' ', '_');
+                            tmp = sp[2].Split(']')[0].Trim('\t', ' ').Replace('\r', '\n').Replace("\n\n", "\n").Trim('\n');
+                            mno_codes[i, 3] = GetCompiledCodeLines(tmp.Split('\n')).Trim();
+                        }
+
+                        tmp = string.Empty;
+
+                        for (int i = 0; i < xxs.Length; i++)
+                            for (int j = 0; j < 4; j++)
+                                tmp += mno_codes[i, j] + ' ';
+
+                        tmp = tmp.TrimEnd();
+
+                        sp = new string[] { line, tmp };
+
+                        using (StreamWriter wr = new StreamWriter("testFile.txt"))
+                        {
+                            wr.WriteLine(sp[0]);
+                            wr.WriteLine(sp[1]);
+                        }
+
+                        System.Windows.Forms.MessageBox.Show("READY! HELIX");
 
                         gameMenus.Add(new GameMenu(sp));
                     }
