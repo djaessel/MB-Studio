@@ -17,8 +17,8 @@ namespace MB_Decompiler_Library.Objects
         public GameMenu(string[] raw_data) : base(raw_data[0].Substring(raw_data[0].IndexOf('_') + 1).Split()[0], ObjectType.GAME_MENU)
         {
             string[] tmpS = raw_data[0].Split();
-            menuOptions = DecompileGameMenuOptions(raw_data[1].Split(), int.Parse(tmpS[tmpS.Length - 1]));
             InitializeGameMeu(tmpS);
+            menuOptions = DecompileGameMenuOptions(raw_data[1].Split(), int.Parse(tmpS[tmpS.Length - 1]));
         }
 
         public string Text { get { return text; } }
@@ -46,7 +46,7 @@ namespace MB_Decompiler_Library.Objects
             meshName = raw_data[tmp];
             tmp++;
             tmp2 = int.Parse(raw_data[tmp]);
-            if (tmp2 > 0)
+            if (tmp2 != 0)
             {
                 operationBlock = new string[tmp2 + 1];
                 tmpSX = new string[raw_data.Length - tmp - 1];
@@ -55,9 +55,7 @@ namespace MB_Decompiler_Library.Objects
                     tmpSX[i - (tmp - 1)] = raw_data[i];
                 operationBlock[0] = ID + 1;
                 tmpSX = CodeReader.DecompileScriptCode(operationBlock, tmpSX);
-                operationBlock = new string[tmpSX.Length - 1];
-                for (int i = 0; i < operationBlock.Length; i++)
-                    operationBlock[i] = tmpSX[i + 1];
+                operationBlock = CodeReader.GetStringArrayStartFromIndex(tmpSX, 1);
             }
         }
 

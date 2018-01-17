@@ -425,21 +425,79 @@ namespace MB_Decompiler_Library.IO
 
         public GameMenu[] ReadGameMenu()
         {
-            string s;
-            List<GameMenu> game_menus = new List<GameMenu>();
+            int x = 0;
+            string[] sp;
+            string tmp;
+            string line = string.Empty;
+            List<GameMenu> gameMenus = new List<GameMenu>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                //objectsExpected += int.Parse(sr.ReadLine().TrimStart());
-                while (!sr.EndOfStream)
+                while (!sr.EndOfStream && !line.Equals("game_menus = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && line.Equals("]"))
                 {
-                    s = RemNTrimAllXtraSp(sr.ReadLine());
-                    if (s.Length > 1)
-                        game_menus.Add(new GameMenu(new string[] { s, RemNTrimAllXtraSp(sr.ReadLine()) }));
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("(\""))
+                    {
+                        sp = line.Split('\"');
+
+                        line = string.Empty;
+
+                        while (!sr.EndOfStream && x < 2)
+                        {
+                            line += sr.ReadLine().Trim('\t', ' ');
+                            x = CodeReader.CountCharInString(line, '\t');
+                        }
+
+                        if (!sr.EndOfStream)
+                            tmp = sr.ReadLine().Split('\"')[1];
+                        else
+                            tmp = string.Empty;
+
+                        sp = new string[] {
+                            sp[1],
+                            sp[2].Trim(',', ' '),
+                            line.Replace("\r", string.Empty).Replace("\n", string.Empty).Replace("\\", string.Empty).Split('\"')[1],
+                            tmp
+                        };
+
+                        x = 0;
+
+                        List<string> codeLines = new List<string>();
+
+                        while (!sr.EndOfStream && x != 0)
+                        {
+                            line = sr.ReadLine().Trim('\t', ' ');
+
+                            x += CodeReader.CountCharInString(line, '[');
+
+                            tmp = line.Trim('[', ']', ' ', '\t');
+
+                            if (x == 1 && tmp.Length != 0)
+                                codeLines.Add(tmp);
+
+                            x -= CodeReader.CountCharInString(line, ']');
+                        }
+
+                        codeLines = new List<string>(GetCompiledCodeLines(codeLines.ToArray()).Trim().Split());
+                        codeLines.InsertRange(0, sp);
+
+                        line = string.Empty;
+
+                        foreach (string s in sp)
+                            line += s + ' ';
+
+                        sp = new string[2];
+                        sp[0] = line;
+
+                        //game menu code here
+
+                        gameMenus.Add(new GameMenu(sp));
+                    }
                 }
             }
-            //objectsRead += game_menus.Count;
-            return game_menus.ToArray();
+            return gameMenus.ToArray();
         }
 
         public Script[] ReadScript() // ADDED 
