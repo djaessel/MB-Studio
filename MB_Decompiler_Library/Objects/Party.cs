@@ -9,14 +9,14 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Party : Skriptum
     {
-        private ulong flags;
+        private ulong flagsGZ;
         private double degrees;
         private PMember[] members;
         private double[] initialCoordinates = new double[2];
-        private string menuIDString, partyName, partyTemplate, faction, flagsString;
+        private string menuIDString, partyName, partyTemplate, faction, flags;
         private int menuID, partyTemplateID, factionID, aiBehavior, aiTargetParty, personality;
 
-        private static readonly string[] ai_behaviors = {
+        private static readonly string[] AiBehaviors = {
             "ai_bhvr_hold",
             "ai_bhvr_travel_to_party",
             "ai_bhvr_patrol_location",
@@ -34,7 +34,7 @@ namespace MB_Decompiler_Library.Objects
         public Party(string[] raw_data) : base(raw_data[3].Substring(2), ObjectType.PARTY)
         {
             partyName = raw_data[4];
-            flags = ulong.Parse(raw_data[5]);
+            flagsGZ = ulong.Parse(raw_data[5]);
             SetFlagsString();
             menuID = int.Parse(raw_data[6]);
             partyTemplateID = int.Parse(raw_data[7]);
@@ -56,7 +56,7 @@ namespace MB_Decompiler_Library.Objects
         {
             partyName = source_data[1];
 
-            flagsString = source_data[2];
+            flags = source_data[2];
             SetFlagsGZ();
 
             menuIDString = source_data[3];
@@ -95,12 +95,17 @@ namespace MB_Decompiler_Library.Objects
                     }
                 }
 
+            string tmpS = source_data[6].Replace("soldier_personality", "aggressiveness_8|courage_9");
+            tmpS = tmpS.Replace("merchant_personality", "aggressiveness_0|courage_7");
+            tmpS = tmpS.Replace("escorted_merchant_personality", "aggressiveness_0|courage_11");
+            tmpS = tmpS.Replace("bandit_personality", "aggressiveness_3|courage_8|banditness");
+
             int x = 0;
-            string[] tmp = source_data[6].Split('|');
+            string[] tmp = tmpS.Split('|');
             string[] tmp2;
             foreach (string s in tmp)
             {
-                tmp2 = s.Split('_');
+                tmp2 = s.Trim().Split('_');
                 if (tmp2[0].Equals("courage"))
                     x |= int.Parse(tmp2[1]);
                 else if (tmp2[0].Equals("aggressiveness"))
@@ -114,12 +119,12 @@ namespace MB_Decompiler_Library.Objects
             tmp = source_data[7].Split('|');
             foreach (string s in tmp)
             {
-                for (int i = 0; i < ai_behaviors.Length; i++)
+                for (int i = 0; i < AiBehaviors.Length; i++)
                 {
-                    if (ai_behaviors[i].Equals(s))
+                    if (AiBehaviors[i].Equals(s))
                     {
                         x |= i;
-                        i = ai_behaviors.Length;
+                        i = AiBehaviors.Length;
                     }
                 }
             }
@@ -179,137 +184,136 @@ namespace MB_Decompiler_Library.Objects
 
         private void SetFlagsString()
         {
-            char[] cc = SkillHunter.Dec2Hex_16CHARS(flags).ToCharArray();
+            char[] cc = SkillHunter.Dec2Hex_16CHARS(flagsGZ).ToCharArray();
             string tmp = SkillHunter.Hex2Dec("000000" + cc[cc.Length - 2] + cc[cc.Length - 1]).ToString();
             if (CodeReader.MapIcons.Length > 0)
-                flagsString = CodeReader.MapIcons[int.Parse(tmp)];
+                flags = CodeReader.MapIcons[int.Parse(tmp)];
 
             byte b = byte.Parse(cc[13].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flagsString += "|pf_is_static";
+                flags += "|pf_is_static";
             }
             if (b >= 2)
             {
                 b -= 2;
-                flagsString += "|pf_is_ship";
+                flags += "|pf_is_ship";
             }
             if (b == 1)
-                flagsString += "|pf_disabled";
+                flags += "|pf_disabled";
 
             b = byte.Parse(cc[12].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flagsString += "|pf_always_visible";
+                flags += "|pf_always_visible";
             }
             if (b == 2)
-                flagsString += "|pf_label_large";
+                flags += "|pf_label_large";
             else if (b == 1)
-                flagsString += "|pf_label_medium";
+                flags += "|pf_label_medium";
             else
-                flagsString += "|pf_label_small";
+                flags += "|pf_label_small";
 
             b = byte.Parse(cc[11].ToString());
             if (b == 8)
             {
                 b -= 8;
-                flagsString += "|pf_no_label";
+                flags += "|pf_no_label";
             }
             if (b >= 4)
             {
                 b -= 4;
-                flagsString += "|pf_quest_party";
+                flags += "|pf_quest_party";
             }
             if (b >= 2)
             {
                 b -= 2;
-                flagsString += "|pf_auto_remove_in_town";
+                flags += "|pf_auto_remove_in_town";
             }
             if (b == 1)
-                flagsString += "|pf_default_behavior";
+                flags += "|pf_default_behavior";
 
             b = byte.Parse(cc[10].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flagsString += "|pf_show_faction";
+                flags += "|pf_show_faction";
             }
             if (b >= 2)
             {
                 b -= 2;
-                flagsString += "|pf_hide_defenders";
+                flags += "|pf_hide_defenders";
             }
             if (b == 1)
-                flagsString += "|pf_limit_members";
+                flags += "|pf_limit_members";
 
             b = byte.Parse(cc[9].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flagsString += "|pf_civilian";
+                flags += "|pf_civilian";
             }
             if (b == 2) /*//if (b >= 2)
             {
                 b -= 2;*/
-                flagsString += "|pf_dont_attack_civilians";
+                flags += "|pf_dont_attack_civilians";
             /*}
             if (b == 1)
                 flagsString += "|pf_is_hidden";*/
 
             b = byte.Parse(SkillHunter.Hex2Dec("000000" + cc[0] + cc[1]).ToString());
             if (b > 0)
-                flagsString += "|carries_gold(" + b + ")";
+                flags += "|carries_gold(" + b + ")";
 
             b = byte.Parse(SkillHunter.Hex2Dec("000000" + cc[2] + cc[3]).ToString());
             if (b > 0)
-                flagsString += "|carries_goods(" + b + ")";
+                flags += "|carries_goods(" + b + ")";
 
-            flagsString = flagsString.Replace(" ", string.Empty).Trim('|');
+            flags = flags.Replace(" ", string.Empty).Trim('|');
         }
 
         private void SetFlagsGZ()
         {
             int x;
-            ulong flags = 0;
-
-            List<string> flagsList = new List<string>(flagsString.Split('|'));
+            ulong flagsGZ = 0;
+            List<string> flagsList = new List<string>(flags.Split('|'));
 
             if (flagsList.Contains("pf_disabled"))
-                flags |= 0x00000100;
+                flagsGZ |= 0x00000100;
             if (flagsList.Contains("pf_is_ship"))
-                flags |= 0x00000200;
+                flagsGZ |= 0x00000200;
             if (flagsList.Contains("pf_is_static"))
-                flags |= 0x00000400;
+                flagsGZ |= 0x00000400;
 
             if (flagsList.Contains("pf_label_medium"))
-                flags |= 0x00001000;
+                flagsGZ |= 0x00001000;
             if (flagsList.Contains("pf_label_large"))
-                flags |= 0x00002000;
+                flagsGZ |= 0x00002000;
 
             if (flagsList.Contains("pf_always_visible"))
-                flags |= 0x00004000;
+                flagsGZ |= 0x00004000;
             if (flagsList.Contains("pf_default_behavior"))
-                flags |= 0x00010000;
+                flagsGZ |= 0x00010000;
             if (flagsList.Contains("pf_auto_remove_in_town"))
-                flags |= 0x00020000;
+                flagsGZ |= 0x00020000;
             if (flagsList.Contains("pf_quest_party"))
-                flags |= 0x00040000;
+                flagsGZ |= 0x00040000;
             if (flagsList.Contains("pf_no_label"))
-                flags |= 0x00080000;
+                flagsGZ |= 0x00080000;
             if (flagsList.Contains("pf_limit_members"))
-                flags |= 0x00100000;
+                flagsGZ |= 0x00100000;
             if (flagsList.Contains("pf_hide_defenders"))
-                flags |= 0x00200000;
+                flagsGZ |= 0x00200000;
             if (flagsList.Contains("pf_show_faction"))
-                flags |= 0x00400000;
+                flagsGZ |= 0x00400000;
             //if (flagsList.Contains("pf_is_hidden"))
             //    flags |= 0x01000000; //#used in the engine, do not overwrite this flag
             if (flagsList.Contains("pf_dont_attack_civilians"))
-                flags |= 0x02000000;
+                flagsGZ |= 0x02000000;
             if (flagsList.Contains("pf_civilian"))
-                flags |= 0x04000000;
+                flagsGZ |= 0x04000000;
 
             foreach (string flagS in flagsList)
             {
@@ -317,24 +321,24 @@ namespace MB_Decompiler_Library.Objects
                 {
                     x = int.Parse(flagS.Substring(flagS.IndexOf('(') + 1).Split(')')[0].Trim());
                     if (flagS.Contains("goods"))
-                        flags |= (ulong)(x << 48) & 0x00ff000000000000;
+                        flagsGZ |= (ulong)(x << 48) & 0x00ff000000000000;
                     else
-                        flags |= (ulong)((x / 20) << 56) & 0xff00000000000000;
+                        flagsGZ |= (ulong)((x / 20) << 56) & 0xff00000000000000;
                 }
                 else if (flagS.StartsWith("icon_"))
                 {
                     for (int i = 0; i < CodeReader.MapIcons.Length; i++)
                     {
-                        if (CodeReader.MapIcons[i].Equals(flags))
+                        if (CodeReader.MapIcons[i].Equals(flagsGZ))
                         {
-                            flags |= (uint)i;
+                            flagsGZ |= (uint)i;
                             i = CodeReader.MapIcons.Length;
                         }
                     }
                 }
             }
 
-            this.flags = flags;
+            this.flagsGZ = flagsGZ;
         }
 
         public string Menu { get { return menuIDString; } }
@@ -349,9 +353,9 @@ namespace MB_Decompiler_Library.Objects
 
         public int FactionID { get { return factionID; } }
 
-        public ulong FlagsGZ { get { return flags; } }
+        public ulong FlagsGZ { get { return flagsGZ; } }
 
-        public string Flags { get { return flagsString; } }
+        public string Flags { get { return flags; } }
 
         public int MenuID { get { return menuID; } }
 

@@ -147,7 +147,8 @@ namespace MB_Decompiler_Library.Objects
             if (flags.Length != 0)
                 flags.TrimEnd('|');
             else
-                flags = "0";
+                flags = flagsGZ.ToString();
+
             this.flags = flags;
         }
 

@@ -423,7 +423,7 @@ namespace MB_Decompiler_Library.IO
             return presentations.ToArray();
         }
 
-        public GameMenu[] ReadGameMenu()
+        public GameMenu[] ReadGameMenu() // ADDED (?) 
         {
             int x = 0;
             string[] sp;
@@ -579,13 +579,11 @@ namespace MB_Decompiler_Library.IO
 
                         sp = new string[] { line, tmp };
 
-                        using (StreamWriter wr = new StreamWriter("testFile.txt"))
+                        /*using (StreamWriter wr = new StreamWriter("testFile.txt")) // just for testing
                         {
                             wr.WriteLine(sp[0]);
                             wr.WriteLine(sp[1]);
-                        }
-
-                        System.Windows.Forms.MessageBox.Show("READY! HELIX");
+                        }*/
 
                         gameMenus.Add(new GameMenu(sp));
                     }
@@ -913,22 +911,28 @@ namespace MB_Decompiler_Library.IO
             return meshes.ToArray();
         }
 
-        public Music[] ReadMusic()
+        public Music[] ReadMusic() // ADDED 
         {
-            Music[] musicTracks;
+            string[] sp;
+            string line = string.Empty;
+            List<Music> musicTracks = new List<Music>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                musicTracks = new Music[count];
-                for (int i = 0; i < musicTracks.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("tracks = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    string[] sts = sr.ReadLine().Split();
-                    //musicTracks[i] = new Music(new string[] { Tracks[i].Substring(6), sts[0], sts[1], sts[2] });
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("(\""))
+                    {
+                        sp = line.Split(',');
+                        sp = new string[] { sp[0].Split('\"')[1], sp[1].Split('\"')[1], sp[2].Trim(), sp[3].Split(')')[0].Trim() };
+                        musicTracks.Add(new Music(sp));
+                    }
                 }
             }
-            //objectsRead += musicTracks.Length;
-            return musicTracks;
+            return musicTracks.ToArray();
         }
 
         public Quest[] ReadQuest() // ADDED 
@@ -1268,20 +1272,32 @@ namespace MB_Decompiler_Library.IO
             return animations;
         }
 
-        public PartyTemplate[] ReadPartyTemplate()
+        public PartyTemplate[] ReadPartyTemplate() // ADDED 
         {
-            PartyTemplate[] partyTemplates;
+            string line = string.Empty;
+            string[] sp;
+            List<PartyTemplate> partyTemplates = new List<PartyTemplate>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                partyTemplates = new PartyTemplate[count];
-                for (int i = 0; i < partyTemplates.Length; i++)
-                    partyTemplates[i] = new PartyTemplate(sr.ReadLine().Substring(3).TrimEnd().Split());
+                while (!sr.EndOfStream && !line.Equals("parties = ["))
+                    line = RemNTrimAllXtraSp(sr.ReadLine());
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim();
+                    if (line.StartsWith("(\""))
+                    {
+                        line = line.Remove(line.LastIndexOf("),")).Replace('[', '\t').Replace(']', '\t').Replace('\t', ' ');
+
+                        sp = line.Split(',');
+                        for (int i = 0; i < sp.Length; i++)
+                            sp[i] = sp[i].Trim();
+
+                        partyTemplates.Add(new PartyTemplate(sp, true));//find better solution like in other classes (also for Party.cs) !!!
+                    }
+                }
             }
-            //objectsRead += partyTemplates.Length;
-            return partyTemplates;
+            return partyTemplates.ToArray();
         }
 
         public Dialog[] ReadDialog()
@@ -1331,19 +1347,33 @@ namespace MB_Decompiler_Library.IO
             return parties.ToArray();
         }
 
-        public Skill[] ReadSkill()
+        public Skill[] ReadSkill() // ADDED 
         {
-            Skill[] skills;
+            string[] sp;
+            string line = string.Empty;
+            List<Skill> skills = new List<Skill>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                int count = int.Parse(sr.ReadLine().Split()[0]);
-                //objectsExpected += count;
-                skills = new Skill[count];
-                for (int i = 0; i < skills.Length; i++)
-                    skills[i] = new Skill(sr.ReadLine().Substring(4).Split());
+                while (!sr.EndOfStream && !line.Equals("skills = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("\""))
+                    {
+                        sp = line.Split('\"');
+                        line = sp[4].Trim(' ', '\t', ',');
+                        sp[4] = line.Split(',')[0];
+                        line = line.Split(',')[1];
+                        
+                        sp = new string[] { sp[1], sp[3], sp[4], line, sp[5] };
+
+                        skills.Add(new Skill(sp));
+                    }
+                }
             }
-            //objectsRead += skills.Length;
-            return skills;
+            return skills.ToArray();
         }
 
         public PostFX[] ReadPostFX()

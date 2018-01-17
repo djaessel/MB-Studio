@@ -1,4 +1,5 @@
-﻿using MB_Decompiler_Library.IO;
+﻿using importantLib;
+using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
 using skillhunter;
 using System.Drawing;
@@ -39,7 +40,16 @@ namespace MB_Decompiler_Library.Objects
         {
             string[] tmpSX;
             int tmp = 1, tmp2;
-            SetFlags(raw_data[tmp]);
+            if (ImportantMethods.IsNumericGZ(raw_data[tmp]))
+            {
+                flagsGZ = ulong.Parse(raw_data[tmp]);
+                SetFlags();
+            }
+            else
+            {
+                flags = raw_data[tmp].Trim();
+                SetFlagsGZ();
+            }
             tmp++;
             text = raw_data[tmp];
             tmp++;
@@ -59,12 +69,47 @@ namespace MB_Decompiler_Library.Objects
             }
         }
 
-        private void SetFlags(string _flags)
+        private void SetFlagsGZ()
         {
-            flags = string.Empty;
-            flagsGZ = ulong.Parse(_flags);
+            ulong flagsGZ = 0ul;
+            string tmp;
+            string[] sp = flags.Split('|');
+
+            foreach (string s in sp)
+            {
+                if (s.Equals("mnf_join_battle"))
+                    flagsGZ |= 0x00000001; //Consider this menu when the player joins a battle
+                else if (s.Equals("mnf_auto_enter"))
+                    flagsGZ |= 0x00000010; //Automatically enter the town with the first menu option.
+                else if (s.Equals("mnf_enable_hot_keys"))
+                    flagsGZ |= 0x00000100; //Enables P,I,C keys
+                else if (s.Equals("mnf_disable_all_keys"))
+                    flagsGZ |= 0x00000200; //Disables all keys
+                else if (s.Equals("mnf_scale_picture"))
+                    flagsGZ |= 0x00001000; //Scale menu picture to offest screen aspect ratio
+                else if (s.StartsWith("menu_text_color("))
+                {
+                    tmp = s.Split('(')[1].Split(')')[0].Trim('\t', ' ');
+                    if (!ImportantMethods.IsNumericGZ(tmp))
+                    {
+                        if (tmp.StartsWith("0x"))
+                            tmp = tmp.Substring(2);
+                        tmp = SkillHunter.Hex2Dec(tmp).ToString();
+                    }
+                    flagsGZ |= (ulong.Parse(tmp) << 32); //color
+                }
+            }
+
+            this.flagsGZ = flagsGZ;
+        }
+
+        private void SetFlags()
+        {
+            string flags = string.Empty;
             ulong tmpU = flagsGZ;
+
             char[] cc = SkillHunter.Dec2Hex_16CHARS(flagsGZ).ToCharArray();
+
             if (cc.Length > 7)
             {
                 if (cc[cc.Length - 1] == '1')
@@ -113,9 +158,11 @@ namespace MB_Decompiler_Library.Objects
             }
 
             if (flags.Equals(string.Empty))
-                flags = _flags;
+                flags = flagsGZ.ToString();
             else
-                flags = flags.Substring(1);
+                flags = flags.TrimStart('|');
+
+            this.flags = flags;
         }
 
         public void SetText(string text) { this.text = text; }

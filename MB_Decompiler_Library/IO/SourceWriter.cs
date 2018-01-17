@@ -1058,7 +1058,7 @@ namespace MB_Decompiler_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SKILL);
                 foreach (Skill skill in objects)
-                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + skill.SkillName + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
+                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + skill.SkillName + "\"," + skill.FlagsGZ + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
                 wr.WriteLine("] # SKILLS END");
             }
             return objects.Count;
