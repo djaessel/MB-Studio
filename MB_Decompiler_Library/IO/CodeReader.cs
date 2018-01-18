@@ -1275,12 +1275,14 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < _factions.Length; i++)
                 {
                     do { c = sr.Read(); } while ((char)c != 'f');
-                    _factions[i] = new Faction(((char)c + sr.ReadLine().TrimEnd()).Split());
-                    string[] sp = sr.ReadLine().Trim().Replace("  ", " ").Split();
-                    double[] dd = new double[sp.Length];
-                    for (int j = 0; j < sp.Length; j++)
-                        dd[j] = double.Parse(Repl_DotWComma(sp[j]));
-                    _factions[i].Relations = dd;
+                    //_factions[i] = new Faction(((char)c + sr.ReadLine().TrimEnd()).Split());
+                    //string[] sp = sr.ReadLine().Trim().Replace("  ", " ").Split();
+                    //double[] dd = new double[sp.Length];
+                    //for (int j = 0; j < sp.Length; j++)
+                    //    dd[j] = double.Parse(Repl_DotWComma(sp[j]));
+                    //_factions[i].Relations = dd;
+                    string firstLine = sr.ReadLine().TrimEnd();
+                    string secondLine = sr.ReadLine().Trim().Replace("  ", " ");
                     c = sr.Read();
                     if ((char)c != '0')
                     {
@@ -1296,7 +1298,13 @@ namespace MB_Decompiler_Library.IO
                             } while ((char)c != ' ');
                             tmp[j] = line.TrimEnd();
                         }
+                        line = c.ToString();
+                        foreach (string s in tmp)
+                            line += ' ' + s;
                     }
+                    else
+                        line = c.ToString();
+                    _factions[i] = new Faction(new string[] { firstLine, secondLine, line });
                 }
             }
             objectsRead += _factions.Length;

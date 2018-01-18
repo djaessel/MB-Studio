@@ -1003,40 +1003,38 @@ namespace MB_Decompiler_Library.IO
 
         public Scene[] ReadScene()
         {
-            string firstLine;
-            string[] otherScenes, chestTroops, tmp;
-            Scene[] _scenes;
+            string line = string.Empty;
+            //string[] otherScenes, chestTroops, tmp;
+            List<Scene> scenes = new List<Scene>();
+            List<string> sceneLines = new List<string>();
+            List<string> sceneIDs = new List<string>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                //int tmpX;
-                int count = int.Parse(sr.ReadLine().TrimStart());
-                //objectsExpected += count;
-                _scenes = new Scene[count];
-                for (int i = 0; i < _scenes.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("scenes = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    firstLine = sr.ReadLine();
-                    tmp = sr.ReadLine().Substring(2).TrimEnd().Replace("  ", " ").Split();
-                    otherScenes = new string[int.Parse(tmp[0])];
-                    for (int j = 0; j < otherScenes.Length; j++)
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("(\""))
                     {
-                        //tmpX = int.Parse(tmp[j + 1]);
-                        //if (Scenes.Length > tmpX && tmpX >= 0)
-                        //    otherScenes[j] = Scenes[tmpX];
-                        //else if (tmpX == 100000)
-                        //    otherScenes[j] = "exit";
-                        //else
-                        //    otherScenes[j] = "(ERROR)" + tmpX; //CHECK!!!
+                        line = line.TrimEnd('\r', '\n', '\t', ' ');
+                        if (!sr.EndOfStream)
+                            line += sr.ReadLine().Trim('\t', ' ');
+                        sceneLines.Add(line);
                     }
-                    tmp = sr.ReadLine().Substring(2).TrimEnd().Replace("  ", " ").Split();
-                    chestTroops = new string[int.Parse(tmp[0])];
-                    //for (int j = 0; j < chestTroops.Length; j++)
-                    //   chestTroops[j] = Troops[int.Parse(tmp[j + 1])];
-                    _scenes[i] = new Scene(firstLine.Split(), otherScenes, chestTroops, sr.ReadLine().Trim());
                 }
             }
-            //objectsRead += _scenes.Length;
-            return _scenes;
+
+            foreach (string sline in sceneLines)
+                sceneIDs.Add(sline.Split('\"')[1]);
+
+            foreach (string sline in sceneLines)
+            {
+
+            }
+
+            return scenes.ToArray();
         }
 
         public TableauMaterial[] ReadTableauMaterial()
@@ -1168,47 +1166,76 @@ namespace MB_Decompiler_Library.IO
             return sceneProps.ToArray();
         }
 
-        public Faction[] ReadFaction()
+        public Faction[] ReadFaction() // ADDED 
         {
-            int c;
-            string line;
-            Faction[] _factions;
+            string[] sp;
+            string[] sp2;
+            string[] relations;
+            string line = string.Empty;
+            List<Faction> factions = new List<Faction>();
+            List<string> factionLines = new List<string>();
+            List<string> factionIDs = new List<string>();
             Faction.ResetIDs();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                _factions = new Faction[count];
-                for (int i = 0; i < _factions.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("factions = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    do { c = sr.Read(); } while ((char)c != 'f');
-                    _factions[i] = new Faction(((char)c + sr.ReadLine().TrimEnd()).Split());
-                    string[] sp = sr.ReadLine().Trim().Replace("  ", " ").Split();
-                    double[] dd = new double[sp.Length];
-                    for (int j = 0; j < sp.Length; j++)
-                        dd[j] = double.Parse(CodeReader.Repl_DotWComma(sp[j]));
-                    _factions[i].Relations = dd;
-                    c = sr.Read();
-                    if ((char)c != '0')
-                    {
-                        sr.Read();
-                        string[] tmp = new string[c];
-                        for (int j = 0; j < tmp.Length; j++)
-                        {
-                            line = string.Empty;
-                            do
-                            {
-                                c = sr.Read();
-                                line += (char)c;
-                            } while ((char)c != ' ');
-                            tmp[j] = line.TrimEnd();
-                        }
-                    }
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("(\""))
+                        factionLines.Add(line);
                 }
             }
-            //objectsRead += _factions.Length;
-            return _factions;
+
+            relations = new string[factionLines.Count];
+            for (int i = 0; i < relations.Length; i++)
+                relations[i] = "0";//"0.000000"
+
+            foreach (string fline in factionLines)
+                factionIDs.Add(fline.Split('\"')[1]);
+
+            foreach (string fline in factionLines)
+            {
+                string firstline = string.Empty;
+                string secondLine = string.Empty;
+
+                sp = fline.Split('[');
+                sp2 = sp[0].Trim(' ', '\t', ',').Split(',');
+
+                sp2 = new string[] { sp2[0].Split('\"')[1], sp2[1].Split('\"')[1], sp2[2].Trim('\t', ' '), sp2[3].Trim('\t', ' ') };
+
+                foreach (string s in sp)
+                    firstline += s + ' ';
+                firstline = firstline.TrimEnd();
+
+                sp[1] = RemNTrimAllXtraSp(sp[1].Split(']')[0]).Replace(",(", string.Empty).Replace('(', ' ').Replace('\"', ' ').Replace(" ", string.Empty);
+                sp2 = sp[1].Split(')');
+
+                foreach (string relPack in sp2)
+                    relations[factionIDs.IndexOf(relPack.Split(',')[0])] = relPack.Split(',')[1];
+
+                foreach (string rel in relations)
+                    secondLine += rel + ' ';
+                secondLine = secondLine.TrimEnd();
+
+                sp[2] = RemNTrimAllXtraSp(sp[2].Split(']')[0]).Replace('\"', ' ').Replace(" ", string.Empty);
+                if (sp[2].Length != 0)
+                    sp2 = sp[2].Split(',');
+                else
+                    sp2 = new string[0];
+
+                line = sp2.Length.ToString();
+                foreach (string rank in sp2)
+                    line += ' ' + rank;
+
+                sp = new string[] { firstline, secondLine, line };
+
+                factions.Add(new Faction(sp));
+            }
+
+            return factions.ToArray();
         }
 
         public MapIcon[] ReadMapIcon()

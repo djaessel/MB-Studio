@@ -912,7 +912,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < objects.Count; i++)
                 {
                     Faction fac = (Faction)objects[i];
-                    wr.Write("  (\"" + fac.ID + "\", \"" + fac.FactionName + "\", " + fac.Flags + ", " + CodeReader.Repl_CommaWDot(fac.Relations[i].ToString()) + ", [");
+                    wr.Write("  (\"" + fac.ID + "\", \"" + fac.FactionName + "\", " + fac.FlagsGZ + ", " + CodeReader.Repl_CommaWDot(fac.Relations[i].ToString()) + ", [");
                     for (int j = 0; j < fac.Relations.Length; j++)
                     {
                         if (fac.Relations[j] != 0f)
@@ -1257,7 +1257,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCENE);
                 foreach (Scene scene in objects)
                 {
-                    wr.WriteLine("  (\"" + scene.ID + "\", " + scene.Flags + ", \"" + scene.MeshName + "\", \"" + scene.BodyName + "\", ("
+                    wr.WriteLine("  (\"" + scene.ID + "\", " + scene.FlagsGZ + ", \"" + scene.MeshName + "\", \"" + scene.BodyName + "\", ("
                         + CodeReader.Repl_CommaWDot(scene.MinPosition[0].ToString()) + ',' + CodeReader.Repl_CommaWDot(scene.MinPosition[1].ToString()) + "),("
                         + CodeReader.Repl_CommaWDot(scene.MaxPosition[0].ToString()) + ',' + CodeReader.Repl_CommaWDot(scene.MaxPosition[1].ToString()) + "),"
                         + CodeReader.Repl_CommaWDot(scene.WaterLevel.ToString()) + ",\"" + scene.TerrainCode + "\",");
