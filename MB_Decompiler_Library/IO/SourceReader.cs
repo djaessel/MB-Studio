@@ -1419,25 +1419,106 @@ namespace MB_Decompiler_Library.IO
                             }
                         }
 
-                        line = line.TrimStart('[').TrimEnd(',').Replace(",[", "[").Replace(']', ' ').Replace('\"', ' ').Replace(" ", string.Empty);
+                        line = line.TrimStart('[').TrimEnd(',').Replace(",[", "[").Replace("],", " ").Replace('\"', ' ').Replace(" ", string.Empty);
 
                         sp = line.Split('[');
 
                         Animation animation = new Animation(sp[0].Split(','));
 
                         AnimationSequence[] sequences = new AnimationSequence[sp.Length - 1];
-
                         for (int i = 0; i < sp.Length; i++)
                         {
+                            /*
+          file.write("  %f %s %d %d %d "%(elem[0],elem[1],elem[2],elem[3],elem[4]))
+          if (len(elem) > 5):
+            file.write("%d "%elem[5])
+          else:
+            file.write("0 ")
+          if (len(elem) > 6):
+            file.write("%f %f %f  "%elem[6])
+          else:
+            file.write("0.0 0.0 0.0 ")
+          if (len(elem) > 7):
+            file.write("%f \n"%(elem[7]))
+          else:
+            file.write("0.0 \n")
+                            */
 
-                            sequences[i] = new AnimationSequence();
+                            string tmp;
+                            string[] sp2 = sp[i + 1].Split('(');
+                            string[] sp3 = sp2[0].TrimEnd(',').Split(',');
+
+                            line = string.Empty;
+
+                            for (int j = 0; j < sp3.Length - 1; j++)
+                                line += sp3[j] + ' ';
+
+                            if (ImportantMethods.IsNumericGZ(sp3[sp3.Length - 1]))
+                            {
+                                line += sp3[sp3.Length - 1];
+                            }
+                            else if (sp2.Length > 1)
+                            {
+                                tmp = sp3[sp3.Length - 1];
+                                if (tmp.Equals("pack2f") || tmp.Equals("pack4f"))
+                                {
+                                    sp3 = sp2[1].Split(')')[0].Split(',');
+
+                                    byte ai = GetByte(float.Parse(CodeReader.Repl_DotWComma(sp3[0])));
+                                    byte bi = GetByte(float.Parse(CodeReader.Repl_DotWComma(sp3[1])));
+                                    byte ci = 0;
+                                    byte di = 0;
+
+                                    if (tmp.Equals("pack4f") && sp3.Length >= 4)
+                                    {
+                                        ci = GetByte(float.Parse(CodeReader.Repl_DotWComma(sp3[2])));
+                                        di = GetByte(float.Parse(CodeReader.Repl_DotWComma(sp3[3])));
+                                    }
+
+                                    line += (ulong)(di << 24 | ci << 16 | bi << 8 | ai);
+                                }
+                            }
+
+                            if (sp2.Length > 2)
+                            {
+                                sp3 = sp2[2].Split(')')[0].Split(',');
+                                for (int k = 0; k < sp3.Length; k++)
+                                {
+                                    line += " " + sp3[k];
+                                }
+                                tmp = sp2[2].Split(')')[1].TrimStart(',');
+                                line += ' ';
+                                if (tmp.Length != 0)
+                                    line += tmp;
+                                else
+                                    line += '0';
+                            }
+                            else
+                                line += " 0.0, 0.0, 0.0, 0";
+
+                            sp2 = line.Split();
+
+                            sequences[i] = new AnimationSequence(sp2);
                         }
+                        animation.Sequences = sequences;
 
-                        animations.Add();
+                        animations.Add(animation);
                     }
                 }
             }
             return animations.ToArray();
+        }
+
+        private static byte GetByte(float f)
+        {
+            if (f == 0.0)
+                return 0;
+            int i = (int)(f * 255.0);
+            if (i < 1)
+                i = 1;
+            else if (i > 255)
+                i = 255;
+            return (byte)i;
         }
 
         // ADDED
