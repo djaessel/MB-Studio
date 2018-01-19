@@ -1,5 +1,4 @@
-﻿using System;
-using importantLib;
+﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using skillhunter;
 

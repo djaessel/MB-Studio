@@ -86,9 +86,7 @@ namespace MB_Decompiler_Library.Objects
                 }
             }
             if (x >= 0)
-            {
                 list.RemoveAt(x);
-            }
             return list;
         }
 

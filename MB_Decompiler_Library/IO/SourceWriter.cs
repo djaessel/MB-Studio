@@ -836,13 +836,12 @@ namespace MB_Decompiler_Library.IO
 
         public int WriteMapIcons(List<Skriptum> objects)
         {
-            double zeroed = 0.0000001337;
             using (StreamWriter wr = new StreamWriter(MAP_ICON_SOURCE))
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MAP_ICON);
                 foreach (MapIcon mapIcon in objects)
                 {
-                    wr.Write("  (\"" + mapIcon.ID + "\", " + mapIcon.Flags + ", \"" + mapIcon.MapIconName + "\", ");
+                    wr.Write("  (\"" + mapIcon.ID + "\", " + mapIcon.FlagsGZ + ", \"" + mapIcon.MapIconName + "\", ");
 
                     if (mapIcon.Scale == 0.3) // change later
                         wr.Write("banner_scale");
@@ -863,7 +862,7 @@ namespace MB_Decompiler_Library.IO
                             WriteASimpleTrigger(wr, strigger);
                         wr.Write(Environment.NewLine + "\t ]");
                     }
-                    else if (mapIcon.OffsetX != zeroed || mapIcon.OffsetY != zeroed || mapIcon.OffsetZ != zeroed)
+                    else if (mapIcon.OffsetX != double.NaN || mapIcon.OffsetY != double.NaN || mapIcon.OffsetZ != double.NaN)
                         wr.Write(", " + CodeReader.Repl_CommaWDot(mapIcon.OffsetX.ToString()) + ", " + CodeReader.Repl_CommaWDot(mapIcon.OffsetY.ToString()) + ", "
                             + CodeReader.Repl_CommaWDot(mapIcon.OffsetZ.ToString()));
                     wr.WriteLine("),");
@@ -949,7 +948,7 @@ namespace MB_Decompiler_Library.IO
                     foreach (AnimationSequence anim_sequence in animation.Sequences)
                     {
                         wr.Write("   [" + CodeReader.Repl_CommaWDot(anim_sequence.Duration.ToString()) + ", \"" + anim_sequence.ResourceName + "\", " + anim_sequence.BeginFrame + ", "
-                            + anim_sequence.EndFrame + ", " + anim_sequence.Flags);
+                            + anim_sequence.EndFrame + ", " + anim_sequence.FlagsGZ);
                         if (anim_sequence.LastNumberGZ != 0 && anim_sequence.LastNumbersFKZ[0].Equals(double.NaN))
                             wr.Write(", " + anim_sequence.LastNumberGZ);
                         else if (!anim_sequence.LastNumbersFKZ[0].Equals(double.NaN))

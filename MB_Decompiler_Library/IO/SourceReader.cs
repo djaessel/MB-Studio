@@ -327,6 +327,7 @@ namespace MB_Decompiler_Library.IO
             return objects;
         }
 
+        //
         public MissionTemplate[] ReadMissionTemplate()
         {
             string line;
@@ -385,6 +386,7 @@ namespace MB_Decompiler_Library.IO
             return missionTemplates.ToArray();
         }
 
+        //
         public Presentation[] ReadPresentation()
         {
             string line;
@@ -423,7 +425,8 @@ namespace MB_Decompiler_Library.IO
             return presentations.ToArray();
         }
 
-        public GameMenu[] ReadGameMenu() // ADDED (?) 
+        // ADDED
+        public GameMenu[] ReadGameMenu()
         {
             int x = 0;
             string[] sp;
@@ -592,7 +595,8 @@ namespace MB_Decompiler_Library.IO
             return gameMenus.ToArray();
         }
 
-        public Script[] ReadScript() // ADDED 
+        // ADDED
+        public Script[] ReadScript()
         {
             string line = string.Empty;
             List<Script> scripts = new List<Script>();
@@ -628,6 +632,7 @@ namespace MB_Decompiler_Library.IO
             return scripts.ToArray();
         }
 
+        //
         public Troop[] ReadTroop()
         {
             string[] tempus = new string[7];
@@ -649,6 +654,7 @@ namespace MB_Decompiler_Library.IO
             return troops;
         }
 
+        //
         public Item[] ReadItem()
         {
             int i = -1;
@@ -687,7 +693,8 @@ namespace MB_Decompiler_Library.IO
             return items;
         }
 
-        public GameString[] ReadString() // ADDED 
+        // ADDED
+        public GameString[] ReadString()
         {
             string line;
             string[] sp;
@@ -710,7 +717,8 @@ namespace MB_Decompiler_Library.IO
             return strings.ToArray();
         }
 
-        public SimpleTrigger[] ReadSimpleTrigger() // ADDED 
+        // ADDED
+        public SimpleTrigger[] ReadSimpleTrigger()
         {
             string line;
             //string[] scriptLines;
@@ -747,7 +755,8 @@ namespace MB_Decompiler_Library.IO
             return simpleTriggers.ToArray();
         }
 
-        public Trigger[] ReadTrigger() // ADDED 
+        // ADDED
+        public Trigger[] ReadTrigger()
         {
             bool newLine = false;
             string line = string.Empty;
@@ -864,7 +873,8 @@ namespace MB_Decompiler_Library.IO
             return triggers.ToArray();
         }
 
-        public InfoPage[] ReadInfoPage() // ADDED 
+        // ADDED
+        public InfoPage[] ReadInfoPage()
         {
             string line;
             string[] sp;
@@ -890,7 +900,8 @@ namespace MB_Decompiler_Library.IO
             return infoPages.ToArray();
         }
 
-        public Mesh[] ReadMesh() // ADDED 
+        // ADDED
+        public Mesh[] ReadMesh()
         {
             string line = string.Empty;
             List<Mesh> meshes = new List<Mesh>();
@@ -911,7 +922,8 @@ namespace MB_Decompiler_Library.IO
             return meshes.ToArray();
         }
 
-        public Music[] ReadMusic() // ADDED 
+        // ADDED
+        public Music[] ReadMusic()
         {
             string[] sp;
             string line = string.Empty;
@@ -935,7 +947,8 @@ namespace MB_Decompiler_Library.IO
             return musicTracks.ToArray();
         }
 
-        public Quest[] ReadQuest() // ADDED 
+        // ADDED
+        public Quest[] ReadQuest()
         {
             string[] sp;
             string line = string.Empty;
@@ -962,7 +975,8 @@ namespace MB_Decompiler_Library.IO
             return quests.ToArray();
         }
 
-        public Sound[] ReadSound() // ADDED 
+        // ADDED
+        public Sound[] ReadSound()
         {
             string[] xss = new string[3];
             string line = string.Empty;
@@ -1001,8 +1015,10 @@ namespace MB_Decompiler_Library.IO
             return sounds.ToArray();
         }
 
+        // ADDED
         public Scene[] ReadScene()
         {
+            string[] sp1, sp2, sp3;
             string line = string.Empty;
             //string[] otherScenes, chestTroops, tmp;
             List<Scene> scenes = new List<Scene>();
@@ -1031,7 +1047,48 @@ namespace MB_Decompiler_Library.IO
 
             foreach (string sline in sceneLines)
             {
+                sp3 = sline.Split('[');
+                line = "," + RemNTrimAllXtraSp(sp3[0]).Replace('\"', ' ').Replace('(', ' ').Replace(')', ' ').Replace(" ", string.Empty).TrimEnd(',');
+                sp1 = line.Split(',');
+                sp3[1] = sp3[1].Split(']')[0];
 
+                if (sp3[1].Contains(","))
+                    sp2 = sp3[1].Split(',');
+                else
+                    sp2 = new string[0];
+
+                if (sp3[2].Contains(","))
+                    line = sp3[2].Split(',')[1];
+                else
+                    line = "0";
+
+                sp3 = sp3[2].Split(']')[0].Split(',');
+
+                for (int j = 0; j < sceneIDs.Count; j++)
+                {
+                    for (int i = 0; i < sp2.Length; i++)
+                    {
+                        if (sceneIDs[j].Equals(sp2[i]))
+                        {
+                            sp2[i] = j.ToString();
+                            i = sp2.Length;
+                        }
+                    }
+                }
+
+                for (int j = 0; j < CodeReader.Troops.Length; j++)
+                {
+                    for (int i = 0; i < sp3.Length; i++)
+                    {
+                        if (CodeReader.Troops[j].Replace("trp_", string.Empty).Equals(sp3[i]))
+                        {
+                            sp3[i] = j.ToString();
+                            i = sp3.Length;
+                        }
+                    }
+                }
+
+                scenes.Add(new Scene(sp1, sp2, sp3, line));
             }
 
             return scenes.ToArray();
@@ -1052,7 +1109,8 @@ namespace MB_Decompiler_Library.IO
             return tableaus;
         }
 
-        public SceneProp[] ReadSceneProp() // ADDED 
+        // ADDED
+        public SceneProp[] ReadSceneProp()
         {
             int x = 0;
             bool found = false;
@@ -1061,8 +1119,6 @@ namespace MB_Decompiler_Library.IO
             List<List<string>> definedTriggers = new List<List<string>>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                //("light",sokf_invisible,"light_sphere","0", [
-
                 while (!sr.EndOfStream && !found)
                 {
                     line = sr.ReadLine();
@@ -1166,7 +1222,8 @@ namespace MB_Decompiler_Library.IO
             return sceneProps.ToArray();
         }
 
-        public Faction[] ReadFaction() // ADDED 
+        // ADDED
+        public Faction[] ReadFaction()
         {
             string[] sp;
             string[] sp2;
@@ -1238,68 +1295,153 @@ namespace MB_Decompiler_Library.IO
             return factions.ToArray();
         }
 
+        // ADDED
         public MapIcon[] ReadMapIcon()
         {
-            int tCount;
+            int x;
+            bool hasTrigger;
             string[] sp;
-            MapIcon[] mapIcons;
+            string line = string.Empty;
+            List<MapIcon> mapIcons = new List<MapIcon>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                mapIcons = new MapIcon[count];
-                for (int i = 0; i < mapIcons.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("map_icons = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    sp = sr.ReadLine().Split();
-                    tCount = int.Parse(sp[sp.Length - 1]);
-                    mapIcons[i] = new MapIcon(sp);
-                    if (tCount > 0)
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("(\""))
                     {
-                        SimpleTrigger[] s_triggers = new SimpleTrigger[tCount];
-                        for (int j = 0; j < s_triggers.Length; j++)
+                        x = CodeReader.CountCharInString(line, ',');
+                        hasTrigger = !line.Contains(")");
+
+                        line = RemNTrimAllXtraSp(line.Replace('\"', ' ')).Replace(" ", string.Empty).TrimStart('(').TrimEnd(',', ')');
+
+                        if (x == 5)//simple icon
+                            line += ",0,0,0";
+
+                        sp = line.Split(',');
+
+                        if (sp[3].Equals("banner_scale"))
+                            sp[3] = "0.3";
+                        else if (sp[3].Equals("avatar_scale"))
+                            sp[3] = "0.15";
+
+                        if (!ImportantMethods.IsNumericGZ(sp[4]))
                         {
-                            sp = sr.ReadLine().Split();
-                            s_triggers[j] = new SimpleTrigger(sp[0]);
-                            string[] tmp = new string[int.Parse(sp[2]) + 1];
-                            tmp[0] = "SIMPLE_TRIGGER";
-                            sp = CodeReader.GetStringArrayStartFromIndex(sp, 2, 1);
-                            //s_triggers[j].ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(DecompileScriptCode(tmp, sp), 1);
+                            for (int i = 0; i < CodeReader.Sounds.Length; i++)
+                            {
+                                if (CodeReader.Sounds[i].Equals(sp[4]))
+                                {
+                                    sp[4] = i.ToString();
+                                    i = CodeReader.Sounds.Length;
+                                }
+                            }
                         }
-                        mapIcons[i].SimpleTriggers = s_triggers;
+
+                        MapIcon icon = new MapIcon(sp);
+
+                        if (hasTrigger)
+                        {
+                            List<SimpleTrigger> simpleTriggers = new List<SimpleTrigger>();
+                            List<string> codeLines = new List<string>();
+
+                            x = 1;
+                            int x2 = 1;
+
+                            if (!sr.EndOfStream)
+                                sr.ReadLine();//[
+
+                            while (!sr.EndOfStream && x != 0 && x2 != 0)
+                            {
+                                line = RemNTrimAllXtraSp(sr.ReadLine()).Replace(" ", string.Empty);
+
+                                x += CodeReader.CountCharInString(line, '(');
+                                x -= CodeReader.CountCharInString(line, ')');
+
+                                if (x == 2)
+                                {
+                                    codeLines.Clear();
+                                    SimpleTrigger simpleTrigger = new SimpleTrigger(line.TrimStart('(').TrimEnd(','));
+                                    while (!sr.EndOfStream && x2 > 1)
+                                    {
+                                        line = sr.ReadLine().Trim('\t', ' ');
+
+                                        x2 += CodeReader.CountCharInString(line, '[');
+                                        x2 -= CodeReader.CountCharInString(line, ']');
+
+                                        if (line.Length > 1)
+                                            codeLines.Add(line);
+                                    }
+                                    simpleTrigger.ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(GetCompiledCodeLines(codeLines.ToArray()).Trim().Split(), 1);
+                                    simpleTriggers.Add(simpleTrigger);
+                                }
+                            }
+
+                            icon.SimpleTriggers = simpleTriggers.ToArray();
+                        }
+
+                        mapIcons.Add(icon);
                     }
-                    sr.ReadLine();
-                    sr.ReadLine();
                 }
             }
-            //objectsRead += mapIcons.Length;
-            return mapIcons;
+            return mapIcons.ToArray();
         }
 
+        //
         public Animation[] ReadAnimation()
         {
+            int x;
             string[] sp;
-            Animation[] animations;
+            string line = string.Empty;
+            List<Animation> animations = new List<Animation>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                animations = new Animation[count];
-                for (int i = 0; i < animations.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("animations = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    sp = sr.ReadLine().Substring(1).Replace("  ", " ").Split();
-                    animations[i] = new Animation(sp);
-                    AnimationSequence[] sequences = new AnimationSequence[int.Parse(sp[sp.Length - 1])];
-                    for (int j = 0; j < sequences.Length; j++)
-                        sequences[j] = new AnimationSequence(sr.ReadLine().Trim().Replace("  ", " ").Split());
-                    animations[i].Sequences = sequences;
+                    line = RemNTrimAllXtraSp(sr.ReadLine()).Replace(" ", string.Empty);
+                    x = 0;
+                    if (line.StartsWith("[\""))
+                    {
+                        while (!sr.EndOfStream && x != 0) 
+                        {
+                            x += CodeReader.CountCharInString(line, '[');
+                            x -= CodeReader.CountCharInString(line, ']');
+
+                            if (x != 0)
+                            {
+                                line = line.TrimEnd('\r', '\n');
+                                line += RemNTrimAllXtraSp(sr.ReadLine()).Replace(" ", string.Empty);
+                            }
+                        }
+
+                        line = line.TrimStart('[').TrimEnd(',').Replace(",[", "[").Replace(']', ' ').Replace('\"', ' ').Replace(" ", string.Empty);
+
+                        sp = line.Split('[');
+
+                        Animation animation = new Animation(sp[0].Split(','));
+
+                        AnimationSequence[] sequences = new AnimationSequence[sp.Length - 1];
+
+                        for (int i = 0; i < sp.Length; i++)
+                        {
+
+                            sequences[i] = new AnimationSequence();
+                        }
+
+                        animations.Add();
+                    }
                 }
             }
-            //objectsRead += animations.Length;
-            return animations;
+            return animations.ToArray();
         }
 
-        public PartyTemplate[] ReadPartyTemplate() // ADDED 
+        // ADDED
+        public PartyTemplate[] ReadPartyTemplate()
         {
             string line = string.Empty;
             string[] sp;
@@ -1327,6 +1469,7 @@ namespace MB_Decompiler_Library.IO
             return partyTemplates.ToArray();
         }
 
+        //
         public Dialog[] ReadDialog()
         {
             Dialog[] dialogs;
@@ -1342,8 +1485,9 @@ namespace MB_Decompiler_Library.IO
             //objectsRead += dialogs.Length;
             return dialogs;
         }
-
-        public Party[] ReadParty() // ADDED 
+        
+        // ADDED
+        public Party[] ReadParty()
         {
             bool hasDegrees;
             string line = string.Empty;
@@ -1373,8 +1517,9 @@ namespace MB_Decompiler_Library.IO
             }
             return parties.ToArray();
         }
-
-        public Skill[] ReadSkill() // ADDED 
+        
+        // ADDED
+        public Skill[] ReadSkill()
         {
             string[] sp;
             string line = string.Empty;
@@ -1403,6 +1548,7 @@ namespace MB_Decompiler_Library.IO
             return skills.ToArray();
         }
 
+        //
         public PostFX[] ReadPostFX()
         {
             PostFX[] postfxs;
@@ -1419,6 +1565,7 @@ namespace MB_Decompiler_Library.IO
             return postfxs;
         }
 
+        //
         public ParticleSystem[] ReadParticleSystem()
         {
             ParticleSystem[] particleSystems;
@@ -1448,6 +1595,7 @@ namespace MB_Decompiler_Library.IO
             return particleSystems;
         }
 
+        //
         public Skin[] ReadSkin()
         {
             Skin[] skins;
