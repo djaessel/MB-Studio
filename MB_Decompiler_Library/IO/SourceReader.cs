@@ -330,59 +330,92 @@ namespace MB_Decompiler_Library.IO
         //
         public MissionTemplate[] ReadMissionTemplate()
         {
-            string line;
-            string[] scriptLines;
-            MissionTemplate missionTemplate = null;
+            string line = string.Empty;
             List<MissionTemplate> missionTemplates = new List<MissionTemplate>();
+            List<string> lines = new List<string>();
             List<string[]> entryPoints = new List<string[]>();
             List<string[]> triggers = new List<string[]>();
+            List<string> varTriggerNames = new List<string>();
+            List<Trigger> varTriggers = new List<Trigger>();
+            List<string> varTriggerArrayNames = new List<string>();
+            List<Trigger[]> varTriggerArrays = new List<Trigger[]>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                //objectsExpected += int.Parse(sr.ReadLine().Trim());
-                while (!sr.EndOfStream)
+                while (!sr.EndOfStream && !line.Equals("mission_templates = ["))
                 {
-                    line = sr.ReadLine();
-                    if (line.Contains("mst_"))
+                    line = sr.ReadLine().Trim('\t', ' ').Replace(" ", string.Empty);
+                    if (line.EndsWith("=("))//single trigger
                     {
-                        if (missionTemplate != null)
+                        line = line.Split('=')[0];
+                        varTriggerNames.Add(line); //lines.Add(line);
+                        while (!sr.EndOfStream && !line.Equals("])"))
                         {
-                            missionTemplates.Add(missionTemplate);
-                            entryPoints.Clear();
-                            triggers.Clear();
+                            line = sr.ReadLine().Trim('\t', ' ');
+                            lines.Add(line);
                         }
-                        scriptLines = line.Split();
-                        line = sr.ReadLine().TrimEnd().Replace('_', ' ');
-                        missionTemplate = new MissionTemplate(new string[] { scriptLines[1], scriptLines[2], scriptLines[4], line });
 
-                        sr.ReadLine();
-                        line = sr.ReadLine();
-                        scriptLines = line.Split(' ');
-                        int max = int.Parse(scriptLines[0]);
-                        if (max > 0)
+                        string[] sp = lines[1].TrimEnd(',').Split(',');
+                        string[] conditionLines = null;
+                        string[] consequenceLines = null;
+
+                        if (sp.Length > 3)
+                            if (sp[3].Equals("[]"))
+                                conditionLines = new string[0];
+
+                        if (lines[lines.Count].EndsWith("[])"))
+                            consequenceLines = new string[0];
+
+                        int xcx = 1;
+
+                        if (conditionLines == null)
                         {
-                            scriptLines = line.Substring(line.IndexOf(' ') + 1).Split();
-
-                            entryPoints.Add(scriptLines);
-
-                            for (int i = 1; i < max; i++)
-                                entryPoints.Add(sr.ReadLine().Split());
-
-                            max = int.Parse(sr.ReadLine());
+                            for (int i = xcx; i < lines.Count; i++)
+                            {
+                                line = lines[i];
+                                if (line.Contains("]"))
+                                {
+                                    conditionLines = new string[i - xcx];
+                                    xcx += conditionLines.Length;
+                                    i = lines.Count;
+                                }
+                            }
+                            conditionLines = CodeReader.GetStringArrayStartFromIndex(conditionLines, 1, 1);
                         }
-                        else
-                            max = int.Parse(scriptLines[1]);
 
-                        for (int i = 0; i < max; i++)
-                            triggers.Add(sr.ReadLine().Split());
+                        if (consequenceLines == null)
+                        {
+                            for (int i = xcx; i < lines.Count; i++)
+                            {
+                                line = lines[i];
+                                if (line.Contains("]"))
+                                {
+                                    consequenceLines = new string[i - xcx];
+                                    i = lines.Count;
+                                }
+                            }
+                            consequenceLines = CodeReader.GetStringArrayStartFromIndex(consequenceLines, 1, 1);
+                        }
 
-                        //missionTemplate = DecompileMissionTemplateCode(missionTemplate.HeaderInfo, entryPoints, triggers);
+                        varTriggers.Add(new Trigger(sp[0], sp[1], sp[2])
+                        {
+                            ConditionBlock = conditionLines,
+                            ConsequencesBlock = consequenceLines
+                        });
+                    }
+                    else if (line.Contains("=["))//trigger list
+                    {
+                        lines.Add(line);
+                    }
+                }
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("(\""))
+                    {
+
                     }
                 }
             }
-            if (missionTemplate != null)
-                missionTemplates.Add(missionTemplate);
-            //objectsRead += missionTemplates.Count;
             return missionTemplates.ToArray();
         }
 
@@ -1094,19 +1127,38 @@ namespace MB_Decompiler_Library.IO
             return scenes.ToArray();
         }
 
+        // ADDED
         public TableauMaterial[] ReadTableauMaterial()
         {
-            TableauMaterial[] tableaus;
+            string[] sp, sp2;
+            string line = string.Empty;
+            List<TableauMaterial> tableaus = new List<TableauMaterial>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                tableaus = new TableauMaterial[count];
-                for (int i = 0; i < tableaus.Length; i++)
-                    tableaus[i] = new TableauMaterial(sr.ReadLine().Substring(4).TrimEnd().Split());
+                while (!sr.EndOfStream && !line.Equals("tableaus = ["))
+                    line = sr.ReadLine();
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = RemNTrimAllXtraSp(sr.ReadLine()).Replace('\"', ' ').Replace(" ", string.Empty);
+                    if (line.StartsWith("(\""))
+                    {
+                        while (!sr.EndOfStream && !line.Contains("]"))
+                            line += sr.ReadLine().Trim('\t', ' ');
+                        line = line.Split(']')[0].TrimStart('(');
+                        sp = line.Split('[');
+                        sp2 = sp[0].Split(',');
+                        sp[1] = sp[1].Replace("),", "°");
+                        sp = sp[1].Split('°');
+                        for (int i = 0; i < sp.Length; i++)
+                            sp[i] = sp[i] + "),";
+                        List<string> sss = new List<string>(sp2);
+                        sss.AddRange(sp);
+                        sp = sss.ToArray();
+                        tableaus.Add(new TableauMaterial(sp, true));
+                    }
+                }
             }
-            //objectsRead += tableaus.Length;
-            return tableaus;
+            return tableaus.ToArray();
         }
 
         // ADDED
@@ -1389,7 +1441,7 @@ namespace MB_Decompiler_Library.IO
             return mapIcons.ToArray();
         }
 
-        //
+        // ADDED
         public Animation[] ReadAnimation()
         {
             int x;
@@ -1428,22 +1480,6 @@ namespace MB_Decompiler_Library.IO
                         AnimationSequence[] sequences = new AnimationSequence[sp.Length - 1];
                         for (int i = 0; i < sp.Length; i++)
                         {
-                            /*
-          file.write("  %f %s %d %d %d "%(elem[0],elem[1],elem[2],elem[3],elem[4]))
-          if (len(elem) > 5):
-            file.write("%d "%elem[5])
-          else:
-            file.write("0 ")
-          if (len(elem) > 6):
-            file.write("%f %f %f  "%elem[6])
-          else:
-            file.write("0.0 0.0 0.0 ")
-          if (len(elem) > 7):
-            file.write("%f \n"%(elem[7]))
-          else:
-            file.write("0.0 \n")
-                            */
-
                             string tmp;
                             string[] sp2 = sp[i + 1].Split('(');
                             string[] sp3 = sp2[0].TrimEnd(',').Split(',');
@@ -1491,15 +1527,25 @@ namespace MB_Decompiler_Library.IO
                                 if (tmp.Length != 0)
                                     line += tmp;
                                 else
-                                    line += '0';
+                                    line += "0.0";
                             }
                             else
-                                line += " 0.0, 0.0, 0.0, 0";
+                                line += " 0.0, 0.0, 0.0, 0.0";
 
                             sp2 = line.Split();
 
+                            sp2[0] = CodeReader.Repl_DotWComma(sp2[0]);
+
+                            if (!ImportantMethods.IsNumeric(sp2[0], true))
+                                sp[0] = ConvertAnimationConst(sp[0], true);
+                            if (!ImportantMethods.IsNumericGZ(sp2[2]))
+                                sp[2] = ConvertAnimationConst(sp[2]);
+                            if (!ImportantMethods.IsNumericGZ(sp2[3]))
+                                sp[3] = ConvertAnimationConst(sp[3]);
+
                             sequences[i] = new AnimationSequence(sp2);
                         }
+
                         animation.Sequences = sequences;
 
                         animations.Add(animation);
@@ -1507,18 +1553,6 @@ namespace MB_Decompiler_Library.IO
                 }
             }
             return animations.ToArray();
-        }
-
-        private static byte GetByte(float f)
-        {
-            if (f == 0.0)
-                return 0;
-            int i = (int)(f * 255.0);
-            if (i < 1)
-                i = 1;
-            else if (i > 255)
-                i = 255;
-            return (byte)i;
         }
 
         // ADDED
@@ -1723,6 +1757,140 @@ namespace MB_Decompiler_Library.IO
             //objectsRead += skins.Length;
             return skins;
         }
+
+        #region SUPPORT METHODS
+
+        //place in Skriptum ? for every Skriptum Object and public
+        private List<HeaderVariable> GetHeaderVariableList(bool duration, List<HeaderVariable> list = null, string file = "header_animations.py")
+        {
+            string[] tmp;
+            string s = string.Empty;
+            string startPattern = "animation_const_";
+            byte a = 0;
+            char[] sp_c = new char[] { 'a', 'b' };
+
+            if (list == null)
+                list = new List<HeaderVariable>();
+
+            if (duration)
+                a++;
+
+            startPattern += sp_c[a];
+
+            if (startPattern != null)
+            {
+                using (StreamReader sr = new StreamReader(SkillHunter.FilesPath + file))
+                {
+                    while (!sr.EndOfStream && !s.Equals(startPattern))
+                        s = sr.ReadLine().Split('#')[0];
+                    while (!sr.EndOfStream && !s.Equals(string.Empty))
+                    {
+                        s = sr.ReadLine().Split('#')[0];
+                        if (s.Length != 0)
+                        {
+                            tmp = s.Replace('\t', ' ').Replace(" ", string.Empty).Split('=');
+                            tmp[1] = CodeReader.Repl_DotWComma(tmp[1]);
+                            s = tmp[1];
+                            int x = -1;
+                            for (int i = 0; i < list.Count; i++)
+                            {
+                                if (list[i].VariableValue.Equals(s))
+                                {
+                                    x = i;
+                                    i = list.Count;
+                                }
+                            }
+                            if (x >= 0)
+                                list.RemoveAt(x);
+
+                            list.Add(new HeaderVariable(s, tmp[0]));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        //place in Animation(Sequence) ?
+        private string ConvertAnimationConst(string value, bool duration = false)
+        {
+            string[] tmp;
+            List<HeaderVariable> list = GetHeaderVariableList(duration);
+            list = GetHeaderVariableList(duration, list, "header_mb_decompiler.py");
+
+            bool plus = value.Contains("+");
+
+            if (plus)
+                tmp = value.Split('+');
+            else
+                tmp = value.Split('-');
+
+            for (int j = 0; j < tmp.Length; j++)
+            {
+                if (!ImportantMethods.IsNumeric(tmp[j], true))
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i].VariableName.Equals(tmp[j]))
+                        {
+                            tmp[j] = list[i].VariableValue;
+                            if (tmp[j].StartsWith("0x"))
+                                tmp[j] = SkillHunter.Hex2Dec_16CHARS(tmp[j].Substring(2)).ToString();
+                            i = list.Count;
+                        }
+                    }
+                }
+            }
+
+            if (value.Contains("+") || value.Contains("-"))
+            {
+                if (tmp[0].Contains(","))
+                {
+                    double dx;
+                    double[] d = new double[tmp.Length];
+                    for (int i = 0; i < d.Length; i++)
+                        d[i] = double.Parse(tmp[i]);
+                    dx = d[0];
+                    for (int i = 1; i < d.Length; i++)
+                        if (plus)
+                            dx += d[i];
+                        else
+                            dx -= d[i];
+                    value = d.ToString();
+                }
+                else
+                {
+                    ulong ux;
+                    ulong[] u = new ulong[tmp.Length];
+                    for (int i = 0; i < u.Length; i++)
+                        u[i] = ulong.Parse(tmp[i]);
+                    ux = u[0];
+                    for (int i = 1; i < u.Length; i++)
+                        if (plus)
+                            ux += u[i];
+                        else
+                            ux -= u[i];
+                    value = u.ToString();
+                }
+            }
+
+            return value;
+        }
+
+        //place in Animation(Sequence) ?
+        private static byte GetByte(float f)
+        {
+            if (f == 0.0)
+                return 0;
+            int i = (int)(f * 255.0);
+            if (i < 1)
+                i = 1;
+            else if (i > 255)
+                i = 255;
+            return (byte)i;
+        }
+
+        #endregion
 
         #endregion
     }

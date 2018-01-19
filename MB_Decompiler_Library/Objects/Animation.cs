@@ -1,8 +1,6 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
 using skillhunter;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -16,6 +14,7 @@ namespace MB_Decompiler_Library.Objects
 
         private const string SP_NORMAL_FLAGS = "acf_";
         private const string SP_MASTER_FLAGS = "amf_";
+        private const string ACF_ANIM_LENGTH = "acf_anim_length(";
         private static HeaderVariable[] headerVariablesNormal = null;
         private static HeaderVariable[] headerVariablesMaster = null;
 
@@ -29,18 +28,32 @@ namespace MB_Decompiler_Library.Objects
             if (ImportantMethods.IsNumericGZ(raw_data[1]))
             {
                 flagsGZ = ulong.Parse(raw_data[1]);
-                SetFlags();
+                flags = SetFlagsX(headerVariablesNormal);
+                ulong x = (flagsGZ & 0xff000000);
+                if (x != 0)
+                    flags = "|" + ACF_ANIM_LENGTH + (x >> 24) + ")";
+                flags = flags.TrimStart('0', '|');
             }
             else
             {
                 flags = raw_data[1];
-                SetFlagsGZ();
+                flagsGZ = SetFlagsXGZ(headerVariablesNormal);
+                if (flags.Contains(ACF_ANIM_LENGTH))
+                    flagsGZ |= ulong.Parse(flags.Substring(flags.IndexOf(ACF_ANIM_LENGTH)).Split(')')[0].Trim());
             }
-            
-            masterFlagsGZ = ulong.Parse(raw_data[2]);
+
+            if (ImportantMethods.IsNumericGZ(raw_data[2]))
+            {
+                masterFlagsGZ = ulong.Parse(raw_data[2]);
+                masterFlags = SetFlagsX(headerVariablesMaster);
+            }
+            else
+            {
+                masterFlags = raw_data[2];
+                masterFlagsGZ = SetFlagsXGZ(headerVariablesMaster);
+            }
         }
 
-        //CHECK IF ALL IF CASES ARE NEEDED IN THIS SCENARIO
         private static void InitializeHeaderVariables(string searchPattern, string file = "header_animations.py", List<HeaderVariable> listX = null)
         {
             string file2 = "header_mb_decompiler.py";
@@ -57,90 +70,10 @@ namespace MB_Decompiler_Library.Objects
                 while (!sr.EndOfStream)
                 {
                     s = sr.ReadLine().Split('#')[0];
-                    if (s.StartsWith(searchPattern))//normal and masterflags
+                    if (s.StartsWith(searchPattern) && s.Contains("0x"))//normal and masterflags
                     {
                         sp = s.Replace('\t', ' ').Replace(" ", string.Empty).Split('=');
-                        sp[1] = CodeReader.Repl_DotWComma(sp[1]);
-
-                        if (!ImportantMethods.IsNumeric(sp[1], true))
-                        {
-                            if (sp[1].Contains("+") || sp[1].Contains("-"))
-                            {
-                                string[] tmp;
-                                bool plus = sp[1].Contains("+");
-
-                                if (plus)
-                                    tmp = sp[1].Split('+');
-                                else
-                                    tmp = sp[1].Split('-');
-
-                                for (int j = 0; j < tmp.Length; j++)
-                                {
-                                    if (!ImportantMethods.IsNumeric(tmp[j], true))
-                                    {
-                                        for (int i = 0; i < list.Count; i++)
-                                        {
-                                            if (list[i].VariableName.Equals(tmp[j]))
-                                            {
-                                                tmp[j] = list[i].VariableValue;
-                                                if (tmp[j].StartsWith("0x"))
-                                                    tmp[j] = SkillHunter.Hex2Dec_16CHARS(tmp[j].Substring(2)).ToString();
-                                                i = list.Count;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if (tmp[0].Contains(","))
-                                {
-                                    double dx;
-                                    double[] d = new double[tmp.Length];
-                                    for (int i = 0; i < d.Length; i++)
-                                        d[i] = double.Parse(tmp[i]);
-                                    dx = d[0];
-                                    for (int i = 1; i < d.Length; i++)
-                                    {
-                                        if (plus)
-                                            dx += d[i];
-                                        else
-                                            dx -= d[i];
-                                    }
-                                    sp[1] = d.ToString();
-                                }
-                                else
-                                {
-                                    ulong ux;
-                                    ulong[] u = new ulong[tmp.Length];
-                                    for (int i = 0; i < u.Length; i++)
-                                        u[i] = ulong.Parse(tmp[i]);
-                                    ux = u[0];
-                                    for (int i = 1; i < u.Length; i++)
-                                    {
-                                        if (plus)
-                                            ux += u[i];
-                                        else
-                                            ux -= u[i];
-                                    }
-                                    sp[1] = u.ToString();
-                                }
-                            }
-                            else if (!sp[1].StartsWith("0x"))
-                            {
-                                for (int i = 0; i < list.Count; i++)
-                                {
-                                    if (list[i].VariableName.Equals(sp[1]))
-                                    {
-                                        sp[1] = list[i].VariableValue;
-                                        if (sp[1].StartsWith("0x"))
-                                            sp[1] = SkillHunter.Hex2Dec_16CHARS(sp[1].Substring(2)).ToString();
-                                        i = list.Count;
-                                    }
-                                }
-                            }
-                        }
-
                         s = sp[1];
-
                         list = RemoveHeaderVariableListEquals(list, s);
                         list.Add(new HeaderVariable(s, sp[0]));
                     }
@@ -171,19 +104,37 @@ namespace MB_Decompiler_Library.Objects
             return list;
         }
 
-        private void SetFlagsGZ()
+        private ulong SetFlagsXGZ(HeaderVariable[] variables)
         {
-            throw new NotImplementedException();
+            string[] tmp = flags.Split('|');
+            ulong flagsGZ = 0;
+            foreach (string flag in tmp)
+                foreach (HeaderVariable var in variables)
+                    if (var.VariableName.Equals(flag))
+                        flagsGZ |= ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+            return flagsGZ;
         }
 
-        private void SetFlags()
+        private string SetFlagsX(HeaderVariable[] variables)
         {
-            throw new NotImplementedException();
+            ulong x;
+            string flags = string.Empty;
+            foreach (HeaderVariable var in variables)
+            {
+                x = ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                if ((x & flagsGZ) == x)
+                    flags += var.VariableName + '|';
+            }
+            return flags;
         }
 
-        public ulong Flags { get { return flagsGZ; } }
+        public ulong FlagsGZ { get { return flagsGZ; } }
 
-        public ulong MasterFlags { get { return masterFlagsGZ; } }
+        public string Flags { get { return flags; } }
+
+        public ulong MasterFlagsGZ { get { return masterFlagsGZ; } }
+
+        public string MasterFlags { get { return masterFlags; } }
 
         public AnimationSequence[] Sequences
         {

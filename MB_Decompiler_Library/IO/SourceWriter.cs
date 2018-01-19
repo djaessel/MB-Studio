@@ -817,7 +817,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TABLEAU_MATERIAL);
                 foreach (TableauMaterial tableau in objects)
                 {
-                    wr.Write(Environment.NewLine + "  (\"" + tableau.ID + "\", " + tableau.Flags + ", \"" + tableau.SampleMaterialName + "\", " + tableau.Width + ", " + tableau.Height + ", "
+                    wr.Write(Environment.NewLine + "  (\"" + tableau.ID + "\", " + tableau.FlagsGZ + ", \"" + tableau.SampleMaterialName + "\", " + tableau.Width + ", " + tableau.Height + ", "
                         + tableau.MinX + ", " + tableau.MinY + ", " + tableau.MaxX + ", " + tableau.MaxY + ",");
                     if (tableau.OperationBlock.Length > 0)
                     {
@@ -944,7 +944,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.ANIMATION);
                 foreach (Animation animation in objects)
                 {
-                    wr.WriteLine(" [\"" + animation.ID + "\", " + animation.Flags + ", " + animation.MasterFlags + ',');
+                    wr.WriteLine(" [\"" + animation.ID + "\", " + animation.FlagsGZ + ", " + animation.MasterFlagsGZ + ',');
                     foreach (AnimationSequence anim_sequence in animation.Sequences)
                     {
                         wr.Write("   [" + CodeReader.Repl_CommaWDot(anim_sequence.Duration.ToString()) + ", \"" + anim_sequence.ResourceName + "\", " + anim_sequence.BeginFrame + ", "
