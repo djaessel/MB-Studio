@@ -405,14 +405,18 @@ namespace MB_Decompiler_Library.IO
                     else if (line.Contains("=["))//trigger list
                     {
                         lines.Add(line);
+
+                        // only one for now, but add trigger array code anyways
+
                     }
                 }
+
                 while (!sr.EndOfStream && !line.Equals("]"))
                 {
                     line = sr.ReadLine().Trim('\t', ' ');
                     if (line.StartsWith("(\""))
                     {
-
+                        //code for missiontemplate
                     }
                 }
             }
