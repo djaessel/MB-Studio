@@ -56,6 +56,7 @@ namespace MB_Decompiler_Library.Objects
 
         private static void InitializeHeaderVariables(string searchPattern, string file = "header_animations.py", List<HeaderVariable> listX = null)
         {
+            string path = SkillHunter.FilesPath;
             string file2 = "header_mb_decompiler.py";
             List<HeaderVariable> list;
             if (listX == null)
@@ -63,7 +64,12 @@ namespace MB_Decompiler_Library.Objects
             else
                 list = listX;
 
-            using (StreamReader sr = new StreamReader(SkillHunter.FilesPath + file))
+            if (!File.Exists(path + file))
+                path += "moduleSystem\\";
+
+            path += file;
+
+            using (StreamReader sr = new StreamReader(path))
             {
                 string s;
                 string[] sp;

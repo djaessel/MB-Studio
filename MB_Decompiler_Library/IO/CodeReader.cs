@@ -1281,7 +1281,7 @@ namespace MB_Decompiler_Library.IO
                     //for (int j = 0; j < sp.Length; j++)
                     //    dd[j] = double.Parse(Repl_DotWComma(sp[j]));
                     //_factions[i].Relations = dd;
-                    string firstLine = sr.ReadLine().TrimEnd();
+                    string firstLine = Char.ConvertFromUtf32(c) + sr.ReadLine().TrimEnd();
                     string secondLine = sr.ReadLine().Trim().Replace("  ", " ");
                     c = sr.Read();
                     if ((char)c != '0')
@@ -1298,12 +1298,12 @@ namespace MB_Decompiler_Library.IO
                             } while ((char)c != ' ');
                             tmp[j] = line.TrimEnd();
                         }
-                        line = c.ToString();
+                        line = Char.ConvertFromUtf32(c);
                         foreach (string s in tmp)
                             line += ' ' + s;
                     }
                     else
-                        line = c.ToString();
+                        line = Char.ConvertFromUtf32(c);
                     _factions[i] = new Faction(new string[] { firstLine, secondLine, line });
                 }
             }
