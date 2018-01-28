@@ -28,16 +28,18 @@ namespace MB_Decompiler_Library.Objects
             if (ImportantMethods.IsNumericGZ(raw_data[1]))
             {
                 flagsGZ = ulong.Parse(raw_data[1]);
-                flags = SetFlagsX(headerVariablesNormal);
+                flags = SetFlagsX(flagsGZ, headerVariablesNormal);
                 ulong x = (flagsGZ & 0xff000000);
                 if (x != 0)
-                    flags = "|" + ACF_ANIM_LENGTH + (x >> 24) + ")";
-                flags = flags.TrimStart('0', '|');
+                {
+                    flags += "|" + ACF_ANIM_LENGTH + (x >> 24) + ")";
+                    flags = flags.TrimStart('0', '|');
+                }
             }
             else
             {
                 flags = raw_data[1];
-                flagsGZ = SetFlagsXGZ(headerVariablesNormal);
+                flagsGZ = SetFlagsXGZ(flags, headerVariablesNormal);
                 if (flags.Contains(ACF_ANIM_LENGTH))
                     flagsGZ |= ulong.Parse(flags.Substring(flags.IndexOf(ACF_ANIM_LENGTH)).Split(')')[0].Trim());
             }
@@ -45,12 +47,12 @@ namespace MB_Decompiler_Library.Objects
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
                 masterFlagsGZ = ulong.Parse(raw_data[2]);
-                masterFlags = SetFlagsX(headerVariablesMaster);
+                masterFlags = SetFlagsX(masterFlagsGZ, headerVariablesMaster);
             }
             else
             {
                 masterFlags = raw_data[2];
-                masterFlagsGZ = SetFlagsXGZ(headerVariablesMaster);
+                masterFlagsGZ = SetFlagsXGZ(masterFlags, headerVariablesMaster);
             }
         }
 
@@ -110,10 +112,10 @@ namespace MB_Decompiler_Library.Objects
             return list;
         }
 
-        private ulong SetFlagsXGZ(HeaderVariable[] variables)
+        private ulong SetFlagsXGZ(string flags, HeaderVariable[] variables)
         {
-            string[] tmp = flags.Split('|');
             ulong flagsGZ = 0;
+            string[] tmp = flags.Split('|');
             foreach (string flag in tmp)
                 foreach (HeaderVariable var in variables)
                     if (var.VariableName.Equals(flag))
@@ -121,16 +123,23 @@ namespace MB_Decompiler_Library.Objects
             return flagsGZ;
         }
 
-        private string SetFlagsX(HeaderVariable[] variables)
+        private string SetFlagsX(ulong flagsGZ, HeaderVariable[] variables)
         {
             ulong x;
             string flags = string.Empty;
+
             foreach (HeaderVariable var in variables)
             {
                 x = ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
                 if ((x & flagsGZ) == x)
                     flags += var.VariableName + '|';
             }
+
+            if (flags.Length != 0)
+                flags = flags.TrimEnd('|');
+            else
+                flags = flagsGZ.ToString();
+
             return flags;
         }
 

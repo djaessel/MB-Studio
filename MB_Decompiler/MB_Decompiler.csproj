@@ -108,10 +108,6 @@
     <StartupObject>MB_Decompiler.ProgramConsole</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="importantLib, Version=1.3.2.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\importantLib\importantLib\bin\Release\importantLib.dll</HintPath>
-    </Reference>
     <Reference Include="skillhunter, Version=2.9.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DeadMenTell\brfManager\bin\Release\skillhunter.dll</HintPath>
@@ -152,6 +148,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\importantLib\importantLib\importantLib.csproj">
+      <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
+      <Name>importantLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MB_Decompiler_Library\MB_Decompiler_Library.csproj">
       <Project>{fc643914-80e5-42ff-806b-c23e37dd9ec5}</Project>
       <Name>MB_Decompiler_Library</Name>

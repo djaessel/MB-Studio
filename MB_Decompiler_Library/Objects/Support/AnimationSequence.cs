@@ -22,15 +22,15 @@ namespace MB_Decompiler_Library.Objects.Support
                 InitializeHeaderVariables();
 
             //if (ImportantMethods.IsNumeric(CodeReader.Repl_DotWComma(raw_data[0]), true))
-                duration = double.Parse(CodeReader.Repl_DotWComma(raw_data[0]));
+                duration = double.Parse(CodeReader.Repl_DotWComma(raw_data[0]));//change if needed
 
             resourceName = raw_data[1];
 
             //if (ImportantMethods.IsNumericGZ(raw_data[2]))
-                beginFrame = int.Parse(raw_data[2]);
+                beginFrame = int.Parse(raw_data[2]);//change if needed
 
             //if (ImportantMethods.IsNumericGZ(raw_data[3]))
-                endFrame = int.Parse(raw_data[3]);
+                endFrame = int.Parse(raw_data[3]);//change if needed
 
             if (ImportantMethods.IsNumericGZ(raw_data[4]))
             {
@@ -139,6 +139,11 @@ namespace MB_Decompiler_Library.Objects.Support
                 if ((x & flagsGZ) == x)
                     flags += var.VariableName + '|';
             }
+
+            if (flags.Length != 0)
+                flags = flags.TrimEnd('|');
+            else
+                flags = flagsGZ.ToString();
 
             this.flags = flags;
         }

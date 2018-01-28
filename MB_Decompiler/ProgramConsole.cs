@@ -4,8 +4,8 @@ using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
 using System.Diagnostics;
 using System.Collections.Generic;
-using importantLib;
 using System.Collections.Specialized;
+using importantLib;
 
 namespace MB_Decompiler
 {

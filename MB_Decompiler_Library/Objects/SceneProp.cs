@@ -143,7 +143,7 @@ namespace MB_Decompiler_Library.Objects
                 flags += "spr_use_time(" + useTime + ")|";
 
             if (flags.Length != 0)
-                flags.TrimEnd('|');
+                flags = flags.TrimEnd('|');
             else
                 flags = flagsGZ.ToString();
 

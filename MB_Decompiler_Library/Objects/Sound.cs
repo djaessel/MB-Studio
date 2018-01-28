@@ -35,8 +35,6 @@ namespace MB_Decompiler_Library.Objects
 
         public string[] SoundFiles { get { return soundFiles; } }
 
-        //public static void SetSoundFiles(string[] allSoundFiles) { Sound.allSoundFiles = allSoundFiles; }
-
         private void SetFlags()
         {
             string flags = string.Empty;
@@ -52,14 +50,14 @@ namespace MB_Decompiler_Library.Objects
             if ((flagsGZ & 0x100000) == 0x100000)
                 flags += "sf_always_send_via_network|";
             if ((flagsGZ & 0xf00) != 0)
-                flags += "sf_vol_" + (flagsGZ & 0xf00) + "|";
+                flags += "sf_vol_" + ((flagsGZ & 0xf00) >> 8) + "|";
             if ((flagsGZ & 0xf0) != 0)
-                flags += "sf_priority_" + (flagsGZ & 0xf0) + "|";
+                flags += "sf_priority_" + ((flagsGZ & 0xf0) >> 4) + "|";
 
-            if (flags.Length == 0)
-                flags = "0";
-            else
+            if (flags.Length != 0)
                 flags = flags.TrimEnd('|');
+            else
+                flags = flagsGZ.ToString();
 
             this.flags = flags;
         }
