@@ -44,8 +44,9 @@ namespace MB_Decompiler_Library.Objects
                     i = intervalCodes.Count;
                 }
             }
-            if (tmp >= 0 && tmp < 100000000)
-                ret = interval.ToString().Replace(",",".");
+            if (ret.Length == 0/* && tmp >= 0 && tmp < 100000000*/)
+                ret = interval.ToString().Replace(',', '.');
+            //System.Windows.Forms.MessageBox.Show("TEST:" + interval + ":" + tmp + ":" + ret);
             return ret;
         }
 

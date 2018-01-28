@@ -18,25 +18,27 @@ namespace MB_Decompiler_Library.Objects
                 InitializeHeaderVariables();
 
             trackFile = raw_data[1];
-            if (!ImportantMethods.IsNumericGZ(raw_data[2]))
-            {
-                flags = raw_data[2];
-                flagsGZ = SetFlagsGZ();
-            }
-            else
+
+            if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
                 flagsGZ = ulong.Parse(raw_data[2]);
-                flags = SetFlags();
-            }
-            if (!ImportantMethods.IsNumericGZ(raw_data[3]))
-            {
-                continueFlags = raw_data[3];
-                continueFlagsGZ = SetFlagsGZ();
+                flags = SetFlags(flagsGZ);
             }
             else
             {
+                flags = raw_data[2];
+                flagsGZ = SetFlagsGZ(flags);
+            }
+
+            if (ImportantMethods.IsNumericGZ(raw_data[3]))
+            {
                 continueFlagsGZ = ulong.Parse(raw_data[3]);
-                continueFlags = SetFlags();
+                continueFlags = SetFlags(continueFlagsGZ);
+            }
+            else
+            {
+                continueFlags = raw_data[3];
+                continueFlagsGZ = SetFlagsGZ(continueFlags);
             }
         }
 
@@ -44,10 +46,15 @@ namespace MB_Decompiler_Library.Objects
         {
             const string file2 = "header_mb_decompiler.py";
             List<HeaderVariable> list;
+
             if (listX == null)
                 list = new List<HeaderVariable>();
             else
                 list = listX;
+
+            if (!file.Equals(file2))
+                file = "moduleSystem\\" + file;
+
             if (File.Exists(SkillHunter.FilesPath + file))
             {
                 using (StreamReader sr = new StreamReader(SkillHunter.FilesPath + file))
@@ -95,7 +102,7 @@ namespace MB_Decompiler_Library.Objects
             return list;
         }
 
-        private string SetFlags()
+        private string SetFlags(ulong flagsGZ)
         {
             ulong x;
             string flags = string.Empty;
@@ -108,14 +115,14 @@ namespace MB_Decompiler_Library.Objects
             }
 
             if (flags.Length != 0)
-                flags.TrimEnd('|');
+                flags = flags.TrimEnd('|');
             else
                 flags = flagsGZ.ToString();
 
             return flags;
         }
 
-        private ulong SetFlagsGZ()
+        private ulong SetFlagsGZ(string flags)
         {
             ulong flagsGZ = 0;
             string[] tmp = flags.Split('|');
@@ -132,11 +139,11 @@ namespace MB_Decompiler_Library.Objects
 
         public string TrackFlags { get { return flags; } }
 
-        public ulong TrackFlagsGZ { get { return 0; } }
+        public ulong TrackFlagsGZ { get { return flagsGZ; } }
 
         public string ContinueTrackFlags { get { return continueFlags; } }
 
-        public ulong ContinueTrackFlagsGZ { get { return 0; } }
+        public ulong ContinueTrackFlagsGZ { get { return continueFlagsGZ; } }
 
     }
 }

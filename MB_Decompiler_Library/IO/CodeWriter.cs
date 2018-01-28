@@ -45,10 +45,10 @@ namespace MB_Decompiler_Library.IO
             PrepareAndProcessFiles();
 
             Control consoleOutput = (Control)param;
-            ControlWriter controlTextWriter = new ControlWriter(consoleOutput, consoleOutput.FindForm());
+            Form parentForm = consoleOutput.FindForm();
+            ControlWriter controlTextWriter = new ControlWriter(consoleOutput, parentForm);
 
-            Form parent = consoleOutput.FindForm();
-
+            //maybe make separat control for errors
             Console.SetError(controlTextWriter); //new ControlWriter(consoleOutput, consoleOutput.FindForm())
             Console.SetOut(controlTextWriter);   //new ControlWriter(consoleOutput, consoleOutput.FindForm())
 
@@ -58,27 +58,30 @@ namespace MB_Decompiler_Library.IO
 
             IsFinished = true;
 
+            Console.SetError(Console.Error);
             Console.SetOut(Console.Out);
         }
 
         private static void WriteIDFiles()
         {
-            Console.Write("Writing ID files...");
-
-            /*using (StreamWriter wr = new StreamWriter(ModuleSystem + "ID_map_icons.py")) // for all later - just testing right now
-                for (int i = 0; i < CodeReader.MapIcons.Length; i++)
-                    wr.WriteLine(CodeReader.MapIcons[i] + " = " + i);*/
+            Console.Write("Writing ID files");
 
             int sourceIndex = 0;
-            for (int i = 0; i < CodeReader.Elements.Length - 2; i++) // OHNE QUICKSTRINGS UND GLOABLAVARIABLES
+            int countFiles = CodeReader.Elements.Length - 2;
+            for (int i = 0; i < countFiles; i++) // OHNE QUICKSTRINGS UND GLOABLAVARIABLES
             {
-                if (i == 15 || i == 21)
+                if (i == 7 || i == 15 || i == 21)
+                {
                     sourceIndex++;
-                else if (i == 7)
-                    sourceIndex += 2;
+                    if (i == 7)
+                        sourceIndex++;
+                    Console.Write('.');
+                }
+
                 using (StreamWriter wr = new StreamWriter(GetIDFileNameByIndex(sourceIndex)))
                     for (int j = 0; j < CodeReader.Elements[i].Length; j++)
                         wr.WriteLine(CodeReader.Elements[i][j] + " = " + j);
+
                 sourceIndex++;
             }
 
@@ -111,9 +114,9 @@ namespace MB_Decompiler_Library.IO
                 }
             }
 
-            Console.WriteLine("__________________________________________________" + Environment.NewLine
-                            + " Finished compiling!" + Environment.NewLine
-                            + " Cleaning up...");
+            Console.Write("__________________________________________________" + Environment.NewLine
+                        + " Finished compiling!" + Environment.NewLine
+                        + " Cleaning up...");
 
             string[] files = Directory.GetFiles(ModuleSystem);
             foreach (string file in files)
@@ -123,7 +126,7 @@ namespace MB_Decompiler_Library.IO
                     File.Delete(file);
             }
 
-            Console.WriteLine(" Done.");
+            Console.WriteLine("Done!");
         }
 
         private static void PrepareAndProcessFiles()
@@ -131,19 +134,19 @@ namespace MB_Decompiler_Library.IO
             string headerFilesPath = CodeReader.ProjectPath + "\\headerFiles";
             string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";
 
-            string[] header_files = Directory.GetFiles(headerFilesPath);
-            string[] module_files = Directory.GetFiles(moduleFilesPath);
+            string[] headerFiles = Directory.GetFiles(headerFilesPath);
+            string[] moduleFiles = Directory.GetFiles(moduleFilesPath);
 
-            if (module_files.Length <= DEFAULT_FILES)
+            if (moduleFiles.Length <= DEFAULT_FILES)
             {
                 SourceWriter.WriteAllObjects();
-                module_files = Directory.GetFiles(moduleFilesPath);
+                moduleFiles = Directory.GetFiles(moduleFilesPath);
             }
 
-            foreach (string file in header_files)
+            foreach (string file in headerFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
 
-            foreach (string file in module_files)
+            foreach (string file in moduleFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
 
             //string module_info = ModuleSystem + "module_info.py";

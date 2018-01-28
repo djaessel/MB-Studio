@@ -7,12 +7,13 @@ namespace MB_Decompiler_Library.Objects
     {
         private ulong flagsGZ;
         private int width, height, minX, minY, maxX, maxY;
-        private string sampleMaterialName;
+        private string sampleMaterialName, flags;
         private string[] operationBlock;
 
         public TableauMaterial(string[] raw_data, bool source = false) : base(raw_data[0], ObjectType.TABLEAU_MATERIAL)
         {
-            flagsGZ = ulong.Parse(raw_data[1]);//change if flags available
+            flagsGZ = ulong.Parse(raw_data[1]);
+            flags = flagsGZ.ToString();//change if flags available
             sampleMaterialName = raw_data[2];
             width = int.Parse(raw_data[3]);
             height = int.Parse(raw_data[4]);
@@ -50,6 +51,8 @@ namespace MB_Decompiler_Library.Objects
         public int MaxY { get { return maxY; } }
 
         public string SampleMaterialName { get { return sampleMaterialName; } }
+
+        public string Flags { get { return flags; } }
 
         public string[] OperationBlock { get { return operationBlock; } }
 

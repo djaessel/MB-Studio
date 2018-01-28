@@ -11,11 +11,11 @@ namespace MB_Decompiler_Library.Objects
         public Trigger(string checkInterval, string delayInterval, string rearmInterval) : base(checkInterval, ObjectType.TRIGGER)
         {
             if (ImportantMethods.IsNumeric(delayInterval, true))
-                this.delayInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_CommaWDot(delayInterval)));
+                this.delayInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(delayInterval)));
             else
                 this.delayInterval = delayInterval;
             if (ImportantMethods.IsNumeric(rearmInterval, true))
-                this.rearmInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_CommaWDot(rearmInterval)));
+                this.rearmInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(rearmInterval)));
             else
                 this.rearmInterval = rearmInterval;
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using importantLib;
+﻿using importantLib;
 using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
@@ -52,7 +51,6 @@ namespace MB_Decompiler_Library.Objects
         private void SetFlags()
         {
             string flags;
-
             byte base_att = (byte)(flagsGZ & 0x3);
 
             switch (base_att)
@@ -83,6 +81,8 @@ namespace MB_Decompiler_Library.Objects
         public string SkillName { get { return skillName; } }
 
         public string Description { get { return description; } }
+
+        public string Flags { get { return flags; } }
 
         public ulong FlagsGZ { get { return flagsGZ; } }
 

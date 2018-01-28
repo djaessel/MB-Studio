@@ -345,13 +345,18 @@ namespace MB_Decompiler_Library.IO
 
         private static string[] ReadStrings()
         {
+            string tmp;
             List<string> strings = new List<string>();
             using (StreamReader sr = new StreamReader(modPath + "strings.txt"))
             {
                 sr.ReadLine();
                 sr.ReadLine();
                 while (!sr.EndOfStream)
-                    strings.Add(sr.ReadLine().Split(' ')[0]);
+                {
+                    tmp = sr.ReadLine().Split(' ')[0].Trim();
+                    if (tmp.Length != 0)
+                        strings.Add(tmp);
+                }
             }
             return strings.ToArray();
         }

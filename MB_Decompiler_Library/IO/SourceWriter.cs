@@ -762,7 +762,7 @@ namespace MB_Decompiler_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.QUEST); //wr.WriteLine("from header_quests import *");
                 foreach (Quest quest in objects)
-                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + quest.QuestName + "\", " + quest.FlagsGZ + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
+                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + quest.QuestName + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
                 wr.WriteLine(Environment.NewLine + "] # QUESTS END");
             }
             return objects.Count;
@@ -775,7 +775,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SOUND); //wr.WriteLine("from header_sounds import *");
                 foreach (Sound sound in objects)
                 {
-                    wr.Write(" (\"" + sound.ID + "\", " + sound.FlagsGZ + ", ["); //("click", sf_2d|sf_vol_3,["drum_3.ogg"]),
+                    wr.Write(" (\"" + sound.ID + "\", " + sound.Flags + ", [");
                     for (int i = 0; i < sound.SoundFiles.Length; i++)
                     {
                         wr.Write('\"' + sound.SoundFiles[i] + '\"');
@@ -796,7 +796,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCENE_PROP);
                 foreach (SceneProp sceneProp in objects)
                 {
-                    wr.Write(Environment.NewLine + " (\"" + sceneProp.ID + "\", " + sceneProp.FlagsGZ + ", \"" + sceneProp.MeshName + "\", \"" + sceneProp.PhysicsObjectName + "\", [");
+                    wr.Write(Environment.NewLine + " (\"" + sceneProp.ID + "\", " + sceneProp.Flags + ", \"" + sceneProp.MeshName + "\", \"" + sceneProp.PhysicsObjectName + "\", [");
                     foreach (SimpleTrigger strigger in sceneProp.SimpleTriggers)
                     {
                         wr.WriteLine();
@@ -817,7 +817,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TABLEAU_MATERIAL);
                 foreach (TableauMaterial tableau in objects)
                 {
-                    wr.Write(Environment.NewLine + "  (\"" + tableau.ID + "\", " + tableau.FlagsGZ + ", \"" + tableau.SampleMaterialName + "\", " + tableau.Width + ", " + tableau.Height + ", "
+                    wr.Write(Environment.NewLine + "  (\"" + tableau.ID + "\", " + tableau.Flags + ", \"" + tableau.SampleMaterialName + "\", " + tableau.Width + ", " + tableau.Height + ", "
                         + tableau.MinX + ", " + tableau.MinY + ", " + tableau.MaxX + ", " + tableau.MaxY + ",");
                     if (tableau.OperationBlock.Length > 0)
                     {
@@ -841,7 +841,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MAP_ICON);
                 foreach (MapIcon mapIcon in objects)
                 {
-                    wr.Write("  (\"" + mapIcon.ID + "\", " + mapIcon.FlagsGZ + ", \"" + mapIcon.MapIconName + "\", ");
+                    wr.Write("  (\"" + mapIcon.ID + "\", " + mapIcon.Flags + ", \"" + mapIcon.MapIconName + "\", ");
 
                     if (mapIcon.Scale == 0.3) // change later
                         wr.Write("banner_scale");
@@ -855,6 +855,12 @@ namespace MB_Decompiler_Library.IO
                     else
                         wr.Write(", 0");
 
+                    if (!double.IsNaN(mapIcon.OffsetZ)/* && !double.IsNaN(mapIcon.OffsetY) && !double.IsNaN(mapIcon.OffsetZ)*/) // change if needed
+                    {
+                        wr.Write(", " + CodeReader.Repl_CommaWDot(mapIcon.OffsetX.ToString()) + ", " + CodeReader.Repl_CommaWDot(mapIcon.OffsetY.ToString()) + ", "
+                            + CodeReader.Repl_CommaWDot(mapIcon.OffsetZ.ToString()));
+                    }
+
                     if (mapIcon.SimpleTriggers.Length > 0)
                     {
                         wr.WriteLine("," + Environment.NewLine + "   [");
@@ -862,9 +868,18 @@ namespace MB_Decompiler_Library.IO
                             WriteASimpleTrigger(wr, strigger);
                         wr.Write(Environment.NewLine + "\t ]");
                     }
-                    else if (mapIcon.OffsetX != double.NaN || mapIcon.OffsetY != double.NaN || mapIcon.OffsetZ != double.NaN)
+
+                    /*if (mapIcon.SimpleTriggers.Length > 0)
+                    {
+                        wr.WriteLine("," + Environment.NewLine + "   [");
+                        foreach (SimpleTrigger strigger in mapIcon.SimpleTriggers)
+                            WriteASimpleTrigger(wr, strigger);
+                        wr.Write(Environment.NewLine + "\t ]");
+                    }
+                    else if (mapIcon.OffsetX != double.NaN || mapIcon.OffsetY != double.NaN || mapIcon.OffsetZ != double.NaN)// maybe change later
                         wr.Write(", " + CodeReader.Repl_CommaWDot(mapIcon.OffsetX.ToString()) + ", " + CodeReader.Repl_CommaWDot(mapIcon.OffsetY.ToString()) + ", "
-                            + CodeReader.Repl_CommaWDot(mapIcon.OffsetZ.ToString()));
+                            + CodeReader.Repl_CommaWDot(mapIcon.OffsetZ.ToString()));*/
+                    
                     wr.WriteLine("),");
                 }
                 wr.WriteLine("] # MAP_ICONS END");
@@ -911,7 +926,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < objects.Count; i++)
                 {
                     Faction fac = (Faction)objects[i];
-                    wr.Write("  (\"" + fac.ID + "\", \"" + fac.FactionName + "\", " + fac.FlagsGZ + ", " + CodeReader.Repl_CommaWDot(fac.Relations[i].ToString()) + ", [");
+                    wr.Write("  (\"" + fac.ID + "\", \"" + fac.FactionName + "\", " + fac.Flags + ", " + CodeReader.Repl_CommaWDot(fac.Relations[i].ToString()) + ", [");
                     for (int j = 0; j < fac.Relations.Length; j++)
                     {
                         if (fac.Relations[j] != 0f)
@@ -944,11 +959,11 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.ANIMATION);
                 foreach (Animation animation in objects)
                 {
-                    wr.WriteLine(" [\"" + animation.ID + "\", " + animation.FlagsGZ + ", " + animation.MasterFlagsGZ + ',');
+                    wr.WriteLine(" [\"" + animation.ID + "\", " + animation.Flags + ", " + animation.MasterFlags + ',');
                     foreach (AnimationSequence anim_sequence in animation.Sequences)
                     {
                         wr.Write("   [" + CodeReader.Repl_CommaWDot(anim_sequence.Duration.ToString()) + ", \"" + anim_sequence.ResourceName + "\", " + anim_sequence.BeginFrame + ", "
-                            + anim_sequence.EndFrame + ", " + anim_sequence.FlagsGZ);
+                            + anim_sequence.EndFrame + ", " + anim_sequence.Flags);
                         if (anim_sequence.LastNumberGZ != 0 && anim_sequence.LastNumbersFKZ[0].Equals(double.NaN))
                             wr.Write(", " + anim_sequence.LastNumberGZ);
                         else if (!anim_sequence.LastNumbersFKZ[0].Equals(double.NaN))
@@ -987,7 +1002,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PARTY_TEMPLATE);
                 foreach (PartyTemplate partyTemplate in objects)
                 {
-                    wr.Write("  (\"" + partyTemplate.ID + "\",\"" + partyTemplate.PartyTemplateName + "\"," + partyTemplate.FlagsGZ + "," + partyTemplate.MenuID + ","
+                    wr.Write("  (\"" + partyTemplate.ID + "\",\"" + partyTemplate.PartyTemplateName + "\"," + partyTemplate.Flags + "," + partyTemplate.MenuID + ","
                         + partyTemplate.Faction + "," + partyTemplate.Personality + ",[");
                     for (int i = 0; i < partyTemplate.Members.Length; i++)
                     {
@@ -1057,7 +1072,7 @@ namespace MB_Decompiler_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SKILL);
                 foreach (Skill skill in objects)
-                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + skill.SkillName + "\"," + skill.FlagsGZ + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
+                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + skill.SkillName + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
                 wr.WriteLine("] # SKILLS END");
             }
             return objects.Count;
@@ -1256,7 +1271,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCENE);
                 foreach (Scene scene in objects)
                 {
-                    wr.WriteLine("  (\"" + scene.ID + "\", " + scene.FlagsGZ + ", \"" + scene.MeshName + "\", \"" + scene.BodyName + "\", ("
+                    wr.WriteLine("  (\"" + scene.ID + "\", " + scene.Flags + ", \"" + scene.MeshName + "\", \"" + scene.BodyName + "\", ("
                         + CodeReader.Repl_CommaWDot(scene.MinPosition[0].ToString()) + ',' + CodeReader.Repl_CommaWDot(scene.MinPosition[1].ToString()) + "),("
                         + CodeReader.Repl_CommaWDot(scene.MaxPosition[0].ToString()) + ',' + CodeReader.Repl_CommaWDot(scene.MaxPosition[1].ToString()) + "),"
                         + CodeReader.Repl_CommaWDot(scene.WaterLevel.ToString()) + ",\"" + scene.TerrainCode + "\",");
