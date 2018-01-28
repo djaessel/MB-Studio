@@ -110,12 +110,12 @@ namespace MB_Decompiler_Library.IO
                     parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
                     parameters[1] = ModuleSystem + parameters[1];
 
-                    ImportantMethods.ExecuteCommandSync("\"\"" + parameters[0] + "\" \"" + parameters[1] + "\"\"", ModuleSystem); // Try to change workingdirectory in importantLib!
+                    ImportantMethods.ExecuteCommandSync("\"\"" + parameters[0] + "\" \"" + parameters[1] + "\"\"", ModuleSystem);
                 }
             }
 
             Console.Write("__________________________________________________" + Environment.NewLine
-                        + " Finished compiling!" + Environment.NewLine
+                        + " Finished compiling!" + Environment.NewLine + Environment.NewLine
                         + " Cleaning up...");
 
             string[] files = Directory.GetFiles(ModuleSystem);
@@ -126,7 +126,7 @@ namespace MB_Decompiler_Library.IO
                     File.Delete(file);
             }
 
-            Console.WriteLine("Done!");
+            Console.WriteLine("Done!" + Environment.NewLine);
         }
 
         private static void PrepareAndProcessFiles()
