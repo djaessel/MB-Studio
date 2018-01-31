@@ -427,18 +427,20 @@ namespace MB_Studio.Manager
 
             #region GROUP1 - Flags & Guarantee
 
-            string flagsS = SkillHunter.Dec2Hex(troop.Flags);
-            string skin = "0000000" + flagsS.Substring(7);
-            skins_lb.SelectedIndex = int.Parse(SkillHunter.Hex2Dec(skin).ToString());
-            if (troop.Flags > 0)
+            //string skin = "0000000" + SkillHunter.Dec2Hex(troop.FlagsGZ).Substring(7);
+            //skins_lb.SelectedIndex = int.Parse(SkillHunter.Hex2Dec(skin).ToString());
+            skins_lb.SelectedIndex = troop.FlagsGZ & 0xF;
+            if (troop.FlagsGZ > 0)
             {
-                foreach (string flag in Troop.GetFlagsFromValue(flagsS).Split('|'))
+                foreach (string flag in troop.Flags.Split('|'))
                 {
                     Control[] cc = groupBox_1_gb.Controls.Find(flag.Substring(3) + "_cb", false);
                     if (cc.Length == 1 && !flag.Contains("tf_guarantee_"))
+                    {
                         ((CheckBox)cc[0]).CheckState = CheckState.Checked;
-                    else if (cc.Length > 1 && !flag.Contains("tf_guarantee_"))
-                        MessageBox.Show("ERROR: Double Flags found! --> " + cc.Length);
+                    }
+                    //else if (cc.Length > 1 && !flag.Contains("tf_guarantee_"))
+                    //    MessageBox.Show("ERROR: Double Flags found! --> " + cc.Length); // enable if needed again
                     else
                     {
                         for (int i = 0; i < guarantee_gb.Controls.Count; i++)

@@ -672,23 +672,90 @@ namespace MB_Decompiler_Library.IO
         //
         public Troop[] ReadTroop()
         {
-            string[] tempus = new string[7];
-            Troop[] troops;
+            string[] sp0, sp1, sp2, sp3;
+            string line = string.Empty;
+            List<Troop> troops = new List<Troop>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int maxTroops = int.Parse(sr.ReadLine().TrimEnd());
-                troops = new Troop[maxTroops];
-                //objectsExpected += maxTroops;
-                for (int i = 0; i < maxTroops; i++)
+                while (!sr.EndOfStream && !line.Equals("troops = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    for (int j = 0; j < 7; j++)
-                        tempus[j] = sr.ReadLine();
-                    troops[i] = new Troop(tempus);
+                    line = sr.ReadLine().Trim('\t', ' ');
+                    if (line.StartsWith("[\""))
+                    {
+                        int x = 0;
+                        do
+                        {
+                            x += CodeReader.CountCharInString(line, '[');
+                            x -= CodeReader.CountCharInString(line, ']');
+                            if (x != 0)
+                                line += sr.ReadLine().Trim('\t', ' ');
+                        } while (!sr.EndOfStream && x != 0);
+                        line = line.TrimStart('[').Remove(line.LastIndexOf(']')).Replace("],", "]");
+                        sp0 = line.Split('[');
+
+                        sp1 = sp0[0].TrimEnd(' ', ',').Split(',');
+                        sp1 = new string[] { sp1[0].Split('\"')[1], sp1[1].Split('\"')[1], sp1[2].Split('\"')[1], sp1[3].Trim(), sp1[4].Trim(), sp1[5].Trim(), sp1[6].Trim() };
+
+                        sp0[1] = RemNTrimAllXtraSp(sp0[1].Split(']')[0]).Replace(" ", string.Empty).Trim(',');
+
+                        if (sp0[1].Contains("(") && sp0[1].Contains("),"))
+                        {
+                            // check for itemflags
+                        }
+                        else
+                        {
+                            // add 0 itemflags
+                        }
+
+                        sp2 = sp0[1].Split(',');
+
+                        sp3 = RemNTrimAllXtraSp(sp0[2].Split(']')[0]).Replace(" ", string.Empty).Trim(',').Split(',');
+
+                        // check for better solution without that many ifs!!!
+                        if (sp3.Length == 11)
+                        {
+                            //...
+                        }
+                        else if (sp3.Length == 12)
+                        {
+                            //...
+                        }
+                        else if (sp3.Length == 13)
+                        {
+                            //...
+                        }
+                        else if (sp3.Length == 14)
+                        {
+                            //...
+                        }
+                        else if (sp3.Length == 15)
+                        {
+                            //...
+                        }
+
+                        //
+                        // check for sp3 length because of faces, upgrade troops and image (11 - 16)
+                        //
+
+                        /*
+            SetFirstLine(ValuesX(0))
+            SetItems(ValuesX(1))
+            SetAttributes(ValuesX(2))
+            SetProficiencies(ValuesX(3))
+            SetSkills(ValuesX(4))
+            SetFaceCodes(ValuesX(5))
+                        */
+
+                        // add code here and change troop init code so source code also works!
+
+                        troops.Add(new Troop(sp0));
+                    }
                 }
             }
-            //objectsRead += troops.Length;
-            return troops;
+            return troops.ToArray();
         }
 
         //

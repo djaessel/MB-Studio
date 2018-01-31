@@ -475,13 +475,14 @@ namespace MB_Decompiler_Library.IO
                     else
                         scnCode = troop.SceneCode;
 
-                    wr.Write(Environment.NewLine + " [\"" + troop.ID.Substring(4) + "\",\"" + troop.Name + "\",\"" + troop.PluralName + "\"," + Troop.GetFlagsFromValue(SkillHunter.Dec2Hex(troop.Flags)/*, b*/) + "," + scnCode + ","
+                    //Troop.GetFlagsFromValue(SkillHunter.Dec2Hex(troop.Flags)) --> troop.Flags
+                    wr.Write(Environment.NewLine + " [\"" + troop.ID.Substring(4) + "\",\"" + troop.Name + "\",\"" + troop.PluralName + "\"," + troop.Flags + "," + scnCode + ","
                         + troop.Reserved + "," + CodeReader.Factions[troop.FactionID] + "," + Environment.NewLine + "  [");
 
                     for (int i = 0; i < troop.Items.Count; i++)
                     {
                         if (troop.ItemFlags[i] != 0)
-                            wr.Write("(" + CodeReader.Items[troop.Items[i]] + ", " + Item.GetItemModifiers_IMODBITS(SkillHunter.Dec2Hex_16CHARS(troop.ItemFlags[i])).Substring(1) + ")");
+                            wr.Write("(" + CodeReader.Items[troop.Items[i]] + ", " + Item.GetItemModifiers_IMODBITS(SkillHunter.Dec2Hex_16CHARS(troop.ItemFlags[i])).Substring(1) + ")");//maybe as property as well - later
                         else
                             wr.Write(CodeReader.Items[troop.Items[i]]);
                         if (i < troop.Items.Count - 1)
