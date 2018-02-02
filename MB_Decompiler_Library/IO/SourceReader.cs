@@ -698,58 +698,84 @@ namespace MB_Decompiler_Library.IO
 
                         sp1 = sp0[0].TrimEnd(' ', ',').Split(',');
                         sp1 = new string[] { sp1[0].Split('\"')[1], sp1[1].Split('\"')[1], sp1[2].Split('\"')[1], sp1[3].Trim(), sp1[4].Trim(), sp1[5].Trim(), sp1[6].Trim() };
+                        List<string> listSp1 = new List<string>(sp1);
 
-                        sp0[1] = RemNTrimAllXtraSp(sp0[1].Split(']')[0]).Replace(" ", string.Empty).Trim(',');
+                        //sp0[1] = RemNTrimAllXtraSp(sp0[1].Split(']')[0]).Replace(" ", string.Empty).Trim(',');
+                        sp0[1] = RemNTrimAllXtraSp(sp0[1]).Replace(" ", string.Empty).Trim(',');
 
-                        if (sp0[1].Contains("(") && sp0[1].Contains("),"))
-                        {
-                            // check for itemflags
-                        }
-                        else
-                        {
-                            // add 0 itemflags
-                        }
+                        sp2 = sp0[1].Split(']');
 
-                        sp2 = sp0[1].Split(',');
+                        sp2[0] = sp2[0].Replace("(", string.Empty).Replace("),", ";");
 
-                        sp3 = RemNTrimAllXtraSp(sp0[2].Split(']')[0]).Replace(" ", string.Empty).Trim(',').Split(',');
-
-                        // check for better solution without that many ifs!!!
-                        if (sp3.Length == 11)
+                        if (!sp2[0].Contains(";") && !sp2[0].Contains(")"))
                         {
-                            //...
-                        }
-                        else if (sp3.Length == 12)
-                        {
-                            //...
-                        }
-                        else if (sp3.Length == 13)
-                        {
-                            //...
-                        }
-                        else if (sp3.Length == 14)
-                        {
-                            //...
-                        }
-                        else if (sp3.Length == 15)
-                        {
-                            //...
+                            line = string.Empty;
+                            for (int i = 0; i < sp2.Length; i++)
+                                line += sp2[i] + ",0;";
+                            sp2[0] = line.TrimEnd(';');
                         }
 
-                        //
-                        // check for sp3 length because of faces, upgrade troops and image (11 - 16)
-                        //
+                        string tmpX = RemNTrimAllXtraSp(sp2[1].Split(']')[0]).Replace(" ", string.Empty).Trim(',');
 
-                        /*
-            SetFirstLine(ValuesX(0))
-            SetItems(ValuesX(1))
-            SetAttributes(ValuesX(2))
-            SetProficiencies(ValuesX(3))
-            SetSkills(ValuesX(4))
-            SetFaceCodes(ValuesX(5))
-                        */
+                        sp3 = tmpX.Split(',');
 
-                        // add code here and change troop init code so source code also works!
+                        tmpX += ',';
+
+                        sp2 = sp2[0].TrimEnd(')').Split(';');
+
+                        switch (sp3.Length)
+                        {
+                            case 11:
+                                tmpX += "0,0,0,0,0";
+                                break;
+                            case 12:
+                                tmpX += "0,0,0,0";
+                                break;
+                            case 13:
+                                tmpX += "0,0,0";
+                                break;
+                            case 14:
+                                tmpX += "0,0";
+                                break;
+                            case 15:
+                                tmpX += "0";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        tmpX = tmpX.TrimEnd(',');
+
+                        sp3 = tmpX.Split(',');
+
+                        sp0 = new string[6];
+
+                        tmpX = string.Empty;
+                        foreach (string s in sp2)
+                            tmpX += s + ' ';
+
+                        sp0[1] = tmpX.TrimEnd();
+
+                        sp0[2] = sp3[0];
+                        sp0[3] = sp3[1];
+                        sp0[4] = sp3[2];
+                        sp0[5] = sp3[3];
+
+                        listSp1.Insert(3, sp3[4]);
+                        listSp1.Add(sp1[sp1.Length - 2]);
+                        listSp1.Add(sp1[sp1.Length - 1]);
+
+                        tmpX = string.Empty;
+                        foreach (string s in listSp1)
+                            tmpX += s + ' ';
+                        sp0[0] = tmpX.TrimEnd();
+
+                        // add code here or in Troops Class and change troop init code so source code also works!
+
+                        //tmpX = string.Empty;
+                        //foreach (string item in sp0)
+                        //    tmpX += item + Environment.NewLine;
+                        //System.Windows.Forms.MessageBox.Show(tmpX);
 
                         troops.Add(new Troop(sp0));
                     }
