@@ -1,0 +1,1155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7F48F8D5-100D-3065-9AB1-476973B61E07}</ProjectGuid>
+    <RootNamespace>openBrf</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>openBrf</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>openBrf</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>openBrf</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>openBrf</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">openBrf</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">openBrf</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">openBrf</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">openBrf</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;.;C:\projects\libraries\include;..\..\..\QT\5.6\MSVC2013\include;..\..\..\QT\5.6\MSVC2013\include\QtOpenGL;..\..\..\QT\5.6\MSVC2013\include\QtWidgets;..\..\..\QT\5.6\MSVC2013\include\QtGui;..\..\..\QT\5.6\MSVC2013\include\QtANGLE;..\..\..\QT\5.6\MSVC2013\include\QtXml;..\..\..\QT\5.6\MSVC2013\include\QtCore;tmp;tmp;..\..\..\QT\5.6\MSVC2013\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>F:\QT\5.6\MSVC2013\lib\qtmain.lib;shell32.lib;opengl32.lib;glu32.lib;F:\QT\5.6\MSVC2013\lib\Qt5OpenGL.lib;F:\QT\5.6\MSVC2013\lib\Qt5Widgets.lib;F:\QT\5.6\MSVC2013\lib\Qt5Gui.lib;F:\QT\5.6\MSVC2013\lib\Qt5Xml.lib;F:\QT\5.6\MSVC2013\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\QT\5.6\MSVC2013\lib;C:\utils\my_sql\my_sql\lib;C:\utils\postgresql\pgsql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\openBrf.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;C:\projects\libraries\include;..\..\..\QT\5.6\MSVC2013_64\include;..\..\..\QT\5.6\MSVC2013_64\include\QtOpenGL;..\..\..\QT\5.6\MSVC2013_64\include\QtWidgets;..\..\..\QT\5.6\MSVC2013_64\include\QtGui;..\..\..\QT\5.6\MSVC2013_64\include\QtANGLE;..\..\..\QT\5.6\MSVC2013_64\include\QtXml;..\..\..\QT\5.6\MSVC2013_64\include\QtCore;tmp;..\..\..\QT\5.6\MSVC2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>F:\QT\5.6\msvc2013_64\lib\qtmain.lib;shell32.lib;opengl32.lib;glu32.lib;F:\QT\5.6\msvc2013_64\lib\Qt5OpenGL.lib;F:\QT\5.6\msvc2013_64\lib\Qt5Widgets.lib;F:\QT\5.6\msvc2013_64\lib\Qt5Gui.lib;F:\QT\5.6\msvc2013_64\lib\Qt5Xml.lib;F:\QT\5.6\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\Qt\5.6\msvc2013_64\lib;C:\utils\my_sql\my_sql\lib;C:\utils\postgresql\pgsql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)openBrf.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;.;C:\projects\libraries\include;..\..\..\QT\5.6\MSVC2013\include;..\..\..\QT\5.6\MSVC2013\include\QtOpenGL;..\..\..\QT\5.6\MSVC2013\include\QtWidgets;..\..\..\QT\5.6\MSVC2013\include\QtGui;..\..\..\QT\5.6\MSVC2013\include\QtANGLE;..\..\..\QT\5.6\MSVC2013\include\QtXml;..\..\..\QT\5.6\MSVC2013\include\QtCore;tmp;tmp;..\..\..\QT\5.6\MSVC2013\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>F:\QT\5.6\MSVC2013\lib\qtmaind.lib;shell32.lib;opengl32.lib;glu32.lib;F:\QT\5.6\MSVC2013\lib\Qt5OpenGLd.lib;F:\QT\5.6\MSVC2013\lib\Qt5Widgetsd.lib;F:\QT\5.6\MSVC2013\lib\Qt5Guid.lib;F:\QT\5.6\MSVC2013\lib\Qt5Xmld.lib;F:\QT\5.6\MSVC2013\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\QT\5.6\MSVC2013\lib;C:\utils\my_sql\my_sql\lib;C:\utils\postgresql\pgsql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\openBrf.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;.;C:\projects\libraries\include;..\..\..\QT\5.6\MSVC2013\include;..\..\..\QT\5.6\MSVC2013\include\QtOpenGL;..\..\..\QT\5.6\MSVC2013\include\QtWidgets;..\..\..\QT\5.6\MSVC2013\include\QtGui;..\..\..\QT\5.6\MSVC2013\include\QtANGLE;..\..\..\QT\5.6\MSVC2013\include\QtXml;..\..\..\QT\5.6\MSVC2013\include\QtCore;tmp;tmp;..\..\..\QT\5.6\MSVC2013\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>F:\QT\5.6\MSVC2013\lib\qtmaind.lib;shell32.lib;opengl32.lib;glu32.lib;F:\QT\5.6\MSVC2013\lib\Qt5OpenGLd.lib;F:\QT\5.6\MSVC2013\lib\Qt5Widgetsd.lib;F:\QT\5.6\MSVC2013\lib\Qt5Guid.lib;F:\QT\5.6\MSVC2013\lib\Qt5Xmld.lib;F:\QT\5.6\MSVC2013\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\QT\5.6\MSVC2013\lib;C:\utils\my_sql\my_sql\lib;C:\utils\postgresql\pgsql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\openBrf.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="askBoneDialog.cpp" />
+    <ClCompile Include="askColorDialog.cpp" />
+    <ClCompile Include="askCreaseDialog.cpp" />
+    <ClCompile Include="askFlagsDialog.cpp" />
+    <ClCompile Include="askHueSatBriDialog.cpp" />
+    <ClCompile Include="askIntervalDialog.cpp" />
+    <ClCompile Include="askLodOptionsDialog.cpp" />
+    <ClCompile Include="askModErrorDialog.cpp" />
+    <ClCompile Include="askNewUiPictureDialog.cpp" />
+    <ClCompile Include="askSelectBrfDialog.cpp" />
+    <ClCompile Include="askSkelDialog.cpp" />
+    <ClCompile Include="askSkelPairDialog.cpp" />
+    <ClCompile Include="askTexturenameDialog.cpp" />
+    <ClCompile Include="askTransformDialog.cpp" />
+    <ClCompile Include="askUnrefTextureDialog.cpp" />
+    <ClCompile Include="askUvTransformDialog.cpp" />
+    <ClCompile Include="brfAnimation.cpp" />
+    <ClCompile Include="brfBody.cpp" />
+    <ClCompile Include="brfData.cpp" />
+    <ClCompile Include="brfHitBox.cpp" />
+    <ClCompile Include="brfMaterial.cpp" />
+    <ClCompile Include="brfMesh.cpp" />
+    <ClCompile Include="brfShader.cpp" />
+    <ClCompile Include="brfSkeleton.cpp" />
+    <ClCompile Include="brfTexture.cpp" />
+    <ClCompile Include="glwidgets.cpp" />
+    <ClCompile Include="guipanel.cpp" />
+    <ClCompile Include="iniData.cpp" />
+    <ClCompile Include="ioMB.cpp" />
+    <ClCompile Include="ioMD3.cpp" />
+    <ClCompile Include="ioOBJ.cpp" />
+    <ClCompile Include="ioSMD.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main_ImpExp.cpp" />
+    <ClCompile Include="main_create.cpp" />
+    <ClCompile Include="main_info.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="myselectionmodel.cpp" />
+    <ClCompile Include="projects\vcglib\wrap\ply\plylib.cpp" />
+    <ClCompile Include="saveLoad.cpp" />
+    <ClCompile Include="selector.cpp" />
+    <ClCompile Include="tablemodel.cpp" />
+    <ClCompile Include="vcgmesh.cpp" />
+    <ClCompile Include="projects\vcglib\wrap\dae\xmldocumentmanaging.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="askBoneDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askBoneDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askBoneDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askBoneDialog.h -o tmp\moc_askBoneDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askBoneDialog.h -o tmp\moc_askBoneDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askBoneDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askBoneDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askBoneDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askBoneDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askBoneDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askBoneDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askBoneDialog.h -o tmp\moc_askBoneDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askBoneDialog.h -o tmp\moc_askBoneDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askBoneDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askBoneDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askBoneDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askBoneDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askColorDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askColorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askColorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askColorDialog.h -o tmp\moc_askColorDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askColorDialog.h -o tmp\moc_askColorDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askColorDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askColorDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askColorDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askColorDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askColorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askColorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askColorDialog.h -o tmp\moc_askColorDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askColorDialog.h -o tmp\moc_askColorDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askColorDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askColorDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askColorDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askColorDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askCreaseDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askCreaseDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askCreaseDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askCreaseDialog.h -o tmp\moc_askCreaseDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askCreaseDialog.h -o tmp\moc_askCreaseDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askCreaseDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askCreaseDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askCreaseDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askCreaseDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askCreaseDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askCreaseDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askCreaseDialog.h -o tmp\moc_askCreaseDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askCreaseDialog.h -o tmp\moc_askCreaseDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askCreaseDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askCreaseDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askCreaseDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askCreaseDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askFlagsDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askFlagsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askFlagsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askFlagsDialog.h -o tmp\moc_askFlagsDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askFlagsDialog.h -o tmp\moc_askFlagsDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askFlagsDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askFlagsDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askFlagsDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askFlagsDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askFlagsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askFlagsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askFlagsDialog.h -o tmp\moc_askFlagsDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askFlagsDialog.h -o tmp\moc_askFlagsDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askFlagsDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askFlagsDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askFlagsDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askFlagsDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askHueSatBriDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askHueSatBriDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askHueSatBriDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askHueSatBriDialog.h -o tmp\moc_askHueSatBriDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askHueSatBriDialog.h -o tmp\moc_askHueSatBriDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askHueSatBriDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askHueSatBriDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askHueSatBriDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askHueSatBriDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askHueSatBriDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askHueSatBriDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askHueSatBriDialog.h -o tmp\moc_askHueSatBriDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askHueSatBriDialog.h -o tmp\moc_askHueSatBriDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askHueSatBriDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askHueSatBriDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askHueSatBriDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askHueSatBriDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askIntervalDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askIntervalDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askIntervalDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askIntervalDialog.h -o tmp\moc_askIntervalDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askIntervalDialog.h -o tmp\moc_askIntervalDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askIntervalDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askIntervalDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askIntervalDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askIntervalDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askIntervalDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askIntervalDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askIntervalDialog.h -o tmp\moc_askIntervalDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askIntervalDialog.h -o tmp\moc_askIntervalDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askIntervalDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askIntervalDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askIntervalDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askIntervalDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askLodOptionsDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askLodOptionsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askLodOptionsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askLodOptionsDialog.h -o tmp\moc_askLodOptionsDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askLodOptionsDialog.h -o tmp\moc_askLodOptionsDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askLodOptionsDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askLodOptionsDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askLodOptionsDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askLodOptionsDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askLodOptionsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askLodOptionsDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askLodOptionsDialog.h -o tmp\moc_askLodOptionsDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askLodOptionsDialog.h -o tmp\moc_askLodOptionsDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askLodOptionsDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askLodOptionsDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askLodOptionsDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askLodOptionsDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askModErrorDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askModErrorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askModErrorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askModErrorDialog.h -o tmp\moc_askModErrorDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askModErrorDialog.h -o tmp\moc_askModErrorDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askModErrorDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askModErrorDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askModErrorDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askModErrorDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askModErrorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askModErrorDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askModErrorDialog.h -o tmp\moc_askModErrorDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askModErrorDialog.h -o tmp\moc_askModErrorDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askModErrorDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askModErrorDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askModErrorDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askModErrorDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askNewUiPictureDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askNewUiPictureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askNewUiPictureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askNewUiPictureDialog.h -o tmp\moc_askNewUiPictureDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askNewUiPictureDialog.h -o tmp\moc_askNewUiPictureDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askNewUiPictureDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askNewUiPictureDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askNewUiPictureDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askNewUiPictureDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askNewUiPictureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askNewUiPictureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askNewUiPictureDialog.h -o tmp\moc_askNewUiPictureDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askNewUiPictureDialog.h -o tmp\moc_askNewUiPictureDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askNewUiPictureDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askNewUiPictureDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askNewUiPictureDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askNewUiPictureDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askSelectBrfDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askSelectBrfDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askSelectBrfDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSelectBrfDialog.h -o tmp\moc_askSelectBrfDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSelectBrfDialog.h -o tmp\moc_askSelectBrfDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askSelectBrfDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askSelectBrfDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askSelectBrfDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askSelectBrfDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askSelectBrfDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askSelectBrfDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSelectBrfDialog.h -o tmp\moc_askSelectBrfDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSelectBrfDialog.h -o tmp\moc_askSelectBrfDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askSelectBrfDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askSelectBrfDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askSelectBrfDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askSelectBrfDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askSkelDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askSkelDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askSkelDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelDialog.h -o tmp\moc_askSkelDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelDialog.h -o tmp\moc_askSkelDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askSkelDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askSkelDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askSkelDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askSkelDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askSkelDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askSkelDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelDialog.h -o tmp\moc_askSkelDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelDialog.h -o tmp\moc_askSkelDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askSkelDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askSkelDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askSkelDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askSkelDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askSkelPairDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askSkelPairDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askSkelPairDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelPairDialog.h -o tmp\moc_askSkelPairDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelPairDialog.h -o tmp\moc_askSkelPairDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askSkelPairDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askSkelPairDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askSkelPairDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askSkelPairDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askSkelPairDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askSkelPairDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelPairDialog.h -o tmp\moc_askSkelPairDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askSkelPairDialog.h -o tmp\moc_askSkelPairDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askSkelPairDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askSkelPairDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askSkelPairDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askSkelPairDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askTexturenameDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askTexturenameDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askTexturenameDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTexturenameDialog.h -o tmp\moc_askTexturenameDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTexturenameDialog.h -o tmp\moc_askTexturenameDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askTexturenameDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askTexturenameDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askTexturenameDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askTexturenameDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askTexturenameDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askTexturenameDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTexturenameDialog.h -o tmp\moc_askTexturenameDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTexturenameDialog.h -o tmp\moc_askTexturenameDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askTexturenameDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askTexturenameDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askTexturenameDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askTexturenameDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askTransformDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTransformDialog.h -o tmp\moc_askTransformDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTransformDialog.h -o tmp\moc_askTransformDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askTransformDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askTransformDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askTransformDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askTransformDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTransformDialog.h -o tmp\moc_askTransformDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askTransformDialog.h -o tmp\moc_askTransformDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askTransformDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askTransformDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askTransformDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askTransformDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askUnrefTextureDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askUnrefTextureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askUnrefTextureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUnrefTextureDialog.h -o tmp\moc_askUnrefTextureDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUnrefTextureDialog.h -o tmp\moc_askUnrefTextureDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askUnrefTextureDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askUnrefTextureDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askUnrefTextureDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askUnrefTextureDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askUnrefTextureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askUnrefTextureDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUnrefTextureDialog.h -o tmp\moc_askUnrefTextureDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUnrefTextureDialog.h -o tmp\moc_askUnrefTextureDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askUnrefTextureDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askUnrefTextureDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askUnrefTextureDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askUnrefTextureDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askUvTransformDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askUvTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askUvTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUvTransformDialog.h -o tmp\moc_askUvTransformDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUvTransformDialog.h -o tmp\moc_askUvTransformDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC askUvTransformDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC askUvTransformDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_askUvTransformDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_askUvTransformDialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askUvTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askUvTransformDialog.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUvTransformDialog.h -o tmp\moc_askUvTransformDialog.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore askUvTransformDialog.h -o tmp\moc_askUvTransformDialog.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC askUvTransformDialog.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC askUvTransformDialog.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_askUvTransformDialog.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_askUvTransformDialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="bindTexturePatch.h" />
+    <ClInclude Include="brfAnimation.h" />
+    <ClInclude Include="brfBody.h" />
+    <ClInclude Include="brfData.h" />
+    <ClInclude Include="brfMaterial.h" />
+    <ClInclude Include="brfMesh.h" />
+    <ClInclude Include="brfShader.h" />
+    <ClInclude Include="brfSkeleton.h" />
+    <ClInclude Include="brfTexture.h" />
+    <ClInclude Include="brfToken.h" />
+    <ClInclude Include="carryPosition.h" />
+    <ClInclude Include="ddsData.h" />
+    <CustomBuild Include="glwidgets.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">glwidgets.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glwidgets.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore glwidgets.h -o tmp\moc_glwidgets.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore glwidgets.h -o tmp\moc_glwidgets.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC glwidgets.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC glwidgets.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_glwidgets.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_glwidgets.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">glwidgets.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glwidgets.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore glwidgets.h -o tmp\moc_glwidgets.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore glwidgets.h -o tmp\moc_glwidgets.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC glwidgets.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC glwidgets.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_glwidgets.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_glwidgets.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="guipanel.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">guipanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">guipanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore guipanel.h -o tmp\moc_guipanel.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore guipanel.h -o tmp\moc_guipanel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC guipanel.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC guipanel.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_guipanel.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_guipanel.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">guipanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">guipanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore guipanel.h -o tmp\moc_guipanel.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore guipanel.h -o tmp\moc_guipanel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC guipanel.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC guipanel.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_guipanel.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_guipanel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="dllImportForCSharp.h" />
+    <ClInclude Include="iniData.h" />
+    <ClInclude Include="ioMB.h" />
+    <ClInclude Include="ioMD3.h" />
+    <ClInclude Include="ioOBJ.h" />
+    <ClInclude Include="ioSMD.h" />
+    <CustomBuild Include="mainwindow.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mainwindow.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mainwindow.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore mainwindow.h -o tmp\moc_mainwindow.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore mainwindow.h -o tmp\moc_mainwindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC mainwindow.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC mainwindow.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_mainwindow.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_mainwindow.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mainwindow.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mainwindow.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore mainwindow.h -o tmp\moc_mainwindow.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore mainwindow.h -o tmp\moc_mainwindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC mainwindow.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC mainwindow.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_mainwindow.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_mainwindow.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="myselectionmodel.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC myselectionmodel.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC myselectionmodel.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC myselectionmodel.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC myselectionmodel.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="saveLoad.h" />
+    <CustomBuild Include="selector.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore selector.h -o tmp\moc_selector.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore selector.h -o tmp\moc_selector.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC selector.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC selector.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_selector.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_selector.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">selector.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore selector.h -o tmp\moc_selector.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore selector.h -o tmp\moc_selector.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC selector.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC selector.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_selector.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_selector.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="tablemodel.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore tablemodel.h -o tmp\moc_tablemodel.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore tablemodel.h -o tmp\moc_tablemodel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC tablemodel.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC tablemodel.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_tablemodel.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_tablemodel.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore tablemodel.h -o tmp\moc_tablemodel.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/QT/5.6/MSVC2013/mkspecs/win32-msvc2013 -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio 2013 - Projects/openBrf" -IC:/projects/libraries/include -IF:/QT/5.6/MSVC2013/include -IF:/QT/5.6/MSVC2013/include/QtOpenGL -IF:/QT/5.6/MSVC2013/include/QtWidgets -IF:/QT/5.6/MSVC2013/include/QtGui -IF:/QT/5.6/MSVC2013/include/QtANGLE -IF:/QT/5.6/MSVC2013/include/QtXml -IF:/QT/5.6/MSVC2013/include/QtCore tablemodel.h -o tmp\moc_tablemodel.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC tablemodel.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC tablemodel.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_tablemodel.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_tablemodel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="vcgExport.h" />
+    <ClInclude Include="vcgImport.h" />
+    <ClInclude Include="vcgmesh.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tmp\moc_askBoneDialog.cpp" />
+    <ClCompile Include="tmp\moc_askColorDialog.cpp" />
+    <ClCompile Include="tmp\moc_askCreaseDialog.cpp" />
+    <ClCompile Include="tmp\moc_askFlagsDialog.cpp" />
+    <ClCompile Include="tmp\moc_askHueSatBriDialog.cpp" />
+    <ClCompile Include="tmp\moc_askIntervalDialog.cpp" />
+    <ClCompile Include="tmp\moc_askLodOptionsDialog.cpp" />
+    <ClCompile Include="tmp\moc_askModErrorDialog.cpp" />
+    <ClCompile Include="tmp\moc_askNewUiPictureDialog.cpp" />
+    <ClCompile Include="tmp\moc_askSelectBrfDialog.cpp" />
+    <ClCompile Include="tmp\moc_askSkelDialog.cpp" />
+    <ClCompile Include="tmp\moc_askSkelPairDialog.cpp" />
+    <ClCompile Include="tmp\moc_askTexturenameDialog.cpp" />
+    <ClCompile Include="tmp\moc_askTransformDialog.cpp" />
+    <ClCompile Include="tmp\moc_askUnrefTextureDialog.cpp" />
+    <ClCompile Include="tmp\moc_askUvTransformDialog.cpp" />
+    <ClCompile Include="tmp\moc_glwidgets.cpp" />
+    <ClCompile Include="tmp\moc_guipanel.cpp" />
+    <ClCompile Include="tmp\moc_mainwindow.cpp" />
+    <ClCompile Include="tmp\moc_myselectionmodel.cpp" />
+    <ClCompile Include="tmp\moc_selector.cpp" />
+    <ClCompile Include="tmp\moc_tablemodel.cpp" />
+    <ClCompile Include="debug\qrc_resource.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\qrc_resource.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClInclude Include="tmp\ui_askBoneDialog.h" />
+    <ClInclude Include="tmp\ui_askCreaseDialog.h" />
+    <ClInclude Include="tmp\ui_askFlagsDialog.h" />
+    <ClInclude Include="tmp\ui_askHueSatBriDialog.h" />
+    <ClInclude Include="tmp\ui_askIntervalDialog.h" />
+    <ClInclude Include="tmp\ui_askLodOptionsDialog.h" />
+    <ClInclude Include="tmp\ui_askModErrorDialog.h" />
+    <ClInclude Include="tmp\ui_askNewUiPictureDialog.h" />
+    <ClInclude Include="tmp\ui_askSelectBrfDialog.h" />
+    <ClInclude Include="tmp\ui_askSkelDialog.h" />
+    <ClInclude Include="tmp\ui_askSkelPairDialog.h" />
+    <ClInclude Include="tmp\ui_askTexturenameDialog.h" />
+    <ClInclude Include="tmp\ui_askTransformDialog.h" />
+    <ClInclude Include="tmp\ui_askUnrefTextureDialog.h" />
+    <ClInclude Include="tmp\ui_askUvTransformDialog.h" />
+    <ClInclude Include="tmp\ui_guipanel.h" />
+    <ClInclude Include="tmp\ui_mainwindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="translations\openbrf_de.ts" />
+    <None Include="translations\openbrf_en.ts" />
+    <None Include="translations\openbrf_es.ts" />
+    <None Include="translations\openbrf_zh.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="askBoneDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askBoneDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askBoneDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askBoneDialog.ui -o tmp\ui_askBoneDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askBoneDialog.ui -o tmp\ui_askBoneDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askBoneDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askBoneDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askBoneDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askBoneDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askBoneDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askBoneDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askBoneDialog.ui -o tmp\ui_askBoneDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askBoneDialog.ui -o tmp\ui_askBoneDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askBoneDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askBoneDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askBoneDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askBoneDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askCreaseDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askCreaseDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askCreaseDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askCreaseDialog.ui -o tmp\ui_askCreaseDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askCreaseDialog.ui -o tmp\ui_askCreaseDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askCreaseDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askCreaseDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askCreaseDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askCreaseDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askCreaseDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askCreaseDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askCreaseDialog.ui -o tmp\ui_askCreaseDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askCreaseDialog.ui -o tmp\ui_askCreaseDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askCreaseDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askCreaseDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askCreaseDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askCreaseDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askFlagsDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askFlagsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askFlagsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askFlagsDialog.ui -o tmp\ui_askFlagsDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askFlagsDialog.ui -o tmp\ui_askFlagsDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askFlagsDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askFlagsDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askFlagsDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askFlagsDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askFlagsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askFlagsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askFlagsDialog.ui -o tmp\ui_askFlagsDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askFlagsDialog.ui -o tmp\ui_askFlagsDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askFlagsDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askFlagsDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askFlagsDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askFlagsDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askHueSatBriDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askHueSatBriDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askHueSatBriDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askHueSatBriDialog.ui -o tmp\ui_askHueSatBriDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askHueSatBriDialog.ui -o tmp\ui_askHueSatBriDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askHueSatBriDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askHueSatBriDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askHueSatBriDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askHueSatBriDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askHueSatBriDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askHueSatBriDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askHueSatBriDialog.ui -o tmp\ui_askHueSatBriDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askHueSatBriDialog.ui -o tmp\ui_askHueSatBriDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askHueSatBriDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askHueSatBriDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askHueSatBriDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askHueSatBriDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askIntervalDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askIntervalDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askIntervalDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askIntervalDialog.ui -o tmp\ui_askIntervalDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askIntervalDialog.ui -o tmp\ui_askIntervalDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askIntervalDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askIntervalDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askIntervalDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askIntervalDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askIntervalDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askIntervalDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askIntervalDialog.ui -o tmp\ui_askIntervalDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askIntervalDialog.ui -o tmp\ui_askIntervalDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askIntervalDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askIntervalDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askIntervalDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askIntervalDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askLodOptionsDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askLodOptionsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askLodOptionsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askLodOptionsDialog.ui -o tmp\ui_askLodOptionsDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askLodOptionsDialog.ui -o tmp\ui_askLodOptionsDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askLodOptionsDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askLodOptionsDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askLodOptionsDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askLodOptionsDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askLodOptionsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askLodOptionsDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askLodOptionsDialog.ui -o tmp\ui_askLodOptionsDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askLodOptionsDialog.ui -o tmp\ui_askLodOptionsDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askLodOptionsDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askLodOptionsDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askLodOptionsDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askLodOptionsDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askModErrorDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askModErrorDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askModErrorDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askModErrorDialog.ui -o tmp\ui_askModErrorDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askModErrorDialog.ui -o tmp\ui_askModErrorDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askModErrorDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askModErrorDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askModErrorDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askModErrorDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askModErrorDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askModErrorDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askModErrorDialog.ui -o tmp\ui_askModErrorDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askModErrorDialog.ui -o tmp\ui_askModErrorDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askModErrorDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askModErrorDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askModErrorDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askModErrorDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askNewUiPictureDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askNewUiPictureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askNewUiPictureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askNewUiPictureDialog.ui -o tmp\ui_askNewUiPictureDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askNewUiPictureDialog.ui -o tmp\ui_askNewUiPictureDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askNewUiPictureDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askNewUiPictureDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askNewUiPictureDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askNewUiPictureDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askNewUiPictureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askNewUiPictureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askNewUiPictureDialog.ui -o tmp\ui_askNewUiPictureDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askNewUiPictureDialog.ui -o tmp\ui_askNewUiPictureDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askNewUiPictureDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askNewUiPictureDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askNewUiPictureDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askNewUiPictureDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askSelectBrfDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askSelectBrfDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askSelectBrfDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askSelectBrfDialog.ui -o tmp\ui_askSelectBrfDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askSelectBrfDialog.ui -o tmp\ui_askSelectBrfDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askSelectBrfDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askSelectBrfDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askSelectBrfDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askSelectBrfDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askSelectBrfDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askSelectBrfDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askSelectBrfDialog.ui -o tmp\ui_askSelectBrfDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askSelectBrfDialog.ui -o tmp\ui_askSelectBrfDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askSelectBrfDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askSelectBrfDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askSelectBrfDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askSelectBrfDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askSkelDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askSkelDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askSkelDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelDialog.ui -o tmp\ui_askSkelDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelDialog.ui -o tmp\ui_askSkelDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askSkelDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askSkelDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askSkelDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askSkelDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askSkelDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askSkelDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelDialog.ui -o tmp\ui_askSkelDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelDialog.ui -o tmp\ui_askSkelDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askSkelDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askSkelDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askSkelDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askSkelDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askSkelPairDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askSkelPairDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askSkelPairDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelPairDialog.ui -o tmp\ui_askSkelPairDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelPairDialog.ui -o tmp\ui_askSkelPairDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askSkelPairDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askSkelPairDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askSkelPairDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askSkelPairDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askSkelPairDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askSkelPairDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelPairDialog.ui -o tmp\ui_askSkelPairDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askSkelPairDialog.ui -o tmp\ui_askSkelPairDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askSkelPairDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askSkelPairDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askSkelPairDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askSkelPairDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askTexturenameDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askTexturenameDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askTexturenameDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askTexturenameDialog.ui -o tmp\ui_askTexturenameDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askTexturenameDialog.ui -o tmp\ui_askTexturenameDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askTexturenameDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askTexturenameDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askTexturenameDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askTexturenameDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askTexturenameDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askTexturenameDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askTexturenameDialog.ui -o tmp\ui_askTexturenameDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askTexturenameDialog.ui -o tmp\ui_askTexturenameDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askTexturenameDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askTexturenameDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askTexturenameDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askTexturenameDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askTransformDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askTransformDialog.ui -o tmp\ui_askTransformDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askTransformDialog.ui -o tmp\ui_askTransformDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askTransformDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askTransformDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askTransformDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askTransformDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askTransformDialog.ui -o tmp\ui_askTransformDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askTransformDialog.ui -o tmp\ui_askTransformDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askTransformDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askTransformDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askTransformDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askTransformDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askUnrefTextureDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askUnrefTextureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askUnrefTextureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askUnrefTextureDialog.ui -o tmp\ui_askUnrefTextureDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askUnrefTextureDialog.ui -o tmp\ui_askUnrefTextureDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askUnrefTextureDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askUnrefTextureDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askUnrefTextureDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askUnrefTextureDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askUnrefTextureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askUnrefTextureDialog.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askUnrefTextureDialog.ui -o tmp\ui_askUnrefTextureDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askUnrefTextureDialog.ui -o tmp\ui_askUnrefTextureDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askUnrefTextureDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askUnrefTextureDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askUnrefTextureDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askUnrefTextureDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="askUvTransformDialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">askUvTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">askUvTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askUvTransformDialog.ui -o tmp\ui_askUvTransformDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askUvTransformDialog.ui -o tmp\ui_askUvTransformDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC askUvTransformDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC askUvTransformDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_askUvTransformDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_askUvTransformDialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">askUvTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">askUvTransformDialog.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe askUvTransformDialog.ui -o tmp\ui_askUvTransformDialog.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe askUvTransformDialog.ui -o tmp\ui_askUvTransformDialog.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC askUvTransformDialog.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC askUvTransformDialog.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_askUvTransformDialog.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_askUvTransformDialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="guipanel.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">guipanel.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">guipanel.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe guipanel.ui -o tmp\ui_guipanel.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe guipanel.ui -o tmp\ui_guipanel.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC guipanel.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC guipanel.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_guipanel.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_guipanel.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">guipanel.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">guipanel.ui;tablemodel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe guipanel.ui -o tmp\ui_guipanel.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe guipanel.ui -o tmp\ui_guipanel.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC guipanel.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC guipanel.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_guipanel.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_guipanel.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="mainwindow.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mainwindow.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mainwindow.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe mainwindow.ui -o tmp\ui_mainwindow.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe mainwindow.ui -o tmp\ui_mainwindow.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC mainwindow.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC mainwindow.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\ui_mainwindow.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\ui_mainwindow.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mainwindow.ui;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mainwindow.ui;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\uic.exe mainwindow.ui -o tmp\ui_mainwindow.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\uic.exe mainwindow.ui -o tmp\ui_mainwindow.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC mainwindow.ui</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC mainwindow.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\ui_mainwindow.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\ui_mainwindow.h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\bump_fragment.cpp" />
+    <None Include="shaders\bump_vertex.cpp" />
+    <None Include="carry_positions.txt" />
+    <None Include="femininizer.morpher" />
+    <None Include="icons\ico_left.png" />
+    <None Include="icons\ico_mid.png" />
+    <None Include="icons\ico_right.png" />
+    <None Include="shaders\iron_fragment.cpp" />
+    <None Include="openBrf.ico" />
+    <None Include="translations\openbrf_de.qm" />
+    <None Include="translations\openbrf_es.qm" />
+    <None Include="translations\openbrf_zh.qm" />
+    <None Include="translations\qt_es.qm" />
+    <None Include="translations\qt_zh_CN.qm" />
+    <CustomBuild Include="resource.qrc">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">resource.qrc;femininizer.morpher;carry_positions.txt;openBrf.ico;shaders\bump_vertex.cpp;shaders\bump_fragment.cpp;shaders\iron_fragment.cpp;icons\ico_mid.png;icons\ico_left.png;icons\ico_right.png;translations\openbrf_es.qm;translations\qt_zh_CN.qm;translations\openbrf_de.qm;translations\openbrf_zh.qm;translations\qt_es.qm;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">resource.qrc;femininizer.morpher;carry_positions.txt;openBrf.ico;shaders\bump_vertex.cpp;shaders\bump_fragment.cpp;shaders\iron_fragment.cpp;icons\ico_mid.png;icons\ico_left.png;icons\ico_right.png;translations\openbrf_es.qm;translations\qt_zh_CN.qm;translations\openbrf_de.qm;translations\openbrf_zh.qm;translations\qt_es.qm;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\QT\5.6\MSVC2013\bin\rcc.exe -name resource resource.qrc -o release\qrc_resource.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\QT\5.6\MSVC2013\bin\rcc.exe -name resource resource.qrc -o release\qrc_resource.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">RCC resource.qrc</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RCC resource.qrc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\qrc_resource.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\qrc_resource.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">resource.qrc;femininizer.morpher;carry_positions.txt;openBrf.ico;shaders\bump_vertex.cpp;shaders\bump_fragment.cpp;shaders\iron_fragment.cpp;icons\ico_mid.png;icons\ico_left.png;icons\ico_right.png;translations\openbrf_es.qm;translations\qt_zh_CN.qm;translations\openbrf_de.qm;translations\openbrf_zh.qm;translations\qt_es.qm;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">resource.qrc;femininizer.morpher;carry_positions.txt;openBrf.ico;shaders\bump_vertex.cpp;shaders\bump_fragment.cpp;shaders\iron_fragment.cpp;icons\ico_mid.png;icons\ico_left.png;icons\ico_right.png;translations\openbrf_es.qm;translations\qt_zh_CN.qm;translations\openbrf_de.qm;translations\openbrf_zh.qm;translations\qt_es.qm;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\QT\5.6\MSVC2013\bin\rcc.exe -name resource resource.qrc -o debug\qrc_resource.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\QT\5.6\MSVC2013\bin\rcc.exe -name resource resource.qrc -o debug\qrc_resource.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">RCC resource.qrc</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RCC resource.qrc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\qrc_resource.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\qrc_resource.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="openBrf.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

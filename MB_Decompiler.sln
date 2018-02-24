@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "importantLib", "importantLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brfManager", "brfManager\brfManager.csproj", "{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openBrf", "openBrf\openBrf.vcxproj", "{7F48F8D5-100D-3065-9AB1-476973B61E07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,16 @@ Global
 		{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}.Release|x64.Build.0 = Release|x64
 		{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}.Release|x86.ActiveCfg = Release|x86
 		{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}.Release|x86.Build.0 = Release|x86
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Debug|x64.ActiveCfg = Debug|x64
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Debug|x64.Build.0 = Debug|x64
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Debug|x86.ActiveCfg = Debug|Win32
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Debug|x86.Build.0 = Debug|Win32
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Release|Any CPU.ActiveCfg = Release|Win32
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Release|x64.ActiveCfg = Release|x64
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Release|x64.Build.0 = Release|x64
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Release|x86.ActiveCfg = Release|Win32
+		{7F48F8D5-100D-3065-9AB1-476973B61E07}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
