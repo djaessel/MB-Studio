@@ -327,7 +327,7 @@ namespace MB_Decompiler_Library.IO
             return objects;
         }
 
-        //
+        // NOT IMPLEMENTED YET
         public MissionTemplate[] ReadMissionTemplate()
         {
             string line = string.Empty;
@@ -423,7 +423,7 @@ namespace MB_Decompiler_Library.IO
             return missionTemplates.ToArray();
         }
 
-        //
+        // NOT IMPLEMENTED
         public Presentation[] ReadPresentation()
         {
             string line;
@@ -669,7 +669,7 @@ namespace MB_Decompiler_Library.IO
             return scripts.ToArray();
         }
 
-        //
+        // NOT IMPLEMENTED YET
         public Troop[] ReadTroop()
         {
             string[] sp0, sp1, sp2, sp3;
@@ -750,11 +750,31 @@ namespace MB_Decompiler_Library.IO
 
                         sp0 = new string[6];
 
+                        List<string> itemIds = new List<string>(CodeReader.Items);
+
                         tmpX = string.Empty;
                         foreach (string s in sp2)
-                            tmpX += s + ' ';
+                            tmpX += itemIds.IndexOf(s) + " ";
 
                         sp0[1] = tmpX.TrimEnd();
+
+                        tmpX = sp3[0];
+                        List<HeaderVariable> codes = SourceWriter.GetTroopModuleConstants();
+                        foreach (HeaderVariable varX in codes)
+                        {
+                            if (varX.VariableName.Equals(tmpX))
+                                sp3[0] = varX.VariableValue.Trim();
+                            else if (tmpX.Contains(varX.VariableName) && tmpX.Contains("|"))
+                            {
+                                List<string> tmpList = new List<string>(tmpX.Split('|'));
+                                if (tmpList.Contains(varX.VariableName))
+                                    tmpList[tmpList.IndexOf(varX.VariableName)] = varX.VariableValue.Trim();
+                                string tmpX2 = string.Empty;
+                                foreach (string item in tmpList)
+                                    tmpX2 += item + '|';
+                                sp3[0] = tmpX2.TrimEnd('|');
+                            }
+                        }
 
                         sp0[2] = sp3[0];
                         sp0[3] = sp3[1];
@@ -765,26 +785,46 @@ namespace MB_Decompiler_Library.IO
                         listSp1.Add(sp1[sp1.Length - 2]);
                         listSp1.Add(sp1[sp1.Length - 1]);
 
+                        if (listSp1[5].Equals("no_scene"))
+                            listSp1[5] = "0";
+                        if (!ImportantMethods.IsNumericGZ(listSp1[5]))
+                        {
+                            string[] tmpX2 = listSp1[5].Split('|');
+                            ulong sceneCode = (ulong)new List<string>(CodeReader.Scenes).IndexOf(tmpX2[0]);
+                            if (tmpX2.Length > 1)
+                                sceneCode |= ulong.Parse(tmpX2[1]) << 16;
+                            listSp1[5] = sceneCode.ToString();
+                        }
+
+                        if (!ImportantMethods.IsNumericGZ(listSp1[6]))
+                            listSp1[6] = new List<string>(CodeReader.Factions).IndexOf(listSp1[6]).ToString();
+
+                        List<string> troopIds = new List<string>(CodeReader.Troops);
+
+                        if (!ImportantMethods.IsNumericGZ(listSp1[8]))
+                            listSp1[8] = troopIds.IndexOf(listSp1[8]).ToString();
+
+                        if (!ImportantMethods.IsNumericGZ(listSp1[9]))
+                            listSp1[9] = troopIds.IndexOf(listSp1[9]).ToString();
+
                         tmpX = string.Empty;
                         foreach (string s in listSp1)
                             tmpX += s + ' ';
                         sp0[0] = tmpX.TrimEnd();
 
-                        // add code here or in Troops Class and change troop init code so source code also works!
+                        tmpX = string.Empty;
+                        foreach (string item in sp0)
+                            tmpX += item + Environment.NewLine;
+                        System.Windows.Forms.MessageBox.Show(tmpX);
 
-                        //tmpX = string.Empty;
-                        //foreach (string item in sp0)
-                        //    tmpX += item + Environment.NewLine;
-                        //System.Windows.Forms.MessageBox.Show(tmpX);
-
-                        troops.Add(new Troop(sp0));
+                        //troops.Add(new Troop(sp0));
                     }
                 }
             }
             return troops.ToArray();
         }
 
-        //
+        // NOT IMPLEMENTED
         public Item[] ReadItem()
         {
             int i = -1;
@@ -1681,7 +1721,7 @@ namespace MB_Decompiler_Library.IO
             return partyTemplates.ToArray();
         }
 
-        //
+        // NOT IMPLEMENTED
         public Dialog[] ReadDialog()
         {
             Dialog[] dialogs;
@@ -1760,7 +1800,7 @@ namespace MB_Decompiler_Library.IO
             return skills.ToArray();
         }
 
-        //
+        // NOT IMPLEMENTED
         public PostFX[] ReadPostFX()
         {
             PostFX[] postfxs;
@@ -1777,7 +1817,7 @@ namespace MB_Decompiler_Library.IO
             return postfxs;
         }
 
-        //
+        // NOT IMPLEMENTED
         public ParticleSystem[] ReadParticleSystem()
         {
             ParticleSystem[] particleSystems;
@@ -1807,7 +1847,7 @@ namespace MB_Decompiler_Library.IO
             return particleSystems;
         }
 
-        //
+        // NOT IMPLEMENTED
         public Skin[] ReadSkin()
         {
             Skin[] skins;

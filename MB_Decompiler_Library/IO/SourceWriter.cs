@@ -438,29 +438,35 @@ namespace MB_Decompiler_Library.IO
             return objects.Count;
         }
 
+        public static List<HeaderVariable> GetTroopModuleConstants()
+        {
+            List<HeaderVariable> codes = new List<HeaderVariable>();
+            ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);
+            DataBankList dbList = impManager.ReadDataBankInfos()[(byte)ObjectType.TROOP];
+            for (int i = 0; i < dbList.CodeLines.Length; i++)
+            {
+                string tmpCode = dbList.CodeLines[i].Split('#')[0];
+                if (tmpCode.Contains("="))
+                {
+                    if (!tmpCode.Substring(0, 1).Equals(" "))
+                    {
+                        string[] tmpS = RemoveSpaceAndTab(tmpCode).Split('=');
+                        codes.Add(new HeaderVariable(tmpS[1], tmpS[0]));
+                    }
+                }
+            }
+            return codes;
+        }
+
         public int WriteTroops(List<Skriptum> objects)
         {
             string tmpCode;
             string[] tmpS;
+            List<HeaderVariable> codes = GetTroopModuleConstants();
             using (StreamWriter wr = new StreamWriter(TROOPS_SOURCE))
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TROOP);
 
-                ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);
-                DataBankList dbList = impManager.ReadDataBankInfos()[(byte)ObjectType.TROOP];
-                List<HeaderVariable> codes = new List<HeaderVariable>();
-                for (int i = 0; i < dbList.CodeLines.Length; i++)
-                {
-                    tmpCode = dbList.CodeLines[i].Split('#')[0];
-                    if (tmpCode.Contains("="))
-                    {
-                        if (!tmpCode.Substring(0, 1).Equals(" "))
-                        {
-                            tmpS = RemoveSpaceAndTab(tmpCode).Split('=');
-                            codes.Add(new HeaderVariable(tmpS[1], tmpS[0]));
-                        }
-                    }
-                }
                 foreach (Troop troop in objects)
                 {
                     string scnCode;
@@ -528,12 +534,14 @@ namespace MB_Decompiler_Library.IO
                     wr.Write(",");*/
 
                     // VERBESSERN DAS 0er NICHT MEHR GESCHRIEBEN WERDEN ???!!!???
-                    wr.Write("wp_one_handed(" + troop.OneHanded + ")|wp_two_handed(" + troop.TwoHanded + ")|wp_polearm(" + troop.Polearm + ")|wp_archery(" + troop.Archery
-                        + ")|wp_crossbow(" + troop.Crossbow + ")|wp_throwing(" + troop.Throwing);
-                    if (troop.Firearm > 0)
-                        wr.Write(")|wp_firearm(" + troop.Firearm);
-                    wr.Write("),");
+                    //wr.Write("wp_one_handed(" + troop.OneHanded + ")|wp_two_handed(" + troop.TwoHanded + ")|wp_polearm(" + troop.Polearm + ")|wp_archery(" + troop.Archery
+                    //    + ")|wp_crossbow(" + troop.Crossbow + ")|wp_throwing(" + troop.Throwing);
+                    //if (troop.Firearm > 0)
+                    //    wr.Write(")|wp_firearm(" + troop.Firearm);
+                    //wr.Write("),");
                     // VERBESSERN DAS 0er NICHT MEHR GESCHRIEBEN WERDEN ???!!!???
+
+                    wr.Write(troop.ProficienciesSC + ',');
 
                     bool first = true;
                     for (int i = 0; i < troop.Skills.Length; i++) // RETHINK THIS PART!!!
