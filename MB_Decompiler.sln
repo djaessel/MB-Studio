@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler", "MB_Decompiler\MB_Decompiler.csproj", "{6E4A3036-1E9C-4539-B64F-1814A82DBD62}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -17,16 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler_GUI", "MB_Dec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB Studio", "MB Studio\MB Studio.csproj", "{7222FE26-50DD-4B50-9E7A-DB473B077081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warband - Translator", "..\Warband - Translator\Warband - Translator\Warband - Translator.csproj", "{114F6AE7-9935-4D6A-8E17-49A48BA1C036}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "skillhunter", "skillhunter\skillhunter\skillhunter.vbproj", "{FA4558D0-9F6F-456B-888F-D9DED33DFB90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "importantLib", "..\importantLib\importantLib\importantLib.csproj", "{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warband - Translator", "Warband - Translator\Warband - Translator\Warband - Translator.csproj", "{114F6AE7-9935-4D6A-8E17-49A48BA1C036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brfManager", "..\DeadMenTell\brfManager\brfManager.csproj", "{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DCFF1576-1736-4BFD-9A3E-901246B7E8C9} = {DCFF1576-1736-4BFD-9A3E-901246B7E8C9}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "importantLib", "importantLib\importantLib\importantLib.csproj", "{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "skillhunter", "..\skillhunter\skillhunter\skillhunter.vbproj", "{FA4558D0-9F6F-456B-888F-D9DED33DFB90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brfManager", "brfManager\brfManager.csproj", "{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +83,18 @@ Global
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Release|x64.Build.0 = Release|x64
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Release|x86.ActiveCfg = Release|x86
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Release|x86.Build.0 = Release|x86
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x64.ActiveCfg = Debug|x64
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x64.Build.0 = Debug|x64
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x86.ActiveCfg = Debug|x86
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x86.Build.0 = Debug|x86
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x64.ActiveCfg = Release|x64
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x64.Build.0 = Release|x64
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x86.ActiveCfg = Release|x86
+		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x86.Build.0 = Release|x86
 		{114F6AE7-9935-4D6A-8E17-49A48BA1C036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{114F6AE7-9935-4D6A-8E17-49A48BA1C036}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114F6AE7-9935-4D6A-8E17-49A48BA1C036}.Debug|x64.ActiveCfg = Debug|x64
@@ -122,18 +131,6 @@ Global
 		{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}.Release|x64.Build.0 = Release|x64
 		{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}.Release|x86.ActiveCfg = Release|x86
 		{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}.Release|x86.Build.0 = Release|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x64.ActiveCfg = Debug|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x64.Build.0 = Debug|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x86.ActiveCfg = Debug|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x86.Build.0 = Debug|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x64.ActiveCfg = Release|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x64.Build.0 = Release|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x86.ActiveCfg = Release|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,1141 @@
+# !!! 27 Import-Data-Blocks are needed / recommended !!! #
+
+scripts:0 {
+  IMPORTS [
+	from header_common import *;
+	from header_items import *;
+	from header_map_icons import *;
+	from header_mission_templates import *;
+	from header_music import *;
+	from header_operations import *;
+	from header_parties import *;
+	from header_presentations import *;
+	from header_skills import *;
+	from header_terrain_types import *;
+	from header_triggers import *;
+	from ID_animations import *;
+	from module_constants import *;
+	from module_factions import *;
+	from module_items import *;
+	from module_my_mod_set import *;
+	]
+  DESCRIPTION [
+	scripts is a list of script records.;
+	Each script record contns the following two fields:;
+	1) Script id: The prefix \"script_\" will be inserted when referencing scripts.;
+	2) Operation block: This must be a valid operation block. See header_operations.py for reference.;
+	]
+  CODE [
+## Dynamic Arrays begin;
+array_signature     = 0xFFFE # Just a magic number.  But should not be changed if desire to be compativle with older save-games;
+array_version       = 1 # marks the current structure version of array, possibly allowing graceful upgrading of older versions of arrays in existing savegame;
+array_slot_offset   = 1000 # start of array values.  Shifted up by 1000 to avoid clash with other party slots;
+slot_array_0        = array_slot_offset  # first element;
+# generate constants from slot_array_1 to slot_array_99, the lazy fashion;
+try:;
+    import sys;
+    module = sys.modules[__name__]    ;
+    for i in range(1,100):;
+      setattr(module, "slot_array_%d"%(i), eval("slot_array_%d+1" %(i-1)));
+except:;
+    raise;
+slot_array_size     = 999 # stores current size of array;
+slot_array_owner    = 998 #(if 0, array will never be cleaned up, otherwise, this is the party id that owns the array, and when party no longer exists, the array can be cleaned up);
+slot_array_signature= 997 # a special slot that will contain a magic value (array_signature) that identifies that this is array;
+slot_array_version  = 996 # see array_version;
+## Dynamic Arrays end;
+	]
+}
+mission_templates:1 {
+  IMPORTS [
+	from header_common import *;
+	from header_operations import *;
+	from header_mission_templates import *;
+	from header_animations import *;
+	from header_sounds import *;
+	from header_music import *;
+	from header_items import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+	Each mission-template is a tuple that contains the following fields:;
+	1) Mission-template id (string): used for referencing mission-templates in other files.;
+	The prefix mt_ is automatically added before each mission-template id;
+	2) Mission-template flags (int): See header_mission-templates.py for a list of available flags;
+	3) Mission-type(int): Which mission types this mission template matches.;
+	For mission-types to be used with the default party-meeting system;
+	this should be 'charge' or 'charge_with_ally' otherwise must be -1.;
+	4) Mission description text (string).;
+	5) List of spawn records (list): Each spawn record is a tuple that contains the following fields:;
+	5.1) entry-no: Troops spawned from this spawn record will use this entry;
+	5.2) spawn flags.;
+	5.3) alter flags. which equipment will be overriden;
+	5.4) ai flags.;
+	5.5) Number of troops to spawn.;
+	5.6) list of equipment to add to troops spawned from here (maximum 8).;
+	6) List of triggers (list).;
+	See module_triggers.py for infomation about triggers.;
+	Please note that mission templates is work in progress and can be changed in the future versions.;
+	]
+}
+presentations:2 {
+  IMPORTS [
+	from header_common import *;
+	from header_presentations import *;
+	from header_mission_templates import *;
+	from header_operations import *;
+	from header_triggers import *;
+	from header_items import *;
+	from module_constants import *;
+	from ID_meshes import *;
+	import string;
+	]
+  DESCRIPTION [
+	Each presentation record contains the following fields:;
+	1) Presentation id: used for referencing presentations in other files. The prefix prsnt_ is automatically added before each presentation id.;
+	2) Presentation flags. See header_presentations.py for a list of available flags;
+	3) Presentation background mesh: See module_meshes.py for a list of available background meshes;
+	4) Triggers: Simple triggers that are associated with the presentation;
+	]
+}
+game_menus:3 {
+  IMPORTS [
+	from header_game_menus import *;
+	from header_items import *;
+	from header_mission_templates import *;
+	from header_music import *;
+	from header_parties import *;
+	from header_terrain_types import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+  (menu-id, menu-flags, menu_text, mesh-name, [<operations>], [<options>]),;
+   Each game menu is a tuple that contains the following fields:;
+  1) Game-menu id (string): used for referencing game-menus in other files.;
+     The prefix menu_ is automatically added before each game-menu-id;
+  2) Game-menu flags (int). See header_game_menus.py for a list of available flags.;
+     You can also specify menu text color here, with the menu_text_color macro;
+  3) Game-menu text (string).;
+  4) mesh-name (string). Not currently used. Must be the string "none";
+  5) Operations block (list). A list of operations. See header_operations.py for reference.;
+     The operations block is executed when the game menu is activated.;
+  6) List of Menu options (List).;
+     Each menu-option record is a tuple containing the following fields:;
+   6.1) Menu-option-id (string) used for referencing game-menus in other files.;
+        The prefix mno_ is automatically added before each menu-option.;
+   6.2) Conditions block (list). This must be a valid operation block. See header_operations.py for reference.;
+        The conditions are executed for each menu option to decide whether the option will be shown to the player or not.;
+   6.3) Menu-option text (string).;
+   6.4) Consequences block (list). This must be a valid operation block. See header_operations.py for reference.;
+        The consequences are executed for the menu option that has been selected by the player.;
+ Note: The first Menu is the initial character creation menu.;
+	]
+}
+troops:4 {
+  IMPORTS [
+	from header_common import *;
+	from header_items import *;
+	from header_mb_decompiler import *;
+	from header_skills import *;
+	from header_troops import *;
+	from ID_factions import *;
+	from ID_items import *;
+	from ID_scenes import *;
+	import random;
+	]
+  DESCRIPTION [
+	Each troop contains the following fields:;
+	1) Troop id (string): used for referencing troops in other files. The prefix trp_ is automatically added before each troop-id.;
+	2) Toop name (string).;
+	3) Plural troop name (string).;
+	4) Troop flags (int). See header_troops.py for a list of available flags;
+	5) Scene (int) (only applicable to heroes) For example: scn_reyvadin_castle|entry(1) puts troop in reyvadin castle's first entry point;
+	6) Reserved (int). Put constant "reserved" or 0.;
+	7) Faction (int);
+	8) Inventory (list): Must be a list of items;
+	9) Attributes (int): Example usage:;
+	    str_6|agi_6|int_4|cha_5|level(5);
+	10) Weapon proficiencies (int): Example usage:;
+	    wp_one_handed(55)|wp_two_handed(90)|wp_polearm(36)|wp_archery(80)|wp_crossbow(24)|wp_throwing(45);
+	    The function wp(x) will create random weapon proficiencies close to value x.;
+	    To make an expert archer with other weapon proficiencies close to 60 you can use something like:;
+	    wp_archery(160) | wp(60);
+	11) Skills (int): See header_skills.py to see a list of skills. Example:;
+	    knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_2;
+	12) Face code (int): You can obtain the face code by pressing ctrl+E in face generator screen;
+	13) Face code (int)(2) (only applicable to regular troops;
+	    can be omitted for heroes):;
+	The game will create random faces between Face code 1 and face code 2 for generated troops;
+	14) Troop image (string): If this variable is set;
+	    the troop will use an image rather than its 3D visual during the conversations;
+	town_1   Sargoth;
+	town_2   Tihr;
+	town_3   Veluca;
+	town_4   Suno;
+	town_5   Jelkala;
+	town_6   Praven;
+	town_7   Uxkhal;
+	town_8   Reyvadin;
+	town_9   Khudan;
+	town_10  Tulga;
+	town_11  Curaw;
+	town_12  Wercheg;
+	town_13  Rivacheg;
+	town_14  Halmar;
+	]
+  CODE [
+# Some constant and function declarations to be used below...;
+# wp_one_handed () | wp_two_handed () | wp_polearm () | wp_archery () | wp_crossbow () | wp_throwing ();
+def wp(x):;
+  n = 0;
+  r = 10 + int(x / 10);
+#  n |= wp_one_handed(x + random.randrange(r));
+#  n |= wp_two_handed(x + random.randrange(r));
+#  n |= wp_polearm(x + random.randrange(r));
+#  n |= wp_archery(x + random.randrange(r));
+#  n |= wp_crossbow(x + random.randrange(r));
+#  n |= wp_throwing(x + random.randrange(r));
+  n |= wp_one_handed(x);
+  n |= wp_two_handed(x);
+  n |= wp_polearm(x);
+  n |= wp_archery(x);
+  n |= wp_crossbow(x);
+  n |= wp_throwing(x);
+  return n;
+# - - -;
+def wpe(m,a,c,t):;
+   n = 0;
+   n |= wp_one_handed(m);
+   n |= wp_two_handed(m);
+   n |= wp_polearm(m);
+   n |= wp_archery(a);
+   n |= wp_crossbow(c);
+   n |= wp_throwing(t);
+   return n;
+# - - -;
+def wpex(o,w,p,a,c,t):;
+   n = 0;
+   n |= wp_one_handed(o);
+   n |= wp_two_handed(w);
+   n |= wp_polearm(p);
+   n |= wp_archery(a);
+   n |= wp_crossbow(c);
+   n |= wp_throwing(t);
+   return n;
+# - - -;
+def wp_melee(x):;
+  n = 0;
+  r = 10 + int(x / 10);
+#  n |= wp_one_handed(x + random.randrange(r));
+#  n |= wp_two_handed(x + random.randrange(r));
+#  n |= wp_polearm(x + random.randrange(r));
+  n |= wp_one_handed(x + 20);
+  n |= wp_two_handed(x);
+  n |= wp_polearm(x + 10);
+  return n;
+# - - -;
+str_0 = 0;
+agi_0 = 0;
+int_0 = 0;
+cha_0 = 0;
+# - - -;
+#Skills;
+knows_common = knows_riding_1|knows_trade_2|knows_inventory_management_2|knows_prisoner_management_1|knows_leadership_1;
+# - - -;
+def_attrib = str_7 | agi_5 | int_4 | cha_4;
+def_attrib_multiplayer = str_14 | agi_14 | int_4 | cha_4;
+# - - -;
+knows_warrior_npc = knows_weapon_master_2|knows_ironflesh_1|knows_athletics_1|knows_power_strike_2|knows_riding_2|knows_shield_1|knows_inventory_management_2;
+knows_merchant_npc = knows_riding_2|knows_trade_3|knows_inventory_management_3 #knows persuasion;
+knows_tracker_npc = knows_weapon_master_1|knows_athletics_2|knows_spotting_2|knows_pathfinding_2|knows_tracking_2|knows_ironflesh_1|knows_inventory_management_2;
+## CC;
+lord_attrib = str_20|agi_20|int_20|cha_20|level(38);
+knows_lord_1 = knows_riding_3|knows_trade_2|knows_inventory_management_2|knows_tactics_4|knows_prisoner_management_4|knows_leadership_7|knows_pathfinding_5;
+# - - -;
+knight_attrib_1 = str_15|agi_14|int_8|cha_16|level(22);
+knight_attrib_2 = str_16|agi_16|int_10|cha_18|level(26);
+knight_attrib_3 = str_18|agi_17|int_12|cha_20|level(30);
+knight_attrib_4 = str_19|agi_19|int_13|cha_22|level(35);
+knight_attrib_5 = str_20|agi_20|int_15|cha_25|level(41);
+# - - -;
+knight_skills_1 = knows_riding_3|knows_ironflesh_2|knows_power_strike_3|knows_athletics_1|knows_tactics_2|knows_prisoner_management_1|knows_leadership_3|knows_pathfinding_3;
+knight_skills_2 = knows_riding_4|knows_ironflesh_3|knows_power_strike_4|knows_athletics_2|knows_tactics_3|knows_prisoner_management_2|knows_leadership_5|knows_pathfinding_4;
+knight_skills_3 = knows_riding_5|knows_ironflesh_4|knows_power_strike_5|knows_athletics_3|knows_tactics_4|knows_prisoner_management_2|knows_leadership_6|knows_pathfinding_4;
+knight_skills_4 = knows_riding_6|knows_ironflesh_5|knows_power_strike_6|knows_athletics_4|knows_tactics_5|knows_prisoner_management_3|knows_leadership_7|knows_pathfinding_4;
+knight_skills_5 = knows_riding_7|knows_ironflesh_6|knows_power_strike_7|knows_athletics_5|knows_tactics_6|knows_prisoner_management_3|knows_leadership_9|knows_pathfinding_5;
+## CC;
+#These face codes are generated by the in-game face generator.;
+#Enable edit mode and press ctrl+E in face generator screen to obtain face codes.;
+# - - -;
+reserved = 0;
+no_scene = 0;
+# - - -;
+swadian_face_younger_1 = 0x0000000000000001124000000020000000000000001c00800000000000000000;
+swadian_face_young_1   = 0x0000000400000001124000000020000000000000001c00800000000000000000;
+swadian_face_middle_1  = 0x0000000800000001124000000020000000000000001c00800000000000000000;
+swadian_face_old_1     = 0x0000000d00000001124000000020000000000000001c00800000000000000000;
+swadian_face_older_1   = 0x0000000fc0000001124000000020000000000000001c00800000000000000000;
+swadian_face_younger_2 = 0x00000000000062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+swadian_face_young_2   = 0x00000003c00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+swadian_face_middle_2  = 0x00000007c00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+swadian_face_old_2     = 0x0000000bc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+swadian_face_older_2   = 0x0000000fc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+# - - -;
+vaegir_face_younger_1 = 0x0000000000000001124000000020000000000000001c00800000000000000000;
+vaegir_face_young_1   = 0x0000000400000001124000000020000000000000001c00800000000000000000;
+vaegir_face_middle_1  = 0x0000000800000001124000000020000000000000001c00800000000000000000;
+vaegir_face_old_1     = 0x0000000d00000001124000000020000000000000001c00800000000000000000;
+vaegir_face_older_1   = 0x0000000fc0000001124000000020000000000000001c00800000000000000000;
+vaegir_face_younger_2 = 0x000000003f00230c4deeffffffffffff00000000001efff90000000000000000;
+vaegir_face_young_2   = 0x00000003bf00230c4deeffffffffffff00000000001efff90000000000000000;
+vaegir_face_middle_2  = 0x00000007bf00230c4deeffffffffffff00000000001efff90000000000000000;
+vaegir_face_old_2     = 0x0000000cbf00230c4deeffffffffffff00000000001efff90000000000000000;
+vaegir_face_older_2   = 0x0000000ff100230c4deeffffffffffff00000000001efff90000000000000000;
+# - - -;
+khergit_face_younger_1 = 0x0000000009003109207000000000000000000000001c80470000000000000000;
+khergit_face_young_1   = 0x00000003c9003109207000000000000000000000001c80470000000000000000;
+khergit_face_middle_1  = 0x00000007c9003109207000000000000000000000001c80470000000000000000;
+khergit_face_old_1     = 0x0000000b89003109207000000000000000000000001c80470000000000000000;
+khergit_face_older_1   = 0x0000000fc9003109207000000000000000000000001c80470000000000000000;
+khergit_face_younger_2 = 0x000000003f0061cd6d7ffbdf9df6ebee00000000001ffb7f0000000000000000;
+khergit_face_young_2   = 0x00000003bf0061cd6d7ffbdf9df6ebee00000000001ffb7f0000000000000000;
+khergit_face_middle_2  = 0x000000077f0061cd6d7ffbdf9df6ebee00000000001ffb7f0000000000000000;
+khergit_face_old_2     = 0x0000000b3f0061cd6d7ffbdf9df6ebee00000000001ffb7f0000000000000000;
+khergit_face_older_2   = 0x0000000fff0061cd6d7ffbdf9df6ebee00000000001ffb7f0000000000000000;
+# - - -;
+nord_face_younger_1 = 0x0000000000000001124000000020000000000000001c00800000000000000000;
+nord_face_young_1   = 0x0000000400000001124000000020000000000000001c00800000000000000000;
+nord_face_middle_1  = 0x0000000800000001124000000020000000000000001c00800000000000000000;
+nord_face_old_1     = 0x0000000d00000001124000000020000000000000001c00800000000000000000;
+nord_face_older_1   = 0x0000000fc0000001124000000020000000000000001c00800000000000000000;
+nord_face_younger_2 = 0x00000000310023084deeffffffffffff00000000001efff90000000000000000;
+nord_face_young_2   = 0x00000003b10023084deeffffffffffff00000000001efff90000000000000000;
+nord_face_middle_2  = 0x00000008310023084deeffffffffffff00000000001efff90000000000000000;
+nord_face_old_2     = 0x0000000c710023084deeffffffffffff00000000001efff90000000000000000;
+nord_face_older_2   = 0x0000000ff10023084deeffffffffffff00000000001efff90000000000000000;
+# - - -;
+rhodok_face_younger_1 = 0x0000000009002003140000000000000000000000001c80400000000000000000;
+rhodok_face_young_1   = 0x0000000449002003140000000000000000000000001c80400000000000000000;
+rhodok_face_middle_1  = 0x0000000849002003140000000000000000000000001c80400000000000000000;
+rhodok_face_old_1     = 0x0000000cc9002003140000000000000000000000001c80400000000000000000;
+rhodok_face_older_1   = 0x0000000fc9002003140000000000000000000000001c80400000000000000000;
+rhodok_face_younger_2 = 0x00000000000062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+rhodok_face_young_2   = 0x00000003c00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+rhodok_face_middle_2  = 0x00000007c00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+rhodok_face_old_2     = 0x0000000bc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+rhodok_face_older_2   = 0x0000000fc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000;
+# - - -;
+man_face_younger_1 = 0x0000000000000001124000000020000000000000001c00800000000000000000;
+man_face_young_1   = 0x0000000400000001124000000020000000000000001c00800000000000000000;
+man_face_middle_1  = 0x0000000800000001124000000020000000000000001c00800000000000000000;
+man_face_old_1     = 0x0000000d00000001124000000020000000000000001c00800000000000000000;
+man_face_older_1   = 0x0000000fc0000001124000000020000000000000001c00800000000000000000;
+man_face_younger_2 = 0x000000003f0052064deeffffffffffff00000000001efff90000000000000000;
+man_face_young_2   = 0x00000003bf0052064deeffffffffffff00000000001efff90000000000000000;
+man_face_middle_2  = 0x00000007bf0052064deeffffffffffff00000000001efff90000000000000000;
+man_face_old_2     = 0x0000000bff0052064deeffffffffffff00000000001efff90000000000000000;
+man_face_older_2   = 0x0000000fff0052064deeffffffffffff00000000001efff90000000000000000;
+# - - -;
+merchant_face_1    = man_face_young_1;
+merchant_face_2    = man_face_older_2;
+# - - -;
+woman_face_1    = 0x0000000000000001000000000000000000000000001c00000000000000000000;
+woman_face_2    = 0x00000003bf0030067ff7fbffefff6dff00000000001f6dbf0000000000000000;
+# - - -;
+swadian_woman_face_1 = 0x0000000180102006124925124928924900000000001c92890000000000000000;
+swadian_woman_face_2 = 0x00000001bf1000061db6d75db6b6dbad00000000001c92890000000000000000;
+# - - -;
+khergit_woman_face_1 = 0x0000000180103006124925124928924900000000001c92890000000000000000;
+khergit_woman_face_2 = 0x00000001af1030025b6eb6dd6db6dd6d00000000001eedae0000000000000000;
+# - - -;
+refugee_face1 = woman_face_1;
+refugee_face2 = woman_face_2;
+# - - -;
+girl_face1    = woman_face_1;
+girl_face2    = woman_face_2;
+# - - -;
+mercenary_face_1 = 0x0000000000000000000000000000000000000000001c00000000000000000000;
+mercenary_face_2 = 0x0000000cff00730b6db6db6db7fbffff00000000001efffe0000000000000000;
+# - - -;
+vaegir_face1  = vaegir_face_young_1;
+vaegir_face2  = vaegir_face_older_2;
+# - - -;
+bandit_face1  = man_face_young_1;
+bandit_face2  = man_face_older_2;
+# - - -;
+undead_face1  = 0x00000000002000000000000000000000;
+undead_face2  = 0x000000000020010000001fffffffffff;
+# - - -;
+#NAMES:;
+tf_guarantee_all = tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_ranged;
+tf_guarantee_all_wo_ranged = tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield;
+# - - -;
+	]
+}
+items:5 {
+  IMPORTS [
+	from module_constants import *;
+	from ID_factions import *;
+	from header_items import  *;
+	from header_operations import *;
+	from header_triggers import *;
+	]
+  DESCRIPTION [
+  Each item record contains the following fields:;
+  1) Item id: used for referencing items in other files.;
+     The prefix itm_ is automatically added before each item id.;
+  2) Item name. Name of item as it'll appear in inventory window;
+  3) List of meshes.  Each mesh record is a tuple containing the following fields:;
+    3.1) Mesh name.;
+    3.2) Modifier bits that this mesh matches.;
+     Note that the first mesh record is the default.;
+  4) Item flags. See header_items.py for a list of available flags.;
+  5) Item capabilities. Used for which animations this item is used with. See header_items.py for a list of available flags.;
+  6) Item value.;
+  7) Item stats: Bitwise-or of various stats about the item such as:;
+      weight, abundance, difficulty, head_armor, body_armor,leg_armor, etc...;
+  8) Modifier bits: Modifiers that can be applied to this item.;
+  9) [Optional] Triggers: List of simple triggers to be associated with the item.;
+  10) [Optional] Factions: List of factions that item can be found as merchandise.;
+	]
+  CODE [
+# Some constants for ease of use.;
+imodbits_none = 0;
+imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn|imodbit_timid ## CC;
+imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened;
+imodbits_armor  = imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly;
+imodbits_plate  = imodbit_cracked | imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly;
+imodbits_polearm = imodbit_cracked | imodbit_bent | imodbit_balanced;
+imodbits_shield  = imodbit_cracked | imodbit_battered |imodbit_thick | imodbit_reinforced;
+imodbits_sword   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered;
+imodbits_sword_high   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork;
+imodbits_axe   = imodbit_rusty | imodbit_chipped | imodbit_heavy;
+imodbits_mace   = imodbit_rusty | imodbit_chipped | imodbit_heavy;
+imodbits_pick   = imodbit_rusty | imodbit_chipped | imodbit_balanced | imodbit_heavy;
+imodbits_bow = imodbit_cracked | imodbit_bent | imodbit_strong |imodbit_masterwork;
+imodbits_crossbow = imodbit_cracked | imodbit_bent | imodbit_masterwork;
+imodbits_missile   = imodbit_bent | imodbit_large_bag;
+imodbits_thrown   = imodbit_bent | imodbit_heavy| imodbit_balanced| imodbit_large_bag;
+imodbits_thrown_minus_heavy = imodbit_bent | imodbit_balanced| imodbit_large_bag;
+imodbits_horse_good = imodbit_spirited|imodbit_heavy;
+imodbits_good   = imodbit_sturdy | imodbit_thick | imodbit_hardened | imodbit_reinforced;
+imodbits_bad    = imodbit_rusty | imodbit_chipped | imodbit_tattered | imodbit_ragged | imodbit_cracked | imodbit_bent;
+## CC;
+missile_distance_trigger = [;
+  (ti_on_missile_hit, ;
+    [;
+      (store_trigger_param_1, ":shooter_agent"),;
+      ;
+      (eq, "$g_report_shot_distance", 1),;
+      (get_player_agent_no, ":player_agent"),;
+      (try_begin),;
+        (eq, ":shooter_agent", ":player_agent"),;
+        (agent_get_position, pos2, ":shooter_agent"),;
+        (agent_get_horse, ":horse_agent", ":player_agent"),;
+        (try_begin),;
+          (gt, ":horse_agent", -1),;
+          (position_move_z, pos2, 220),;
+        (else_try),;
+          (position_move_z, pos2, 150),;
+        (try_end),;
+        (get_distance_between_positions, ":distance", pos1, pos2),;
+        (store_div, reg61, ":distance", 100),;
+        (store_mod, reg62, ":distance", 100),;
+        (try_begin),;
+          (lt, reg62, 10),;
+          (str_store_string, s1, "@{reg61}.0{reg62}"),;
+        (else_try),;
+          (str_store_string, s1, "@{reg61}.{reg62}"),;
+        (try_end),;
+        (display_message, "@Shot distance: {s1} meters.", 0xCCCCCC),;
+      (try_end),;
+    ])]    ;
+## CC;
+	]
+}
+strings:6 {
+  IMPORTS [
+	# -*- coding: cp1252 -*-;
+	]
+}
+simple_triggers:7 {
+  IMPORTS [
+	from header_common import *;
+	from header_items import *;
+	from header_music import *;
+	from header_operations import *;
+	from header_parties import *;
+	from header_skills import *;
+	from header_triggers import *;
+	from header_troops import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+ Simple triggers are the alternative to old style triggers. They do not preserve state, and thus simpler to maintain.;
+  Each simple trigger contains the following fields:;
+ 1) Check interval: How frequently this trigger will be checked;
+ 2) Operation block: This must be a valid operation block. See header_operations.py for reference. ;
+	]
+}
+triggers:8 {
+  IMPORTS [
+	from header_common import *;
+	from header_items import *;
+	from header_mb_decompiler import *;
+	from header_operations import *;
+	from header_parties import *;
+	from header_skills import *;
+	from header_triggers import *;
+	from header_troops import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+  Each trigger contains the following fields:;
+ 1) Check interval: How frequently this trigger will be checked;
+ 2) Delay interval: Time to wait before applying the consequences of the trigger;
+    After its conditions have been evaluated as true.;
+ 3) Re-arm interval. How much time must pass after applying the consequences of the trigger for the trigger to become active again.;
+    You can put the constant ti_once here to make sure that the trigger never becomes active again after it fires once.;
+ 4) Conditions block (list). This must be a valid operation block. See header_operations.py for reference.;
+    Every time the trigger is checked, the conditions block will be executed.;
+    If the conditions block returns true, the consequences block will be executed.;
+    If the conditions block is empty, it is assumed that it always evaluates to true.;
+ 5) Consequences block (list). This must be a valid operation block. See header_operations.py for reference.;
+	]
+  CODE [
+# Some constants for use below;
+merchant_inventory_space = 30;
+num_merchandise_goods = 36;
+	]
+}
+info_pages:9 {
+  IMPORTS [
+	from header_common import *;
+	from header_operations import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+     Each quest record contains the following fields:;
+      1) Info page id: used for referencing info pages in other files. The prefix ip_ is automatically added before each info page id.;
+      2) Info page name: Name displayed in the info page screen.";
+	]
+}
+meshes:10 {
+  IMPORTS [
+	from header_meshes import *;
+	]
+  DESCRIPTION [
+  Each mesh record contains the following fields:;
+  1) Mesh id: used for referencing meshes in other files. The prefix mesh_ is automatically added before each mesh id.;
+  2) Mesh flags. See header_meshes.py for a list of available flags;
+  3) Mesh resource name: Resource name of the mesh;
+  4) Mesh translation on x axis: Will be done automatically when the mesh is loaded;
+  5) Mesh translation on y axis: Will be done automatically when the mesh is loaded;
+  6) Mesh translation on z axis: Will be done automatically when the mesh is loaded;
+  7) Mesh rotation angle over x axis: Will be done automatically when the mesh is loaded;
+  8) Mesh rotation angle over y axis: Will be done automatically when the mesh is loaded;
+  9) Mesh rotation angle over z axis: Will be done automatically when the mesh is loaded;
+  10) Mesh x scale: Will be done automatically when the mesh is loaded;
+  11) Mesh y scale: Will be done automatically when the mesh is loaded;
+  12) Mesh z scale: Will be done automatically when the mesh is loaded;
+	]
+}
+tracks:11 {
+  IMPORTS [
+	from header_music import *;
+	]
+  DESCRIPTION [
+  Each track record contains the following fields:;
+  1) Track id: used for referencing tracks.;
+  2) Track file: filename of the track;
+  3) Track flags. See header_music.py for a list of available flags;
+  4) Continue Track flags: Shows in which situations or cultures the track can continue playing. See header_music.py for a list of available flags;
+	]
+  CODE [
+# WARNING: You MUST add mtf_module_track flag to the flags of the tracks located under module directory;
+	]
+}
+quests:12 {
+  IMPORTS [
+	from header_quests import *;
+	]
+  DESCRIPTION [
+  Each quest record contains the following fields:;
+  1) Quest id: used for referencing quests in other files. The prefix qst_ is automatically added before each quest-id.;
+  2) Quest Name: Name displayed in the quest screen.;
+  3) Quest flags. See header_quests.py for a list of available flags;
+  4) Quest Description: Description displayed in the quest screen.;
+ Note that you may call the opcode setup_quest_text for setting up the name and description;
+	]
+}
+sounds:13 {
+  IMPORTS [
+	from header_sounds import *;
+	]
+}
+scene_props:14 {
+  IMPORTS [
+	from header_common import *;
+	from header_operations import *;
+	from header_scene_props import *;
+	from header_sounds import *;
+	from header_triggers import *;
+	from module_constants import *;
+	import string;
+	]
+  DESCRIPTION [
+  Each scene prop record contains the following fields:;
+  1) Scene prop id: used for referencing scene props in other files. The prefix spr_ is automatically added before each scene prop id.;
+  2) Scene prop flags. See header_scene_props.py for a list of available flags;
+  3) Mesh name: Name of the mesh.;
+  4) Physics object name:;
+  5) Triggers: Simple triggers that are associated with the scene prop;
+	]
+  CODE [
+check_item_use_trigger = (ti_on_scene_prop_use,;
+    [;
+      (store_trigger_param_1, ":agent_id"),;
+      (store_trigger_param_2, ":instance_id"),;
+      ;
+      #for only server itself-----------------------------------------------------------------------------------------------;
+      (call_script, "script_use_item", ":instance_id", ":agent_id"),;
+      #for only server itself-----------------------------------------------------------------------------------------------;
+      (get_max_players, ":num_players"),                               ;
+      (try_for_range, ":player_no", 1, ":num_players"), #0 is server so starting from 1;
+        (player_is_active, ":player_no"),;
+        (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_use_item, ":instance_id", ":agent_id"),;
+      (try_end),;
+    ]);
+check_sally_door_use_trigger_double = (ti_on_scene_prop_use,;
+    [;
+      (store_trigger_param_1, ":agent_id"),;
+      (store_trigger_param_2, ":instance_id"),;
+      (agent_get_position, pos1, ":agent_id"),;
+      (prop_instance_get_starting_position, pos2, ":instance_id"),;
+      ;
+      (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),;
+      (try_begin),;
+        #out doors like castle sally door can be opened only from inside, if door coordinate is behind your coordinate. Also it can be closed from both sides.;
+        ;
+        (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),;
+        ;
+        (assign, ":can_open_door", 0),;
+        (try_begin),;
+          (neg|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),;
+          (neg|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),;
+          (neg|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),;
+          (neg|eq, ":scene_prop_id", "spr_earth_sally_gate_left"),;
+          ;
+          (position_is_behind_position, pos1, pos2),;
+          (assign, ":can_open_door", 1),;
+        (else_try),  ;
+          (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_right"),;
+          (this_or_next|eq, ":scene_prop_id", "spr_viking_keep_destroy_sally_door_left"),;
+          (this_or_next|eq, ":scene_prop_id", "spr_earth_sally_gate_right"),;
+          (eq, ":scene_prop_id", "spr_earth_sally_gate_left"),;
+          (neg|position_is_behind_position, pos1, pos2),;
+          (assign, ":can_open_door", 1),;
+        (try_end),;
+        ;
+        (this_or_next|eq, ":can_open_door", 1),;
+        (eq, ":opened_or_closed", 1),;
+      ;
+        (try_begin),;
+          #for only server itself-----------------------------------------------------------------------------------------------;
+          (call_script, "script_use_item", ":instance_id", ":agent_id"),;
+          #for only server itself-----------------------------------------------------------------------------------------------;
+          (get_max_players, ":num_players"),                               ;
+          (try_for_range, ":player_no", 1, ":num_players"), #0 is server so starting from 1;
+            (player_is_active, ":player_no"),;
+            (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_use_item, ":instance_id", ":agent_id"),;
+          (try_end),;
+        (try_end),;
+      (try_end),;
+    ]);
+check_sally_door_use_trigger = (ti_on_scene_prop_use,;
+    [;
+      (store_trigger_param_1, ":agent_id"),;
+      (store_trigger_param_2, ":instance_id"),;
+      (agent_get_position, pos1, ":agent_id"),;
+      (prop_instance_get_starting_position, pos2, ":instance_id"),;
+      ;
+      (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),;
+      (try_begin),;
+        #out doors like castle sally door can be opened only from inside, if door coordinate is behind your coordinate. Also it can be closed from both sides.;
+        (this_or_next|position_is_behind_position, pos1, pos2),;
+        (eq, ":opened_or_closed", 1),;
+      ;
+        (try_begin),;
+          #for only server itself-----------------------------------------------------------------------------------------------;
+          (call_script, "script_use_item", ":instance_id", ":agent_id"),;
+          #for only server itself-----------------------------------------------------------------------------------------------;
+          (get_max_players, ":num_players"),                               ;
+          (try_for_range, ":player_no", 1, ":num_players"), #0 is server so starting from 1;
+            (player_is_active, ":player_no"),;
+            (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_use_item, ":instance_id", ":agent_id"),;
+          (try_end),;
+        (try_end),;
+      (try_end),;
+    ]);
+check_castle_door_use_trigger = (ti_on_scene_prop_use,;
+    [;
+      (store_trigger_param_1, ":agent_id"),;
+      (store_trigger_param_2, ":instance_id"),;
+      (agent_get_position, pos1, ":agent_id"),;
+      (prop_instance_get_starting_position, pos2, ":instance_id"),;
+      ;
+      (scene_prop_get_slot, ":opened_or_closed", ":instance_id", scene_prop_open_or_close_slot),;
+      (try_begin),;
+        (ge, ":agent_id", 0),;
+        (agent_get_team, ":agent_team", ":agent_id"),;
+        #in doors like castle room doors can be opened from both sides, but only defenders can open these doors. Also it can be closed from both sides.;
+        (this_or_next|eq, ":agent_team", 0),;
+        (eq, ":opened_or_closed", 1),;
+      ;
+        (try_begin),;
+          #for only server itself-----------------------------------------------------------------------------------------------;
+          (call_script, "script_use_item", ":instance_id", ":agent_id"),;
+          #for only server itself-----------------------------------------------------------------------------------------------;
+          (get_max_players, ":num_players"),                               ;
+          (try_for_range, ":player_no", 1, ":num_players"), #0 is server so starting from 1;
+            (player_is_active, ":player_no"),;
+            (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_use_item, ":instance_id", ":agent_id"),;
+          (try_end),;
+        (try_end),;
+      (try_end),;
+    ]);
+check_ladder_animate_trigger = (ti_on_scene_prop_is_animating,;
+    [      ;
+      (store_trigger_param_1, ":instance_id"),;
+      (store_trigger_param_2, ":remaining_time"),;
+      (call_script, "script_check_creating_ladder_dust_effect", ":instance_id", ":remaining_time"),;
+      ]);
+check_ladder_animation_finish_trigger = (ti_on_scene_prop_animation_finished,;
+    [;
+      (store_trigger_param_1, ":instance_id"),;
+      (prop_instance_enable_physics, ":instance_id", 1),;
+      ]);
+	]
+}
+tableaus:15 {
+  IMPORTS [
+	from header_common import *;
+	from header_items import *;
+	from header_mission_templates import *;
+	from header_tableau_materials import *;
+	from ID_animations import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+  Each tableau material contains the following fields:;
+  1) Tableau id (string): used for referencing tableaux in other files. The prefix tab_ is automatically added before each tableau-id.;
+  2) Tableau flags (int). See header_tableau_materials.py for a list of available flags;
+  3) Tableau sample material name (string).;
+  4) Tableau width (int).;
+  5) Tableau height (int).;
+  6) Tableau mesh min x (int): divided by 1000 and used when a mesh is auto-generated using the tableau material;
+  7) Tableau mesh min y (int): divided by 1000 and used when a mesh is auto-generated using the tableau material;
+  8) Tableau mesh max x (int): divided by 1000 and used when a mesh is auto-generated using the tableau material;
+  9) Tableau mesh max y (int): divided by 1000 and used when a mesh is auto-generated using the tableau material;
+  10) Operations block (list): A list of operations. See header_operations.py for reference.;
+     The operations block is executed when the tableau is activated.;
+	]
+  CODE [
+#banner height = 200, width = 85 with wood, 75 without wood;
+	]
+}
+map_icons:16 {
+  IMPORTS [
+	from header_map_icons import *;
+	from header_operations import *;
+	from header_triggers import *;
+	from ID_sounds import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+  Each map icon record contains the following fields:;
+  1) Map icon id: used for referencing map icons in other files.;
+     The prefix icon_ is automatically added before each map icon id.;
+  2) Map icon flags. See header_map icons.py for a list of available flags;
+  3) Mesh name.;
+  4) Scale. ;
+  5) Sound.;
+  6) Offset x position for the flag icon.;
+  7) Offset y position for the flag icon.;
+  8) Offset z position for the flag icon.;
+	]
+  CODE [
+banner_scale = 0.3;
+avatar_scale = 0.15;
+	]
+}
+dialogs:17 {
+  IMPORTS [
+	# -*- coding: cp1252 -*-;
+	from header_common import *;
+	from header_dialogs import *;
+	from header_item_modifiers import *;
+	from header_operations import *;
+	from header_parties import *;
+	from header_skills import *;
+	from header_terrain_types import *;
+	from header_triggers import *;
+	from header_troops import *;
+	from ID_party_templates import *;
+	from ID_troops import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+ During a dialog, the dialog lines are scanned from top to bottom.;
+ If the dialog-line is spoken by the player, all the matching lines are displayed for the player to pick from.;
+ If the dialog-line is spoken by another, the first (top-most) matching line is selected.;
+  Each dialog line contains the following fields:;
+ 1) Dialogue partner: This should match the person player is talking to.;
+    Usually this is a troop-id.;
+    You can also use a party-template-id by appending '|party_tpl' to this field.;
+    Use the constant 'anyone' if you'd like the line to match anybody.;
+    Appending '|plyr' to this field means that the actual line is spoken by the player;
+    Appending '|other(troop_id)' means that this line is spoken by a third person on the scene.;
+       (You must make sure that this third person is present on the scene);
+ 2) Starting dialog-state:;
+    During a dialog there's always an active Dialog-state.;
+    A dialog-line's starting dialog state must be the same as the active dialog state, for the line to be a possible candidate.;
+    If the dialog is started by meeting a party on the map, initially, the active dialog state is "start";
+    If the dialog is started by speaking to an NPC in a town, initially, the active dialog state is "start";
+    If the dialog is started by helping a party defeat another party, initially, the active dialog state is "party_relieved";
+    If the dialog is started by liberating a prisoner, initially, the active dialog state is "prisoner_liberated";
+    If the dialog is started by defeating a party led by a hero, initially, the active dialog state is "enemy_defeated";
+    If the dialog is started by a trigger, initially, the active dialog state is "event_triggered";
+ 3) Conditions block (list): This must be a valid operation block. See header_operations.py for reference.;
+ 4) Dialog Text (string):;
+ 5) Ending dialog-state:;
+    If a dialog line is picked, the active dialog-state will become the picked line's ending dialog-state.;
+ 6) Consequences block (list): This must be a valid operation block. See header_operations.py for reference.;
+ 7) Voice-over (string): sound filename for the voice over. Leave here empty for no voice over;
+	]
+}
+factions:18 {
+  IMPORTS [
+	from header_factions import *;
+	]
+  DESCRIPTION [
+  Each faction record contains the following fields:;
+  1) Faction id: used for referencing factions in other files.;
+     The prefix fac_ is automatically added before each faction id.;
+  2) Faction name.;
+  3) Faction flags. See header_factions.py for a list of available flags;
+  4) Faction coherence. Relation between members of this faction.;
+  5) Relations. This is a list of relation records.;
+     Each relation record is a tuple that contains the following fields:;
+    5.1) Faction. Which other faction this relation is referring to;
+    5.2) Value: Relation value between the two factions.;
+         Values range between -1 and 1.;
+  6) Ranks;
+  7) Faction color (default is gray);
+	]
+  CODE [
+default_kingdom_relations = [("outlaws",-0.05),("peasant_rebels", -0.1),("deserters", -0.02),("dark_knights", -0.04),("black_khergits", -0.04)] ## CC;
+	]
+}
+animations:19 {
+  IMPORTS [
+	from header_animations import *;
+	from header_common import *;
+	]
+  DESCRIPTION [
+	There are two animation arrays (one for human and one for horse). Each animation in these arrays contains the following fields:;
+	1) Animation id (string): used for referencing animations in other files. The prefix anim_ is automatically added before each animation-id .;
+	2) Animation flags: could be anything beginning with acf_ defined in header_animations.py;
+	3) Animation master flags: could be anything beginning with amf_ defined in header_animations.py;
+	4) Animation sequences (list).;
+	4.1) Duration of the sequence.;
+	4.2) Name of the animation resource.;
+	4.3) Beginning frame of the sequence within the animation resource.;
+	4.4) Ending frame of the sequence within the animation resource.;
+	4.5) Sequence flags: could be anything beginning with arf_ defined in header_animations.py;
+	]
+  CODE [
+#plan : ;
+# basic movement : walk ride etc. 0 -20000;
+#  on_foot  : 0     - 10000;
+#  horse    : 10000 - 20000;
+# combat         :                20000 - 40000;
+# fall           :                4000 - 70000;
+# act            : misc.          70000 - ...;
+amf_priority_jump           = 2;
+amf_priority_ride           = 2;
+amf_priority_continue       = 1;
+amf_priority_attack         = 10;
+amf_priority_cancel         = 12;
+amf_priority_defend         = 14;
+amf_priority_defend_parry   = amf_priority_defend + 1;
+amf_priority_throw          = amf_priority_defend + 1;
+amf_priority_blocked        = amf_priority_defend_parry;
+amf_priority_parried        = amf_priority_defend_parry;
+amf_priority_kick           = 33;
+amf_priority_jump_end       = 33;
+amf_priority_reload         = 60;
+amf_priority_mount          = 64;
+amf_priority_equip          = 70;
+amf_priority_rear           = 74;
+amf_priority_striked        = 80;
+amf_priority_fall_from_horse= 81;
+amf_priority_die            = 95;
+horse_move = 10000;
+combat     = 20000;
+defend     = 35000;
+blow       = 40000;
+attack_parried_duration = 0.6;
+attack_blocked_duration = 0.3;
+attack_blocked_duration_thrust = attack_blocked_duration + 0.3;
+attack_parried_duration_thrust = attack_parried_duration + 0.1;
+defend_parry_duration_1 = 0.6;
+defend_parry_duration_2 = 0.6;
+defend_parry_duration_3 = 0.8;
+ready_durn     = 0.35;
+defend_duration = 0.75;
+defend_keep_duration = 2.0;
+cancel_duration = 0.25;
+blend_in_defense = arf_blend_in_3;
+blend_in_ready = arf_blend_in_6;
+blend_in_release = arf_blend_in_5;
+blend_in_parry = arf_blend_in_5;
+blend_in_parried = arf_blend_in_3;
+blend_in_walk = arf_blend_in_3;
+blend_in_continue = arf_blend_in_1;
+#### Animations begin here;
+# All of the animations are hardcoded. You can edit the individual sequences, resources or times. But each;
+# animation must stay at the same position, otherwise the game won't run properly. If you want to add a new animation,;
+# you can change both the ids and values of the animations which are named as unused_human_anim_???;
+# and unused_horse_anim_??? (??? = any number). You must not change used animations' ids.;
+	]
+}
+party_templates:20 {
+  IMPORTS [
+	from header_common import *;
+	from header_parties import *;
+	from ID_factions import *;
+	from ID_map_icons import *;
+	from ID_troops import *;
+	]
+  DESCRIPTION [
+  Each party template record contains the following fields:;
+  1) Party-template id: used for referencing party-templates in other files.;
+     The prefix pt_ is automatically added before each party-template id.;
+  2) Party-template name.;
+  3) Party flags. See header_parties.py for a list of available flags;
+  4) Menu. ID of the menu to use when this party is met. The value 0 uses the default party encounter system.;
+  5) Faction;
+  6) Personality. See header_parties.py for an explanation of personality flags.;
+  7) List of stacks. Each stack record is a tuple that contains the following fields:;
+    7.1) Troop-id. ;
+    7.2) Minimum number of troops in the stack. ;
+    7.3) Maximum number of troops in the stack. ;
+    7.4) Member flags(optional). Use pmf_is_prisoner to note that this member is a prisoner.;
+     Note: There can be at most 6 stacks.;
+	]
+  CODE [
+pmf_is_prisoner = 0x0001;
+	]
+}
+parties:21 {
+  IMPORTS [
+	from header_common import *;
+	from header_parties import *;
+	from ID_factions import *;
+	from ID_map_icons import *;
+	from ID_party_templates import *;
+	from ID_troops import *;
+	]
+  DESCRIPTION [
+  Each party record contains the following fields:;
+  1) Party id: used for referencing parties in other files.;
+     The prefix p_ is automatically added before each party id.;
+  2) Party name.;
+  3) Party flags. See header_parties.py for a list of available flags;
+  4) Menu. ID of the menu to use when this party is met. The value 0 uses the default party encounter system.;
+  5) Party-template. ID of the party template this party belongs to. Use pt_none as the default value.;
+  6) Faction.;
+  7) Personality. See header_parties.py for an explanation of personality flags.;
+  8) Ai-behavior;
+  9) Ai-target party;
+ 10) Initial coordinates.;
+ 11) List of stacks. Each stack record is a triple that contains the following fields:;
+   11.1) Troop-id. ;
+   11.2) Number of troops in this stack. ;
+   11.3) Member flags. Use pmf_is_prisoner to note that this member is a prisoner.;
+ 12) Party direction in degrees [optional];
+	]
+  CODE [
+no_menu = 0;
+#pf_town = pf_is_static|pf_always_visible|pf_hide_defenders|pf_show_faction;
+pf_town = pf_is_static|pf_always_visible|pf_show_faction|pf_label_large;
+pf_castle = pf_is_static|pf_always_visible|pf_show_faction|pf_label_medium;
+pf_village = pf_is_static|pf_always_visible|pf_hide_defenders|pf_label_small;
+pf_neutral_town = pf_is_static|pf_always_visible|pf_hide_defenders|pf_label_large #Used for Zendar;
+#sample_party = [(trp_swadian_knight,1,0), (trp_swadian_peasant,10,0), (trp_swadian_crossbowman,1,0), (trp_swadian_man_at_arms, 1, 0), (trp_swadian_footman, 1, 0), (trp_swadian_militia,1,0)];
+# NEW TOWNS:;
+# NORMANDY: Rouen, Caen, Bayeux, Coutances, Evreux, Avranches;
+# Brittany: Rennes, Nantes,;
+# Maine: Le Mans;
+# Anjou: Angers;
+	]
+}
+skills:22 {
+  IMPORTS [
+	from header_common import *;
+	from header_skills import *;
+	]
+  DESCRIPTION [
+  Each skill contains the following fields:;
+  1) Skill id (string): used for referencing skills in other files. The prefix skl_ is automatically added before each skill-id .;
+  2) Skill name (string).;
+  3) Skill flags (int). See header_skills.py for a list of available flags;
+  4) Maximum level of the skill (int).;
+  5) Skill description (string): used in character window for explaining the skills.;
+	]
+  CODE [
+#Hardcoded skills are {names (indexes, beginning with 0)}:;
+# Trade (1);
+# Leadership (2);
+# Prisoner Management (3);
+# First Aid (9);
+# Surgery (10);
+# Wound Treatment (11);
+# Inventory Management (12);
+# Spotting (13);
+# Pathfinding (14);
+# Tactics (15);
+# Tracking (16);
+# Trainer (17);
+# Engineer (18);
+# Horse Archery (24);
+# Riding (25);
+# Athletics (26);
+# Shield (27);
+# Weapon Master (28);
+# Power Draw (34);
+# Power Throw (35);
+# Power Strike (36);
+# Ironflesh (37);
+# The effects of these skills can only be removed if the skill is disabled with sf_inactive flag.;
+# If you want to add a new skill, use the reserved skills or use non-hardcoded skills.;
+	]
+}
+postfx_params:23 {
+  IMPORTS [
+	from header_postfx import *;
+	]
+  DESCRIPTION [
+  Each postfx_param contains the following fields:;
+  1) id (string): ;
+  2) flags (int). ;
+  3) tonemap operator type (0,1,2,3);
+  4) shader parameters1 [ HDRRange, HDRExposureScaler, LuminanceAverageScaler, LuminanceMaxScaler ];
+  5) shader parameters2 [ BrightpassTreshold, BrightpassPostPower, BlurStrenght, BlurAmount ];
+  6) shader parameters3 [ AmbientColorCoef, SunColorCoef, SpecularCoef, -reserved ];
+	]
+}
+skins:24 {
+  IMPORTS [
+	from header_skins import *;
+	from ID_particle_systems import *;
+	]
+  DESCRIPTION [
+  Each skin record contains the following fields:;
+  1) Skin id: used for referencing skins.;
+  2) Skin flags. Not used yet. Should be 0.;
+  3) Body mesh.;
+  4) Calf mesh (left one).;
+  5) Hand mesh (left one).;
+  6) Head mesh.;
+  7) Face keys (list);
+  8) List of hair meshes.;
+  9) List of beard meshes.;
+ 10) List of hair textures.;
+ 11) List of beard textures.;
+ 12) List of face textures.;
+ 13) List of voices.;
+ 14) Skeleton name;
+ 15) Scale (doesn't fully work yet);
+ 16) Blood particles 1 (do not add this if you wish to use the default particles);
+ 17) Blood particles 2 (do not add this if you wish to use the default particles);
+ 17) Face key constraints (do not add this if you do not wish to use it);
+	]
+}
+particle_systems:25 {
+  IMPORTS [
+	from header_particle_systems import *;
+	]
+  DESCRIPTION [
+   Each particle system contains the following fields:;
+  1) Particle system id (string): used for referencing particle systems in other files.;
+     The prefix psys_ is automatically added before each particle system id.;
+  2) Particle system flags (int). See header_particle_systems.py for a list of available flags;
+  3) mesh-name.;
+  4) Num particles per second:    Number of particles emitted per second.;
+  5) Particle Life:    Each particle lives this long (in seconds).;
+  6) Damping:          How much particle's speed is lost due to friction.;
+  7) Gravity strength: Effect of gravity. (Negative values make the particles float upwards.);
+  8) Turbulance size:  Size of random turbulance (in meters);
+  9) Turbulance strength: How much a particle is affected by turbulance.;
+ 10,11) Alpha keys :    Each attribute is controlled by two keys and ;
+ 12,13) Red keys   :    each key has two fields: (time, magnitude);
+ 14,15) Green keys :    For example scale key (0.3,0.6) means ;
+ 16,17) Blue keys  :    scale of each particle will be 0.6 at the;
+ 18,19) Scale keys :    time 0.3 (where time=0 means creation and time=1 means end of the particle);
+ The magnitudes are interpolated in between the two keys and remain constant beyond the keys.;
+ Except the alpha always starts from 0 at time 0.;
+ 20) Emit Box Size :   The dimension of the box particles are emitted from.;
+ 21) Emit velocity :   Particles are initially shot with this velocity.;
+ 22) Emit dir randomness;
+ 23) Particle rotation speed: Particles start to rotate with this (angular) speed (degrees per second).;
+ 24) Particle rotation damping: How quickly particles stop their rotation;
+	]
+  CODE [
+#psf_always_emit         = 0x0000000002;
+#psf_global_emit_dir     = 0x0000000010;
+#psf_emit_at_water_level = 0x0000000020;
+#psf_billboard_2d        = 0x0000000100 # up_vec = dir, front rotated towards camera;
+#psf_billboard_3d        = 0x0000000200 # front_vec point to camera.;
+#psf_turn_to_velocity    = 0x0000000400;
+#psf_randomize_rotation  = 0x0000001000;
+#psf_randomize_size      = 0x0000002000;
+#psf_2d_turbulance       = 0x0000010000;
+	]
+}
+scenes:26 {
+  IMPORTS [
+	from header_common import *;
+	from header_operations import *;
+	from header_scenes import *;
+	from header_triggers import *;
+	from module_constants import *;
+	]
+  DESCRIPTION [
+  Each scene record contains the following fields:;
+  1) Scene id {string}: used for referencing scenes in other files. The prefix scn_ is automatically added before each scene-id.;
+  2) Scene flags {int}. See header_scenes.py for a list of available flags;
+  3) Mesh name {string}: This is used for indoor scenes only. Use the keyword "none" for outdoor scenes.;
+  4) Body name {string}: This is used for indoor scenes only. Use the keyword "none" for outdoor scenes.;
+  5) Min-pos {(float,float)}: minimum (x,y) coordinate. Player can't move beyond this limit.;
+  6) Max-pos {(float,float)}: maximum (x,y) coordinate. Player can't move beyond this limit.;
+  7) Water-level {float}. ;
+  8) Terrain code {string}: You can obtain the terrain code by copying it from the terrain generator screen;
+  9) List of other scenes accessible from this scene {list of strings}.;
+     (deprecated. This will probably be removed in future versions of the module system);
+     (In the new system passages are used to travel between scenes and;
+     the passage's variation-no is used to select the game menu item that the passage leads to.);
+ 10) List of chest-troops used in this scene {list of strings}. You can access chests by placing them in edit mode.;
+     The chest's variation-no is used with this list for selecting which troop's inventory it will access.;
+  town_15  Yalen;
+  town_16  Dhirim;
+  town_17  Ichamur;
+  town_18  Narra;
+  town_19  Shariz;
+  town_20  Durquba;
+  town_21  Ahmerrad;
+  town_22  Bariyye;
+	]
+}
+# END OF DATA

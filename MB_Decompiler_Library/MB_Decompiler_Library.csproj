@@ -67,10 +67,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="importantLib, Version=1.8.0.0, Culture=neutral, PublicKeyToken=d65ae583f65e1197, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\importantLib\importantLib\bin\x86\Release\importantLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -126,7 +122,11 @@
     <Compile Include="IO\SourceWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\skillhunter\skillhunter\skillhunter.vbproj">
+    <ProjectReference Include="..\importantLib\importantLib\importantLib.csproj">
+      <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
+      <Name>importantLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\skillhunter\skillhunter\skillhunter.vbproj">
       <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
       <Name>skillhunter</Name>
     </ProjectReference>

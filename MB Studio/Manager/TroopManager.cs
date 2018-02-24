@@ -8,10 +8,10 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using WarbandTranslator;
-using brfManager;
 using importantLib;
 using MB_Studio.Main;
+using WarbandTranslator;
+using brfManager;
 
 namespace MB_Studio.Manager
 {

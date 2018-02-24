@@ -289,6 +289,11 @@
     <EmbeddedResource Include="Manager\TroopManager.resx">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="files\header_items.py.bak" />
+    <None Include="files\imports.wdb" />
+    <None Include="files\moduleSystem\build_module.bat" />
+    <None Include="files\moduleSystem\build_module.bat.list" />
+    <None Include="files\module_info.path" />
     <None Include="MB Studio_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -305,21 +310,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DeadMenTell\brfManager\brfManager.csproj">
-      <Project>{d941dd6a-1daa-42e8-aced-1bb2681edbd3}</Project>
+    <ProjectReference Include="..\brfManager\brfManager.csproj">
+      <Project>{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}</Project>
       <Name>brfManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\importantLib\importantLib\importantLib.csproj">
+    <ProjectReference Include="..\importantLib\importantLib\importantLib.csproj">
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\skillhunter\skillhunter\skillhunter.vbproj">
-      <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
-      <Name>skillhunter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Warband - Translator\Warband - Translator\Warband - Translator.csproj">
-      <Project>{114f6ae7-9935-4d6a-8e17-49a48ba1c036}</Project>
-      <Name>Warband - Translator</Name>
     </ProjectReference>
     <ProjectReference Include="..\MB_Decompiler\MB_Decompiler.csproj">
       <Project>{6e4a3036-1e9c-4539-b64f-1814a82dbd62}</Project>
@@ -328,6 +325,14 @@
     <ProjectReference Include="..\MB_Decompiler_Library\MB_Decompiler_Library.csproj">
       <Project>{FC643914-80E5-42FF-806B-C23E37DD9EC5}</Project>
       <Name>MB_Decompiler_Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\skillhunter\skillhunter\skillhunter.vbproj">
+      <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
+      <Name>skillhunter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warband - Translator\Warband - Translator\Warband - Translator.csproj">
+      <Project>{114F6AE7-9935-4D6A-8E17-49A48BA1C036}</Project>
+      <Name>Warband - Translator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +348,134 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="files\exchange_objects.py" />
+    <Content Include="files\header_items.py" />
+    <Content Include="files\header_item_modifiers.py" />
+    <Content Include="files\header_mb_decompiler.py" />
+    <Content Include="files\header_operations.py" />
+    <Content Include="files\header_scene_props.py" />
+    <Content Include="files\header_triggers.py" />
+    <Content Include="files\header_troops.py" />
+    <Content Include="files\helpers.py" />
+    <Content Include="files\images\bg2.jpeg" />
+    <Content Include="files\moduleSystem\header_animations.py" />
+    <Content Include="files\moduleSystem\header_common.py" />
+    <Content Include="files\moduleSystem\header_dialogs.py" />
+    <Content Include="files\moduleSystem\header_factions.py" />
+    <Content Include="files\moduleSystem\header_game_menus.py" />
+    <Content Include="files\moduleSystem\header_ground_types.py" />
+    <Content Include="files\moduleSystem\header_items.py" />
+    <Content Include="files\moduleSystem\header_item_modifiers.py" />
+    <Content Include="files\moduleSystem\header_map_icons.py" />
+    <Content Include="files\moduleSystem\header_meshes.py" />
+    <Content Include="files\moduleSystem\header_mission_templates.py" />
+    <Content Include="files\moduleSystem\header_mission_types.py" />
+    <Content Include="files\moduleSystem\header_music.py" />
+    <Content Include="files\moduleSystem\header_operations.py" />
+    <Content Include="files\moduleSystem\header_particle_systems.py" />
+    <Content Include="files\moduleSystem\header_parties.py" />
+    <Content Include="files\moduleSystem\header_postfx.py" />
+    <Content Include="files\moduleSystem\header_presentations.py" />
+    <Content Include="files\moduleSystem\header_quests.py" />
+    <Content Include="files\moduleSystem\header_scenes.py" />
+    <Content Include="files\moduleSystem\header_scene_props.py" />
+    <Content Include="files\moduleSystem\header_skills.py" />
+    <Content Include="files\moduleSystem\header_skins.py" />
+    <Content Include="files\moduleSystem\header_sounds.py" />
+    <Content Include="files\moduleSystem\header_strings.py" />
+    <Content Include="files\moduleSystem\header_tableau_materials.py" />
+    <Content Include="files\moduleSystem\header_terrain_types.py" />
+    <Content Include="files\moduleSystem\header_triggers.py" />
+    <Content Include="files\moduleSystem\header_troops.py" />
+    <Content Include="files\moduleSystem\ID_animations.py" />
+    <Content Include="files\moduleSystem\ID_factions.py" />
+    <Content Include="files\moduleSystem\ID_info_pages.py" />
+    <Content Include="files\moduleSystem\ID_items.py" />
+    <Content Include="files\moduleSystem\ID_map_icons.py" />
+    <Content Include="files\moduleSystem\ID_menus.py" />
+    <Content Include="files\moduleSystem\ID_meshes.py" />
+    <Content Include="files\moduleSystem\ID_mission_templates.py" />
+    <Content Include="files\moduleSystem\ID_music.py" />
+    <Content Include="files\moduleSystem\ID_particle_systems.py" />
+    <Content Include="files\moduleSystem\ID_parties.py" />
+    <Content Include="files\moduleSystem\ID_party_templates.py" />
+    <Content Include="files\moduleSystem\ID_postfx_params.py" />
+    <Content Include="files\moduleSystem\ID_presentations.py" />
+    <Content Include="files\moduleSystem\ID_quests.py" />
+    <Content Include="files\moduleSystem\ID_scenes.py" />
+    <Content Include="files\moduleSystem\ID_scene_props.py" />
+    <Content Include="files\moduleSystem\ID_scripts.py" />
+    <Content Include="files\moduleSystem\ID_skills.py" />
+    <Content Include="files\moduleSystem\ID_sounds.py" />
+    <Content Include="files\moduleSystem\ID_strings.py" />
+    <Content Include="files\moduleSystem\ID_tableau_materials.py" />
+    <Content Include="files\moduleSystem\ID_troops.py" />
+    <Content Include="files\moduleSystem\module_animations.py" />
+    <Content Include="files\moduleSystem\module_constants.py" />
+    <Content Include="files\moduleSystem\module_dialogs.py" />
+    <Content Include="files\moduleSystem\module_factions.py" />
+    <Content Include="files\moduleSystem\module_game_menus.py" />
+    <Content Include="files\moduleSystem\module_info.py" />
+    <Content Include="files\moduleSystem\module_info_pages.py" />
+    <Content Include="files\moduleSystem\module_items.py" />
+    <Content Include="files\moduleSystem\module_map_icons.py" />
+    <Content Include="files\moduleSystem\module_meshes.py" />
+    <Content Include="files\moduleSystem\module_mission_templates.py" />
+    <Content Include="files\moduleSystem\module_music.py" />
+    <Content Include="files\moduleSystem\module_particle_systems.py" />
+    <Content Include="files\moduleSystem\module_parties.py" />
+    <Content Include="files\moduleSystem\module_party_templates.py" />
+    <Content Include="files\moduleSystem\module_postfx.py" />
+    <Content Include="files\moduleSystem\module_presentations.py" />
+    <Content Include="files\moduleSystem\module_quests.py" />
+    <Content Include="files\moduleSystem\module_scenes.py" />
+    <Content Include="files\moduleSystem\module_scene_props.py" />
+    <Content Include="files\moduleSystem\module_scripts.py" />
+    <Content Include="files\moduleSystem\module_simple_triggers.py" />
+    <Content Include="files\moduleSystem\module_skills.py" />
+    <Content Include="files\moduleSystem\module_skins.py" />
+    <Content Include="files\moduleSystem\module_sounds.py" />
+    <Content Include="files\moduleSystem\module_strings.py" />
+    <Content Include="files\moduleSystem\module_tableau_materials.py" />
+    <Content Include="files\moduleSystem\module_triggers.py" />
+    <Content Include="files\moduleSystem\module_troops.py" />
+    <Content Include="files\moduleSystem\module_variables.py" />
+    <Content Include="files\moduleSystem\process_animations.py" />
+    <Content Include="files\moduleSystem\process_common.py" />
+    <Content Include="files\moduleSystem\process_dialogs.py" />
+    <Content Include="files\moduleSystem\process_factions.py" />
+    <Content Include="files\moduleSystem\process_game_menus.py" />
+    <Content Include="files\moduleSystem\process_global_variables.py" />
+    <Content Include="files\moduleSystem\process_global_variables_unused.py" />
+    <Content Include="files\moduleSystem\process_info_pages.py" />
+    <Content Include="files\moduleSystem\process_init.py" />
+    <Content Include="files\moduleSystem\process_items.py" />
+    <Content Include="files\moduleSystem\process_line_correction.py" />
+    <Content Include="files\moduleSystem\process_map_icons.py" />
+    <Content Include="files\moduleSystem\process_meshes.py" />
+    <Content Include="files\moduleSystem\process_mission_tmps.py" />
+    <Content Include="files\moduleSystem\process_music.py" />
+    <Content Include="files\moduleSystem\process_operations.py" />
+    <Content Include="files\moduleSystem\process_particle_sys.py" />
+    <Content Include="files\moduleSystem\process_parties.py" />
+    <Content Include="files\moduleSystem\process_party_tmps.py" />
+    <Content Include="files\moduleSystem\process_postfx.py" />
+    <Content Include="files\moduleSystem\process_presentations.py" />
+    <Content Include="files\moduleSystem\process_quests.py" />
+    <Content Include="files\moduleSystem\process_scenes.py" />
+    <Content Include="files\moduleSystem\process_scene_props.py" />
+    <Content Include="files\moduleSystem\process_scripts.py" />
+    <Content Include="files\moduleSystem\process_simple_triggers.py" />
+    <Content Include="files\moduleSystem\process_skills.py" />
+    <Content Include="files\moduleSystem\process_skins.py" />
+    <Content Include="files\moduleSystem\process_sounds.py" />
+    <Content Include="files\moduleSystem\process_strings.py" />
+    <Content Include="files\moduleSystem\process_tableau_materials.py" />
+    <Content Include="files\moduleSystem\process_tags_unused.py" />
+    <Content Include="files\moduleSystem\process_troops.py" />
+    <Content Include="files\moduleSystem\variables.txt" />
+    <Content Include="files\module_constants.py" />
+    <Content Include="files\module_my_mod_set.py" />
     <Content Include="J.SYS.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
