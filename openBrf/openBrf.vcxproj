@@ -77,16 +77,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(PlatformTarget)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">openBrf</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">openBrf</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PlatformTarget)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">openBrf</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">openBrf</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
@@ -97,22 +97,24 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
+    <OutDir>$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.dll</TargetExt>
+    <OutDir>$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;F:\Qt\5.10.1\msvc2015\include;F:\Qt\5.10.1\msvc2015\include\QtOpenGL;F:\Qt\5.10.1\msvc2015\include\QtWidgets;F:\Qt\5.10.1\msvc2015\include\QtGui;F:\Qt\5.10.1\msvc2015\include\QtANGLE;F:\Qt\5.10.1\msvc2015\include\QtXml;F:\Qt\5.10.1\msvc2015\include\QtCore;tmp;F:\Qt\5.10.1\msvc2015\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <AssemblerListingLocation>$(PlatformTarget)\$(Configuration)\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>release\</ObjectFileName>
+      <ObjectFileName>$(PlatformTarget)\$(Configuration)\</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
@@ -122,10 +124,10 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>F:\Qt\5.10.1\msvc2015\lib\qtmaind.lib;shell32.lib;opengl32.lib;glu32.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5OpenGLd.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Widgetsd.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Guid.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Xmld.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>F:\Qt\5.10.1\msvc2015\lib\qtmain.lib;shell32.lib;opengl32.lib;glu32.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5OpenGL.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Widgets.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Gui.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Xml.lib;F:\Qt\5.10.1\msvc2015\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>F:\Qt\5.10.1\msvc2015\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -150,11 +152,11 @@
     <ClCompile>
       <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;F:\Qt\5.10.1\msvc2015_64\include;F:\Qt\5.10.1\msvc2015_64\include\QtOpenGL;F:\Qt\5.10.1\msvc2015_64\include\QtWidgets;F:\Qt\5.10.1\msvc2015_64\include\QtGui;F:\Qt\5.10.1\msvc2015_64\include\QtANGLE;F:\Qt\5.10.1\msvc2015_64\include\QtXml;F:\Qt\5.10.1\msvc2015_64\include\QtCore;tmp;F:\Qt\5.10.1\msvc2015_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <AssemblerListingLocation>$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>release\</ObjectFileName>
+      <ObjectFileName>$(Platform)\$(Configuration)\</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
@@ -164,10 +166,10 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>F:\Qt\5.10.1\msvc2015_64\lib\qtmaind.lib;shell32.lib;opengl32.lib;glu32.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5OpenGLd.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Widgetsd.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Guid.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Xmld.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>F:\Qt\5.10.1\msvc2015_64\lib\qtmain.lib;shell32.lib;opengl32.lib;glu32.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5OpenGL.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Widgets.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Gui.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Xml.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>F:\Qt\5.10.1\msvc2015_64\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -192,11 +194,11 @@
     <ClCompile>
       <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;F:\Qt\5.10.1\msvc2015\include;F:\Qt\5.10.1\msvc2015\include\QtOpenGL;F:\Qt\5.10.1\msvc2015\include\QtWidgets;F:\Qt\5.10.1\msvc2015\include\QtGui;F:\Qt\5.10.1\msvc2015\include\QtANGLE;F:\Qt\5.10.1\msvc2015\include\QtXml;F:\Qt\5.10.1\msvc2015\include\QtCore;tmp;F:\Qt\5.10.1\msvc2015\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <AssemblerListingLocation>$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>debug\</ObjectFileName>
+      <ObjectFileName>$(Platform)\$(Configuration)\</ObjectFileName>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
@@ -232,11 +234,11 @@
     <ClCompile>
       <AdditionalIncludeDirectories>.;projects\vcglib;libs\lib3ds-1.3.0;F:\Qt\5.10.1\msvc2015_64\include;F:\Qt\5.10.1\msvc2015_64\include\QtOpenGL;F:\Qt\5.10.1\msvc2015_64\include\QtWidgets;F:\Qt\5.10.1\msvc2015_64\include\QtGui;F:\Qt\5.10.1\msvc2015_64\include\QtANGLE;F:\Qt\5.10.1\msvc2015_64\include\QtXml;F:\Qt\5.10.1\msvc2015_64\include\QtCore;tmp;F:\Qt\5.10.1\msvc2015_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <AssemblerListingLocation>$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>debug\</ObjectFileName>
+      <ObjectFileName>$(Platform)\$(Configuration)\</ObjectFileName>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
@@ -244,7 +246,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>F:\Qt\5.10.1\msvc2015_64\lib\qtmaind.lib;shell32.lib;opengl32.lib;glu32.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5OpenGLd.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Widgetsd.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Guid.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Xmld.lib;F:\Qt\5.10.1\msvc2015_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>

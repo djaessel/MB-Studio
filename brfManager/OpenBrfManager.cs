@@ -10,10 +10,7 @@ namespace brfManager
     {
         #region Imports And Constants
 
-        //private const string OPEN_BRF_DIR = @"F:\WORKINGAREA\Visual Studio 2013 - Projects\openBrf\";
-        //private const string OPEN_BRF_RELEASE = OPEN_BRF_DIR +  @"release\openBrf.dll";
-        //private const string OPEN_BRF_DEBUG = "openBrf.exe";//OPEN_BRF_DIR + @"debug\openBrf.dll";
-        private const string OPEN_BRF_DLL = "openBrf.dll";//OPEN_BRF_DIR + @"debug\openBrf.dll";
+        public const string OPEN_BRF_DLL = "openBrf.dll";
 
         [DllImport(OPEN_BRF_DLL)]
         public extern static int StartExternal(int argc, string[] argv);
@@ -47,15 +44,18 @@ namespace brfManager
 
         #endregion
 
-        #region Attributes
+        #region Attributes / Properties
 
         private string modName, mabPath, modulesPath, modPath, resourcePath;
         private string[] SArray = new string[0];
 
+        private ImportantMethods imp = new ImportantMethods();
+
         public string ModulesPath { get { return modulesPath; } }
+
         public bool IsShown { get { return IsCurHWndShown(); } }
 
-        private ImportantMethods imp = new ImportantMethods();
+        public IntPtr Handle { get { return GetCurWindowPtr(); } }
 
         #endregion
 
@@ -67,8 +67,8 @@ namespace brfManager
             if (args != null)
                 SArray = args;
 
+            modulesPath = mabPath + "\\Modules";
             this.mabPath = mabPath;
-            this.modulesPath = mabPath + "\\Modules";
             this.modName = modName;
 
             ChangeModule(modName);
@@ -91,28 +91,6 @@ namespace brfManager
                     tmp[i + 1] = args[i];
                 args = tmp;
             }
-
-            /*string arguments = string.Empty;
-            foreach (string s in args)
-            {
-                string tmp = s;
-                while (tmp.Contains(" "))
-                {
-                    string tmp2 = tmp.Substring(tmp.IndexOf(' ') + 1);
-                    if (tmp2.Contains("\\"))
-                        tmp2 = tmp2.Substring(tmp2.IndexOf('\\'));
-                    tmp = tmp.Remove(tmp.IndexOf(' '));
-                    if (tmp.Contains("\\"))
-                        tmp = tmp.Remove(tmp.LastIndexOf('\\') + Math.Min((tmp.Length - 1) - tmp.LastIndexOf('\\'), 7));
-                    tmp += "~1";
-                    if (tmp2.Contains("\\"))
-                        tmp += tmp2;
-                }
-                
-                arguments += tmp;
-                arguments += ' ';
-            }
-            MessageBox.Show("ARGUMENTS: |" + arguments + '|');*/
 
             return StartExternal(args.Length, args);
         }
@@ -187,13 +165,11 @@ namespace brfManager
             {
                 Console.WriteLine("TRY: OPEN_BRF_MANAGER SELECT " + name + " - (KIND[" + kind + "])");
                 b = SelectItemByNameAndKind(name, kind);
+                if (!b)
+                    Console.WriteLine("OPEN_BRF_MANAGER: MESH_NOT_FOUND!");
             }
-            if (!b)
-                Console.WriteLine("OPEN_BRF_MANAGER: MESH_NOT_FOUND!");
             return b;
         }
-
-        public IntPtr Handle { get { return GetCurWindowPtr(); } }
 
         public void AddWindowHandleToControlsParent(Control childX, bool addOnRightSide = true)
         {

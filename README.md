@@ -1,5 +1,5 @@
 # Introduction
-This is an Open Source Modding Tool or should I say Studio? Any it is called MB Studio after the game it is made for. Feel free to use this, but dont forget to mention the authors and people who made this happen!
+This is an Open Source Modding Tool or should I say Studio? Anyway it is called MB Studio after the game it is made for. Feel free to use it, but dont forget to mention the authors and people who made all of this happen!
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:

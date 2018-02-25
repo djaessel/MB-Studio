@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler_GUI", "MB_Decompiler_GUI\MB_Decompiler_GUI.csproj", "{444019B9-229D-4FE1-B079-AABBCF8ECA01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB Studio", "MB Studio\MB Studio.csproj", "{7222FE26-50DD-4B50-9E7A-DB473B077081}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F48F8D5-100D-3065-9AB1-476973B61E07} = {7F48F8D5-100D-3065-9AB1-476973B61E07}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "skillhunter", "skillhunter\skillhunter\skillhunter.vbproj", "{FA4558D0-9F6F-456B-888F-D9DED33DFB90}"
 EndProject

@@ -1159,7 +1159,7 @@ namespace MB_Studio.Manager
                 Thread.Sleep(10);
             Invoke((MethodInvoker)delegate
             {
-                openBrfManager.AddWindowHandleToControlsParent(this); //ImportantMethods.AddWindowHandleToControl(openBrfManager.Handle, Parent, Height, Width, Top);
+                openBrfManager.AddWindowHandleToControlsParent(this);//ImportantMethods.AddWindowHandleToControl(openBrfManager.Handle, Parent, Height, Width, Top);
 
                 Thread.Sleep(50);
 
@@ -1168,7 +1168,7 @@ namespace MB_Studio.Manager
                 // Update UI
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
 
-                Console.WriteLine("Loaded 3D View successfully! - laut Programmablauf");
+                Console.WriteLine("Loaded 3D View successfully! (as far as the code says)");
             });
         }
 

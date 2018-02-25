@@ -289,10 +289,15 @@
     <EmbeddedResource Include="Manager\TroopManager.resx">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="files\header_items.py.bak" />
-    <None Include="files\imports.wdb" />
-    <None Include="files\moduleSystem\build_module.bat" />
-    <None Include="files\moduleSystem\build_module.bat.list" />
+    <None Include="files\imports.wdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\build_module.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\build_module.bat.list">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="files\module_info.path" />
     <None Include="MB Studio_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
@@ -348,135 +353,364 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="files\exchange_objects.py" />
-    <Content Include="files\header_items.py" />
-    <Content Include="files\header_item_modifiers.py" />
-    <Content Include="files\header_mb_decompiler.py" />
-    <Content Include="files\header_operations.py" />
-    <Content Include="files\header_scene_props.py" />
-    <Content Include="files\header_triggers.py" />
-    <Content Include="files\header_troops.py" />
-    <Content Include="files\helpers.py" />
-    <Content Include="files\images\bg2.jpeg" />
-    <Content Include="files\moduleSystem\header_animations.py" />
-    <Content Include="files\moduleSystem\header_common.py" />
-    <Content Include="files\moduleSystem\header_dialogs.py" />
-    <Content Include="files\moduleSystem\header_factions.py" />
-    <Content Include="files\moduleSystem\header_game_menus.py" />
-    <Content Include="files\moduleSystem\header_ground_types.py" />
-    <Content Include="files\moduleSystem\header_items.py" />
-    <Content Include="files\moduleSystem\header_item_modifiers.py" />
-    <Content Include="files\moduleSystem\header_map_icons.py" />
-    <Content Include="files\moduleSystem\header_meshes.py" />
-    <Content Include="files\moduleSystem\header_mission_templates.py" />
-    <Content Include="files\moduleSystem\header_mission_types.py" />
-    <Content Include="files\moduleSystem\header_music.py" />
-    <Content Include="files\moduleSystem\header_operations.py" />
-    <Content Include="files\moduleSystem\header_particle_systems.py" />
-    <Content Include="files\moduleSystem\header_parties.py" />
-    <Content Include="files\moduleSystem\header_postfx.py" />
-    <Content Include="files\moduleSystem\header_presentations.py" />
-    <Content Include="files\moduleSystem\header_quests.py" />
-    <Content Include="files\moduleSystem\header_scenes.py" />
-    <Content Include="files\moduleSystem\header_scene_props.py" />
-    <Content Include="files\moduleSystem\header_skills.py" />
-    <Content Include="files\moduleSystem\header_skins.py" />
-    <Content Include="files\moduleSystem\header_sounds.py" />
-    <Content Include="files\moduleSystem\header_strings.py" />
-    <Content Include="files\moduleSystem\header_tableau_materials.py" />
-    <Content Include="files\moduleSystem\header_terrain_types.py" />
-    <Content Include="files\moduleSystem\header_triggers.py" />
-    <Content Include="files\moduleSystem\header_troops.py" />
-    <Content Include="files\moduleSystem\ID_animations.py" />
-    <Content Include="files\moduleSystem\ID_factions.py" />
-    <Content Include="files\moduleSystem\ID_info_pages.py" />
-    <Content Include="files\moduleSystem\ID_items.py" />
-    <Content Include="files\moduleSystem\ID_map_icons.py" />
-    <Content Include="files\moduleSystem\ID_menus.py" />
-    <Content Include="files\moduleSystem\ID_meshes.py" />
-    <Content Include="files\moduleSystem\ID_mission_templates.py" />
-    <Content Include="files\moduleSystem\ID_music.py" />
-    <Content Include="files\moduleSystem\ID_particle_systems.py" />
-    <Content Include="files\moduleSystem\ID_parties.py" />
-    <Content Include="files\moduleSystem\ID_party_templates.py" />
-    <Content Include="files\moduleSystem\ID_postfx_params.py" />
-    <Content Include="files\moduleSystem\ID_presentations.py" />
-    <Content Include="files\moduleSystem\ID_quests.py" />
-    <Content Include="files\moduleSystem\ID_scenes.py" />
-    <Content Include="files\moduleSystem\ID_scene_props.py" />
-    <Content Include="files\moduleSystem\ID_scripts.py" />
-    <Content Include="files\moduleSystem\ID_skills.py" />
-    <Content Include="files\moduleSystem\ID_sounds.py" />
-    <Content Include="files\moduleSystem\ID_strings.py" />
-    <Content Include="files\moduleSystem\ID_tableau_materials.py" />
-    <Content Include="files\moduleSystem\ID_troops.py" />
-    <Content Include="files\moduleSystem\module_animations.py" />
-    <Content Include="files\moduleSystem\module_constants.py" />
-    <Content Include="files\moduleSystem\module_dialogs.py" />
-    <Content Include="files\moduleSystem\module_factions.py" />
-    <Content Include="files\moduleSystem\module_game_menus.py" />
-    <Content Include="files\moduleSystem\module_info.py" />
-    <Content Include="files\moduleSystem\module_info_pages.py" />
-    <Content Include="files\moduleSystem\module_items.py" />
-    <Content Include="files\moduleSystem\module_map_icons.py" />
-    <Content Include="files\moduleSystem\module_meshes.py" />
-    <Content Include="files\moduleSystem\module_mission_templates.py" />
-    <Content Include="files\moduleSystem\module_music.py" />
-    <Content Include="files\moduleSystem\module_particle_systems.py" />
-    <Content Include="files\moduleSystem\module_parties.py" />
-    <Content Include="files\moduleSystem\module_party_templates.py" />
-    <Content Include="files\moduleSystem\module_postfx.py" />
-    <Content Include="files\moduleSystem\module_presentations.py" />
-    <Content Include="files\moduleSystem\module_quests.py" />
-    <Content Include="files\moduleSystem\module_scenes.py" />
-    <Content Include="files\moduleSystem\module_scene_props.py" />
-    <Content Include="files\moduleSystem\module_scripts.py" />
-    <Content Include="files\moduleSystem\module_simple_triggers.py" />
-    <Content Include="files\moduleSystem\module_skills.py" />
-    <Content Include="files\moduleSystem\module_skins.py" />
-    <Content Include="files\moduleSystem\module_sounds.py" />
-    <Content Include="files\moduleSystem\module_strings.py" />
-    <Content Include="files\moduleSystem\module_tableau_materials.py" />
-    <Content Include="files\moduleSystem\module_triggers.py" />
-    <Content Include="files\moduleSystem\module_troops.py" />
-    <Content Include="files\moduleSystem\module_variables.py" />
-    <Content Include="files\moduleSystem\process_animations.py" />
-    <Content Include="files\moduleSystem\process_common.py" />
-    <Content Include="files\moduleSystem\process_dialogs.py" />
-    <Content Include="files\moduleSystem\process_factions.py" />
-    <Content Include="files\moduleSystem\process_game_menus.py" />
-    <Content Include="files\moduleSystem\process_global_variables.py" />
-    <Content Include="files\moduleSystem\process_global_variables_unused.py" />
-    <Content Include="files\moduleSystem\process_info_pages.py" />
-    <Content Include="files\moduleSystem\process_init.py" />
-    <Content Include="files\moduleSystem\process_items.py" />
-    <Content Include="files\moduleSystem\process_line_correction.py" />
-    <Content Include="files\moduleSystem\process_map_icons.py" />
-    <Content Include="files\moduleSystem\process_meshes.py" />
-    <Content Include="files\moduleSystem\process_mission_tmps.py" />
-    <Content Include="files\moduleSystem\process_music.py" />
-    <Content Include="files\moduleSystem\process_operations.py" />
-    <Content Include="files\moduleSystem\process_particle_sys.py" />
-    <Content Include="files\moduleSystem\process_parties.py" />
-    <Content Include="files\moduleSystem\process_party_tmps.py" />
-    <Content Include="files\moduleSystem\process_postfx.py" />
-    <Content Include="files\moduleSystem\process_presentations.py" />
-    <Content Include="files\moduleSystem\process_quests.py" />
-    <Content Include="files\moduleSystem\process_scenes.py" />
-    <Content Include="files\moduleSystem\process_scene_props.py" />
-    <Content Include="files\moduleSystem\process_scripts.py" />
-    <Content Include="files\moduleSystem\process_simple_triggers.py" />
-    <Content Include="files\moduleSystem\process_skills.py" />
-    <Content Include="files\moduleSystem\process_skins.py" />
-    <Content Include="files\moduleSystem\process_sounds.py" />
-    <Content Include="files\moduleSystem\process_strings.py" />
-    <Content Include="files\moduleSystem\process_tableau_materials.py" />
-    <Content Include="files\moduleSystem\process_tags_unused.py" />
-    <Content Include="files\moduleSystem\process_troops.py" />
-    <Content Include="files\moduleSystem\variables.txt" />
-    <Content Include="files\module_constants.py" />
-    <Content Include="files\module_my_mod_set.py" />
-    <Content Include="J.SYS.ico" />
+    <None Include="files\exchange_objects.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_items.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_item_modifiers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_mb_decompiler.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_operations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_scene_props.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_triggers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\header_troops.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\helpers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\images\bg2.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_animations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_common.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_dialogs.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_factions.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_game_menus.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_ground_types.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_items.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_item_modifiers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_map_icons.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_meshes.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_mission_templates.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_mission_types.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_music.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_operations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_particle_systems.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_parties.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_postfx.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_presentations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_quests.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_scenes.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_scene_props.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_skills.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_skins.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_sounds.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_strings.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_tableau_materials.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_terrain_types.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_triggers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\header_troops.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_animations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_constants.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_dialogs.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_factions.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_game_menus.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_info.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_info_pages.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_items.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_map_icons.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_meshes.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_mission_templates.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_music.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_particle_systems.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_parties.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_party_templates.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_postfx.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_presentations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_quests.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_scenes.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_scene_props.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_scripts.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_simple_triggers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_skills.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_skins.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_sounds.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_strings.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_tableau_materials.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_triggers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_troops.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\module_variables.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_animations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_common.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_dialogs.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_factions.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_game_menus.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_global_variables.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_global_variables_unused.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_info_pages.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_init.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_items.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_line_correction.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_map_icons.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_meshes.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_mission_tmps.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_music.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_operations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_particle_sys.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_parties.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_party_tmps.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_postfx.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_presentations.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_quests.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_scenes.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_scene_props.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_scripts.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_simple_triggers.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_skills.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_skins.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_sounds.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_strings.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_tableau_materials.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_tags_unused.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\process_troops.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\moduleSystem\variables.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\module_constants.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="files\module_my_mod_set.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="J.SYS.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Debug" goto :debug
+:release
+if "$(PlatformName)" == "x64" goto :release_x64
+:release_x86
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5OpenGL.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Widgets.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Gui.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Xml.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Core.dll" "$(TargetDir)"
+goto :exit
+:release_x64
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5OpenGL.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Widgets.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Gui.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Xml.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Core.dll" "$(TargetDir)"
+goto :exit
+:debug
+if "$(PlatformName)" == "x64" goto :debug_x64
+:debug_x86
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5OpenGLd.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Widgetsd.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Guid.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Xmld.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015\bin\Qt5Cored.dll" "$(TargetDir)"
+goto  :exit
+:debug_x64
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5OpenGLd.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Widgetsd.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Guid.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Xmld.dll" "$(TargetDir)"
+copy "F:\Qt\5.10.1\msvc2015_64\bin\Qt5Cored.dll" "$(TargetDir)"
+:exit
+copy "$(SolutionDir)\openBrf\$(PlatformName)\$(ConfigurationName)\openBrf.dll" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
