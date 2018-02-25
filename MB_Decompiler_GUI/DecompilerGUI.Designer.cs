@@ -33,7 +33,7 @@
             this.listView = new System.Windows.Forms.ListView();
             this.useAll_btn = new System.Windows.Forms.Button();
             this.readInfo_txt = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.allInfos_cb = new System.Windows.Forms.CheckBox();
             this.title_lbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -60,7 +60,7 @@
             // 
             // listView
             // 
-            this.listView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.listView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView.BackColor = System.Drawing.Color.NavajoWhite;
             this.listView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -88,7 +88,7 @@
             // 
             // readInfo_txt
             // 
-            this.readInfo_txt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.readInfo_txt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.readInfo_txt.BackColor = System.Drawing.Color.NavajoWhite;
             this.readInfo_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -102,16 +102,16 @@
             this.readInfo_txt.TabIndex = 8;
             this.readInfo_txt.TabStop = false;
             // 
-            // checkBox1
+            // allInfos_cb
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(12, 91);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(63, 17);
-            this.checkBox1.TabIndex = 9;
-            this.checkBox1.Text = "All Infos";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.allInfos_cb.AutoSize = true;
+            this.allInfos_cb.Enabled = false;
+            this.allInfos_cb.Location = new System.Drawing.Point(12, 91);
+            this.allInfos_cb.Name = "allInfos_cb";
+            this.allInfos_cb.Size = new System.Drawing.Size(63, 17);
+            this.allInfos_cb.TabIndex = 9;
+            this.allInfos_cb.Text = "All Infos";
+            this.allInfos_cb.UseVisualStyleBackColor = true;
             // 
             // title_lbl
             // 
@@ -128,7 +128,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
             this.ClientSize = new System.Drawing.Size(550, 586);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.allInfos_cb);
             this.Controls.Add(this.readInfo_txt);
             this.Controls.Add(this.useAll_btn);
             this.Controls.Add(this.listView);
@@ -152,7 +152,7 @@
         private System.Windows.Forms.ListView listView;
         private System.Windows.Forms.Button useAll_btn;
         private System.Windows.Forms.TextBox readInfo_txt;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox allInfos_cb;
         private System.Windows.Forms.Label title_lbl;
     }
 }

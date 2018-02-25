@@ -24,10 +24,7 @@ namespace MB_Decompiler_GUI
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
         }
 
-        private void UseAll_btn_TextChanged(object sender, EventArgs e)
-        {
-            checkBox1.Enabled = !checkBox1.Enabled;
-        }
+        private void UseAll_btn_TextChanged(object sender, EventArgs e) { allInfos_cb.Enabled = !allInfos_cb.Enabled; }
 
         private void ListView_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
@@ -44,20 +41,17 @@ namespace MB_Decompiler_GUI
         private void Form_Load(object sender, EventArgs e)
         {
             title_lbl.Text = Text;
-            ProgramConsole.Initialize(); // null - change this later if you want!!!
+            ProgramConsole.Initialize();// null - change this later if you want!!!
             foreach (string item in CodeReader.Files)
                 listView.Items.Add(item);
         }
 
-        private void Exit_btn_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void Exit_btn_Click(object sender, EventArgs e) { Application.Exit(); }
 
         private void ProcessSelected_btn_Click(object sender, EventArgs e)
         {
             string infoText = string.Empty;
-            if (IsAllInfoActive) // means all files are used
+            if (GetAllFilesActive())
             {
                 for (int i = 0; i < fileIndicies.Count; i++)
                 {
@@ -68,7 +62,7 @@ namespace MB_Decompiler_GUI
                     if (sw.WriteObjectType(cr.ReadObjectType(index), index))
                         infoText += FILES_PROCESSED.Remove(4, 1) + listView.Items[index].Text;
                     else
-                        infoText += "ERROR! - 0x1 - CONTACT SOFTWARE PRODUCER";
+                        infoText += "ERROR - 0x1: WriteObjectType(...) fehlgeschlagen!";
                     if (i < fileIndicies.Count - 1)
                         infoText += GetCodeReaderInfo() + Environment.NewLine;
                 }
@@ -76,17 +70,14 @@ namespace MB_Decompiler_GUI
             else
                 infoText = FILES_PROCESSED + SourceWriter.WriteAllObjects();
             infoText += GetCodeReaderInfo();
-            if (IsAllInfoActive)
+            if (GetAllFilesActive())
                 infoText += Environment.NewLine + FILES_PROCESSED + fileIndicies.Count;
             readInfo_txt.Text = infoText;
         }
 
-        private bool IsAllInfoActive { get { return (!useAll_btn.Text.Equals(NO_FILES) || checkBox1.Checked); } }
+        private bool GetAllFilesActive(){ return (!useAll_btn.Text.Equals(NO_FILES) || allInfos_cb.Checked); }
 
-        private string GetCodeReaderInfo()
-        {
-            return " - OVERFLOW: " + CodeReader.Overflow + " - OBJECTS READ: " + CodeReader.ObjectsRead;
-        }
+        private string GetCodeReaderInfo() { return " - OVERFLOW: " + CodeReader.Overflow + " - OBJECTS READ: " + CodeReader.ObjectsRead; }
 
         private void UseAll_btn_Click(object sender, EventArgs e)
         {
