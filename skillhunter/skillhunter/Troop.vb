@@ -26,7 +26,7 @@ Public Class Troop
     Private my_proficiencies_SC As String
     Public Const Guarantee_All As Integer = 133169152
 
-    Private Shared all_ShortAttribs As Boolean = False
+    Private Shared allShortAttribs As Boolean = False
     'Private Shared m_header_imodbits As HeaderVariable() = {}
     'Private Shared m_header_imods As HeaderVariable() = {}
     Private Shared m_header_flags As HeaderVariable() = {}
@@ -35,7 +35,7 @@ Public Class Troop
     Public Sub New(values As String())
         MyBase.New(values(0).TrimStart().Split()(0), ObjectType.TROOP)
         ValuesX = values
-        init()
+        Init()
     End Sub
 
     Public Sub Reset()
@@ -387,41 +387,41 @@ Public Class Troop
     Public Sub SetProficiesSC()
         Dim tmp As String = String.Empty
 
-        If my_attributes(0) = my_attributes(1) = my_attributes(2) = my_attributes(3) = my_attributes(4) = my_attributes(5) Then
-            tmp = "wp(" + my_attributes(5)
-        ElseIf my_attributes(0) = my_attributes(1) = my_attributes(2) Then
-            tmp = "wpe(" + my_attributes(2) + ", " + my_attributes(3) + ", " + my_attributes(4) + ", " + my_attributes(5)
-        ElseIf (my_attributes(0) + 20) = my_attributes(1) = (my_attributes(2) + 10) Then
-            tmp = "wp_melee(" + my_attributes(1)
-        ElseIf Not ShortAttribs Then
+        If my_proficiencies(0) = my_proficiencies(1) = my_proficiencies(2) = my_proficiencies(3) = my_proficiencies(4) = my_proficiencies(5) Then
+            tmp = "wp(" + my_proficiencies(5).ToString()
+        ElseIf my_proficiencies(0) = my_proficiencies(1) = my_proficiencies(2) Then
+            tmp = "wpe(" + my_proficiencies(2).ToString() + ", " + my_proficiencies(3).ToString() + ", " + my_proficiencies(4).ToString() + ", " + my_proficiencies(5).ToString()
+        ElseIf (my_proficiencies(0) + 20) = my_proficiencies(1) = (my_proficiencies(2) + 10) Then
+            tmp = "wp_melee(" + my_proficiencies(1).ToString()
+        ElseIf Not allShortAttribs Then
             If (OneHanded > 0) Then
-                tmp += "wp_one_handed(" + OneHanded
+                tmp += "wp_one_handed(" + my_proficiencies(0).ToString() 'OneHanded
             End If
             If (TwoHanded > 0) Then
-                tmp += ")|wp_two_handed(" + TwoHanded
+                tmp += ")|wp_two_handed(" + my_proficiencies(1).ToString() 'TwoHanded
             End If
             If (Polearm > 0) Then
-                tmp += ")|wp_polearm(" + Polearm
+                tmp += ")|wp_polearm(" + my_proficiencies(2).ToString() 'Polearm
             End If
             If (Archery > 0) Then
-                tmp += ")|wp_archery(" + Archery
+                tmp += ")|wp_archery(" + my_proficiencies(3).ToString() 'Archery
             End If
             If (Crossbow > 0) Then
-                tmp += ")|wp_crossbow(" + Crossbow
+                tmp += ")|wp_crossbow(" + my_proficiencies(4).ToString() 'Crossbow
             End If
             If (Throwing > 0) Then
-                tmp += ")|wp_throwing(" + Throwing
+                tmp += ")|wp_throwing(" + my_proficiencies(5).ToString() 'Throwing
             End If
         Else
             tmp = "wpex("
             For i = 0 To 5
-                tmp += my_attributes(i) + ","
+                tmp += my_proficiencies(i).ToString() + ","
             Next
             tmp = tmp.TrimEnd(","c)
         End If
 
         If (Firearm > 0) Then
-            tmp += ")|wp_firearm(" + Firearm
+            tmp += ")|wp_firearm(" + my_proficiencies(6).ToString()
         End If
 
         If tmp.Length = 0 Then
@@ -504,12 +504,12 @@ Public Class Troop
 
 #Region "Properties"
 
-    Public Shared Property ShortAttribs As Boolean
+    Public Shared Property ShortProficies As Boolean
         Get
-            Return all_ShortAttribs
+            Return allShortAttribs
         End Get
         Set(value As Boolean)
-            all_ShortAttribs = value
+            allShortAttribs = value
         End Set
     End Property
 

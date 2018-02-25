@@ -1,6 +1,5 @@
 ﻿using MB_Decompiler;
 using MB_Decompiler_Library.IO;
-using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -8,10 +7,11 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using importantLib;
 using MB_Studio.Main;
 using WarbandTranslator;
 using brfManager;
+using importantLib;
+using skillhunter;
 
 namespace MB_Studio.Manager
 {
@@ -1268,7 +1268,7 @@ namespace MB_Studio.Manager
 
         #endregion
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void _3DViewTest_btn_Click(object sender, EventArgs e)
         {
             TestDummyMode(items_lb);
         }

@@ -169,7 +169,7 @@ namespace MB_Studio.Manager
             this.idINFO_lbl = new System.Windows.Forms.Label();
             this.searchTroop_SearchTextBox = new importantLib.SearchTextBox();
             this._3DView_btn = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this._3DViewTest_btn = new System.Windows.Forms.Button();
             this.troopPanel.SuspendLayout();
             this.groupBox_8_gb.SuspendLayout();
             this.groupBox_7_gb.SuspendLayout();
@@ -1962,17 +1962,17 @@ namespace MB_Studio.Manager
             this._3DView_btn.UseVisualStyleBackColor = false;
             this._3DView_btn.Click += new System.EventHandler(this._3DView_btn_Click);
             // 
-            // button1
+            // _3DViewTest_btn
             // 
-            this.button1.BackColor = System.Drawing.Color.DimGray;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(13, 120);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(108, 23);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "3D View";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this._3DViewTest_btn.BackColor = System.Drawing.Color.DimGray;
+            this._3DViewTest_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._3DViewTest_btn.Location = new System.Drawing.Point(13, 120);
+            this._3DViewTest_btn.Name = "_3DViewTest_btn";
+            this._3DViewTest_btn.Size = new System.Drawing.Size(108, 23);
+            this._3DViewTest_btn.TabIndex = 23;
+            this._3DViewTest_btn.Text = "3D View TEST";
+            this._3DViewTest_btn.UseVisualStyleBackColor = false;
+            this._3DViewTest_btn.Click += new System.EventHandler(this._3DViewTest_btn_Click);
             // 
             // TroopManager
             // 
@@ -1980,7 +1980,7 @@ namespace MB_Studio.Manager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.ClientSize = new System.Drawing.Size(814, 430);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this._3DViewTest_btn);
             this.Controls.Add(this._3DView_btn);
             this.Controls.Add(this.searchTroop_SearchTextBox);
             this.Controls.Add(this.idINFO_lbl);
@@ -2176,6 +2176,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label head_lbl;
         private System.Windows.Forms.ComboBox horse_cbb;
         private System.Windows.Forms.Label horse_lbl;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button _3DViewTest_btn;
     }
 }

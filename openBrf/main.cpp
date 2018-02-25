@@ -28,7 +28,7 @@ static void showUsage(){
 extern const char* applVersion;
 static MainWindow* curWindow;
 static QApplication* curApp;
-static byte windowShownMode = 69;
+static byte windowShownMode = 8;//startValue
 
 static void MainWindowNotFound()
 {
@@ -37,7 +37,10 @@ static void MainWindowNotFound()
 
 static bool CurWindowIsShown()
 {
-	return (curWindow);
+	bool b = (curWindow);
+	if (!b)
+		MainWindowNotFound();
+	return b;
 }
 
 static bool CurAppIsNotNull()
@@ -47,10 +50,7 @@ static bool CurAppIsNotNull()
 
 DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV IsCurHWndShown()
 {
-	bool b = false;
-	if (windowShownMode == 0x64) // 100
-		b = true;
-	return b;
+	return windowShownMode == 0x64;
 }
 
 DLL_EXPORT_VOID CloseApp()
@@ -68,34 +68,25 @@ DLL_EXPORT_VOID SetModPath(char* modPath)
 {
 	if (CurWindowIsShown())
 		curWindow->setModPathExternal(modPath);
-	else
-		MainWindowNotFound();
 }
 
 DLL_EXPORT_VOID SelectIndexOfKind(int kind, int i)
 {
 	if (CurWindowIsShown())
 		curWindow->selectTypeAndIndex(kind, i);
-	else
-		MainWindowNotFound();
 }
 
 DLL_EXPORT_VOID SelectCurKindMany(int startIndex, int endIndex)
 {
 	if (CurWindowIsShown())
 		curWindow->selectCurManyIndices(startIndex, endIndex);
-	else
-		MainWindowNotFound();
 }
 
 DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKind(char* name, int kind = 0)
 {
-	bool found = false;
 	if (CurWindowIsShown())
-		found = curWindow->searchIniExplicit(QString(name), kind);
-	else
-		MainWindowNotFound();
-	return found;
+		return curWindow->searchIniExplicit(QString(name), kind);
+	return false;
 }
 
 DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char* name, int kind = 0)
@@ -116,41 +107,39 @@ DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char*
 			}
 		}
 	}
-	else
-		MainWindowNotFound();
 	return found;
 }
 
 DLL_EXPORT_VOID AddMeshToXViewModel(char* meshName)
 {
-	bool b = SelectItemByNameAndKind(meshName);
-	if (b) {
+	if (SelectItemByNameAndKind(meshName)) {
 		curWindow->addLastSelectedToXViewMesh();
-		//SelectItemByNameAndKind(meshName);
 	}
-	else
-		MainWindowNotFound();
 }
 
 DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV RemoveMeshFromXViewModel(char* meshName)
 {
 	//add skin name if needed here
-	bool b = SelectItemByNameAndKind(meshName);
-	if (b) {
+	if (SelectItemByNameAndKind(meshName)) {
 		curWindow->removeLastSelectedFromXViewMesh();
-		return true;
+		return true;//maybe return remove method later (in case of error)
 	}
 	return false;
 }
 
+/**
+* Main Method - For External Usage
+*/
 DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 {
+#ifdef DEBUG_MODE
 	bool debugMode = false;
 	if (argc == 1)
 		if (argv[0] == "--debug")
 			debugMode = !debugMode; // true
+#endif // DEBUG_MODE
 
-	windowShownMode = 0;
+	windowShownMode = (byte)0;
 
 	QString nextTranslator;
 	QApplication app(argc, argv);
@@ -165,10 +154,6 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 	app.setOrganizationDomain("Marco Tarini");
 
 	bool changeModule = false;
-
-	//if (debugMode)
-	//	MessageBoxA(NULL, "START!", "INFO", 0); //WORKING
-
 	bool useAlphaC = false;
 	if (arguments.size() > 1)
 	{
@@ -178,10 +163,10 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 			{
 				switch (MainWindow().loadModAndDump(arguments[2], arguments[3]))
 				{
-				case -1: system("echo OpenBRF: invalid module folder & pause"); break;
-				case -2: system("echo OpenBRF: error scanning brf data or ini file & pause"); break;
-				case -3: system("echo OpenBRF: error writing output file & pause"); break;
-				default: return 0;
+					case -1: system("echo OpenBRF: invalid module folder & pause"); break;
+					case -2: system("echo OpenBRF: error scanning brf data or ini file & pause"); break;
+					case -3: system("echo OpenBRF: error writing output file & pause"); break;
+					default: return 0;
 				}
 				return -1;
 			}
@@ -196,27 +181,17 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 			}
 		}
 		else if (arguments.size() >= 4)
-		{
 			if (arguments[2] == "-mod")
 				changeModule = true;
-		}
 	}
-
-	//if (debugMode)
-	//	MessageBoxA(NULL, "MAIN() - BEFORE THE LOOP", "INFO", 0); //LAST WORKING ONE SO FAR
 
 	while (1)
 	{
 		QTranslator translator;
 		QTranslator qtTranslator;
 
-		//if (debugMode)
-		//	MessageBoxA(NULL, "MAIN() - TEST 1", "INFO", 0); //NOT CLEAR
-
 		if (nextTranslator.isEmpty()) {
 			QString loc;
-			//if (debugMode)
-			//	MessageBoxA(NULL, "MAIN() - TEST 1.1", "INFO", 0); //NOT CLEAR
 			switch (MainWindow::getLanguageOption()) {
 				default: loc = QLocale::system().name(); break;
 				case 1: loc = QString("en"); break;
@@ -224,72 +199,76 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 				case 3: loc = QString("es"); break;
 				case 4: loc = QString("de"); break;
 			}
-			//if (debugMode)
-			//	MessageBoxA(NULL, "MAIN() - TEST 1.2", "INFO", 0);
 			translator.load(QString(":/translations/openbrf_%1.qm").arg(loc));
 			qtTranslator.load(QString(":/translations/qt_%1.qm").arg(loc));
-			//if (debugMode)
-			//	MessageBoxA(NULL, "MAIN() - TEST 1.3", "INFO", 0); //NOT CLEAR
 		}
 		else
 			translator.load(nextTranslator);
 
-		//if (debugMode)
-		//	MessageBoxA(NULL, "MAIN() - TEST 2", "INFO", 0); //NOT CLEAR
-
 		app.installTranslator(&translator);
 		app.installTranslator(&qtTranslator);
 
-		//if (debugMode)
-		//	MessageBoxA(NULL, "MAIN() - TEST 3", "INFO", 0); //NOT CLEAR
-
 		MainWindow w;
-
 		curWindow = &w;
 		
-		windowShownMode = 1;
+		windowShownMode = (byte)1;
 
+#ifdef DEBUG_MODE
 		if (debugMode)
 			MessageBoxA(NULL, "MAIN() - MainWindow initialized!", "INFO", 0); //NOT WORKING
+#endif // DEBUG_MODE
 
 		w.setUseAlphaCommands(useAlphaC);
 
+#ifdef DEBUG_MODE
 		if (debugMode)
 			MessageBoxA(NULL, "MAIN() - MainWindow settings changed!", "INFO", 0); //NOT WORKING
+#endif // DEBUG_MODE
 
 		w.show();
 
+#ifdef DEBUG_MODE
 		if (debugMode)
 			MessageBoxA(NULL, "MAIN() - MainWindow shown!", "INFO", 0); //NOT WORKING
+#endif // DEBUG_MODE
 
 		if (changeModule)
 			w.setModPathExternal((char*)arguments[3].toStdString().c_str());
 
+#ifdef DEBUG_MODE
 		if (debugMode)
 			MessageBoxA(NULL, "MAIN() - Modpath set!", "INFO", 0); //NOT WORKING
+#endif // DEBUG_MODE
 
 		if (arguments.size() > 1) w.loadFile(arguments[1]); arguments.clear();
 
+#ifdef DEBUG_MODE
 		if (debugMode)
 			MessageBoxA(NULL, "MAIN() - FINAL TEST!", "INFO", 0); //NOT WORKING
+#endif // DEBUG_MODE
 
-		windowShownMode = 0x64; // 100
+		windowShownMode = (byte)0x64;//100
 
 		if (app.exec() == 101) {
 			nextTranslator = w.getNextTranslatorFilename();
 			continue; // just changed language! another run
 		}
 
-		windowShownMode = 0;
+		windowShownMode = (byte)0;
 
+#ifdef DEBUG_MODE
 		if (debugMode)
 			MessageBoxA(NULL, "MAIN() - APPLICATION CLOSED!", "INFO", 0); //NOT WORKING
+#endif // DEBUG_MODE
 
 		break;
 	}
 	return 0;
 }
 
+/**
+* Main Method
+*/
 int main(int argc, char* argv[])
 {
 	Q_INIT_RESOURCE(resource);

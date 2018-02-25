@@ -1,4 +1,4 @@
-#ifndef MYSELECTIONMODEL_H
+/*#ifndef MYSELECTIONMODEL_H
 #define MYSELECTIONMODEL_H
 
 #include <QItemSelectionModel>
@@ -16,3 +16,4 @@ public slots:
 };
 
 #endif // MYSELECTIONMODEL_H
+*/

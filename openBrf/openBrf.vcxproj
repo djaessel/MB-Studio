@@ -13,7 +13,7 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-	<ProjectConfiguration Include="Debug|x64">
+    <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
@@ -305,7 +305,6 @@
     <ClCompile Include="main_create.cpp" />
     <ClCompile Include="main_info.cpp" />
     <ClCompile Include="mainwindow.cpp" />
-    <ClCompile Include="myselectionmodel.cpp" />
     <ClCompile Include="projects\vcglib\wrap\ply\plylib.cpp" />
     <ClCompile Include="saveLoad.cpp" />
     <ClCompile Include="selector.cpp" />
@@ -674,24 +673,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_mainwindow.cpp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_mainwindow.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="myselectionmodel.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Qt\5.10.1\msvc2015\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/Qt/5.10.1/msvc2015/mkspecs/win32-msvc -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -IC:/projects/libraries/include -IF:/Qt/5.10.1/msvc2015/include -IF:/Qt/5.10.1/msvc2015/include/QtOpenGL -IF:/Qt/5.10.1/msvc2015/include/QtWidgets -IF:/Qt/5.10.1/msvc2015/include/QtGui -IF:/Qt/5.10.1/msvc2015/include/QtANGLE -IF:/Qt/5.10.1/msvc2015/include/QtXml -IF:/Qt/5.10.1/msvc2015/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\Qt\5.10.1\msvc2015_64\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/Qt/5.10.1/msvc2015/mkspecs/win32-msvc -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -IC:/projects/libraries/include -IF:/Qt/5.10.1/msvc2015/include -IF:/Qt/5.10.1/msvc2015/include/QtOpenGL -IF:/Qt/5.10.1/msvc2015/include/QtWidgets -IF:/Qt/5.10.1/msvc2015/include/QtGui -IF:/Qt/5.10.1/msvc2015/include/QtANGLE -IF:/Qt/5.10.1/msvc2015/include/QtXml -IF:/Qt/5.10.1/msvc2015/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC myselectionmodel.h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC myselectionmodel.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">myselectionmodel.h;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\Qt\5.10.1\msvc2015\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/Qt/5.10.1/msvc2015/mkspecs/win32-msvc -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -IC:/projects/libraries/include -IF:/Qt/5.10.1/msvc2015/include -IF:/Qt/5.10.1/msvc2015/include/QtOpenGL -IF:/Qt/5.10.1/msvc2015/include/QtWidgets -IF:/Qt/5.10.1/msvc2015/include/QtGui -IF:/Qt/5.10.1/msvc2015/include/QtANGLE -IF:/Qt/5.10.1/msvc2015/include/QtXml -IF:/Qt/5.10.1/msvc2015/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\Qt\5.10.1\msvc2015_64\bin\moc.exe  -DUNICODE -DWIN32 -DNOMINMAX -D_CRT_SECURE_NO_DEPRECATE -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -IF:/Qt/5.10.1/msvc2015/mkspecs/win32-msvc -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/projects/vcglib" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf/libs/lib3ds-1.3.0" -I"F:/WORKINGAREA/Visual Studio Projects/MB_Decompiler/openBrf" -IC:/projects/libraries/include -IF:/Qt/5.10.1/msvc2015/include -IF:/Qt/5.10.1/msvc2015/include/QtOpenGL -IF:/Qt/5.10.1/msvc2015/include/QtWidgets -IF:/Qt/5.10.1/msvc2015/include/QtGui -IF:/Qt/5.10.1/msvc2015/include/QtANGLE -IF:/Qt/5.10.1/msvc2015/include/QtXml -IF:/Qt/5.10.1/msvc2015/include/QtCore myselectionmodel.h -o tmp\moc_myselectionmodel.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC myselectionmodel.h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC myselectionmodel.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">tmp\moc_myselectionmodel.cpp;%(Outputs)</Outputs>
-    </CustomBuild>
     <ClInclude Include="saveLoad.h" />
     <CustomBuild Include="selector.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">selector.h;%(AdditionalInputs)</AdditionalInputs>
@@ -753,7 +734,6 @@
     <ClCompile Include="tmp\moc_glwidgets.cpp" />
     <ClCompile Include="tmp\moc_guipanel.cpp" />
     <ClCompile Include="tmp\moc_mainwindow.cpp" />
-    <ClCompile Include="tmp\moc_myselectionmodel.cpp" />
     <ClCompile Include="tmp\moc_selector.cpp" />
     <ClCompile Include="tmp\moc_tablemodel.cpp" />
     <ClCompile Include="debug\qrc_resource.cpp">

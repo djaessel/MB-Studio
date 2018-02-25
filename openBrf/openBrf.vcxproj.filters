@@ -146,9 +146,6 @@
     <ClCompile Include="mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="myselectionmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="projects\vcglib\wrap\ply\plylib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -275,9 +272,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <CustomBuild Include="mainwindow.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="myselectionmodel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="saveLoad.h">
