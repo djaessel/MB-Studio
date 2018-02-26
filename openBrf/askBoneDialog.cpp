@@ -1,16 +1,16 @@
 /* OpenBRF -- by marco tarini. Provided under GNU General Public License */
 
-
 #include "askBoneDialog.h"
 #include "ui_askBoneDialog.h"
 
+//-----------------------------
 
-AskBoneDialog::AskBoneDialog(QWidget *parent,const std::vector<BrfSkeleton> &s,
-                             const std::vector<CarryPosition> &_cp) :
-    QDialog(parent),
-    //sv(s),
-    ui(new Ui::AskBoneDialog)
-
+AskBoneDialog::AskBoneDialog(QWidget *parent,
+							 const std::vector<BrfSkeleton> &s,
+                             const std::vector<CarryPosition> &_cp) : 
+	QDialog(parent),
+	//sv(s),
+	ui(new Ui::AskBoneDialog)
 {
   sv=s;
 	carrypos=_cp;

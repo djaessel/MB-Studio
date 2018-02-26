@@ -3788,21 +3788,20 @@ void MainWindow::meshUnmount(){
 
 }
 
-bool MainWindow::makeMeshSkinned(BrfMesh &m, bool sayNotSkinned,  bool askUserAgain){
+bool MainWindow::makeMeshSkinned(BrfMesh &m, bool sayNotSkinned,  bool askUserAgain) {
 
 	if (!reference.skeleton.size()) {
 		QMessageBox::warning(this, "OpenBRF", tr("Not a single skeleton found in reference data! Cancelling operation."));
 		return false;
 	}
+
 	static bool isAtOrigin = false;
 	static int carryPosIndex = 0;
 	static int boneIndex = 0;
 	static int skelIndex = 0;
 
-	MessageBoxA(NULL, "Test - skeleton - mesh skin", "TEST - SKELETON", 0);
-
 	if (askUserAgain) {
-		AskBoneDialog d(this,reference.skeleton, carryPositionSet );
+		AskBoneDialog d(this, reference.skeleton, carryPositionSet);
 		d.sayNotSkinned(sayNotSkinned);
 
 		int res=d.exec();
@@ -3817,49 +3816,58 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, bool sayNotSkinned,  bool askUserAg
 		boneIndex = d.getBone();
 	}
 
+	return makeMeshSkinned(m, boneIndex, skelIndex, carryPosIndex, isAtOrigin);
+}
 
-	BrfSkeleton &s(reference.skeleton[skelIndex]);
+bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPositon, bool isAtOrigin) {
+
+	BrfSkeleton &s(reference.skeleton[skeleton]);
 	if (!&s) return false;
 
-	if (carryPosIndex==-1) {
-		m.SetUniformRig(boneIndex);
+	if (carryPositon == -1) {
+		m.SetUniformRig(bone);
 		if (isAtOrigin) {
-			m.MountOnBone(s,boneIndex);
+			m.MountOnBone(s, bone);
 
 			char newname[255];
-			sprintf(newname,"%s_on_%s",m.name,s.bone.at(boneIndex).name );
+			sprintf(newname, "%s_on_%s", m.name, s.bone.at(bone).name);
 			m.SetName(newname);
 		}
-	} else {
-		CarryPosition &cp(carryPositionSet[carryPosIndex]);
+	}
+	else {
+		CarryPosition &cp(carryPositionSet[carryPositon]);
 		if (cp.needExtraTrasl) {
-			if (!guiPanel->ui->rulerSpin->isVisible()) {
-				int answ = QMessageBox::warning(this, "OpenBrf",tr("To apply carry position '%1', I need to know the weapon lenght.\nUse the ruler tool to tell me the lenght of weapon '%2'.\n\nActivate ruler tool?")
-				   .arg(cp.name).arg(m.name),
-				   QMessageBox::Yes|QMessageBox::Cancel,QMessageBox::Yes
+			if (!guiPanel->ui->rulerSpin->isVisible()) {//Fehler mit guiPanel Deklaration class GuiPanel; --> class GuiPanel { /* members */ }
+				int answ = QMessageBox::warning(this, "OpenBrf",
+					tr("To apply carry position '%1', I need to know the weapon lenght.\nUse the ruler tool to tell me the lenght of weapon '%2'.\n\nActivate ruler tool?")
+						.arg(cp.name).arg(m.name),
+					QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes
 				);
-				if (answ==QMessageBox::Yes) {
+				if (answ == QMessageBox::Yes) {
 					guiPanel->setMeasuringTool(0);
 				}
 				return false;
 			}
 		}
-		float weaponLenght = guiPanel->ui->rulerSpin->value()/100.0;
-		m.Apply( cp, s, weaponLenght, isAtOrigin );
+		float weaponLenght = guiPanel->ui->rulerSpin->value() / 100.0;//Fehler mit guiPanel Deklaration class GuiPanel; --> class GuiPanel { /* members */ }
+		m.Apply(cp, s, weaponLenght, isAtOrigin);
 		char newname[255];
-		sprintf(newname,"%s_carried_on_%s",m.name,cp.name );
+		sprintf(newname, "%s_carried_on_%s", m.name, cp.name);
 		m.SetName(newname);
-
 	}
+
 	return true;
 }
 
-void MainWindow::addLastSelectedToXViewMesh() { // method created by Johandros
+/* method created by Johandros */
+void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/) {
+
 	int i = selector->firstSelected();
 	assert(selector->currentTabName() == MESH);
 	assert(i < (int)brfdata.mesh.size());
 	BrfMesh m = brfdata.mesh[i];
 	//m.KeepOnlyFrame(guiPanel->getCurrentSubpieceIndex(MESH));
+
 	/*
 	bool loaded = false;
 	QString fn = referenceFilename(0);
@@ -3872,20 +3880,17 @@ void MainWindow::addLastSelectedToXViewMesh() { // method created by Johandros
 		MessageBoxA(NULL, QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf File not in the same folder as openBrf.exe or path is invalid! - Path: %1")
 			.arg(fn.toStdString().c_str()).toStdString().c_str(), "ERROR", MB_ICONERROR);
 	*/
-	if (!m.IsSkinned()) // automatisiert
+
+	if (!m.IsSkinned())//automatisiert
 	{
-		if (!makeMeshSkinned(m, true, true))
+		if (!makeMeshSkinned(m, bone, skeleton, carryPosition/*, isAtOrigin*/))//automatisiert - isAtOrigin is optional parameter - false for now!
 		{
-			MessageBoxA(NULL, "Mesh NOT skinned!", "ERROR", 0);
+			MessageBoxA(NULL, "Mesh NOT skinned!", "ERROR", MB_OK | MB_ICONERROR | MB_DEFBUTTON1);
 			return;
 		}
 	}
-	/*else
-	{
-		if (m.IsAnimable())
-		{
-			MessageBoxA(NULL, "ANIMABLE", "INFO", 0);
-		}
+	/*else if (m.IsAnimable()) {
+		MessageBoxA(NULL, "ANIMABLE", "INFO", 0);
 	}*/
 
 	char newname[255];
@@ -4025,7 +4030,7 @@ void MainWindow::addLastSelectedToXViewMesh() { // method created by Johandros
 	guiPanel->ui->cbHitboxes->setChecked(true);
 	guiPanel->ui->buPlay->click();
 
-	MessageBoxA(NULL, "ALLES GUT!", "ALLES GUT", MB_OK);
+	//MessageBoxA(NULL, "ALLES GUT!", "ALLES GUT", MB_OK);
 
 	//}
 	//else

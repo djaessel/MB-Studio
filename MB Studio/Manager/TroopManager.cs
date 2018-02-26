@@ -1226,7 +1226,7 @@ namespace MB_Studio.Manager
                                 string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("TEST - DUMMY MODE!");
-                                openBrfManager.AddMeshToTroopDummy(sss);
+                                openBrfManager.AddMeshToTroopDummy(sss, 18);//13
                             }
                             i = itemsRList.Length;
                         }
@@ -1271,6 +1271,7 @@ namespace MB_Studio.Manager
         private void _3DViewTest_btn_Click(object sender, EventArgs e)
         {
             TestDummyMode(items_lb);
+            Console.WriteLine("TestDummyMode(items_lb) --> finished!");
         }
     }
 }

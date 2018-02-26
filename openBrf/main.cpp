@@ -28,7 +28,7 @@ static void showUsage(){
 extern const char* applVersion;
 static MainWindow* curWindow;
 static QApplication* curApp;
-static byte windowShownMode = 8;//startValue
+static byte windowShownMode = 0x45;//startValue
 
 static void MainWindowNotFound()
 {
@@ -110,10 +110,10 @@ DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char*
 	return found;
 }
 
-DLL_EXPORT_VOID AddMeshToXViewModel(char* meshName)
+DLL_EXPORT_VOID AddMeshToXViewModel(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
 {
 	if (SelectItemByNameAndKind(meshName)) {
-		curWindow->addLastSelectedToXViewMesh();
+		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition);
 	}
 }
 

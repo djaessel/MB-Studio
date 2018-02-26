@@ -250,26 +250,18 @@ void GuiPanel::setFloatingProbePos(float x, float y, float z){
   ui->floatingProbeZ->blockSignals(false);
 }
 
-//#include "mainwindow.h"
-
 GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
     QWidget(parent),
     inidata(id),
     ui(new Ui::GuiPanel)
 {
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 1", "INFO", 0); //NOT CLEAR
-
   reference = NULL;
   curMaterialFocus = DIFFUSEA;
 
   //mapMT = mm;
   _selectedIndex = -1;
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 2", "INFO", 0); //NOT CLEAR
-
   ui->setupUi(this);
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 3", "INFO", 0); //NOT CLEAR
 
 //  ui->attributeData->tabBar()->setContentsMargins(-4,0,-4,0);
   QTabWidget *tw = ui->attributeData;
@@ -277,8 +269,6 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   tw->setStyleSheet(QString("QTabBar::tab { width: %1px;padding-top: 1px; padding-bottom: 1px;margin-right: %2px;margin-left: %2px;} ")
                     .arg((tw->size().width()+(2*mar*tw->count())-1)/tw->count()).arg(-mar)
                     );
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 4", "INFO", 0); //NOT CLEAR
 
   ui->wiBodyAxisA->setVisible(false);
   ui->wiBodyAxisB->setVisible(false);
@@ -302,18 +292,12 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   ui->generalView->setVisible(false);
   ui->vertexData->setVisible(false);
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 5", "INFO", 0); //NOT CLEAR
-
   ui->lvTextAcc->setModel( new TextureAccessModel(this) );
   ui->lvBodyPart->setModel( new BodyPartModel(this) );
   ui->lvBones->setModel( new BodyPartModel(this) );
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 6", "INFO", 0); //NOT CLEAR
-
   //ui->frameNumber->setBackgroundRole(QPalette::Foreground);
   //ui->frameNumberAni->setBackgroundRole(QPalette::Foreground);
-  
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 7", "INFO", 0); //NOT CLEAR
 
   alignY(ui->textureData  ,ui->meshData);
   alignY(ui->materialData  ,ui->meshData);
@@ -322,13 +306,9 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   alignY(ui->shaderData,  ui->meshData);
   alignY(ui->bodyData,  ui->meshData);
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 8", "INFO", 0); //NOT CLEAR
-
   alignYAfter(ui->hitboxEdit, ui->skeletonData);
   alignY(ui->vertexData,  ui->meshData);
   //alignYAfter(ui->vertexData , ui->meshData );
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 9", "INFO", 0); //NOT CLEAR
 
   QString flagMask(">Hhhhhhhh");
   ui->boxFlags->setInputMask(flagMask);
@@ -341,8 +321,6 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
 
   skel = NULL;
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 10", "INFO", 0); //NOT CLEAR
-
   //ui->leMatR->setInputMask("0.0000");
   //ui->leMatG->setInputMask("0.0000");
   //ui->leMatB->setInputMask("0.0000");
@@ -353,25 +331,17 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   textureAccessDel = new QAction("Remove",this);
   textureAccessAdd = new QAction("Add",this);
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 11", "INFO", 0); //NOT CLEAR
-
   bodyPartDup = new QAction("Duplicate",this);
   bodyPartDel = new QAction("Remove",this);
   bodyPartAdd = new QAction("Add",this);
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 12", "INFO", 0); //NOT CLEAR
 
   connect(ui->cbSkin, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateVisibility()));
   connect(ui->cbRefani, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateVisibility()));
   connect(ui->cbRuler, SIGNAL(stateChanged(int)), this, SLOT(updateVisibility()));
   connect(ui->cbRefani, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateRefAnimation()));
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 13", "INFO", 0); //NOT CLEAR
-
   connect(ui->rulerSlid, SIGNAL(sliderMoved (int)), this, SLOT(setRulerLenght(int)));
   connect(ui->rulerSpin, SIGNAL(valueChanged(int)), this, SLOT(setRulerLenght(int)));
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 14", "INFO", 0); //NOT CLEAR
 
   connect(ui->lvTextAcc->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
           this, SLOT(updateShaderTextaccData()));
@@ -379,8 +349,6 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
           this, SLOT(updateBodyPartData()));
   connect(ui->lvBones->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
           this, SLOT(updateSelectedBone()));
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 15", "INFO", 0); //NOT CLEAR
 
   // skeleton direct editing
   connect(ui->editHbRange, SIGNAL(actionTriggered(int)),this,SLOT(onEditHitbox(int)));
@@ -392,8 +360,6 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   connect(ui->editHbRotAlpha, SIGNAL(actionTriggered(int)),this,SLOT(onEditHitbox(int)));
   connect(ui->editHbRotBeta, SIGNAL(actionTriggered(int)),this,SLOT(onEditHitbox(int)));
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 16", "INFO", 0); //NOT CLEAR
-
   QString st = tr(" (keep [shift] pressed to nudge)");
   ui->editHbRange->setStatusTip(ui->editHbRange->statusTip()+st);
   ui->editHbLenTop->setStatusTip(ui->editHbLenTop->statusTip()+st);
@@ -404,17 +370,11 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   ui->editHbRotAlpha->setStatusTip(ui->editHbRotAlpha->statusTip()+st);
   ui->editHbRotBeta->setStatusTip(ui->editHbRotBeta->statusTip()+st);
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 17", "INFO", 0); //NOT CLEAR
-
   connect(ui->editHbActive, SIGNAL(stateChanged(int)),this,SLOT(setHbEditVisible(int)));
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 18", "INFO", 0); //NOT CLEAR
 
   connect(ui->floatingProbeX,SIGNAL(valueChanged(double)),this,SLOT(onEditFloatingProbePos()));
   connect(ui->floatingProbeY,SIGNAL(valueChanged(double)),this,SLOT(onEditFloatingProbePos()));
   connect(ui->floatingProbeZ,SIGNAL(valueChanged(double)),this,SLOT(onEditFloatingProbePos()));
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 19", "INFO", 0); //NOT CLEAR
 
   // add a shortcut to hide/show skin
   quickToggleHideSkinAct = new QAction(this);
@@ -423,12 +383,8 @@ GuiPanel::GuiPanel(QWidget *parent, IniData &id) :
   connect(quickToggleHideSkinAct, SIGNAL(triggered()),this,SLOT(quickToggleHideSkin()));
   ui->cbSkin->addAction(quickToggleHideSkinAct);
 
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 20", "INFO", 0); //NOT CLEAR
-
   connect(ui->cbFloatingProbe,SIGNAL(toggled(bool)),parent,SLOT(activateFloatingProbe(bool)));
   connect(ui->cbRuler,SIGNAL(toggled(bool)),parent,SLOT(activateRuler(bool)));
-
-  //MessageBoxA(NULL, "GuiPanel::GuiPanel(QWidget *parent, IniData &id) - TEST 21 - Constructorend", "INFO", 0); //NOT CLEAR
 }
 
 void GuiPanel::setEditingVertexData(bool mode){
@@ -440,7 +396,6 @@ void GuiPanel::setEditingVertexData(bool mode){
 
 	ui->vertexData->setVisible( mode );
 	ui->meshData->setVisible( !mode );
-
 }
 
 

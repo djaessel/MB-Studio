@@ -28,19 +28,19 @@ namespace brfManager
         public extern static bool SelectItemByNameAndKindFromCurFile(string meshName, int kind = 0);
 
         [DllImport(OPEN_BRF_DLL)]
-        public extern static IntPtr GetCurWindowPtr();
+        public extern static void AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/);
 
         [DllImport(OPEN_BRF_DLL)]
-        public extern static void CloseApp();
+        public extern static bool RemoveMeshFromXViewModel(string meshName);
 
         [DllImport(OPEN_BRF_DLL)]
         public extern static bool IsCurHWndShown();
 
         [DllImport(OPEN_BRF_DLL)]
-        public extern static void AddMeshToXViewModel(string meshName);
+        public extern static IntPtr GetCurWindowPtr();
 
         [DllImport(OPEN_BRF_DLL)]
-        public extern static bool RemoveMeshFromXViewModel(string meshName);
+        public extern static void CloseApp();
 
         #endregion
 
@@ -48,8 +48,6 @@ namespace brfManager
 
         private string modName, mabPath, modulesPath, modPath, resourcePath;
         private string[] SArray = new string[0];
-
-        private ImportantMethods imp = new ImportantMethods();
 
         public string ModulesPath { get { return modulesPath; } }
 
@@ -61,15 +59,16 @@ namespace brfManager
 
         public OpenBrfManager(string modName = "Native", string mabPath = @"F:\Program Files\Steam\steamapps\common\MountBlade Warband", string[] args = null)
         {
-            if (IsShown)
-                MessageBox.Show("CUR_WINDOW_STILL_OPEN", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            this.mabPath = mabPath;
+            this.modName = modName;
+
+            modulesPath = mabPath + "\\Modules";
+
+            //if (IsShown)//DECATIVATED FOR TESTING ONLY!!!
+            //    MessageBox.Show("CUR_WINDOW_STILL_OPEN", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);//DECATIVATED FOR TESTING ONLY!!!
 
             if (args != null)
                 SArray = args;
-
-            modulesPath = mabPath + "\\Modules";
-            this.mabPath = mabPath;
-            this.modName = modName;
 
             ChangeModule(modName);
         }
@@ -100,9 +99,9 @@ namespace brfManager
             CloseApp();
         }
 
-        public void AddMeshToTroopDummy(string meshName)
+        public void AddMeshToTroopDummy(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
         {
-            AddMeshToXViewModel(meshName);
+            AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
         }
 
         public bool RemoveMeshFromTroopDummy(string meshName)
@@ -119,11 +118,11 @@ namespace brfManager
                 modPath = tempPath;
                 SetResourcePath(modPath + "\\Resource");
 
-                if (IsShown && Directory.Exists(modPath))
-                    SetModPath(modPath);
+                //if (IsShown && Directory.Exists(modPath))//DECATIVATED FOR TESTING ONLY!!!
+                //    SetModPath(modPath);//DECATIVATED FOR TESTING ONLY!!!
             }
             else
-                Console.WriteLine(mabPath + " -> Path is not vaild!");
+                Console.WriteLine(mabPath + " -> Path is invaild!");
         }
 
         private void SetResourcePath(string resourcePath, bool changeMod = true, bool useModFirst = false)
@@ -183,6 +182,7 @@ namespace brfManager
 
         /*public void AddNativeChildWindow(IntPtr hWndParent, Control parentControl)
         {
+            ImportantMethods imp = new ImportantMethods();
             imp.AddNativeChildWindow(Handle, hWndParent, parentControl);
         }*/
     }

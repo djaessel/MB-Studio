@@ -50,8 +50,7 @@ public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-	void addLastSelectedToXViewMesh();
-
+	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/);
 	void removeLastSelectedFromXViewMesh();
 
 	int loadModAndDump(QString modpath, QString file);
@@ -387,7 +386,8 @@ private:
 	template<class BrfType> void getAllFlags(const vector<BrfType> &v, unsigned int &orr, unsigned int &andd);
 	template<class BrfType> bool setAllFlags(vector<BrfType> &v, unsigned int toZero, unsigned int toOne);
 
-	bool makeMeshSkinned( BrfMesh &m, bool becauseAddToRef , bool askUserAgain );
+	bool makeMeshSkinned(BrfMesh &m, bool becauseAddToRef , bool askUserAgain);
+	bool makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPosition, bool isAtOrigin = true);
 
 	bool mustOverwriteColors(); // if false, must multiply colors instead
 
