@@ -3868,8 +3868,8 @@ void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPos
 	BrfMesh m = brfdata.mesh[i];
 	//m.KeepOnlyFrame(guiPanel->getCurrentSubpieceIndex(MESH));
 
-	/*
-	bool loaded = false;
+	/// FOR ERROR HANDLING WITH MISSING DEPENDENCIES - START ///
+	/*bool loaded = false;
 	QString fn = referenceFilename(0);
 	const wchar_t* fileName = fn.toStdWString().c_str();
 
@@ -3878,183 +3878,48 @@ void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPos
 
 	if (!loaded)
 		MessageBoxA(NULL, QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf File not in the same folder as openBrf.exe or path is invalid! - Path: %1")
-			.arg(fn.toStdString().c_str()).toStdString().c_str(), "ERROR", MB_ICONERROR);
-	*/
+			.arg(fn.toStdString().c_str()).toStdString().c_str(), "ERROR", MB_ICONERROR);*/
+	/// FOR ERROR HANDLING WITH MISSING DEPENDENCIES - END ///
 
 	if (!m.IsSkinned())//automatisiert
 	{
-		if (!makeMeshSkinned(m, bone, skeleton, carryPosition/*, isAtOrigin*/))//automatisiert - isAtOrigin is optional parameter - false for now!
+		if (!makeMeshSkinned(m, bone, skeleton, carryPosition/*, isAtOrigin*/))//automatisiert
 		{
 			MessageBoxA(NULL, "Mesh NOT skinned!", "ERROR", MB_OK | MB_ICONERROR | MB_DEFBUTTON1);
 			return;
 		}
 	}
 	/*else if (m.IsAnimable()) {
-		MessageBoxA(NULL, "ANIMABLE", "INFO", 0);
+		//MessageBoxA(NULL, "ANIMABLE", "INFO", 0);
 	}*/
 
 	char newname[255];
-	/*
-	//sprintf(newname, "SkinB.%s", brfdata.mesh[i].name);
-	sprintf(newname, "XViewModel.%s", brfdata.mesh[i].name);
-	m.SetName(newname);
-
-	hitboxActivate(true);
-
-	statusBar()->showMessage(tr("Added mesh %1 to %2.").arg(m.name).arg("XViewModel"), 5000);*/
-
 	BrfMesh newMesh = m;
-
-	//MessageBoxA(NULL, "UPDATED BONE?", "INFO", 0);
-	//guiPanel->updateSelectedBone();
-	//hitboxActivate(true);
 
 	sprintf(newname, "JSYS.%s", brfdata.mesh[i].name);
 	newMesh.SetName(newname);
 
-	//updateGl();
-
-	//MessageBoxA(NULL, curFile.toStdString().c_str(), "Current File", 0);
-
-	//brfdata.mesh.push_back(newMesh);
-
-	// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
-
-	//saveFile(curFile);
-
-	// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
-
-	QString newFileName = QString("JSYS.brf");
-	//saveFile(newFileName);
-
-	//curFile = newFileName;
-
-	// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
-
-	//saveAs();
-
-	// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
-
 	editCopy();
 
-	//newFile();
-	//bool saveNow = saveNow = save();
-	//if (isModifiedHitboxes)
-	//	saveNow = saveHitboxes();
-	//else
-	//	saveNow = true;
-	/*
-	setEditingRef(false);
-	setCurrentFile(newFileName);
-	brfdata.version = 1;//0 for MB Version
-	saveFile(newFileName);
-
-
-
-	//if (saveNow) {
-		loadIni(2);
-		brfdata.Clear();
-		curFile.clear();
-		curFileIndex = -1;
-		setNotModified();
-		undoHistoryClear();
-
-		updateGui();
-		updateGl();
-		updateSel();
-		updateTitle();
-		inidataChanged();
-		setEditingRef(false);
-	//}
-
-	//cout << "Test NEW FILE - Paste";
-	//MessageBoxA(NULL, "TEST X1X!", "INFO", 0);
-
-	//editPaste();
-		*/
-		//	bool found = searchIniExplicit(QString(newMesh.name), MESH);
-		//
-		//	if (!found)
-		//	{
-		//		MessageBoxA(NULL, "FAILED!", "FAILED", 0);
-		//	}
-		//	
-		//	if (found)
-		//	{
-				//save();
-
-				// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
-
-				//BrfSkeleton* curSkel = currentDisplaySkeleton();
-				//MessageBoxA(NULL, curSkel->name, "Current Skeleton Name", 0);
-
-				//refreshSkeletonBodiesXml();
-				//hitboxSetRagdollOnly(true);
-
-				//save();
+	/// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
+	QString newFileName = QString("JSYS.brf");//maybe change later
 
 	loadFile(newFileName);
-
-	//update();
-	//updateGl();
-	//updateGui();
-
-	/*BrfMesh* loadedNewMesh = &brfdata.mesh[brfdata.mesh.size() - 1];
-	std::vector<BrfMesh> meshes = brfdata.mesh;
-
-	brfdata.mesh.clear();
-
-	for each (BrfMesh meshX in meshes)
-	{
-		if (QString(meshX.name).split('.').contains(QString("JSYS")))
-		{
-			MessageBoxA(NULL, meshX.name, meshX.baseName, 0);
-			brfdata.mesh.push_back(meshX);
-		}
-	}*/
-
 	brfdata.mesh.push_back(newMesh);
-
 	save();
 
 	loadFile(newFileName);
-
 	BrfMesh* loadedNewMesh = &brfdata.mesh[brfdata.mesh.size() - 1];
-
 	selector->selectAll();
 
 	//if (loadedNewMesh->HasVertexAni())
 	//{
-	//	MessageBoxA(NULL, "Has Vertex Animation!", "INFO", 0);
-	guiPanel->ui->cbRefani->setCurrentIndex(1); //guiPanel->setRefAnimation(2);
+	guiPanel->ui->cbRefani->setCurrentIndex(1);//guiPanel->setRefAnimation(2);
 	guiPanel->ui->cbHitboxes->setChecked(true);
 	guiPanel->ui->buPlay->click();
-
-	//MessageBoxA(NULL, "ALLES GUT!", "ALLES GUT", MB_OK);
-
-	//}
-	//else
-	//{
-	//	MessageBoxA(NULL, "Has NO Vertex Animation!", "INFO", MB_ICONWARNING);
 	//}
 
-	//reference.mesh.push_back(m);
-	//bool wasModified = isModified;
-	//saveReference();
-	//if (wasModified) setModified(false); else setNotModified();
-
-	//reference.Load(fileName);
-
-	//searchIniExplicit(QString("tutorial_shield"), 0);
-
-	//MessageBoxA(NULL, "TEST", "TEST", 0);
-
-	//searchIniExplicit(QString("SkinB"), 0);
-
-	//hitboxActivate(true);
-
-	statusBar()->showMessage(tr("Added mesh %1 to ANIMATION SKIN").arg(loadedNewMesh->name), 5000);
-	//	}
+	statusBar()->showMessage(tr("Added mesh %1 to Troop Preview").arg(loadedNewMesh->name), 5000);
 }
 
 void MainWindow::removeLastSelectedFromXViewMesh() { // method created by Johandros

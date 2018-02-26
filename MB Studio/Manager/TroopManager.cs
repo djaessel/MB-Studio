@@ -1225,8 +1225,8 @@ namespace MB_Studio.Manager
                             {
                                 string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
-                                Console.WriteLine("TEST - DUMMY MODE!");
-                                openBrfManager.AddMeshToTroopDummy(sss, 18);//13
+                                Console.WriteLine("TestDummyMode(ListBox lb) - Test Troop 3D Preview");
+                                openBrfManager.AddMeshToTroopDummy(sss, 18);//item.R --> highest bone index (-1 to 18)
                             }
                             i = itemsRList.Length;
                         }
