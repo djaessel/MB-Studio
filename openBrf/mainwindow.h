@@ -50,15 +50,21 @@ public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+	void createFileIfNotExists(const QString& filePath);
+
 	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
-	void removeMeshByNameFromXViewMesh(char* meshName);
 	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
+
+	void removeMeshByNameFromXViewMesh(char* meshName);
 	void removeLastSelectedFromXViewMesh();
+
+	void showTroop3DPreview();
 	void clearTroop3DPreview();
 
 	int GetBrfMeshIndexByName(char* name);
 
 	bool hasDependencyProblems();
+	bool saveAsSilent(const QString& fileName, bool isWarband);
 
 	int loadModAndDump(QString modpath, QString file);
 

@@ -34,6 +34,9 @@ namespace brfManager
         public extern static bool RemoveMeshFromXViewModel(string meshName);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static void ShowTroop3DPreview();
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void ClearTroop3DPreview();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
@@ -113,9 +116,14 @@ namespace brfManager
             return RemoveMeshFromXViewModel(meshName);
         }
 
-        public void Clear_Troop3DPreview()
+        public void Troop3DPreviewClear()
         {
             ClearTroop3DPreview();
+        }
+
+        public void Troop3DPreviewShow()
+        {
+            ShowTroop3DPreview();
         }
 
         public void ChangeModule(string moduleName)

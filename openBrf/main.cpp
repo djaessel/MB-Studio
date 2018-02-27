@@ -126,6 +126,12 @@ DLL_EXPORT/*_VOID*//**/ bool DLL_EXPORT_DEF_CALLCONV/**/ AddMeshToXViewModel(cha
 	return false;
 }
 
+DLL_EXPORT_VOID ShowTroop3DPreview()
+{
+	if (CurWindowIsShown())
+		curWindow->showTroop3DPreview();
+}
+
 DLL_EXPORT_VOID RemoveMeshFromXViewModel(char* meshName)
 {
 	//add skin name if needed here

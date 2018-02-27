@@ -66,9 +66,40 @@ namespace MB_Studio.Manager
             t.Start();
         }
 
+        private void AddTroop3DPreviewToModuleIni()
+        {
+            int lastModuleIndex = 0;
+            bool foundEntry = false;
+            string troop3dpreview = "load_mod_resource = Troop3DPreview";
+            string iniFile = GetMABPath() + "\\Modules\\" + ProgramConsole.OriginalMod + "\\module.ini";
+            List<string> iniLines = new List<string>(File.ReadLines(iniFile));
+
+            for (int i = 0; i < iniLines.Count; i++)
+            {
+                string tmp = iniLines[i].Split('#')[0].Split('=')[0].Trim();
+                if (tmp.Contains("load_") && tmp.Contains("_resource"))
+                {
+                    lastModuleIndex = i;
+                    if (iniLines[i].Trim().Equals(troop3dpreview))
+                    {
+                        foundEntry = !foundEntry;//true
+                        i = iniLines.Count;
+                    }
+                }
+            }
+
+            if (!foundEntry)
+            {
+                lastModuleIndex++;
+                iniLines.Insert(lastModuleIndex, troop3dpreview);
+                File.WriteAllLines(iniFile, iniLines);
+            }
+        }
+
         private void LoadSettingsAndLists()
         {
             InitializeLists();
+            AddTroop3DPreviewToModuleIni();
             LoadSets();
             CreateSkillGroupBox();
         }
@@ -524,9 +555,8 @@ namespace MB_Studio.Manager
             //bool isAtOrigin = true;
             int boneIndex, skeletonId, carryPosition;
 
-            // I have to put temporary file (JSYS.brf) into module.ini and Resource folder of current mod for execution unless better solution is given
-            openBrfManager.Clear_Troop3DPreview();
-            Console.WriteLine("Cleared Troop 3D Preview! (AFATCS)");
+            openBrfManager.Troop3DPreviewClear();
+            Console.WriteLine("Cleared Troop 3D Preview! (laut Codefluss)");
 
             foreach (int itemID in troop.Items)
             {
@@ -582,16 +612,23 @@ namespace MB_Studio.Manager
                     {
                         string mName = meshName.Split()[0].Trim();
                         if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
-                            Console.WriteLine("ADDED '" + mName + "' to Troop 3D Preview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
+                            Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
                         else
-                            Console.WriteLine("ADDING '" + mName + "' to Troop 3D Preview FAILED!");
+                            Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
                     }
                 }
+                //else/* if (skeletonId == 1)*/
+                //{
+                //    // CODE
+                //}
 
                 usedItems_lb.Items.Add(itemID + " - " + itemsRList[itemID].ID);
             }
 
             inventoryItemFlags = troop.ItemFlags;
+
+            //openBrfManager.ShowTroop3DPreview();
+            Console.WriteLine("Show Troop 3D Preview! (laut Codefluss)");
 
             #endregion
 
@@ -1283,7 +1320,7 @@ namespace MB_Studio.Manager
                 // Update UI
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
 
-                Console.WriteLine("Loaded 3D View successfully! (AFATCS)");
+                Console.WriteLine("Loaded 3D View successfully! (laut Codefluss)");
             });
         }
 
@@ -1309,7 +1346,7 @@ namespace MB_Studio.Manager
                             {
                                 string sss = itemsRList[i].Meshes[j].Split()[0].Trim(); //0 was j
                                 Console.WriteLine("|" + sss + "|");
-                                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(sss));
+                                Console.WriteLine("void LoadCurrentMeshWithOpenBrf(ListBox lb) : " + openBrfManager.SelectItemNameByKind(sss));
                             }
                             i = itemsRList.Length;
                         }
@@ -1318,12 +1355,11 @@ namespace MB_Studio.Manager
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    //MessageBox.Show(ex.Message);
                 }
             }
         }
 
-        private void TestDummyMode(ListBox lb)
+        private void Troop3DPreview(ListBox lb)
         {
             int selectedIndex = lb.SelectedIndex;
             if (selectedIndex >= 0)
@@ -1340,8 +1376,8 @@ namespace MB_Studio.Manager
                             {
                                 string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
-                                Console.WriteLine("TestDummyMode(ListBox lb) - Test Troop 3D Preview");
-                                openBrfManager.AddMeshToTroop3DPreview(sss, 18);//item.R --> highest bone index (-1 to 18)
+                                Console.WriteLine("void Troop3DPreview(ListBox lb) : " + openBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
+
                             }
                             i = itemsRList.Length;
                         }
@@ -1350,7 +1386,6 @@ namespace MB_Studio.Manager
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    //MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -1361,6 +1396,14 @@ namespace MB_Studio.Manager
                 StartOpenBrfManager();
         }
 
+        private static string GetMABPath()
+        {
+            string mabPath = ProgramConsole.GetModuleInfoPath();
+            mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+            mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+            return mabPath;
+        }
+
         private void _3DView_btn_Click(object sender, EventArgs e)
         {
             if (openBrfManager == null && _3DView_btn.Enabled)
@@ -1368,10 +1411,7 @@ namespace MB_Studio.Manager
                 _3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
                 _3DView_btn.Visible = false;
 
-                string mabPath = ProgramConsole.GetModuleInfoPath();
-                mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-                mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-                openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, mabPath);
+                openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, GetMABPath());
 
                 showGroup_3_btn.PerformClick();
 
@@ -1383,7 +1423,7 @@ namespace MB_Studio.Manager
 
         private void _3DViewTest_btn_Click(object sender, EventArgs e)
         {
-            TestDummyMode(items_lb);
+            Troop3DPreview(items_lb);
             Console.WriteLine("TestDummyMode(items_lb) --> finished!");
         }
 

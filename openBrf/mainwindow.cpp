@@ -3851,6 +3851,14 @@ int MainWindow::GetBrfMeshIndexByName(char* name) {
 }
 
 /* method created by Johandros */
+void MainWindow::createFileIfNotExists(const QString& filePath) {
+	struct stat buffer;
+	if (stat(filePath.toStdString().c_str(), &buffer) < 0) {
+		saveAsSilent(filePath, true);//Warband only for now!
+	}
+}
+
+/* method created by Johandros */
 void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/) {
 
 	int i = selector->firstSelected();
@@ -3864,7 +3872,7 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 
 	int meshIdx = GetBrfMeshIndexByName(meshName);
 	if (hasDependencyProblems() || meshIdx < 0) {
-		statusBar()->showMessage(tr("ERROR - Mesh %1 not found!").arg(brfdata.mesh[meshIdx].name), 5000);
+		statusBar()->showMessage(tr("ERROR - Mesh %1 not found!").arg(meshName), 5000);
 		return;
 	}
 
@@ -3880,22 +3888,21 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 
 	char newName[255];
 	BrfMesh newMesh = m;
-	sprintf(newName, "JSYS.%s", meshName);//maybe change base name later
+	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
 
 	//editCopy();//probably useless - remove if proven
 
-	/// TODO: TRY TO SAVE/CREATE SPECIAL .BRF FILE - IF NOT EXISTING
-	//QString xViewMeshFilename = QString("JSYS.brf");//maybe change filename later
-	QString xViewMeshFilename = QString("F:\\Program Files\\Steam\\steamapps\\common\\MountBlade Warband\\Modules\\Native\\Resource\\JSYS.brf");//change filename later
+	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
+	createFileIfNotExists(xViewMeshFile);//Warband only for now!
+	/*if (!curFile.compare(xViewMeshFile)) */loadFile(xViewMeshFile);
 
-	loadFile(xViewMeshFilename);
 	brfdata.mesh.push_back(newMesh);
-	save();
+	save();//isNedded?
 
-	loadFile(xViewMeshFilename);
+	loadFile(xViewMeshFile);//deactivated for now
 	BrfMesh* loadedNewMesh = &brfdata.mesh[brfdata.mesh.size() - 1];
-	selector->selectAll();//maybe change later if needed
+	selector->selectAll();//maybe change later if needed/possible
 
 	//guiPanel->setRefAnimation(2);//alternative usage(?)
 	guiPanel->ui->cbRefani->setCurrentIndex(1);//maybe change later if needed
@@ -3907,6 +3914,7 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 
 /* method created by Johandros */
 void MainWindow::removeLastSelectedFromXViewMesh() {
+
 	int i = selector->firstSelected();
 	assert(selector->currentTabName() == MESH);
 	assert(i < (int)brfdata.mesh.size() && i >= 0);
@@ -3916,6 +3924,7 @@ void MainWindow::removeLastSelectedFromXViewMesh() {
 /* method created by Johandros */
 void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 
+	sprintf(meshName, "Troop3DPreview.%s", meshName);
 	int meshIdx = GetBrfMeshIndexByName(meshName);
 	if (meshIdx < 0) return;
 
@@ -3933,15 +3942,27 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 	statusBar()->showMessage(tr("Removed mesh %1 from Troop 3D Preview!").arg(name), 5000);
 }
 
+void MainWindow::showTroop3DPreview() {
+
+	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
+	createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
+	loadFile(xViewMeshFile);
+	statusBar()->showMessage(tr("Troop 3D Preview Shown!"), 5000);
+}
+
 /* method created by Johandros */
 void MainWindow::clearTroop3DPreview() {
 
-	//QString xViewMeshFilename = QString("JSYS.brf");//maybe change filename later
-	QString xViewMeshFilename = QString("F:\\Program Files\\Steam\\steamapps\\common\\MountBlade Warband\\Modules\\Native\\Resource\\JSYS.brf");//change filename later
-	loadFile(xViewMeshFilename);//maybe change filename later
+	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
+	createFileIfNotExists(xViewMeshFile);//Warband only for now!
+
+	loadFile(xViewMeshFile);
+
 	brfdata.Clear();
 	save();
-	/*loadFile(xViewMeshFilename);/*is needed???*///maybe change filename later
+
+	loadFile(xViewMeshFile);/*is needed???*///maybe change filename later
+	
 	statusBar()->showMessage(tr("Cleared Troop 3D Preview!"), 5000);
 }
 
@@ -3960,9 +3981,8 @@ void MainWindow::addToRefMesh(int k){
 	sprintf(newname, "Skin%c.%s", ch , brfdata.mesh[i].name);
 	m.SetName(newname);
 	reference.mesh.push_back(m);
-	//bool wasModified = isModified;
+
 	saveReference();
-	//if (wasModified) setModified(false); else setNotModified();
 
 	statusBar()->showMessage(tr("Added mesh %1 to set %2.").arg(m.name).arg(ch), 5000);
 }
@@ -4738,12 +4758,16 @@ bool MainWindow::saveAs()
 	                                                &selectedf
 	                                                );
 
+	return saveAsSilent(fileName, selectedf == f1);
+}
+
+bool MainWindow::saveAsSilent(const QString& fileName, bool isWarband) {
 
 	if (fileName.isEmpty()) return false;
 
 	setEditingRef(false);
 	setCurrentFile(fileName);
-	brfdata.version=(selectedf==f1)?1:0;
+	brfdata.version = (isWarband) ? 1 : 0;
 	saveFile(fileName);
 
 	return true;
