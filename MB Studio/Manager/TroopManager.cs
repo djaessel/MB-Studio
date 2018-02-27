@@ -474,8 +474,123 @@ namespace MB_Studio.Manager
 
             #region GROUP3 - Items
 
+            #region ID OVERVIEW
+
+            /* SKELETONS */
+            // 0 human
+            // 1 human_horse
+
+            /* BONES */
+            //-1 abdomen   -  X X
+            // 0 thighL    -  3 thighR
+            // 1 calfL     -  4 calfR
+            // 2 footL     -  5 footR
+            // 6 spine     -  X X
+            // 7 thorax    -  X X
+            // 8 head      -  X X
+            // 9 shoulderL - 14 shoulderR 
+            //10 upperarmL - 15 upperarmR
+            //11 forearmL  - 16 forearmR
+            //12 handL     - 17 handR
+            //13 itemL     - 18 itemR
+
+            /* CARRYPOSITIONS */
+            // 0 itcf_carry_sword_left_hip
+            // 1 itcf_carry_axe_left_hip
+            // 2 itcf_carry_mace_left_hip
+            // 3 itcf_carry_dagger_front_left
+            // 4 itcf_carry_dagger_front_right
+            // 5 itcf_carry_axe_back
+            // 6 itcf_carry_sword_back
+            // 7 itcf_carry_spear
+            // 8 itcf_carry_kite_shield
+            // 9 itcf_carry_board_shield
+            //10 itcf_carry_round_shield
+            //11 itcf_carry_crossbow_back
+            //12 itcf_carry_bow_back
+            //13 itcf_carry_quiver_front_right
+            //14 itcf_carry_quiver_back_right
+            //15 itcf_carry_quiver_right_vertical
+            //16 itcf_carry_quiver_back
+            //17 itcf_carry_buckler_left
+            //18 itcf_carry_revolver_right
+            //19 itcf_carry_pistol_front_left
+            //20 itcf_carry_bowcase_left
+            //21 itcf_carry_katana
+            //22 itcf_carry_wakizashi
+
+            #endregion
+
+            //bool isAtOrigin = true;
+            int boneIndex, skeletonId, carryPosition;
+
+            // I have to put temporary file (JSYS.brf) into module.ini and Resource folder of current mod for execution unless better solution is given
+            openBrfManager.Clear_Troop3DPreview();
+            Console.WriteLine("Cleared Troop 3D Preview! (AFATCS)");
+
             foreach (int itemID in troop.Items)
-                usedItems_lb.Items.Add(itemID + " - " + CodeReader.Items[itemID]);
+            {
+                boneIndex = 0;
+                skeletonId = 0;
+                carryPosition = -1;
+
+                switch (ItemManager.GetItemTypeIndex(itemsRList[itemID]))
+                {
+                    case 1: //Horse
+                        //boneIndex = 0;//? 
+                        skeletonId++;//is this correct for horse?
+                        break;
+                    case 7: //Shield
+                        boneIndex = 13;
+                        break;
+                    case 12://HeadArmor
+                        boneIndex = 8;
+                        break;
+                    case 13://BodyArmor
+                        boneIndex = 7;//thorax
+                        break;
+                    case 14://FootArmor
+                        boneIndex = 2;
+                        break;
+                    case 15://HandArmor
+                        boneIndex = 12;
+                        break;
+                    case 2: //Onehanded
+                    case 3: //Twohanded
+                    case 4: //Polearm
+                    case 8: //Bow
+                    case 9: //Crossbow
+                    case 10://Thrown
+                    case 16://Pistol
+                    case 17://Musket
+                        boneIndex = 18;
+                        break;
+                    case 11://Goods
+                    case 5: //Arrows
+                    case 6: //Bolts
+                    case 18://Bullets
+                    case 19://Animal
+                    case 20://Book
+                    default://none = 0
+                        boneIndex = 4;
+                        break;
+                }
+
+                if (skeletonId == 0)//no horse on screen!
+                {
+                    foreach (string meshName in itemsRList[itemID].Meshes)// bone (-1 to 18) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data))
+                    {
+                        string mName = meshName.Split()[0].Trim();
+                        if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
+                            Console.WriteLine("ADDED '" + mName + "' to Troop 3D Preview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
+                        else
+                            Console.WriteLine("ADDING '" + mName + "' to Troop 3D Preview FAILED!");
+                    }
+                }
+
+                usedItems_lb.Items.Add(itemID + " - " + itemsRList[itemID].ID);
+            }
+
             inventoryItemFlags = troop.ItemFlags;
 
             #endregion
@@ -1168,7 +1283,7 @@ namespace MB_Studio.Manager
                 // Update UI
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
 
-                Console.WriteLine("Loaded 3D View successfully! (as far as the code says)");
+                Console.WriteLine("Loaded 3D View successfully! (AFATCS)");
             });
         }
 
@@ -1203,7 +1318,7 @@ namespace MB_Studio.Manager
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -1226,7 +1341,7 @@ namespace MB_Studio.Manager
                                 string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("TestDummyMode(ListBox lb) - Test Troop 3D Preview");
-                                openBrfManager.AddMeshToTroopDummy(sss, 18);//item.R --> highest bone index (-1 to 18)
+                                openBrfManager.AddMeshToTroop3DPreview(sss, 18);//item.R --> highest bone index (-1 to 18)
                             }
                             i = itemsRList.Length;
                         }
@@ -1235,7 +1350,7 @@ namespace MB_Studio.Manager
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -1266,12 +1381,12 @@ namespace MB_Studio.Manager
             }
         }
 
-        #endregion
-
         private void _3DViewTest_btn_Click(object sender, EventArgs e)
         {
             TestDummyMode(items_lb);
             Console.WriteLine("TestDummyMode(items_lb) --> finished!");
         }
+
+        #endregion
     }
 }

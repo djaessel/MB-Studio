@@ -210,7 +210,7 @@ namespace MB_Studio.Manager
             this.troopPanel.Controls.Add(this.groupBox_3_gb);
             this.troopPanel.Location = new System.Drawing.Point(10, 178);
             this.troopPanel.Name = "troopPanel";
-            this.troopPanel.Size = new System.Drawing.Size(792, 240);
+            this.troopPanel.Size = new System.Drawing.Size(792, 238);
             this.troopPanel.TabIndex = 1;
             // 
             // showGroup_8_btn
@@ -1979,7 +1979,7 @@ namespace MB_Studio.Manager
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(814, 430);
+            this.ClientSize = new System.Drawing.Size(814, 428);
             this.Controls.Add(this._3DViewTest_btn);
             this.Controls.Add(this._3DView_btn);
             this.Controls.Add(this.searchTroop_SearchTextBox);

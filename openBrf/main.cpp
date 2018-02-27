@@ -28,17 +28,17 @@ static void showUsage(){
 extern const char* applVersion;
 static MainWindow* curWindow;
 static QApplication* curApp;
-static byte windowShownMode = 0x45;//startValue
+static int windowShownMode = -1;//startValue
 
 static void MainWindowNotFound()
 {
 	MessageBoxA(NULL, "CURWINDOW_NOT_FOUND", "ERROR", MB_ICONERROR);
 }
 
-static bool CurWindowIsShown()
+static bool CurWindowIsShown(/*bool showError = true*/)
 {
 	bool b = (curWindow);
-	if (!b)
+	if (!b/* && showError*/)
 		MainWindowNotFound();
 	return b;
 }
@@ -50,13 +50,15 @@ static bool CurAppIsNotNull()
 
 DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV IsCurHWndShown()
 {
-	return windowShownMode == 0x64;
+	bool bb = false;
+	if (windowShownMode > 0) bb = !bb;
+	return bb;
 }
 
 DLL_EXPORT_VOID CloseApp()
 {
 	curApp->quit();
-	windowShownMode = (byte)0;
+	windowShownMode = 0x00;
 }
 
 DLL_EXPORT INT_PTR DLL_EXPORT_DEF_CALLCONV GetCurWindowPtr()
@@ -66,7 +68,7 @@ DLL_EXPORT INT_PTR DLL_EXPORT_DEF_CALLCONV GetCurWindowPtr()
 
 DLL_EXPORT_VOID SetModPath(char* modPath)
 {
-	if (CurWindowIsShown())
+	if (CurWindowIsShown(/*false*/))
 		curWindow->setModPathExternal(modPath);
 }
 
@@ -110,21 +112,36 @@ DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char*
 	return found;
 }
 
-DLL_EXPORT_VOID AddMeshToXViewModel(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
+DLL_EXPORT/*_VOID*//**/ bool DLL_EXPORT_DEF_CALLCONV/**/ AddMeshToXViewModel(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/)
 {
-	if (SelectItemByNameAndKind(meshName)) {
-		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition);
+	bool retur = SelectItemByNameAndKind(meshName);
+	if (retur) {//includes CurWindowIsShown()
+		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition/*, isAtOrigin*/);
 	}
+	return retur;
+	//if (CurWindowIsShown()) {
+	//	curWindow->addMeshByNameToXViewMesh(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
+	//	return true;
+	//}
+	return false;
 }
 
-DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV RemoveMeshFromXViewModel(char* meshName)
+DLL_EXPORT_VOID RemoveMeshFromXViewModel(char* meshName)
 {
 	//add skin name if needed here
-	if (SelectItemByNameAndKind(meshName)) {
-		curWindow->removeLastSelectedFromXViewMesh();
-		return true;//maybe return remove method later (in case of error)
-	}
-	return false;
+	//if (SelectItemByNameAndKind(meshName)) {//includes CurWindowIsShown()
+	//	curWindow->removeLastSelectedFromXViewMesh();
+	//	return true;//maybe return remove method later (in case of error)
+	//}
+	//return false;
+	if (CurWindowIsShown())
+		curWindow->removeMeshByNameFromXViewMesh(meshName);
+}
+
+DLL_EXPORT_VOID ClearTroop3DPreview()
+{
+	if (CurWindowIsShown())
+		curWindow->clearTroop3DPreview();
 }
 
 /**
@@ -139,7 +156,7 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 			debugMode = !debugMode; // true
 #endif // DEBUG_MODE
 
-	windowShownMode = (byte)0;
+	windowShownMode = 0x00;
 
 	QString nextTranslator;
 	QApplication app(argc, argv);
@@ -211,7 +228,7 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 		MainWindow w;
 		curWindow = &w;
 		
-		windowShownMode = (byte)1;
+		//windowShownMode = 0x01;
 
 #ifdef DEBUG_MODE
 		if (debugMode)
@@ -247,14 +264,14 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 			MessageBoxA(NULL, "MAIN() - FINAL TEST!", "INFO", 0); //NOT WORKING
 #endif // DEBUG_MODE
 
-		windowShownMode = (byte)0x64;//100
+		windowShownMode = 0x64;//100
 
 		if (app.exec() == 101) {
 			nextTranslator = w.getNextTranslatorFilename();
 			continue; // just changed language! another run
 		}
 
-		windowShownMode = (byte)0;
+		windowShownMode = 0x00;
 
 #ifdef DEBUG_MODE
 		if (debugMode)

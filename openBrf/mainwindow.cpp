@@ -822,7 +822,7 @@ QString MainWindow::referenceFilename(bool modSpecific) const
 }
 
 // just a replacement for reference data: from "skinA_(...)" to "skinA.(...)
-static void quickHackFixName( BrfData &ref ){
+static void quickHackFixName(BrfData &ref){
 	for (uint i=0; i<ref.mesh.size(); i++) {
 		BrfMesh &m(ref.mesh[i]);
 		if ((m.name[5]=='_') && (m.name[0]=='S')) {
@@ -850,71 +850,49 @@ void MainWindow::refreshReference(){
 		QString fn = referenceFilename(0);
 		//qDebug("Trying to standard load '%s'",fn.toLatin1().data());
 		if (reference.Load(fn.toStdWString().c_str()))  loaded = true;
-		quickHackFixName( reference );( reference );
+		quickHackFixName( reference );//( reference );
 	}
 	if (loaded) {
 		guiPanel->setReference(&reference);
 		updateGui();
-		//MessageBoxA(NULL, "REFERENCE LOADED!", "INFO", 0);
 	}
 }
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 {
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 1", "INFO", 0); //WORKING
-
 	setWindowIcon(QIcon(":/openBrf.ico"));
 
 	usingWarband = true; // until proven otherwise
 	useAlphaCommands = false;
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 2", "INFO", 0); //WORKING
 
 	settings = new QSettings("mtarini", "OpenBRF");
 
 	repeatableAction = 0;
 	setNextActionAsRepeatable = false;
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 3", "INFO", 0); //WORKING
-
 	glWidget = new GLWidget(this,inidata);
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 4", "INFO", 0); //WORKING
 	selector = new Selector(this);
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 5", "INFO", 0); //WORKING
 	selector->reference=&reference;
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 6", "INFO", 0); //WORKING
 
 	isModified=false;
 	isModifiedHitboxes=false;
 	executingRepeatedCommand = false;
 	createMiniViewOptions(); // ERROR?
-	//MessageBoxA(NULL, "createMiniViewOptions() - TEST 14 - Methodend", "INFO", 0); // NOT CLEAR
+
 	guiPanel = new GuiPanel(this, inidata);
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 7", "INFO", 0); //NOT WORKING
-
 	connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(undoHistoryAddAction(QAction*)) );
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 8", "INFO", 0); //NOT CLEAR
 
 	createActions();
 	createMenus();
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 9", "INFO", 0); //NOT CLEAR
-
 	QSplitter* main = new QSplitter();
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 10", "INFO", 0); //NOT CLEAR
-
 	loadOptions();
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 11", "INFO", 0); //NOT CLEAR
 
 	undoHistoryRing.resize(25); // that many undo levels
 
 	setEditingRef(false);
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 12", "INFO", 0); //NOT CLEAR
 
 	setEditingVertexData( false);
 
@@ -922,10 +900,8 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 	//main->addWidget(guiPanel); // removed by Johandros
 	main->addWidget(glWidget);
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 13", "INFO", 0); //NOT CLEAR
-
 	resize(380, 350); // added by Johandros
-	background = QColor(56, 64, 56); // greeny dark - added by Johandros
+	background = QColor(56, 64, 56); // green like and dark - added by Johandros
 
 	cancelNavStack();
 
@@ -935,23 +911,15 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 
 	updateTitle();
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 14", "INFO", 0); //NOT CLEAR
-
 	glWidget->selected=1;
 	glWidget->data = guiPanel->data = &brfdata;
 	glWidget->reference = &reference;
 	glWidget->hitBoxes = &hitboxSet;
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 15", "INFO", 0); //NOT CLEAR
-
 	refreshReference();
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 16", "INFO", 0); //NOT CLEAR
 
 	guiPanel->hitBoxes = &hitboxSet;
 	guiPanel->setVisible(false); // added by Johandros
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 17", "INFO", 0); //NOT CLEAR
 
 	selector->setVisible(false); // added by Johandros
 
@@ -962,8 +930,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 
 	updatePaths();
 	setLocale(QLocale::system());
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 18", "INFO", 0); //NOT CLEAR
 
 	if (optionFeminizerUseDefault->isChecked()) optionFemininzationUseDefault();
 	else optionFemininzationUseCustom();
@@ -978,8 +944,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 
 	//connect(this->menuBar(), SIGNAL(triggered(QAction*)),this, SLOT(onActionTriggered(QAction *)));
 
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 19", "INFO", 0); //NOT CLEAR
-
 	// create askTransofrDialog windows
 	askTransformDialog = new AskTransformDialog(this );
 	askTransformDialog->matrix = glWidget->extraMatrix;
@@ -988,8 +952,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 
 	askUvTransformDialog = new AskUvTransformDialog(this);
 	connect(askUvTransformDialog,SIGNAL(changed()),this,SLOT(meshUvTransformDoIt()));
-
-	//MessageBoxA(NULL, "MainWindow MainWindow(parent) - TEST 20 - Constructorend", "INFO", 0); //NOT CLEAR
 }
 
 
@@ -3860,85 +3822,127 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPo
 }
 
 /* method created by Johandros */
+bool MainWindow::hasDependencyProblems() {
+	bool hasProblems = true;
+	const wchar_t* fileName = referenceFilename(0).toStdWString().c_str();
+
+	if (reference.Load(fileName)) hasProblems = !hasProblems;//false
+	quickHackFixName(reference);// (reference);
+
+	if (hasProblems)
+		MessageBoxA(NULL, QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf File not in the same folder as openBrf or path is invalid! - Path: %1")
+			.arg(fileName).toStdString().c_str(), "ERROR", MB_ICONERROR);
+
+	return hasProblems;
+}
+
+/* method created by Johandros */
+int MainWindow::GetBrfMeshIndexByName(char* name) {
+	int idx = -1;
+	size_t bsize = brfdata.mesh.size();
+	for (size_t i = 0; i < bsize; i++)
+	{
+		if (brfdata.mesh[i].name == name) {
+			idx = i;
+			i = bsize;
+		}
+	}
+	return idx;
+}
+
+/* method created by Johandros */
 void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/) {
 
 	int i = selector->firstSelected();
 	assert(selector->currentTabName() == MESH);
-	assert(i < (int)brfdata.mesh.size());
-	BrfMesh m = brfdata.mesh[i];
-	//m.KeepOnlyFrame(guiPanel->getCurrentSubpieceIndex(MESH));
+	assert(i < (int)brfdata.mesh.size() && i >= 0);
+	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/);
+}
 
-	/// FOR ERROR HANDLING WITH MISSING DEPENDENCIES - START ///
-	/*bool loaded = false;
-	QString fn = referenceFilename(0);
-	const wchar_t* fileName = fn.toStdWString().c_str();
+/* method created by Johandros */
+void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/) {
 
-	if (reference.Load(fileName))  loaded = true;
-	quickHackFixName(reference); (reference);
+	int meshIdx = GetBrfMeshIndexByName(meshName);
+	if (hasDependencyProblems() || meshIdx < 0) {
+		statusBar()->showMessage(tr("ERROR - Mesh %1 not found!").arg(brfdata.mesh[meshIdx].name), 5000);
+		return;
+	}
 
-	if (!loaded)
-		MessageBoxA(NULL, QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf File not in the same folder as openBrf.exe or path is invalid! - Path: %1")
-			.arg(fn.toStdString().c_str()).toStdString().c_str(), "ERROR", MB_ICONERROR);*/
-	/// FOR ERROR HANDLING WITH MISSING DEPENDENCIES - END ///
-
+	BrfMesh m = brfdata.mesh[meshIdx];
 	if (!m.IsSkinned())//automatisiert
 	{
 		if (!makeMeshSkinned(m, bone, skeleton, carryPosition/*, isAtOrigin*/))//automatisiert
 		{
-			MessageBoxA(NULL, "Mesh NOT skinned!", "ERROR", MB_OK | MB_ICONERROR | MB_DEFBUTTON1);
+			statusBar()->showMessage(tr("ERROR - Mesh %1 is not skinned!").arg(m.name), 5000);
 			return;
 		}
 	}
-	/*else if (m.IsAnimable()) {
-		//MessageBoxA(NULL, "ANIMABLE", "INFO", 0);
-	}*/
 
-	char newname[255];
+	char newName[255];
 	BrfMesh newMesh = m;
+	sprintf(newName, "JSYS.%s", meshName);//maybe change base name later
+	newMesh.SetName(newName);
 
-	sprintf(newname, "JSYS.%s", brfdata.mesh[i].name);
-	newMesh.SetName(newname);
+	//editCopy();//probably useless - remove if proven
 
-	editCopy();
+	/// TODO: TRY TO SAVE/CREATE SPECIAL .BRF FILE - IF NOT EXISTING
+	//QString xViewMeshFilename = QString("JSYS.brf");//maybe change filename later
+	QString xViewMeshFilename = QString("F:\\Program Files\\Steam\\steamapps\\common\\MountBlade Warband\\Modules\\Native\\Resource\\JSYS.brf");//change filename later
 
-	/// TRY TO SAVE IN A SPECIAL .BRF FILE WHICH WILL BE USED FOR THE DUMMY VIEW!!!
-	QString newFileName = QString("JSYS.brf");//maybe change later
-
-	loadFile(newFileName);
+	loadFile(xViewMeshFilename);
 	brfdata.mesh.push_back(newMesh);
 	save();
 
-	loadFile(newFileName);
+	loadFile(xViewMeshFilename);
 	BrfMesh* loadedNewMesh = &brfdata.mesh[brfdata.mesh.size() - 1];
-	selector->selectAll();
+	selector->selectAll();//maybe change later if needed
 
-	//if (loadedNewMesh->HasVertexAni())
-	//{
-	guiPanel->ui->cbRefani->setCurrentIndex(1);//guiPanel->setRefAnimation(2);
+	//guiPanel->setRefAnimation(2);//alternative usage(?)
+	guiPanel->ui->cbRefani->setCurrentIndex(1);//maybe change later if needed
 	guiPanel->ui->cbHitboxes->setChecked(true);
 	guiPanel->ui->buPlay->click();
-	//}
 
-	statusBar()->showMessage(tr("Added mesh %1 to Troop Preview").arg(loadedNewMesh->name), 5000);
+	statusBar()->showMessage(tr("Added mesh %1 to Troop Preview!").arg(loadedNewMesh->name), 5000);
 }
 
-void MainWindow::removeLastSelectedFromXViewMesh() { // method created by Johandros
+/* method created by Johandros */
+void MainWindow::removeLastSelectedFromXViewMesh() {
 	int i = selector->firstSelected();
 	assert(selector->currentTabName() == MESH);
-	assert(i<(int)brfdata.mesh.size());
-	BrfMesh m = brfdata.mesh[i];
-	m.KeepOnlyFrame(guiPanel->getCurrentSubpieceIndex(MESH));
+	assert(i < (int)brfdata.mesh.size() && i >= 0);
+	removeMeshByNameFromXViewMesh(brfdata.mesh[i].name);
+}
 
+/* method created by Johandros */
+void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
+
+	int meshIdx = GetBrfMeshIndexByName(meshName);
+	if (meshIdx < 0) return;
+
+	/*m.KeepOnlyFrame(guiPanel->getCurrentSubpieceIndex(MESH));
 	if (!m.IsSkinned())
 		if (!makeMeshSkinned(m, true, true)) return;
-
-	//char newname[500];
 	std::string newname = new char[500];
 	newname.substr(newname.find_first_of('.') + 1);
-	//sprintf(newname, "SkinX.%s", brfdata.mesh[i].name);
-	m.SetName(newname.c_str());
+	m.SetName(newname.c_str());*/
 
-	statusBar()->showMessage(tr("Removed mesh %1 from set %2.").arg(m.name).arg('X'), 5000);
+	char* name = brfdata.mesh[meshIdx].name;
+	brfdata.mesh.erase(brfdata.mesh.begin() + meshIdx);
+	save();
+
+	statusBar()->showMessage(tr("Removed mesh %1 from Troop 3D Preview!").arg(name), 5000);
+}
+
+/* method created by Johandros */
+void MainWindow::clearTroop3DPreview() {
+
+	//QString xViewMeshFilename = QString("JSYS.brf");//maybe change filename later
+	QString xViewMeshFilename = QString("F:\\Program Files\\Steam\\steamapps\\common\\MountBlade Warband\\Modules\\Native\\Resource\\JSYS.brf");//change filename later
+	loadFile(xViewMeshFilename);//maybe change filename later
+	brfdata.Clear();
+	save();
+	/*loadFile(xViewMeshFilename);/*is needed???*///maybe change filename later
+	statusBar()->showMessage(tr("Cleared Troop 3D Preview!"), 5000);
 }
 
 void MainWindow::addToRefMesh(int k){
@@ -5416,6 +5420,10 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 	QString lastFileName = QString(".");
 	vector<int> idxs;
 
+	//std::string sType = std::to_string(type);
+	//MessageBoxA(NULL, sType.c_str(), "TEST", 0);
+	//std::string sSize = std::to_string(size);
+	//MessageBoxA(NULL, sSize.c_str(), "TEST", 0);
 	if (size > 0)
 	{
 		for (size_t i = 0; i < size; i++)
@@ -5431,13 +5439,17 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 
 			if (type == kind)
 			{
+				//MessageBoxA(NULL, "SECOND ONE!", "TEST", 0);
 				if (lastFileName != inidata.filename[file])
 				{
 					lastFileName = inidata.filename[file];
 					loadFile(lastFileName);
+					//MessageBoxA(NULL, "THIRD ONE!", "TEST", 0);
 				}
 				
 				selectOne(kind, index);
+
+				//MessageBoxA(NULL, "FOURTH ONE!", "TEST", 0);
 
 				if (size > 1)
 					idxs.push_back(index);
@@ -5448,6 +5460,7 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 		
 		if (!found && idxs.size() != 0)
 		{
+			//MessageBoxA(NULL, "FIFTH ONE!", "TEST", 0);
 			selectCurManyIndicesByList(idxs);
 			found = true; //check maybe some more
 		}

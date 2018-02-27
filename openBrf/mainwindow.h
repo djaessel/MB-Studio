@@ -50,8 +50,15 @@ public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/);
+	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
+	void removeMeshByNameFromXViewMesh(char* meshName);
+	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 	void removeLastSelectedFromXViewMesh();
+	void clearTroop3DPreview();
+
+	int GetBrfMeshIndexByName(char* name);
+
+	bool hasDependencyProblems();
 
 	int loadModAndDump(QString modpath, QString file);
 

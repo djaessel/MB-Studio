@@ -309,9 +309,9 @@
             this.toolPanel.Controls.SetChildIndex(this.showGroup_7_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_4_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_5_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
-            this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
             // 
             // pluralNameTranslation_lbl
             // 

@@ -1003,43 +1003,44 @@ bool IniData::findErrors(int maxErr){
 
 typedef std::vector<int> IntArray;
 /*QString*/std::vector<IntArray>/**/ IniData::searchOneName(const QString &s, int to, bool cr) const{
+	int fileSize = (int)file.size();
 	std::vector<IntArray> indices;
-	for (int i = 0; i<(int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].texture, i, indices);
-	for (int i = 0; i<(int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].shader, i, indices);
-	for (int i = 0; i<(int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].material, i, indices);
-	for (int i = 0; i < (int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].mesh, i, indices);
-	for (int i = 0; i<(int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].body, i, indices);
-	for (int i = 0; i<(int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].skeleton, i, indices);
-	for (int i = 0; i<(int)file.size(); i++) if (origin[i] == MODULE_RES || cr)
+	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
 		searchNameInV(s, to, file[i].animation, i, indices);
 	//MessageBoxA(NULL, to_string((int)indices.size()).c_str(), "FOUNDINGS SIZE", 0);
-	return indices; //return QString("TEST");
+	return indices;
 }
 
 QString IniData::searchAllNames(const QString &s, bool cr, int to) const{
   QString res;
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  int fileSize = (int)file.size();
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].texture,i,res);
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].shader,i,res);
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].material,i,res);
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].mesh,i,res);
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].body,i,res);
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].skeleton,i,res);
-  for (int i=0; i<(int)file.size(); i++) if (origin[i]==MODULE_RES || cr)
+  for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)
     searchAllNamesV(s,to,file[i].animation,i,res);
   if (res.isEmpty()) res+=QTextBrowser::tr("<i>[0 results]</i>");
-
   return res;
 }
 

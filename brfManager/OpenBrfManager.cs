@@ -10,44 +10,48 @@ namespace brfManager
     {
         #region Imports And Constants
 
-        public const string OPEN_BRF_DLL = "openBrf.dll";
+        public const string OPEN_BRF_DLL_PATH = "openBrf.dll";
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static int StartExternal(int argc, string[] argv);
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void SetModPath(string modPath);
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void SelectIndexOfKind(int kind, int index);
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool SelectItemByNameAndKind(string meshName, int kind = 0);
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool SelectItemByNameAndKindFromCurFile(string meshName, int kind = 0);
 
-        [DllImport(OPEN_BRF_DLL)]
-        public extern static void AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/);
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static /*void*/bool/**/ AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/);
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool RemoveMeshFromXViewModel(string meshName);
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static void ClearTroop3DPreview();
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool IsCurHWndShown();
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static IntPtr GetCurWindowPtr();
 
-        [DllImport(OPEN_BRF_DLL)]
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void CloseApp();
 
         #endregion
 
         #region Attributes / Properties
 
-        private string modName, mabPath, modulesPath, modPath, resourcePath;
         private string[] SArray = new string[0];
+
+        private string modName, mabPath, modulesPath, modPath, resourcePath;
 
         public string ModulesPath { get { return modulesPath; } }
 
@@ -64,8 +68,8 @@ namespace brfManager
 
             modulesPath = mabPath + "\\Modules";
 
-            //if (IsShown)//DECATIVATED FOR TESTING ONLY!!!
-            //    MessageBox.Show("CUR_WINDOW_STILL_OPEN", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);//DECATIVATED FOR TESTING ONLY!!!
+            if (IsShown)
+                MessageBox.Show("CUR_WINDOW_STILL_OPEN", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             if (args != null)
                 SArray = args;
@@ -99,14 +103,19 @@ namespace brfManager
             CloseApp();
         }
 
-        public void AddMeshToTroopDummy(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
+        public /*void*/bool/**/ AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
         {
-            AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
+            return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
         }
 
-        public bool RemoveMeshFromTroopDummy(string meshName)
+        public bool RemoveMeshFromTroop3DPreview(string meshName)
         {
             return RemoveMeshFromXViewModel(meshName);
+        }
+
+        public void Clear_Troop3DPreview()
+        {
+            ClearTroop3DPreview();
         }
 
         public void ChangeModule(string moduleName)
@@ -118,8 +127,8 @@ namespace brfManager
                 modPath = tempPath;
                 SetResourcePath(modPath + "\\Resource");
 
-                //if (IsShown && Directory.Exists(modPath))//DECATIVATED FOR TESTING ONLY!!!
-                //    SetModPath(modPath);//DECATIVATED FOR TESTING ONLY!!!
+                if (IsShown && Directory.Exists(modPath))
+                    SetModPath(modPath);
             }
             else
                 Console.WriteLine(mabPath + " -> Path is invaild!");
