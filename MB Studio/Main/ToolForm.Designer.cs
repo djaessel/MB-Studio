@@ -65,9 +65,9 @@ namespace MB_Studio.Main
             this.searchType_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.searchType_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchType_SearchTextBox.ForeColor = System.Drawing.Color.White;
-            this.searchType_SearchTextBox.Location = new System.Drawing.Point(127, 35);
+            this.searchType_SearchTextBox.Location = new System.Drawing.Point(83, 35);
             this.searchType_SearchTextBox.Name = "searchType_SearchTextBox";
-            this.searchType_SearchTextBox.Size = new System.Drawing.Size(277, 22);
+            this.searchType_SearchTextBox.Size = new System.Drawing.Size(317, 22);
             this.searchType_SearchTextBox.TabIndex = 36;
             this.searchType_SearchTextBox.Text = "Search ...";
             this.searchType_SearchTextBox.TextChanged += new System.EventHandler(this.SearchType_SearchTextBox_TextChanged);
@@ -116,9 +116,9 @@ namespace MB_Studio.Main
             this.typeSelect_lb.ItemHeight = 16;
             this.typeSelect_lb.Items.AddRange(new object[] {
             "New"});
-            this.typeSelect_lb.Location = new System.Drawing.Point(127, 58);
+            this.typeSelect_lb.Location = new System.Drawing.Point(83, 58);
             this.typeSelect_lb.Name = "typeSelect_lb";
-            this.typeSelect_lb.Size = new System.Drawing.Size(277, 114);
+            this.typeSelect_lb.Size = new System.Drawing.Size(317, 114);
             this.typeSelect_lb.TabIndex = 32;
             this.typeSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TypeSelect_lb_SelectedIndexChanged);
             // 
@@ -126,7 +126,7 @@ namespace MB_Studio.Main
             // 
             this.typeSelect_lbl.AutoSize = true;
             this.typeSelect_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.typeSelect_lbl.Location = new System.Drawing.Point(56, 37);
+            this.typeSelect_lbl.Location = new System.Drawing.Point(12, 37);
             this.typeSelect_lbl.Name = "typeSelect_lbl";
             this.typeSelect_lbl.Size = new System.Drawing.Size(65, 16);
             this.typeSelect_lbl.TabIndex = 31;

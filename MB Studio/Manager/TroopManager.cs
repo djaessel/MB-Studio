@@ -1421,12 +1421,6 @@ namespace MB_Studio.Manager
             }
         }
 
-        private void _3DViewTest_btn_Click(object sender, EventArgs e)
-        {
-            Troop3DPreview(items_lb);
-            Console.WriteLine("TestDummyMode(items_lb) --> finished!");
-        }
-
         #endregion
     }
 }

@@ -3824,7 +3824,8 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPo
 /* method created by Johandros */
 bool MainWindow::hasDependencyProblems() {
 	bool hasProblems = true;
-	const wchar_t* fileName = referenceFilename(0).toStdWString().c_str();
+	//QString sss = QString("E:\\SteamLibrary\\steamapps\\common\\MountBlade Warband\\MB Studio\\reference.brf");
+	const wchar_t* fileName = referenceFilename(0).toStdWString().c_str()/*sss.toStdWString().c_str();*/;
 
 	if (reference.Load(fileName)) hasProblems = !hasProblems;//false
 	quickHackFixName(reference);// (reference);
