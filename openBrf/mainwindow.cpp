@@ -3901,16 +3901,16 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	brfdata.mesh.push_back(newMesh);
 	save();//isNedded?
 
-	loadFile(xViewMeshFile);//deactivated for now
+	/*loadFile(xViewMeshFile);//deactivated for now
 	BrfMesh* loadedNewMesh = &brfdata.mesh[brfdata.mesh.size() - 1];
 	selector->selectAll();//maybe change later if needed/possible
 
 	//guiPanel->setRefAnimation(2);//alternative usage(?)
-	guiPanel->ui->cbRefani->setCurrentIndex(1);//maybe change later if needed
-	guiPanel->ui->cbHitboxes->setChecked(true);
-	guiPanel->ui->buPlay->click();
+	guiPanel->ui->cbRefani->setCurrentIndex(1);
+	//guiPanel->ui->cbHitboxes->setChecked(true);
+	guiPanel->ui->buPlay->click();*/
 
-	statusBar()->showMessage(tr("Added mesh %1 to Troop Preview!").arg(loadedNewMesh->name), 5000);
+	//statusBar()->showMessage(tr("Added mesh %1 to Troop 3D Preview!").arg(/*loadedNewMesh->name*/newName), 5000);
 }
 
 /* method created by Johandros */
@@ -3946,8 +3946,18 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 void MainWindow::showTroop3DPreview() {
 
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
-	createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
-	loadFile(xViewMeshFile);
+	if (!curFile.compare(xViewMeshFile)) {
+		createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
+		loadFile(xViewMeshFile);
+	}
+
+	selector->selectAll();
+
+	//guiPanel->setRefAnimation(2);//alternative usage(?)
+	guiPanel->ui->cbRefani->setCurrentIndex(1);//maybe optional animation?
+	//guiPanel->ui->cbHitboxes->setChecked(true);//optional?
+	guiPanel->ui->buPlay->click();
+
 	statusBar()->showMessage(tr("Troop 3D Preview Shown!"), 5000);
 }
 

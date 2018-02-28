@@ -264,7 +264,7 @@ namespace MB_Studio.Manager
 
         #region GUI
 
-        private void C_Click(object sender, EventArgs e)
+        private void C_Click(object sender, EventArgs e)/// TODO: Change like Toolsform - or try again to make as Toolsform
         {
             bool sub = false;
             Control button = (Control)sender;
@@ -278,7 +278,7 @@ namespace MB_Studio.Manager
                 else if (button.Equals(showGroup_8_btn))
                     groupBox.Height -= ToolForm.GROUP_HEIGHT_MIN;
                 else if (button.Equals(showGroup_3_btn))
-                    groupBox.Height = 400;
+                    groupBox.Height = 420;
                 button.Text = "ʌ";
             }
             else
@@ -294,7 +294,7 @@ namespace MB_Studio.Manager
             else if (button.Equals(showGroup_8_btn))
                 differ = differ - ToolForm.GROUP_HEIGHT_MIN;
             else if (button.Equals(showGroup_3_btn))
-                differ = 375;
+                differ = 395;
             foreach (Control c in troopPanel.Controls)
             {
                 if (int.Parse(c.Name.Split('_')[1]) > index)
@@ -391,6 +391,9 @@ namespace MB_Studio.Manager
                     }
                 }
             }
+            foreach (Control c in showItemsInOpenBrf_gb.Controls)
+                if (c.Name.Substring(c.Name.LastIndexOf('_') + 1).Equals("cbb"))
+                    ((ComboBox)c).Items.Clear();
             singleNameTranslation_txt.ResetText();
             pluralNameTranslation_txt.ResetText();
             languages_cbb.SelectedIndex = 0;
@@ -505,129 +508,22 @@ namespace MB_Studio.Manager
 
             #region GROUP3 - Items
 
-            #region ID OVERVIEW
-
-            /* SKELETONS */
-            // 0 human
-            // 1 human_horse
-
-            /* BONES */
-            //-1 abdomen   -  X X
-            // 0 thighL    -  3 thighR
-            // 1 calfL     -  4 calfR
-            // 2 footL     -  5 footR
-            // 6 spine     -  X X
-            // 7 thorax    -  X X
-            // 8 head      -  X X
-            // 9 shoulderL - 14 shoulderR 
-            //10 upperarmL - 15 upperarmR
-            //11 forearmL  - 16 forearmR
-            //12 handL     - 17 handR
-            //13 itemL     - 18 itemR
-
-            /* CARRYPOSITIONS */
-            // 0 itcf_carry_sword_left_hip
-            // 1 itcf_carry_axe_left_hip
-            // 2 itcf_carry_mace_left_hip
-            // 3 itcf_carry_dagger_front_left
-            // 4 itcf_carry_dagger_front_right
-            // 5 itcf_carry_axe_back
-            // 6 itcf_carry_sword_back
-            // 7 itcf_carry_spear
-            // 8 itcf_carry_kite_shield
-            // 9 itcf_carry_board_shield
-            //10 itcf_carry_round_shield
-            //11 itcf_carry_crossbow_back
-            //12 itcf_carry_bow_back
-            //13 itcf_carry_quiver_front_right
-            //14 itcf_carry_quiver_back_right
-            //15 itcf_carry_quiver_right_vertical
-            //16 itcf_carry_quiver_back
-            //17 itcf_carry_buckler_left
-            //18 itcf_carry_revolver_right
-            //19 itcf_carry_pistol_front_left
-            //20 itcf_carry_bowcase_left
-            //21 itcf_carry_katana
-            //22 itcf_carry_wakizashi
-
-            #endregion
-
-            //bool isAtOrigin = true;
-            int boneIndex, skeletonId, carryPosition;
-
             openBrfManager.Troop3DPreviewClear();
             Console.WriteLine("Cleared Troop 3D Preview! (laut Codefluss)");
 
             foreach (int itemID in troop.Items)
             {
-                boneIndex = 0;
-                skeletonId = 0;
-                carryPosition = -1;
-
-                switch (ItemManager.GetItemTypeIndex(itemsRList[itemID]))
-                {
-                    case 1: //Horse
-                        //boneIndex = 0;//? 
-                        skeletonId++;//is this correct for horse?
-                        break;
-                    case 7: //Shield
-                        boneIndex = 13;
-                        break;
-                    case 12://HeadArmor
-                        boneIndex = 8;
-                        break;
-                    case 13://BodyArmor
-                        boneIndex = 7;//thorax
-                        break;
-                    case 14://FootArmor
-                        boneIndex = 2;
-                        break;
-                    case 15://HandArmor
-                        boneIndex = 12;
-                        break;
-                    case 2: //Onehanded
-                    case 3: //Twohanded
-                    case 4: //Polearm
-                    case 8: //Bow
-                    case 9: //Crossbow
-                    case 10://Thrown
-                    case 16://Pistol
-                    case 17://Musket
-                        boneIndex = 18;
-                        break;
-                    case 11://Goods
-                    case 5: //Arrows
-                    case 6: //Bolts
-                    case 18://Bullets
-                    case 19://Animal
-                    case 20://Book
-                    default://none = 0
-                        boneIndex = 4;
-                        break;
-                }
-
-                if (skeletonId == 0)//no horse on screen!
-                {
-                    foreach (string meshName in itemsRList[itemID].Meshes)// bone (-1 to 18) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data))
-                    {
-                        string mName = meshName.Split()[0].Trim();
-                        if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
-                            Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
-                        else
-                            Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
-                    }
-                }
-                //else/* if (skeletonId == 1)*/
-                //{
-                //    // CODE
-                //}
-
-                usedItems_lb.Items.Add(itemID + " - " + itemsRList[itemID].ID);
+                Item itemX = itemsRList[itemID];
+                AddItemToInventarComboboxByKind(itemID, itemX.Prefix + itemX.ID);
+                SetupTroopItemBone(itemX);
+                usedItems_lb.Items.Add(itemID + " - " + itemX.Prefix + itemX.ID);
             }
+
+            SelectFirstInventarComboBoxItems();
 
             inventoryItemFlags = troop.ItemFlags;
 
-            //openBrfManager.ShowTroop3DPreview();
+            openBrfManager.Troop3DPreviewShow();
             Console.WriteLine("Show Troop 3D Preview! (laut Codefluss)");
 
             #endregion
@@ -687,6 +583,145 @@ namespace MB_Studio.Manager
                 Language_cbb_SelectedIndexChanged();
 
             #endregion
+        }
+
+        private void SelectFirstInventarComboBoxItems()
+        {
+            head_cbb.SelectedIndex = (head_cbb.Items.Count != 0) ? 0 : -1;
+            body_cbb.SelectedIndex = (body_cbb.Items.Count != 0) ? 0 : -1;
+            feet_cbb.SelectedIndex = (feet_cbb.Items.Count != 0) ? 0 : -1;
+            hand_cbb.SelectedIndex = (hand_cbb.Items.Count != 0) ? 0 : -1;
+            weapon_cbb.SelectedIndex = (weapon_cbb.Items.Count != 0) ? 0 : -1;
+            shield_cbb.SelectedIndex = (shield_cbb.Items.Count != 0) ? 0 : -1;
+            horse_cbb.SelectedIndex = (horse_cbb.Items.Count != 0) ? 0 : -1;
+            calfR_cbb.SelectedIndex = (calfR_cbb.Items.Count != 0) ? 0 : -1;
+        }
+
+        private void SetupTroopItemBone(Item item)
+        {
+
+            #region ID OVERVIEW
+
+            /* SKELETONS */
+            // 0 human
+            // 1 human_horse
+
+            /* BONES */
+            // 0 abdomen   -  X X
+            // 1 thighL    -  4 thighR
+            // 2 calfL     -  5 calfR
+            // 3 footL     -  6 footR
+            // 7 spine     -  X X
+            // 8 thorax    -  X X
+            // 9 head      -  X X
+            //10 shoulderL - 15 shoulderR 
+            //11 upperarmL - 16 upperarmR
+            //12 forearmL  - 17 forearmR
+            //13 handL     - 18 handR
+            //14 itemL     - 19 itemR
+
+            /* CARRYPOSITIONS */
+            // 0 itcf_carry_sword_left_hip
+            // 1 itcf_carry_axe_left_hip
+            // 2 itcf_carry_mace_left_hip
+            // 3 itcf_carry_dagger_front_left
+            // 4 itcf_carry_dagger_front_right
+            // 5 itcf_carry_axe_back
+            // 6 itcf_carry_sword_back
+            // 7 itcf_carry_spear
+            // 8 itcf_carry_kite_shield
+            // 9 itcf_carry_board_shield
+            //10 itcf_carry_round_shield
+            //11 itcf_carry_crossbow_back
+            //12 itcf_carry_bow_back
+            //13 itcf_carry_quiver_front_right
+            //14 itcf_carry_quiver_back_right
+            //15 itcf_carry_quiver_right_vertical
+            //16 itcf_carry_quiver_back
+            //17 itcf_carry_buckler_left
+            //18 itcf_carry_revolver_right
+            //19 itcf_carry_pistol_front_left
+            //20 itcf_carry_bowcase_left
+            //21 itcf_carry_katana
+            //22 itcf_carry_wakizashi
+
+            #endregion
+
+            //bool isAtOrigin = true;
+            int boneIndex = 0;
+            int skeletonId = 0;
+            int carryPosition = -1;
+            switch (ItemManager.GetItemTypeIndex(item))
+            {
+                case 1: //Horse
+                        //boneIndex = 0;//? 
+                    skeletonId++;//is this correct for horse?
+                    break;
+                case 7: //Shield
+                    boneIndex = 14;
+                    break;
+                case 12://HeadArmor
+                    boneIndex = 9;
+                    break;
+                case 13://BodyArmor
+                    boneIndex = 8;//thorax
+                    break;
+                case 14://FootArmor
+                    boneIndex = 9;
+                    break;
+                case 15://HandArmor
+                    boneIndex = 13;
+                    break;
+                case 8: //Bow
+                    carryPosition = 12;
+                    break;
+                case 9: //Crossbow
+                    carryPosition = 11;
+                    break;
+                case 16://Pistol
+                    carryPosition = 19;//18
+                    break;
+                case 2: //Onehanded
+                case 3: //Twohanded
+                case 4: //Polearm
+                case 10://Thrown
+                case 17://Musket
+                    boneIndex = 19;
+                    break;
+                case 5: //Arrows
+                    carryPosition = 16;
+                    break;
+                case 6: //Bolts
+                    carryPosition = 15;
+                    break;
+                case 18://Bullets
+                    carryPosition = 14;
+                    break;
+                //case 19://Animal
+                //    //what to do here?
+                //    break;
+                //case 11://Goods
+                //case 20://Book
+                default://none = 0
+                    boneIndex = 5;
+                    break;
+            }
+
+            if (skeletonId == 0)//no horse on screen!
+            {
+                foreach (string meshName in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
+                {
+                    string mName = meshName.Split()[0].Trim();
+                    if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
+                        Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
+                    else
+                        Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
+                }
+            }
+            //else/* if (skeletonId == 1)*/
+            //{
+            //    // CODE
+            //}
         }
 
         private void SetupTroopSkills(Troop troop)
@@ -919,14 +954,12 @@ namespace MB_Studio.Manager
             {
                 foreach (string item in items_lb.SelectedItems)
                 {
-                    AddItemToInventarComboboxByKind(item);
+                    int itemID = int.Parse(item.Split('-')[0].TrimEnd());
+                    AddItemToInventarComboboxByKind(itemID, item);
+                    SetupTroopItemBone(itemsRList[itemID]);
                     usedItems_lb.Items.Add(item);
                 }
-                /*foreach (string item in items_lb.Items) // FOR TESTING ONLY!!!
-                {
-                    AddItemToInventarComboboxByKind(item);
-                }*/
-                inventoryItemFlags.Add(0); // check
+                inventoryItemFlags.Add(0);//check
             }
             else
                 MessageBox.Show("You have too many items selected!"
@@ -935,9 +968,9 @@ namespace MB_Studio.Manager
                                 + Environment.NewLine + " --> Selected items: " + items_lb.SelectedItems.Count);
         }
 
-        private void AddItemToInventarComboboxByKind(string item)
+        private void AddItemToInventarComboboxByKind(int itemID, string itemName)
         {
-            Item itemX = null;
+            /*Item itemX = null;
             for (int i = 0; i < itemsRList.Length; i++)
             {
                 if (itemsRList[i].ID.Equals(item.Split('-')[1].TrimStart()))
@@ -945,20 +978,63 @@ namespace MB_Studio.Manager
                     itemX = itemsRList[i];
                     i = itemsRList.Length;
                 }
+            }*/
+
+            //int itemID = int.Parse(item.Split('-')[0].TrimEnd());
+            //string itemName = item.Split('-')[1].TrimStart();
+            switch (ItemManager.GetItemTypeIndex(itemsRList[itemID]))
+            {
+                case 1: //Horse
+                    horse_cbb.Items.Add(itemName);
+                    break;
+                case 7: //Shield
+                    shield_cbb.Items.Add(itemName);
+                    break;
+                case 12://HeadArmor
+                    head_cbb.Items.Add(itemName);
+                    break;
+                case 13://BodyArmor
+                    body_cbb.Items.Add(itemName);
+                    break;
+                case 14://FootArmor
+                    feet_cbb.Items.Add(itemName);
+                    break;
+                case 15://HandArmor
+                    hand_cbb.Items.Add(itemName);
+                    break;
+                case 2: //Onehanded
+                case 3: //Twohanded
+                case 4: //Polearm
+                case 8: //Bow
+                case 9: //Crossbow
+                case 10://Thrown
+                case 16://Pistol
+                case 17://Musket
+                    weapon_cbb.Items.Add(itemName);
+                    break;
+                //case 11://Goods
+                //case 5: //Arrows
+                //case 6: //Bolts
+                //case 18://Bullets
+                //case 19://Animal
+                //case 20://Book
+                default://none = 0
+                    calfR_cbb.Items.Add(itemName);
+                    break;
             }
 
-            if (itemX != null)
+            /*if (itemX != null)
             {
                 string kind;
-                /*try
-                {*/
+                //try
+                //
                     kind = itemX.ModBits;
-                /*}
+                //}
                 //catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                    kind = "ERROR";
-                }*/
+                //{
+                //    MessageBox.Show(ex.ToString());
+                //    kind = "ERROR";
+                //}
 
                 if (kind.Contains("_type_"))
                 {
@@ -968,7 +1044,7 @@ namespace MB_Studio.Manager
                 else
                     kind = "NONE - " + kind;
 
-                Console.WriteLine("TEST - " + kind);
+                Console.WriteLine("TEST - " + kind);*/
 
                 /*
                 itp_type_horse           = 0x0000000000000001 !
@@ -993,7 +1069,7 @@ namespace MB_Studio.Manager
                 itp_type_book            = 0x0000000000000014 ?
                 */
 
-                if (kind.Equals("itp_type_head_armor"))
+                /*if (kind.Equals("itp_type_head_armor"))
                     head_cbb.Items.Add(item);
                 
                 if (kind.Equals("itp_type_body_armor"))
@@ -1020,7 +1096,7 @@ namespace MB_Studio.Manager
                     if (dlr == DialogResult.Yes)
                         weapon_cbb.Items.Add(item);
                 }
-            }
+            }*/
         }
 
         private void UsedItemUP_btn_Click(object sender, EventArgs e)

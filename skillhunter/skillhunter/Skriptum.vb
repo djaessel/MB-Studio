@@ -58,4 +58,10 @@
         End Get
     End Property
 
+    Public ReadOnly Property Prefix As String
+        Get
+            Return Prefixes(type) + "_"c
+        End Get
+    End Property
+
 End Class

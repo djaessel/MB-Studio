@@ -123,7 +123,7 @@ DLL_EXPORT/*_VOID*//**/ bool DLL_EXPORT_DEF_CALLCONV/**/ AddMeshToXViewModel(cha
 	//	curWindow->addMeshByNameToXViewMesh(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
 	//	return true;
 	//}
-	return false;
+	//return false;
 }
 
 DLL_EXPORT_VOID ShowTroop3DPreview()

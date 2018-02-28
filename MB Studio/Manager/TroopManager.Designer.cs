@@ -31,6 +31,43 @@ namespace MB_Studio.Manager
         private new void InitializeComponent()
         {
             this.troopPanel = new System.Windows.Forms.Panel();
+            this.groupBox_3_gb = new System.Windows.Forms.GroupBox();
+            this.showItemsInOpenBrf_gb = new System.Windows.Forms.GroupBox();
+            this.calfR_cbb = new System.Windows.Forms.ComboBox();
+            this.calfR_lbl = new System.Windows.Forms.Label();
+            this.hand_cbb = new System.Windows.Forms.ComboBox();
+            this.hand_lbl = new System.Windows.Forms.Label();
+            this.horse_cbb = new System.Windows.Forms.ComboBox();
+            this.horse_lbl = new System.Windows.Forms.Label();
+            this.shield_cbb = new System.Windows.Forms.ComboBox();
+            this.shield_lbl = new System.Windows.Forms.Label();
+            this.weapon_cbb = new System.Windows.Forms.ComboBox();
+            this.weapon_lbl = new System.Windows.Forms.Label();
+            this.feet_cbb = new System.Windows.Forms.ComboBox();
+            this.feet_lbl = new System.Windows.Forms.Label();
+            this.body_cbb = new System.Windows.Forms.ComboBox();
+            this.body_lbl = new System.Windows.Forms.Label();
+            this.head_cbb = new System.Windows.Forms.ComboBox();
+            this.head_lbl = new System.Windows.Forms.Label();
+            this.itemSets_gb = new System.Windows.Forms.GroupBox();
+            this.set_6_btn = new System.Windows.Forms.Button();
+            this.set_5_btn = new System.Windows.Forms.Button();
+            this.set_4_btn = new System.Windows.Forms.Button();
+            this.set_3_btn = new System.Windows.Forms.Button();
+            this.set_2_btn = new System.Windows.Forms.Button();
+            this.set_1_btn = new System.Windows.Forms.Button();
+            this.searchUsedItems_SearchTextBox = new importantLib.SearchTextBox();
+            this.searchItems_SearchTextBox = new importantLib.SearchTextBox();
+            this.setItemFlags_btn = new System.Windows.Forms.Button();
+            this.selectedItemFlags_lbl = new System.Windows.Forms.Label();
+            this.selectedItemFlags_txt = new System.Windows.Forms.TextBox();
+            this.usedItemREMOVE_btn = new System.Windows.Forms.Button();
+            this.usedItemDOWN_btn = new System.Windows.Forms.Button();
+            this.addItemToUsedItems_btn = new System.Windows.Forms.Button();
+            this.usedItemUP_btn = new System.Windows.Forms.Button();
+            this.usedItems_lb = new System.Windows.Forms.ListBox();
+            this.items_lbl = new System.Windows.Forms.Label();
+            this.items_lb = new System.Windows.Forms.ListBox();
             this.showGroup_8_btn = new System.Windows.Forms.Button();
             this.groupBox_8_gb = new System.Windows.Forms.GroupBox();
             this.language_lbl = new System.Windows.Forms.Label();
@@ -120,39 +157,6 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl = new System.Windows.Forms.Label();
             this.reserved_XVII_num = new System.Windows.Forms.NumericUpDown();
             this.reserved_XVII_lbl = new System.Windows.Forms.Label();
-            this.groupBox_3_gb = new System.Windows.Forms.GroupBox();
-            this.showItemsInOpenBrf_gb = new System.Windows.Forms.GroupBox();
-            this.horse_cbb = new System.Windows.Forms.ComboBox();
-            this.horse_lbl = new System.Windows.Forms.Label();
-            this.shield_cbb = new System.Windows.Forms.ComboBox();
-            this.shield_lbl = new System.Windows.Forms.Label();
-            this.weapon_cbb = new System.Windows.Forms.ComboBox();
-            this.weapon_lbl = new System.Windows.Forms.Label();
-            this.feet_cbb = new System.Windows.Forms.ComboBox();
-            this.feet_lbl = new System.Windows.Forms.Label();
-            this.body_cbb = new System.Windows.Forms.ComboBox();
-            this.body_lbl = new System.Windows.Forms.Label();
-            this.head_cbb = new System.Windows.Forms.ComboBox();
-            this.head_lbl = new System.Windows.Forms.Label();
-            this.itemSets_gb = new System.Windows.Forms.GroupBox();
-            this.set_6_btn = new System.Windows.Forms.Button();
-            this.set_5_btn = new System.Windows.Forms.Button();
-            this.set_4_btn = new System.Windows.Forms.Button();
-            this.set_3_btn = new System.Windows.Forms.Button();
-            this.set_2_btn = new System.Windows.Forms.Button();
-            this.set_1_btn = new System.Windows.Forms.Button();
-            this.searchUsedItems_SearchTextBox = new importantLib.SearchTextBox();
-            this.searchItems_SearchTextBox = new importantLib.SearchTextBox();
-            this.setItemFlags_btn = new System.Windows.Forms.Button();
-            this.selectedItemFlags_lbl = new System.Windows.Forms.Label();
-            this.selectedItemFlags_txt = new System.Windows.Forms.TextBox();
-            this.usedItemREMOVE_btn = new System.Windows.Forms.Button();
-            this.usedItemDOWN_btn = new System.Windows.Forms.Button();
-            this.addItemToUsedItems_btn = new System.Windows.Forms.Button();
-            this.usedItemUP_btn = new System.Windows.Forms.Button();
-            this.usedItems_lb = new System.Windows.Forms.ListBox();
-            this.items_lbl = new System.Windows.Forms.Label();
-            this.items_lb = new System.Windows.Forms.ListBox();
             this.id_txt = new System.Windows.Forms.TextBox();
             this.id_lbl = new System.Windows.Forms.Label();
             this.name_lbl = new System.Windows.Forms.Label();
@@ -170,6 +174,9 @@ namespace MB_Studio.Manager
             this.searchTroop_SearchTextBox = new importantLib.SearchTextBox();
             this._3DView_btn = new System.Windows.Forms.Button();
             this.troopPanel.SuspendLayout();
+            this.groupBox_3_gb.SuspendLayout();
+            this.showItemsInOpenBrf_gb.SuspendLayout();
+            this.itemSets_gb.SuspendLayout();
             this.groupBox_8_gb.SuspendLayout();
             this.groupBox_7_gb.SuspendLayout();
             this.groupBox_5_gb.SuspendLayout();
@@ -181,9 +188,6 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVIII_num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVII_num)).BeginInit();
-            this.groupBox_3_gb.SuspendLayout();
-            this.showItemsInOpenBrf_gb.SuspendLayout();
-            this.itemSets_gb.SuspendLayout();
             this.SuspendLayout();
             // 
             // troopPanel
@@ -191,6 +195,7 @@ namespace MB_Studio.Manager
             this.troopPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.troopPanel.Controls.Add(this.groupBox_3_gb);
             this.troopPanel.Controls.Add(this.showGroup_8_btn);
             this.troopPanel.Controls.Add(this.groupBox_8_gb);
             this.troopPanel.Controls.Add(this.showGroup_7_btn);
@@ -206,11 +211,517 @@ namespace MB_Studio.Manager
             this.troopPanel.Controls.Add(this.groupBox_2_gb);
             this.troopPanel.Controls.Add(this.groupBox_1_gb);
             this.troopPanel.Controls.Add(this.groupBox_6_gb);
-            this.troopPanel.Controls.Add(this.groupBox_3_gb);
             this.troopPanel.Location = new System.Drawing.Point(10, 178);
             this.troopPanel.Name = "troopPanel";
-            this.troopPanel.Size = new System.Drawing.Size(792, 238);
+            this.troopPanel.Size = new System.Drawing.Size(792, 240);
             this.troopPanel.TabIndex = 1;
+            // 
+            // groupBox_3_gb
+            // 
+            this.groupBox_3_gb.Controls.Add(this.showItemsInOpenBrf_gb);
+            this.groupBox_3_gb.Controls.Add(this.itemSets_gb);
+            this.groupBox_3_gb.Controls.Add(this.searchUsedItems_SearchTextBox);
+            this.groupBox_3_gb.Controls.Add(this.searchItems_SearchTextBox);
+            this.groupBox_3_gb.Controls.Add(this.setItemFlags_btn);
+            this.groupBox_3_gb.Controls.Add(this.selectedItemFlags_lbl);
+            this.groupBox_3_gb.Controls.Add(this.selectedItemFlags_txt);
+            this.groupBox_3_gb.Controls.Add(this.usedItemREMOVE_btn);
+            this.groupBox_3_gb.Controls.Add(this.usedItemDOWN_btn);
+            this.groupBox_3_gb.Controls.Add(this.addItemToUsedItems_btn);
+            this.groupBox_3_gb.Controls.Add(this.usedItemUP_btn);
+            this.groupBox_3_gb.Controls.Add(this.usedItems_lb);
+            this.groupBox_3_gb.Controls.Add(this.items_lbl);
+            this.groupBox_3_gb.Controls.Add(this.items_lb);
+            this.groupBox_3_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox_3_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
+            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 62);
+            this.groupBox_3_gb.Name = "groupBox_3_gb";
+            this.groupBox_3_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_3_gb.TabIndex = 6;
+            this.groupBox_3_gb.TabStop = false;
+            this.groupBox_3_gb.Text = "Items";
+            // 
+            // showItemsInOpenBrf_gb
+            // 
+            this.showItemsInOpenBrf_gb.Controls.Add(this.calfR_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.calfR_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.hand_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.hand_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.horse_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.horse_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.shield_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.shield_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.weapon_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.weapon_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.feet_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.feet_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.body_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.body_lbl);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.head_cbb);
+            this.showItemsInOpenBrf_gb.Controls.Add(this.head_lbl);
+            this.showItemsInOpenBrf_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showItemsInOpenBrf_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showItemsInOpenBrf_gb.ForeColor = System.Drawing.Color.White;
+            this.showItemsInOpenBrf_gb.Location = new System.Drawing.Point(8, 270);
+            this.showItemsInOpenBrf_gb.Name = "showItemsInOpenBrf_gb";
+            this.showItemsInOpenBrf_gb.Size = new System.Drawing.Size(722, 142);
+            this.showItemsInOpenBrf_gb.TabIndex = 29;
+            this.showItemsInOpenBrf_gb.TabStop = false;
+            this.showItemsInOpenBrf_gb.Text = "Show In OpenBrf";
+            // 
+            // calfR_cbb
+            // 
+            this.calfR_cbb.FormattingEnabled = true;
+            this.calfR_cbb.Location = new System.Drawing.Point(327, 102);
+            this.calfR_cbb.Name = "calfR_cbb";
+            this.calfR_cbb.Size = new System.Drawing.Size(144, 28);
+            this.calfR_cbb.TabIndex = 26;
+            // 
+            // calfR_lbl
+            // 
+            this.calfR_lbl.AutoSize = true;
+            this.calfR_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.calfR_lbl.Location = new System.Drawing.Point(238, 108);
+            this.calfR_lbl.Name = "calfR_lbl";
+            this.calfR_lbl.Size = new System.Drawing.Size(83, 16);
+            this.calfR_lbl.TabIndex = 25;
+            this.calfR_lbl.Text = "Calf / Else:";
+            // 
+            // hand_cbb
+            // 
+            this.hand_cbb.FormattingEnabled = true;
+            this.hand_cbb.Location = new System.Drawing.Point(544, 34);
+            this.hand_cbb.Name = "hand_cbb";
+            this.hand_cbb.Size = new System.Drawing.Size(144, 28);
+            this.hand_cbb.TabIndex = 24;
+            // 
+            // hand_lbl
+            // 
+            this.hand_lbl.AutoSize = true;
+            this.hand_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hand_lbl.Location = new System.Drawing.Point(490, 40);
+            this.hand_lbl.Name = "hand_lbl";
+            this.hand_lbl.Size = new System.Drawing.Size(49, 16);
+            this.hand_lbl.TabIndex = 23;
+            this.hand_lbl.Text = "Hand:";
+            // 
+            // horse_cbb
+            // 
+            this.horse_cbb.FormattingEnabled = true;
+            this.horse_cbb.Location = new System.Drawing.Point(82, 102);
+            this.horse_cbb.Name = "horse_cbb";
+            this.horse_cbb.Size = new System.Drawing.Size(144, 28);
+            this.horse_cbb.TabIndex = 22;
+            // 
+            // horse_lbl
+            // 
+            this.horse_lbl.AutoSize = true;
+            this.horse_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.horse_lbl.Location = new System.Drawing.Point(22, 108);
+            this.horse_lbl.Name = "horse_lbl";
+            this.horse_lbl.Size = new System.Drawing.Size(54, 16);
+            this.horse_lbl.TabIndex = 21;
+            this.horse_lbl.Text = "Horse:";
+            // 
+            // shield_cbb
+            // 
+            this.shield_cbb.FormattingEnabled = true;
+            this.shield_cbb.Location = new System.Drawing.Point(544, 68);
+            this.shield_cbb.Name = "shield_cbb";
+            this.shield_cbb.Size = new System.Drawing.Size(144, 28);
+            this.shield_cbb.TabIndex = 20;
+            // 
+            // shield_lbl
+            // 
+            this.shield_lbl.AutoSize = true;
+            this.shield_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shield_lbl.Location = new System.Drawing.Point(482, 74);
+            this.shield_lbl.Name = "shield_lbl";
+            this.shield_lbl.Size = new System.Drawing.Size(56, 16);
+            this.shield_lbl.TabIndex = 19;
+            this.shield_lbl.Text = "Shield:";
+            // 
+            // weapon_cbb
+            // 
+            this.weapon_cbb.FormattingEnabled = true;
+            this.weapon_cbb.Location = new System.Drawing.Point(327, 68);
+            this.weapon_cbb.Name = "weapon_cbb";
+            this.weapon_cbb.Size = new System.Drawing.Size(144, 28);
+            this.weapon_cbb.TabIndex = 18;
+            // 
+            // weapon_lbl
+            // 
+            this.weapon_lbl.AutoSize = true;
+            this.weapon_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.weapon_lbl.Location = new System.Drawing.Point(251, 74);
+            this.weapon_lbl.Name = "weapon_lbl";
+            this.weapon_lbl.Size = new System.Drawing.Size(70, 16);
+            this.weapon_lbl.TabIndex = 17;
+            this.weapon_lbl.Text = "Weapon:";
+            // 
+            // feet_cbb
+            // 
+            this.feet_cbb.FormattingEnabled = true;
+            this.feet_cbb.Location = new System.Drawing.Point(82, 68);
+            this.feet_cbb.Name = "feet_cbb";
+            this.feet_cbb.Size = new System.Drawing.Size(144, 28);
+            this.feet_cbb.TabIndex = 16;
+            // 
+            // feet_lbl
+            // 
+            this.feet_lbl.AutoSize = true;
+            this.feet_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.feet_lbl.Location = new System.Drawing.Point(32, 74);
+            this.feet_lbl.Name = "feet_lbl";
+            this.feet_lbl.Size = new System.Drawing.Size(43, 16);
+            this.feet_lbl.TabIndex = 15;
+            this.feet_lbl.Text = "Feet:";
+            // 
+            // body_cbb
+            // 
+            this.body_cbb.FormattingEnabled = true;
+            this.body_cbb.Location = new System.Drawing.Point(327, 34);
+            this.body_cbb.Name = "body_cbb";
+            this.body_cbb.Size = new System.Drawing.Size(144, 28);
+            this.body_cbb.TabIndex = 14;
+            // 
+            // body_lbl
+            // 
+            this.body_lbl.AutoSize = true;
+            this.body_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.body_lbl.Location = new System.Drawing.Point(273, 40);
+            this.body_lbl.Name = "body_lbl";
+            this.body_lbl.Size = new System.Drawing.Size(48, 16);
+            this.body_lbl.TabIndex = 13;
+            this.body_lbl.Text = "Body:";
+            // 
+            // head_cbb
+            // 
+            this.head_cbb.FormattingEnabled = true;
+            this.head_cbb.Location = new System.Drawing.Point(82, 34);
+            this.head_cbb.Name = "head_cbb";
+            this.head_cbb.Size = new System.Drawing.Size(144, 28);
+            this.head_cbb.TabIndex = 12;
+            // 
+            // head_lbl
+            // 
+            this.head_lbl.AutoSize = true;
+            this.head_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.head_lbl.Location = new System.Drawing.Point(26, 40);
+            this.head_lbl.Name = "head_lbl";
+            this.head_lbl.Size = new System.Drawing.Size(50, 16);
+            this.head_lbl.TabIndex = 11;
+            this.head_lbl.Text = "Head:";
+            // 
+            // itemSets_gb
+            // 
+            this.itemSets_gb.Controls.Add(this.set_6_btn);
+            this.itemSets_gb.Controls.Add(this.set_5_btn);
+            this.itemSets_gb.Controls.Add(this.set_4_btn);
+            this.itemSets_gb.Controls.Add(this.set_3_btn);
+            this.itemSets_gb.Controls.Add(this.set_2_btn);
+            this.itemSets_gb.Controls.Add(this.set_1_btn);
+            this.itemSets_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.itemSets_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.itemSets_gb.ForeColor = System.Drawing.Color.White;
+            this.itemSets_gb.Location = new System.Drawing.Point(8, 194);
+            this.itemSets_gb.Name = "itemSets_gb";
+            this.itemSets_gb.Size = new System.Drawing.Size(722, 74);
+            this.itemSets_gb.TabIndex = 28;
+            this.itemSets_gb.TabStop = false;
+            this.itemSets_gb.Text = "Item-Sets";
+            // 
+            // set_6_btn
+            // 
+            this.set_6_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.set_6_btn.BackColor = System.Drawing.Color.Gray;
+            this.set_6_btn.FlatAppearance.BorderSize = 0;
+            this.set_6_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.set_6_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.set_6_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.set_6_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.set_6_btn.ForeColor = System.Drawing.Color.White;
+            this.set_6_btn.Location = new System.Drawing.Point(598, 29);
+            this.set_6_btn.Name = "set_6_btn";
+            this.set_6_btn.Size = new System.Drawing.Size(106, 24);
+            this.set_6_btn.TabIndex = 36;
+            this.set_6_btn.TabStop = false;
+            this.set_6_btn.Text = "#Set6";
+            this.set_6_btn.UseVisualStyleBackColor = false;
+            // 
+            // set_5_btn
+            // 
+            this.set_5_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.set_5_btn.BackColor = System.Drawing.Color.Gray;
+            this.set_5_btn.FlatAppearance.BorderSize = 0;
+            this.set_5_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.set_5_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.set_5_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.set_5_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.set_5_btn.ForeColor = System.Drawing.Color.White;
+            this.set_5_btn.Location = new System.Drawing.Point(482, 29);
+            this.set_5_btn.Name = "set_5_btn";
+            this.set_5_btn.Size = new System.Drawing.Size(106, 24);
+            this.set_5_btn.TabIndex = 35;
+            this.set_5_btn.TabStop = false;
+            this.set_5_btn.Text = "#Set5";
+            this.set_5_btn.UseVisualStyleBackColor = false;
+            // 
+            // set_4_btn
+            // 
+            this.set_4_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.set_4_btn.BackColor = System.Drawing.Color.Gray;
+            this.set_4_btn.FlatAppearance.BorderSize = 0;
+            this.set_4_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.set_4_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.set_4_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.set_4_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.set_4_btn.ForeColor = System.Drawing.Color.White;
+            this.set_4_btn.Location = new System.Drawing.Point(366, 29);
+            this.set_4_btn.Name = "set_4_btn";
+            this.set_4_btn.Size = new System.Drawing.Size(106, 24);
+            this.set_4_btn.TabIndex = 34;
+            this.set_4_btn.TabStop = false;
+            this.set_4_btn.Text = "#Set4";
+            this.set_4_btn.UseVisualStyleBackColor = false;
+            // 
+            // set_3_btn
+            // 
+            this.set_3_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.set_3_btn.BackColor = System.Drawing.Color.Gray;
+            this.set_3_btn.FlatAppearance.BorderSize = 0;
+            this.set_3_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.set_3_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.set_3_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.set_3_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.set_3_btn.ForeColor = System.Drawing.Color.White;
+            this.set_3_btn.Location = new System.Drawing.Point(250, 29);
+            this.set_3_btn.Name = "set_3_btn";
+            this.set_3_btn.Size = new System.Drawing.Size(106, 24);
+            this.set_3_btn.TabIndex = 33;
+            this.set_3_btn.TabStop = false;
+            this.set_3_btn.Text = "#Set3";
+            this.set_3_btn.UseVisualStyleBackColor = false;
+            // 
+            // set_2_btn
+            // 
+            this.set_2_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.set_2_btn.BackColor = System.Drawing.Color.Gray;
+            this.set_2_btn.FlatAppearance.BorderSize = 0;
+            this.set_2_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.set_2_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.set_2_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.set_2_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.set_2_btn.ForeColor = System.Drawing.Color.White;
+            this.set_2_btn.Location = new System.Drawing.Point(134, 29);
+            this.set_2_btn.Name = "set_2_btn";
+            this.set_2_btn.Size = new System.Drawing.Size(106, 24);
+            this.set_2_btn.TabIndex = 29;
+            this.set_2_btn.TabStop = false;
+            this.set_2_btn.Text = "#Set2";
+            this.set_2_btn.UseVisualStyleBackColor = false;
+            // 
+            // set_1_btn
+            // 
+            this.set_1_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.set_1_btn.BackColor = System.Drawing.Color.Gray;
+            this.set_1_btn.FlatAppearance.BorderSize = 0;
+            this.set_1_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.set_1_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.set_1_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.set_1_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.set_1_btn.ForeColor = System.Drawing.Color.White;
+            this.set_1_btn.Location = new System.Drawing.Point(18, 29);
+            this.set_1_btn.Name = "set_1_btn";
+            this.set_1_btn.Size = new System.Drawing.Size(106, 24);
+            this.set_1_btn.TabIndex = 28;
+            this.set_1_btn.TabStop = false;
+            this.set_1_btn.Text = "#Set1";
+            this.set_1_btn.UseVisualStyleBackColor = false;
+            // 
+            // searchUsedItems_SearchTextBox
+            // 
+            this.searchUsedItems_SearchTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.searchUsedItems_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.searchUsedItems_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchUsedItems_SearchTextBox.ForeColor = System.Drawing.Color.White;
+            this.searchUsedItems_SearchTextBox.Location = new System.Drawing.Point(358, 40);
+            this.searchUsedItems_SearchTextBox.Name = "searchUsedItems_SearchTextBox";
+            this.searchUsedItems_SearchTextBox.Size = new System.Drawing.Size(284, 22);
+            this.searchUsedItems_SearchTextBox.TabIndex = 21;
+            this.searchUsedItems_SearchTextBox.Text = "Search ...";
+            this.searchUsedItems_SearchTextBox.TextChanged += new System.EventHandler(this.SearchUsedItems_txt_TextChanged);
+            // 
+            // searchItems_SearchTextBox
+            // 
+            this.searchItems_SearchTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.searchItems_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.searchItems_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchItems_SearchTextBox.ForeColor = System.Drawing.Color.White;
+            this.searchItems_SearchTextBox.Location = new System.Drawing.Point(71, 40);
+            this.searchItems_SearchTextBox.Name = "searchItems_SearchTextBox";
+            this.searchItems_SearchTextBox.Size = new System.Drawing.Size(235, 22);
+            this.searchItems_SearchTextBox.TabIndex = 20;
+            this.searchItems_SearchTextBox.Text = "Search ...";
+            this.searchItems_SearchTextBox.TextChanged += new System.EventHandler(this.SearchItems_TextChanged);
+            // 
+            // setItemFlags_btn
+            // 
+            this.setItemFlags_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.setItemFlags_btn.BackColor = System.Drawing.Color.Gray;
+            this.setItemFlags_btn.FlatAppearance.BorderSize = 0;
+            this.setItemFlags_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.setItemFlags_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.setItemFlags_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.setItemFlags_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.setItemFlags_btn.ForeColor = System.Drawing.Color.White;
+            this.setItemFlags_btn.Location = new System.Drawing.Point(590, 150);
+            this.setItemFlags_btn.Name = "setItemFlags_btn";
+            this.setItemFlags_btn.Size = new System.Drawing.Size(65, 22);
+            this.setItemFlags_btn.TabIndex = 19;
+            this.setItemFlags_btn.TabStop = false;
+            this.setItemFlags_btn.Text = "SET";
+            this.setItemFlags_btn.UseVisualStyleBackColor = false;
+            this.setItemFlags_btn.Click += new System.EventHandler(this.SetItemFlags_btn_Click);
+            // 
+            // selectedItemFlags_lbl
+            // 
+            this.selectedItemFlags_lbl.AutoSize = true;
+            this.selectedItemFlags_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectedItemFlags_lbl.Location = new System.Drawing.Point(357, 152);
+            this.selectedItemFlags_lbl.Name = "selectedItemFlags_lbl";
+            this.selectedItemFlags_lbl.Size = new System.Drawing.Size(84, 16);
+            this.selectedItemFlags_lbl.TabIndex = 18;
+            this.selectedItemFlags_lbl.Text = "Item Flags:";
+            // 
+            // selectedItemFlags_txt
+            // 
+            this.selectedItemFlags_txt.BackColor = System.Drawing.Color.DimGray;
+            this.selectedItemFlags_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectedItemFlags_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectedItemFlags_txt.ForeColor = System.Drawing.Color.White;
+            this.selectedItemFlags_txt.Location = new System.Drawing.Point(445, 150);
+            this.selectedItemFlags_txt.Name = "selectedItemFlags_txt";
+            this.selectedItemFlags_txt.Size = new System.Drawing.Size(131, 22);
+            this.selectedItemFlags_txt.TabIndex = 17;
+            this.selectedItemFlags_txt.TextChanged += new System.EventHandler(this.SelectedItemFlags_txt_TextChanged);
+            // 
+            // usedItemREMOVE_btn
+            // 
+            this.usedItemREMOVE_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.usedItemREMOVE_btn.BackColor = System.Drawing.Color.Gray;
+            this.usedItemREMOVE_btn.FlatAppearance.BorderSize = 0;
+            this.usedItemREMOVE_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.usedItemREMOVE_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.usedItemREMOVE_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.usedItemREMOVE_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usedItemREMOVE_btn.ForeColor = System.Drawing.Color.White;
+            this.usedItemREMOVE_btn.Location = new System.Drawing.Point(643, 114);
+            this.usedItemREMOVE_btn.Name = "usedItemREMOVE_btn";
+            this.usedItemREMOVE_btn.Size = new System.Drawing.Size(80, 24);
+            this.usedItemREMOVE_btn.TabIndex = 16;
+            this.usedItemREMOVE_btn.TabStop = false;
+            this.usedItemREMOVE_btn.Text = "REMOVE";
+            this.usedItemREMOVE_btn.UseVisualStyleBackColor = false;
+            this.usedItemREMOVE_btn.Click += new System.EventHandler(this.UsedItemREMOVE_btn_Click);
+            // 
+            // usedItemDOWN_btn
+            // 
+            this.usedItemDOWN_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.usedItemDOWN_btn.BackColor = System.Drawing.Color.Gray;
+            this.usedItemDOWN_btn.FlatAppearance.BorderSize = 0;
+            this.usedItemDOWN_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.usedItemDOWN_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.usedItemDOWN_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.usedItemDOWN_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usedItemDOWN_btn.ForeColor = System.Drawing.Color.White;
+            this.usedItemDOWN_btn.Location = new System.Drawing.Point(643, 89);
+            this.usedItemDOWN_btn.Name = "usedItemDOWN_btn";
+            this.usedItemDOWN_btn.Size = new System.Drawing.Size(80, 24);
+            this.usedItemDOWN_btn.TabIndex = 15;
+            this.usedItemDOWN_btn.TabStop = false;
+            this.usedItemDOWN_btn.Text = "DOWN";
+            this.usedItemDOWN_btn.UseVisualStyleBackColor = false;
+            this.usedItemDOWN_btn.Click += new System.EventHandler(this.UsedItemDOWN_btn_Click);
+            // 
+            // addItemToUsedItems_btn
+            // 
+            this.addItemToUsedItems_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addItemToUsedItems_btn.BackColor = System.Drawing.Color.Gray;
+            this.addItemToUsedItems_btn.FlatAppearance.BorderSize = 0;
+            this.addItemToUsedItems_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.addItemToUsedItems_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.addItemToUsedItems_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addItemToUsedItems_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addItemToUsedItems_btn.ForeColor = System.Drawing.Color.White;
+            this.addItemToUsedItems_btn.Location = new System.Drawing.Point(307, 64);
+            this.addItemToUsedItems_btn.Name = "addItemToUsedItems_btn";
+            this.addItemToUsedItems_btn.Size = new System.Drawing.Size(43, 110);
+            this.addItemToUsedItems_btn.TabIndex = 14;
+            this.addItemToUsedItems_btn.TabStop = false;
+            this.addItemToUsedItems_btn.Text = "ADD";
+            this.addItemToUsedItems_btn.UseVisualStyleBackColor = false;
+            this.addItemToUsedItems_btn.Click += new System.EventHandler(this.AddItemToUsedItems_btn_Click);
+            // 
+            // usedItemUP_btn
+            // 
+            this.usedItemUP_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.usedItemUP_btn.BackColor = System.Drawing.Color.Gray;
+            this.usedItemUP_btn.FlatAppearance.BorderSize = 0;
+            this.usedItemUP_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.usedItemUP_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.usedItemUP_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.usedItemUP_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usedItemUP_btn.ForeColor = System.Drawing.Color.White;
+            this.usedItemUP_btn.Location = new System.Drawing.Point(643, 64);
+            this.usedItemUP_btn.Name = "usedItemUP_btn";
+            this.usedItemUP_btn.Size = new System.Drawing.Size(80, 24);
+            this.usedItemUP_btn.TabIndex = 12;
+            this.usedItemUP_btn.TabStop = false;
+            this.usedItemUP_btn.Text = "UP";
+            this.usedItemUP_btn.UseVisualStyleBackColor = false;
+            this.usedItemUP_btn.Click += new System.EventHandler(this.UsedItemUP_btn_Click);
+            // 
+            // usedItems_lb
+            // 
+            this.usedItems_lb.BackColor = System.Drawing.Color.DimGray;
+            this.usedItems_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.usedItems_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usedItems_lb.ForeColor = System.Drawing.Color.White;
+            this.usedItems_lb.FormattingEnabled = true;
+            this.usedItems_lb.ItemHeight = 18;
+            this.usedItems_lb.Location = new System.Drawing.Point(358, 64);
+            this.usedItems_lb.Name = "usedItems_lb";
+            this.usedItems_lb.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.usedItems_lb.Size = new System.Drawing.Size(284, 74);
+            this.usedItems_lb.TabIndex = 11;
+            this.usedItems_lb.SelectedIndexChanged += new System.EventHandler(this.UsedItems_lb_SelectedIndexChanged);
+            // 
+            // items_lbl
+            // 
+            this.items_lbl.AutoSize = true;
+            this.items_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.items_lbl.Location = new System.Drawing.Point(16, 42);
+            this.items_lbl.Name = "items_lbl";
+            this.items_lbl.Size = new System.Drawing.Size(49, 16);
+            this.items_lbl.TabIndex = 10;
+            this.items_lbl.Text = "Items:";
+            // 
+            // items_lb
+            // 
+            this.items_lb.BackColor = System.Drawing.Color.DimGray;
+            this.items_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.items_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.items_lb.ForeColor = System.Drawing.Color.White;
+            this.items_lb.FormattingEnabled = true;
+            this.items_lb.ItemHeight = 18;
+            this.items_lb.Location = new System.Drawing.Point(71, 64);
+            this.items_lb.Name = "items_lb";
+            this.items_lb.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.items_lb.Size = new System.Drawing.Size(235, 110);
+            this.items_lb.TabIndex = 9;
+            this.items_lb.SelectedIndexChanged += new System.EventHandler(this.Items_lb_SelectedIndexChanged);
             // 
             // showGroup_8_btn
             // 
@@ -1301,473 +1812,6 @@ namespace MB_Studio.Manager
             this.reserved_XVII_lbl.Text = "Reserved XVII:";
             this.reserved_XVII_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // groupBox_3_gb
-            // 
-            this.groupBox_3_gb.Controls.Add(this.showItemsInOpenBrf_gb);
-            this.groupBox_3_gb.Controls.Add(this.itemSets_gb);
-            this.groupBox_3_gb.Controls.Add(this.searchUsedItems_SearchTextBox);
-            this.groupBox_3_gb.Controls.Add(this.searchItems_SearchTextBox);
-            this.groupBox_3_gb.Controls.Add(this.setItemFlags_btn);
-            this.groupBox_3_gb.Controls.Add(this.selectedItemFlags_lbl);
-            this.groupBox_3_gb.Controls.Add(this.selectedItemFlags_txt);
-            this.groupBox_3_gb.Controls.Add(this.usedItemREMOVE_btn);
-            this.groupBox_3_gb.Controls.Add(this.usedItemDOWN_btn);
-            this.groupBox_3_gb.Controls.Add(this.addItemToUsedItems_btn);
-            this.groupBox_3_gb.Controls.Add(this.usedItemUP_btn);
-            this.groupBox_3_gb.Controls.Add(this.usedItems_lb);
-            this.groupBox_3_gb.Controls.Add(this.items_lbl);
-            this.groupBox_3_gb.Controls.Add(this.items_lb);
-            this.groupBox_3_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox_3_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 62);
-            this.groupBox_3_gb.Name = "groupBox_3_gb";
-            this.groupBox_3_gb.Size = new System.Drawing.Size(750, 25);
-            this.groupBox_3_gb.TabIndex = 6;
-            this.groupBox_3_gb.TabStop = false;
-            this.groupBox_3_gb.Text = "Items";
-            // 
-            // showItemsInOpenBrf_gb
-            // 
-            this.showItemsInOpenBrf_gb.Controls.Add(this.horse_cbb);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.horse_lbl);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.shield_cbb);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.shield_lbl);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.weapon_cbb);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.weapon_lbl);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.feet_cbb);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.feet_lbl);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.body_cbb);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.body_lbl);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.head_cbb);
-            this.showItemsInOpenBrf_gb.Controls.Add(this.head_lbl);
-            this.showItemsInOpenBrf_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showItemsInOpenBrf_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showItemsInOpenBrf_gb.ForeColor = System.Drawing.Color.White;
-            this.showItemsInOpenBrf_gb.Location = new System.Drawing.Point(8, 270);
-            this.showItemsInOpenBrf_gb.Name = "showItemsInOpenBrf_gb";
-            this.showItemsInOpenBrf_gb.Size = new System.Drawing.Size(722, 121);
-            this.showItemsInOpenBrf_gb.TabIndex = 29;
-            this.showItemsInOpenBrf_gb.TabStop = false;
-            this.showItemsInOpenBrf_gb.Text = "Show In OpenBrf";
-            // 
-            // horse_cbb
-            // 
-            this.horse_cbb.FormattingEnabled = true;
-            this.horse_cbb.Location = new System.Drawing.Point(536, 70);
-            this.horse_cbb.Name = "horse_cbb";
-            this.horse_cbb.Size = new System.Drawing.Size(144, 28);
-            this.horse_cbb.TabIndex = 22;
-            // 
-            // horse_lbl
-            // 
-            this.horse_lbl.AutoSize = true;
-            this.horse_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.horse_lbl.Location = new System.Drawing.Point(476, 76);
-            this.horse_lbl.Name = "horse_lbl";
-            this.horse_lbl.Size = new System.Drawing.Size(54, 16);
-            this.horse_lbl.TabIndex = 21;
-            this.horse_lbl.Text = "Horse:";
-            // 
-            // shield_cbb
-            // 
-            this.shield_cbb.FormattingEnabled = true;
-            this.shield_cbb.Location = new System.Drawing.Point(327, 70);
-            this.shield_cbb.Name = "shield_cbb";
-            this.shield_cbb.Size = new System.Drawing.Size(144, 28);
-            this.shield_cbb.TabIndex = 20;
-            // 
-            // shield_lbl
-            // 
-            this.shield_lbl.AutoSize = true;
-            this.shield_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.shield_lbl.Location = new System.Drawing.Point(265, 76);
-            this.shield_lbl.Name = "shield_lbl";
-            this.shield_lbl.Size = new System.Drawing.Size(56, 16);
-            this.shield_lbl.TabIndex = 19;
-            this.shield_lbl.Text = "Shield:";
-            // 
-            // weapon_cbb
-            // 
-            this.weapon_cbb.FormattingEnabled = true;
-            this.weapon_cbb.Location = new System.Drawing.Point(112, 70);
-            this.weapon_cbb.Name = "weapon_cbb";
-            this.weapon_cbb.Size = new System.Drawing.Size(144, 28);
-            this.weapon_cbb.TabIndex = 18;
-            // 
-            // weapon_lbl
-            // 
-            this.weapon_lbl.AutoSize = true;
-            this.weapon_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.weapon_lbl.Location = new System.Drawing.Point(36, 76);
-            this.weapon_lbl.Name = "weapon_lbl";
-            this.weapon_lbl.Size = new System.Drawing.Size(70, 16);
-            this.weapon_lbl.TabIndex = 17;
-            this.weapon_lbl.Text = "Weapon:";
-            // 
-            // feet_cbb
-            // 
-            this.feet_cbb.FormattingEnabled = true;
-            this.feet_cbb.Location = new System.Drawing.Point(536, 36);
-            this.feet_cbb.Name = "feet_cbb";
-            this.feet_cbb.Size = new System.Drawing.Size(144, 28);
-            this.feet_cbb.TabIndex = 16;
-            // 
-            // feet_lbl
-            // 
-            this.feet_lbl.AutoSize = true;
-            this.feet_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.feet_lbl.Location = new System.Drawing.Point(487, 42);
-            this.feet_lbl.Name = "feet_lbl";
-            this.feet_lbl.Size = new System.Drawing.Size(43, 16);
-            this.feet_lbl.TabIndex = 15;
-            this.feet_lbl.Text = "Feet:";
-            // 
-            // body_cbb
-            // 
-            this.body_cbb.FormattingEnabled = true;
-            this.body_cbb.Location = new System.Drawing.Point(327, 36);
-            this.body_cbb.Name = "body_cbb";
-            this.body_cbb.Size = new System.Drawing.Size(144, 28);
-            this.body_cbb.TabIndex = 14;
-            // 
-            // body_lbl
-            // 
-            this.body_lbl.AutoSize = true;
-            this.body_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.body_lbl.Location = new System.Drawing.Point(273, 42);
-            this.body_lbl.Name = "body_lbl";
-            this.body_lbl.Size = new System.Drawing.Size(48, 16);
-            this.body_lbl.TabIndex = 13;
-            this.body_lbl.Text = "Body:";
-            // 
-            // head_cbb
-            // 
-            this.head_cbb.FormattingEnabled = true;
-            this.head_cbb.Location = new System.Drawing.Point(112, 36);
-            this.head_cbb.Name = "head_cbb";
-            this.head_cbb.Size = new System.Drawing.Size(144, 28);
-            this.head_cbb.TabIndex = 12;
-            // 
-            // head_lbl
-            // 
-            this.head_lbl.AutoSize = true;
-            this.head_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.head_lbl.Location = new System.Drawing.Point(56, 42);
-            this.head_lbl.Name = "head_lbl";
-            this.head_lbl.Size = new System.Drawing.Size(50, 16);
-            this.head_lbl.TabIndex = 11;
-            this.head_lbl.Text = "Head:";
-            // 
-            // itemSets_gb
-            // 
-            this.itemSets_gb.Controls.Add(this.set_6_btn);
-            this.itemSets_gb.Controls.Add(this.set_5_btn);
-            this.itemSets_gb.Controls.Add(this.set_4_btn);
-            this.itemSets_gb.Controls.Add(this.set_3_btn);
-            this.itemSets_gb.Controls.Add(this.set_2_btn);
-            this.itemSets_gb.Controls.Add(this.set_1_btn);
-            this.itemSets_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.itemSets_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.itemSets_gb.ForeColor = System.Drawing.Color.White;
-            this.itemSets_gb.Location = new System.Drawing.Point(8, 194);
-            this.itemSets_gb.Name = "itemSets_gb";
-            this.itemSets_gb.Size = new System.Drawing.Size(722, 74);
-            this.itemSets_gb.TabIndex = 28;
-            this.itemSets_gb.TabStop = false;
-            this.itemSets_gb.Text = "Item-Sets";
-            // 
-            // set_6_btn
-            // 
-            this.set_6_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.set_6_btn.BackColor = System.Drawing.Color.Gray;
-            this.set_6_btn.FlatAppearance.BorderSize = 0;
-            this.set_6_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.set_6_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.set_6_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.set_6_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.set_6_btn.ForeColor = System.Drawing.Color.White;
-            this.set_6_btn.Location = new System.Drawing.Point(598, 29);
-            this.set_6_btn.Name = "set_6_btn";
-            this.set_6_btn.Size = new System.Drawing.Size(106, 24);
-            this.set_6_btn.TabIndex = 36;
-            this.set_6_btn.TabStop = false;
-            this.set_6_btn.Text = "#Set6";
-            this.set_6_btn.UseVisualStyleBackColor = false;
-            // 
-            // set_5_btn
-            // 
-            this.set_5_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.set_5_btn.BackColor = System.Drawing.Color.Gray;
-            this.set_5_btn.FlatAppearance.BorderSize = 0;
-            this.set_5_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.set_5_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.set_5_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.set_5_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.set_5_btn.ForeColor = System.Drawing.Color.White;
-            this.set_5_btn.Location = new System.Drawing.Point(482, 29);
-            this.set_5_btn.Name = "set_5_btn";
-            this.set_5_btn.Size = new System.Drawing.Size(106, 24);
-            this.set_5_btn.TabIndex = 35;
-            this.set_5_btn.TabStop = false;
-            this.set_5_btn.Text = "#Set5";
-            this.set_5_btn.UseVisualStyleBackColor = false;
-            // 
-            // set_4_btn
-            // 
-            this.set_4_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.set_4_btn.BackColor = System.Drawing.Color.Gray;
-            this.set_4_btn.FlatAppearance.BorderSize = 0;
-            this.set_4_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.set_4_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.set_4_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.set_4_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.set_4_btn.ForeColor = System.Drawing.Color.White;
-            this.set_4_btn.Location = new System.Drawing.Point(366, 29);
-            this.set_4_btn.Name = "set_4_btn";
-            this.set_4_btn.Size = new System.Drawing.Size(106, 24);
-            this.set_4_btn.TabIndex = 34;
-            this.set_4_btn.TabStop = false;
-            this.set_4_btn.Text = "#Set4";
-            this.set_4_btn.UseVisualStyleBackColor = false;
-            // 
-            // set_3_btn
-            // 
-            this.set_3_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.set_3_btn.BackColor = System.Drawing.Color.Gray;
-            this.set_3_btn.FlatAppearance.BorderSize = 0;
-            this.set_3_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.set_3_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.set_3_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.set_3_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.set_3_btn.ForeColor = System.Drawing.Color.White;
-            this.set_3_btn.Location = new System.Drawing.Point(250, 29);
-            this.set_3_btn.Name = "set_3_btn";
-            this.set_3_btn.Size = new System.Drawing.Size(106, 24);
-            this.set_3_btn.TabIndex = 33;
-            this.set_3_btn.TabStop = false;
-            this.set_3_btn.Text = "#Set3";
-            this.set_3_btn.UseVisualStyleBackColor = false;
-            // 
-            // set_2_btn
-            // 
-            this.set_2_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.set_2_btn.BackColor = System.Drawing.Color.Gray;
-            this.set_2_btn.FlatAppearance.BorderSize = 0;
-            this.set_2_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.set_2_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.set_2_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.set_2_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.set_2_btn.ForeColor = System.Drawing.Color.White;
-            this.set_2_btn.Location = new System.Drawing.Point(134, 29);
-            this.set_2_btn.Name = "set_2_btn";
-            this.set_2_btn.Size = new System.Drawing.Size(106, 24);
-            this.set_2_btn.TabIndex = 29;
-            this.set_2_btn.TabStop = false;
-            this.set_2_btn.Text = "#Set2";
-            this.set_2_btn.UseVisualStyleBackColor = false;
-            // 
-            // set_1_btn
-            // 
-            this.set_1_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.set_1_btn.BackColor = System.Drawing.Color.Gray;
-            this.set_1_btn.FlatAppearance.BorderSize = 0;
-            this.set_1_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.set_1_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.set_1_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.set_1_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.set_1_btn.ForeColor = System.Drawing.Color.White;
-            this.set_1_btn.Location = new System.Drawing.Point(18, 29);
-            this.set_1_btn.Name = "set_1_btn";
-            this.set_1_btn.Size = new System.Drawing.Size(106, 24);
-            this.set_1_btn.TabIndex = 28;
-            this.set_1_btn.TabStop = false;
-            this.set_1_btn.Text = "#Set1";
-            this.set_1_btn.UseVisualStyleBackColor = false;
-            // 
-            // searchUsedItems_SearchTextBox
-            // 
-            this.searchUsedItems_SearchTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.searchUsedItems_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.searchUsedItems_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchUsedItems_SearchTextBox.ForeColor = System.Drawing.Color.White;
-            this.searchUsedItems_SearchTextBox.Location = new System.Drawing.Point(358, 40);
-            this.searchUsedItems_SearchTextBox.Name = "searchUsedItems_SearchTextBox";
-            this.searchUsedItems_SearchTextBox.Size = new System.Drawing.Size(284, 22);
-            this.searchUsedItems_SearchTextBox.TabIndex = 21;
-            this.searchUsedItems_SearchTextBox.Text = "Search ...";
-            this.searchUsedItems_SearchTextBox.TextChanged += new System.EventHandler(this.SearchUsedItems_txt_TextChanged);
-            // 
-            // searchItems_SearchTextBox
-            // 
-            this.searchItems_SearchTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.searchItems_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.searchItems_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchItems_SearchTextBox.ForeColor = System.Drawing.Color.White;
-            this.searchItems_SearchTextBox.Location = new System.Drawing.Point(71, 40);
-            this.searchItems_SearchTextBox.Name = "searchItems_SearchTextBox";
-            this.searchItems_SearchTextBox.Size = new System.Drawing.Size(235, 22);
-            this.searchItems_SearchTextBox.TabIndex = 20;
-            this.searchItems_SearchTextBox.Text = "Search ...";
-            this.searchItems_SearchTextBox.TextChanged += new System.EventHandler(this.SearchItems_TextChanged);
-            // 
-            // setItemFlags_btn
-            // 
-            this.setItemFlags_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.setItemFlags_btn.BackColor = System.Drawing.Color.Gray;
-            this.setItemFlags_btn.FlatAppearance.BorderSize = 0;
-            this.setItemFlags_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.setItemFlags_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.setItemFlags_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.setItemFlags_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.setItemFlags_btn.ForeColor = System.Drawing.Color.White;
-            this.setItemFlags_btn.Location = new System.Drawing.Point(590, 150);
-            this.setItemFlags_btn.Name = "setItemFlags_btn";
-            this.setItemFlags_btn.Size = new System.Drawing.Size(65, 22);
-            this.setItemFlags_btn.TabIndex = 19;
-            this.setItemFlags_btn.TabStop = false;
-            this.setItemFlags_btn.Text = "SET";
-            this.setItemFlags_btn.UseVisualStyleBackColor = false;
-            this.setItemFlags_btn.Click += new System.EventHandler(this.SetItemFlags_btn_Click);
-            // 
-            // selectedItemFlags_lbl
-            // 
-            this.selectedItemFlags_lbl.AutoSize = true;
-            this.selectedItemFlags_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectedItemFlags_lbl.Location = new System.Drawing.Point(357, 152);
-            this.selectedItemFlags_lbl.Name = "selectedItemFlags_lbl";
-            this.selectedItemFlags_lbl.Size = new System.Drawing.Size(84, 16);
-            this.selectedItemFlags_lbl.TabIndex = 18;
-            this.selectedItemFlags_lbl.Text = "Item Flags:";
-            // 
-            // selectedItemFlags_txt
-            // 
-            this.selectedItemFlags_txt.BackColor = System.Drawing.Color.DimGray;
-            this.selectedItemFlags_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.selectedItemFlags_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectedItemFlags_txt.ForeColor = System.Drawing.Color.White;
-            this.selectedItemFlags_txt.Location = new System.Drawing.Point(445, 150);
-            this.selectedItemFlags_txt.Name = "selectedItemFlags_txt";
-            this.selectedItemFlags_txt.Size = new System.Drawing.Size(131, 22);
-            this.selectedItemFlags_txt.TabIndex = 17;
-            this.selectedItemFlags_txt.TextChanged += new System.EventHandler(this.SelectedItemFlags_txt_TextChanged);
-            // 
-            // usedItemREMOVE_btn
-            // 
-            this.usedItemREMOVE_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.usedItemREMOVE_btn.BackColor = System.Drawing.Color.Gray;
-            this.usedItemREMOVE_btn.FlatAppearance.BorderSize = 0;
-            this.usedItemREMOVE_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.usedItemREMOVE_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.usedItemREMOVE_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.usedItemREMOVE_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usedItemREMOVE_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemREMOVE_btn.Location = new System.Drawing.Point(643, 114);
-            this.usedItemREMOVE_btn.Name = "usedItemREMOVE_btn";
-            this.usedItemREMOVE_btn.Size = new System.Drawing.Size(80, 24);
-            this.usedItemREMOVE_btn.TabIndex = 16;
-            this.usedItemREMOVE_btn.TabStop = false;
-            this.usedItemREMOVE_btn.Text = "REMOVE";
-            this.usedItemREMOVE_btn.UseVisualStyleBackColor = false;
-            this.usedItemREMOVE_btn.Click += new System.EventHandler(this.UsedItemREMOVE_btn_Click);
-            // 
-            // usedItemDOWN_btn
-            // 
-            this.usedItemDOWN_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.usedItemDOWN_btn.BackColor = System.Drawing.Color.Gray;
-            this.usedItemDOWN_btn.FlatAppearance.BorderSize = 0;
-            this.usedItemDOWN_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.usedItemDOWN_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.usedItemDOWN_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.usedItemDOWN_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usedItemDOWN_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemDOWN_btn.Location = new System.Drawing.Point(643, 89);
-            this.usedItemDOWN_btn.Name = "usedItemDOWN_btn";
-            this.usedItemDOWN_btn.Size = new System.Drawing.Size(80, 24);
-            this.usedItemDOWN_btn.TabIndex = 15;
-            this.usedItemDOWN_btn.TabStop = false;
-            this.usedItemDOWN_btn.Text = "DOWN";
-            this.usedItemDOWN_btn.UseVisualStyleBackColor = false;
-            this.usedItemDOWN_btn.Click += new System.EventHandler(this.UsedItemDOWN_btn_Click);
-            // 
-            // addItemToUsedItems_btn
-            // 
-            this.addItemToUsedItems_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addItemToUsedItems_btn.BackColor = System.Drawing.Color.Gray;
-            this.addItemToUsedItems_btn.FlatAppearance.BorderSize = 0;
-            this.addItemToUsedItems_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.addItemToUsedItems_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.addItemToUsedItems_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addItemToUsedItems_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addItemToUsedItems_btn.ForeColor = System.Drawing.Color.White;
-            this.addItemToUsedItems_btn.Location = new System.Drawing.Point(307, 64);
-            this.addItemToUsedItems_btn.Name = "addItemToUsedItems_btn";
-            this.addItemToUsedItems_btn.Size = new System.Drawing.Size(43, 110);
-            this.addItemToUsedItems_btn.TabIndex = 14;
-            this.addItemToUsedItems_btn.TabStop = false;
-            this.addItemToUsedItems_btn.Text = "ADD";
-            this.addItemToUsedItems_btn.UseVisualStyleBackColor = false;
-            this.addItemToUsedItems_btn.Click += new System.EventHandler(this.AddItemToUsedItems_btn_Click);
-            // 
-            // usedItemUP_btn
-            // 
-            this.usedItemUP_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.usedItemUP_btn.BackColor = System.Drawing.Color.Gray;
-            this.usedItemUP_btn.FlatAppearance.BorderSize = 0;
-            this.usedItemUP_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.usedItemUP_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.usedItemUP_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.usedItemUP_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usedItemUP_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemUP_btn.Location = new System.Drawing.Point(643, 64);
-            this.usedItemUP_btn.Name = "usedItemUP_btn";
-            this.usedItemUP_btn.Size = new System.Drawing.Size(80, 24);
-            this.usedItemUP_btn.TabIndex = 12;
-            this.usedItemUP_btn.TabStop = false;
-            this.usedItemUP_btn.Text = "UP";
-            this.usedItemUP_btn.UseVisualStyleBackColor = false;
-            this.usedItemUP_btn.Click += new System.EventHandler(this.UsedItemUP_btn_Click);
-            // 
-            // usedItems_lb
-            // 
-            this.usedItems_lb.BackColor = System.Drawing.Color.DimGray;
-            this.usedItems_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.usedItems_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usedItems_lb.ForeColor = System.Drawing.Color.White;
-            this.usedItems_lb.FormattingEnabled = true;
-            this.usedItems_lb.ItemHeight = 18;
-            this.usedItems_lb.Location = new System.Drawing.Point(358, 64);
-            this.usedItems_lb.Name = "usedItems_lb";
-            this.usedItems_lb.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.usedItems_lb.Size = new System.Drawing.Size(284, 74);
-            this.usedItems_lb.TabIndex = 11;
-            this.usedItems_lb.SelectedIndexChanged += new System.EventHandler(this.UsedItems_lb_SelectedIndexChanged);
-            // 
-            // items_lbl
-            // 
-            this.items_lbl.AutoSize = true;
-            this.items_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.items_lbl.Location = new System.Drawing.Point(16, 42);
-            this.items_lbl.Name = "items_lbl";
-            this.items_lbl.Size = new System.Drawing.Size(49, 16);
-            this.items_lbl.TabIndex = 10;
-            this.items_lbl.Text = "Items:";
-            // 
-            // items_lb
-            // 
-            this.items_lb.BackColor = System.Drawing.Color.DimGray;
-            this.items_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.items_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.items_lb.ForeColor = System.Drawing.Color.White;
-            this.items_lb.FormattingEnabled = true;
-            this.items_lb.ItemHeight = 18;
-            this.items_lb.Location = new System.Drawing.Point(71, 64);
-            this.items_lb.Name = "items_lb";
-            this.items_lb.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.items_lb.Size = new System.Drawing.Size(235, 110);
-            this.items_lb.TabIndex = 9;
-            this.items_lb.SelectedIndexChanged += new System.EventHandler(this.Items_lb_SelectedIndexChanged);
-            // 
             // id_txt
             // 
             this.id_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -1966,7 +2010,7 @@ namespace MB_Studio.Manager
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(814, 428);
+            this.ClientSize = new System.Drawing.Size(814, 430);
             this.Controls.Add(this._3DView_btn);
             this.Controls.Add(this.searchTroop_SearchTextBox);
             this.Controls.Add(this.idINFO_lbl);
@@ -1993,6 +2037,11 @@ namespace MB_Studio.Manager
             this.Text = "TroopManager";
             this.Load += new System.EventHandler(this.TroopManager_Load);
             this.troopPanel.ResumeLayout(false);
+            this.groupBox_3_gb.ResumeLayout(false);
+            this.groupBox_3_gb.PerformLayout();
+            this.showItemsInOpenBrf_gb.ResumeLayout(false);
+            this.showItemsInOpenBrf_gb.PerformLayout();
+            this.itemSets_gb.ResumeLayout(false);
             this.groupBox_8_gb.ResumeLayout(false);
             this.groupBox_8_gb.PerformLayout();
             this.groupBox_7_gb.ResumeLayout(false);
@@ -2011,11 +2060,6 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVIII_num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVII_num)).EndInit();
-            this.groupBox_3_gb.ResumeLayout(false);
-            this.groupBox_3_gb.PerformLayout();
-            this.showItemsInOpenBrf_gb.ResumeLayout(false);
-            this.showItemsInOpenBrf_gb.PerformLayout();
-            this.itemSets_gb.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2162,5 +2206,9 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label head_lbl;
         private System.Windows.Forms.ComboBox horse_cbb;
         private System.Windows.Forms.Label horse_lbl;
+        private System.Windows.Forms.ComboBox calfR_cbb;
+        private System.Windows.Forms.Label calfR_lbl;
+        private System.Windows.Forms.ComboBox hand_cbb;
+        private System.Windows.Forms.Label hand_lbl;
     }
 }
