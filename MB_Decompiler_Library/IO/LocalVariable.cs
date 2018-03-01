@@ -34,13 +34,14 @@ namespace MB_Decompiler_Library.Objects.Support
             }*/
             if (names.Contains(name))
             {
-                nameCounts[names.IndexOf(name)]++;
-                nameCount = nameCounts[names.IndexOf(name)];
+                int nameIndex = names.IndexOf(name);
+                nameCounts[nameIndex]++;
+                nameCount = nameCounts[nameIndex];
             }
             else
             {
                 names.Add(name);
-                nameCounts.Add(nameCount); // 1
+                nameCounts.Add(nameCount);//1
             }
 
             localName = name + nameCount;

@@ -30,7 +30,6 @@ namespace MB_Studio.Manager
         /// </summary>
         private new void InitializeComponent()
         {
-            this.troopPanel = new System.Windows.Forms.Panel();
             this.groupBox_3_gb = new System.Windows.Forms.GroupBox();
             this.showItemsInOpenBrf_gb = new System.Windows.Forms.GroupBox();
             this.calfR_cbb = new System.Windows.Forms.ComboBox();
@@ -68,15 +67,6 @@ namespace MB_Studio.Manager
             this.usedItems_lb = new System.Windows.Forms.ListBox();
             this.items_lbl = new System.Windows.Forms.Label();
             this.items_lb = new System.Windows.Forms.ListBox();
-            this.showGroup_8_btn = new System.Windows.Forms.Button();
-            this.groupBox_8_gb = new System.Windows.Forms.GroupBox();
-            this.language_lbl = new System.Windows.Forms.Label();
-            this.pluralNameTranslation_lbl = new System.Windows.Forms.Label();
-            this.pluralNameTranslation_txt = new System.Windows.Forms.TextBox();
-            this.singleNameTranslation_lbl = new System.Windows.Forms.Label();
-            this.singleNameTranslation_txt = new System.Windows.Forms.TextBox();
-            this.languages_cbb = new System.Windows.Forms.ComboBox();
-            this.save_translation_btn = new System.Windows.Forms.Button();
             this.showGroup_7_btn = new System.Windows.Forms.Button();
             this.groupBox_7_gb = new System.Windows.Forms.GroupBox();
             this.upgradeTroop2_lb = new System.Windows.Forms.ListBox();
@@ -157,27 +147,12 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl = new System.Windows.Forms.Label();
             this.reserved_XVII_num = new System.Windows.Forms.NumericUpDown();
             this.reserved_XVII_lbl = new System.Windows.Forms.Label();
-            this.id_txt = new System.Windows.Forms.TextBox();
-            this.id_lbl = new System.Windows.Forms.Label();
-            this.name_lbl = new System.Windows.Forms.Label();
-            this.name_txt = new System.Windows.Forms.TextBox();
-            this.plural_name_lbl = new System.Windows.Forms.Label();
-            this.plural_name_txt = new System.Windows.Forms.TextBox();
-            this.title_lbl = new System.Windows.Forms.Label();
-            this.min_btn = new System.Windows.Forms.Button();
-            this.exit_btn = new System.Windows.Forms.Button();
-            this.troopSelect_lb = new System.Windows.Forms.ListBox();
-            this.troopSelect_lbl = new System.Windows.Forms.Label();
-            this.closeAll_btn = new System.Windows.Forms.Button();
-            this.save_btn = new System.Windows.Forms.Button();
-            this.idINFO_lbl = new System.Windows.Forms.Label();
-            this.searchTroop_SearchTextBox = new importantLib.SearchTextBox();
             this._3DView_btn = new System.Windows.Forms.Button();
-            this.troopPanel.SuspendLayout();
+            this.toolPanel.SuspendLayout();
+            this.groupBox_0_gb.SuspendLayout();
             this.groupBox_3_gb.SuspendLayout();
             this.showItemsInOpenBrf_gb.SuspendLayout();
             this.itemSets_gb.SuspendLayout();
-            this.groupBox_8_gb.SuspendLayout();
             this.groupBox_7_gb.SuspendLayout();
             this.groupBox_5_gb.SuspendLayout();
             this.groupBox_4_gb.SuspendLayout();
@@ -190,31 +165,59 @@ namespace MB_Studio.Manager
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVII_num)).BeginInit();
             this.SuspendLayout();
             // 
-            // troopPanel
+            // title_lbl
             // 
-            this.troopPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.troopPanel.Controls.Add(this.groupBox_3_gb);
-            this.troopPanel.Controls.Add(this.showGroup_8_btn);
-            this.troopPanel.Controls.Add(this.groupBox_8_gb);
-            this.troopPanel.Controls.Add(this.showGroup_7_btn);
-            this.troopPanel.Controls.Add(this.groupBox_7_gb);
-            this.troopPanel.Controls.Add(this.showGroup_6_btn);
-            this.troopPanel.Controls.Add(this.showGroup_5_btn);
-            this.troopPanel.Controls.Add(this.groupBox_5_gb);
-            this.troopPanel.Controls.Add(this.showGroup_4_btn);
-            this.troopPanel.Controls.Add(this.groupBox_4_gb);
-            this.troopPanel.Controls.Add(this.showGroup_3_btn);
-            this.troopPanel.Controls.Add(this.showGroup_2_btn);
-            this.troopPanel.Controls.Add(this.showGroup_1_btn);
-            this.troopPanel.Controls.Add(this.groupBox_2_gb);
-            this.troopPanel.Controls.Add(this.groupBox_1_gb);
-            this.troopPanel.Controls.Add(this.groupBox_6_gb);
-            this.troopPanel.Location = new System.Drawing.Point(10, 178);
-            this.troopPanel.Name = "troopPanel";
-            this.troopPanel.Size = new System.Drawing.Size(792, 240);
-            this.troopPanel.TabIndex = 1;
+            this.title_lbl.Text = "ToolForm";
+            // 
+            // toolPanel
+            // 
+            this.toolPanel.Controls.Add(this.groupBox_3_gb);
+            this.toolPanel.Controls.Add(this.showGroup_7_btn);
+            this.toolPanel.Controls.Add(this.groupBox_7_gb);
+            this.toolPanel.Controls.Add(this.showGroup_6_btn);
+            this.toolPanel.Controls.Add(this.showGroup_5_btn);
+            this.toolPanel.Controls.Add(this.groupBox_5_gb);
+            this.toolPanel.Controls.Add(this.showGroup_4_btn);
+            this.toolPanel.Controls.Add(this.groupBox_4_gb);
+            this.toolPanel.Controls.Add(this.showGroup_3_btn);
+            this.toolPanel.Controls.Add(this.showGroup_2_btn);
+            this.toolPanel.Controls.Add(this.showGroup_1_btn);
+            this.toolPanel.Controls.Add(this.groupBox_2_gb);
+            this.toolPanel.Controls.Add(this.groupBox_1_gb);
+            this.toolPanel.Controls.Add(this.groupBox_6_gb);
+            this.toolPanel.Size = new System.Drawing.Size(778, 241);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_6_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_1_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_3_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_4_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_4_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_5_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_5_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_6_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_7_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_7_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
+            // 
+            // groupBox_0_gb
+            // 
+            this.groupBox_0_gb.Location = new System.Drawing.Point(39, 3);
+            // 
+            // min_btn
+            // 
+            this.min_btn.FlatAppearance.BorderSize = 0;
+            this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            // 
+            // exit_btn
+            // 
+            this.exit_btn.FlatAppearance.BorderSize = 0;
+            this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             // 
             // groupBox_3_gb
             // 
@@ -235,9 +238,9 @@ namespace MB_Studio.Manager
             this.groupBox_3_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_3_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 62);
+            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 93);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
-            this.groupBox_3_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_3_gb.TabIndex = 6;
             this.groupBox_3_gb.TabStop = false;
             this.groupBox_3_gb.Text = "Items";
@@ -576,7 +579,7 @@ namespace MB_Studio.Manager
             this.setItemFlags_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.setItemFlags_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.setItemFlags_btn.ForeColor = System.Drawing.Color.White;
-            this.setItemFlags_btn.Location = new System.Drawing.Point(590, 150);
+            this.setItemFlags_btn.Location = new System.Drawing.Point(577, 150);
             this.setItemFlags_btn.Name = "setItemFlags_btn";
             this.setItemFlags_btn.Size = new System.Drawing.Size(65, 22);
             this.setItemFlags_btn.TabIndex = 19;
@@ -605,6 +608,7 @@ namespace MB_Studio.Manager
             this.selectedItemFlags_txt.Name = "selectedItemFlags_txt";
             this.selectedItemFlags_txt.Size = new System.Drawing.Size(131, 22);
             this.selectedItemFlags_txt.TabIndex = 17;
+            this.selectedItemFlags_txt.Text = "0";
             this.selectedItemFlags_txt.TextChanged += new System.EventHandler(this.SelectedItemFlags_txt_TextChanged);
             // 
             // usedItemREMOVE_btn
@@ -617,7 +621,7 @@ namespace MB_Studio.Manager
             this.usedItemREMOVE_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.usedItemREMOVE_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usedItemREMOVE_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemREMOVE_btn.Location = new System.Drawing.Point(643, 114);
+            this.usedItemREMOVE_btn.Location = new System.Drawing.Point(630, 114);
             this.usedItemREMOVE_btn.Name = "usedItemREMOVE_btn";
             this.usedItemREMOVE_btn.Size = new System.Drawing.Size(80, 24);
             this.usedItemREMOVE_btn.TabIndex = 16;
@@ -636,7 +640,7 @@ namespace MB_Studio.Manager
             this.usedItemDOWN_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.usedItemDOWN_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usedItemDOWN_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemDOWN_btn.Location = new System.Drawing.Point(643, 89);
+            this.usedItemDOWN_btn.Location = new System.Drawing.Point(630, 89);
             this.usedItemDOWN_btn.Name = "usedItemDOWN_btn";
             this.usedItemDOWN_btn.Size = new System.Drawing.Size(80, 24);
             this.usedItemDOWN_btn.TabIndex = 15;
@@ -655,7 +659,7 @@ namespace MB_Studio.Manager
             this.addItemToUsedItems_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addItemToUsedItems_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addItemToUsedItems_btn.ForeColor = System.Drawing.Color.White;
-            this.addItemToUsedItems_btn.Location = new System.Drawing.Point(307, 64);
+            this.addItemToUsedItems_btn.Location = new System.Drawing.Point(294, 64);
             this.addItemToUsedItems_btn.Name = "addItemToUsedItems_btn";
             this.addItemToUsedItems_btn.Size = new System.Drawing.Size(43, 110);
             this.addItemToUsedItems_btn.TabIndex = 14;
@@ -674,7 +678,7 @@ namespace MB_Studio.Manager
             this.usedItemUP_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.usedItemUP_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usedItemUP_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemUP_btn.Location = new System.Drawing.Point(643, 64);
+            this.usedItemUP_btn.Location = new System.Drawing.Point(630, 64);
             this.usedItemUP_btn.Name = "usedItemUP_btn";
             this.usedItemUP_btn.Size = new System.Drawing.Size(80, 24);
             this.usedItemUP_btn.TabIndex = 12;
@@ -723,124 +727,11 @@ namespace MB_Studio.Manager
             this.items_lb.TabIndex = 9;
             this.items_lb.SelectedIndexChanged += new System.EventHandler(this.Items_lb_SelectedIndexChanged);
             // 
-            // showGroup_8_btn
-            // 
-            this.showGroup_8_btn.BackColor = System.Drawing.Color.DimGray;
-            this.showGroup_8_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_8_btn.Location = new System.Drawing.Point(3, 213);
-            this.showGroup_8_btn.Name = "showGroup_8_btn";
-            this.showGroup_8_btn.Size = new System.Drawing.Size(26, 25);
-            this.showGroup_8_btn.TabIndex = 20;
-            this.showGroup_8_btn.Text = "v";
-            this.showGroup_8_btn.UseVisualStyleBackColor = false;
-            // 
-            // groupBox_8_gb
-            // 
-            this.groupBox_8_gb.Controls.Add(this.language_lbl);
-            this.groupBox_8_gb.Controls.Add(this.pluralNameTranslation_lbl);
-            this.groupBox_8_gb.Controls.Add(this.pluralNameTranslation_txt);
-            this.groupBox_8_gb.Controls.Add(this.singleNameTranslation_lbl);
-            this.groupBox_8_gb.Controls.Add(this.singleNameTranslation_txt);
-            this.groupBox_8_gb.Controls.Add(this.languages_cbb);
-            this.groupBox_8_gb.Controls.Add(this.save_translation_btn);
-            this.groupBox_8_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox_8_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_8_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_8_gb.Location = new System.Drawing.Point(39, 211);
-            this.groupBox_8_gb.Name = "groupBox_8_gb";
-            this.groupBox_8_gb.Size = new System.Drawing.Size(750, 25);
-            this.groupBox_8_gb.TabIndex = 19;
-            this.groupBox_8_gb.TabStop = false;
-            this.groupBox_8_gb.Text = "Translation";
-            // 
-            // language_lbl
-            // 
-            this.language_lbl.AutoSize = true;
-            this.language_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.language_lbl.Location = new System.Drawing.Point(151, 50);
-            this.language_lbl.Name = "language_lbl";
-            this.language_lbl.Size = new System.Drawing.Size(81, 16);
-            this.language_lbl.TabIndex = 20;
-            this.language_lbl.Text = "Language:";
-            // 
-            // pluralNameTranslation_lbl
-            // 
-            this.pluralNameTranslation_lbl.AutoSize = true;
-            this.pluralNameTranslation_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pluralNameTranslation_lbl.Location = new System.Drawing.Point(364, 63);
-            this.pluralNameTranslation_lbl.Name = "pluralNameTranslation_lbl";
-            this.pluralNameTranslation_lbl.Size = new System.Drawing.Size(97, 16);
-            this.pluralNameTranslation_lbl.TabIndex = 19;
-            this.pluralNameTranslation_lbl.Text = "Plural Name:";
-            // 
-            // pluralNameTranslation_txt
-            // 
-            this.pluralNameTranslation_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pluralNameTranslation_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pluralNameTranslation_txt.Location = new System.Drawing.Point(467, 61);
-            this.pluralNameTranslation_txt.Name = "pluralNameTranslation_txt";
-            this.pluralNameTranslation_txt.Size = new System.Drawing.Size(257, 22);
-            this.pluralNameTranslation_txt.TabIndex = 17;
-            // 
-            // singleNameTranslation_lbl
-            // 
-            this.singleNameTranslation_lbl.AutoSize = true;
-            this.singleNameTranslation_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.singleNameTranslation_lbl.Location = new System.Drawing.Point(360, 38);
-            this.singleNameTranslation_lbl.Name = "singleNameTranslation_lbl";
-            this.singleNameTranslation_lbl.Size = new System.Drawing.Size(101, 16);
-            this.singleNameTranslation_lbl.TabIndex = 18;
-            this.singleNameTranslation_lbl.Text = "Single Name:";
-            // 
-            // singleNameTranslation_txt
-            // 
-            this.singleNameTranslation_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.singleNameTranslation_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.singleNameTranslation_txt.Location = new System.Drawing.Point(467, 36);
-            this.singleNameTranslation_txt.Name = "singleNameTranslation_txt";
-            this.singleNameTranslation_txt.Size = new System.Drawing.Size(257, 22);
-            this.singleNameTranslation_txt.TabIndex = 16;
-            // 
-            // languages_cbb
-            // 
-            this.languages_cbb.BackColor = System.Drawing.Color.DimGray;
-            this.languages_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.languages_cbb.ForeColor = System.Drawing.Color.White;
-            this.languages_cbb.FormattingEnabled = true;
-            this.languages_cbb.Items.AddRange(new object[] {
-            "cz (Český)",
-            "de (Deutsch)",
-            "en (English)",
-            "es (Español)",
-            "fr (Français)",
-            "hu (Magyar)",
-            "pl (Polskie)",
-            "rus (Pусский)",
-            "tr (Türkçe)"});
-            this.languages_cbb.Location = new System.Drawing.Point(233, 44);
-            this.languages_cbb.Name = "languages_cbb";
-            this.languages_cbb.Size = new System.Drawing.Size(120, 28);
-            this.languages_cbb.Sorted = true;
-            this.languages_cbb.TabIndex = 15;
-            this.languages_cbb.SelectedIndexChanged += new System.EventHandler(this.Language_cbb_SelectedIndexChanged);
-            // 
-            // save_translation_btn
-            // 
-            this.save_translation_btn.BackColor = System.Drawing.Color.DimGray;
-            this.save_translation_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.save_translation_btn.Location = new System.Drawing.Point(7, 39);
-            this.save_translation_btn.Name = "save_translation_btn";
-            this.save_translation_btn.Size = new System.Drawing.Size(138, 40);
-            this.save_translation_btn.TabIndex = 14;
-            this.save_translation_btn.Text = "Save Translation";
-            this.save_translation_btn.UseVisualStyleBackColor = false;
-            this.save_translation_btn.Click += new System.EventHandler(this.Save_translation_btn_Click);
-            // 
             // showGroup_7_btn
             // 
             this.showGroup_7_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_7_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_7_btn.Location = new System.Drawing.Point(3, 183);
+            this.showGroup_7_btn.Location = new System.Drawing.Point(3, 214);
             this.showGroup_7_btn.Name = "showGroup_7_btn";
             this.showGroup_7_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_7_btn.TabIndex = 13;
@@ -860,9 +751,9 @@ namespace MB_Studio.Manager
             this.groupBox_7_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_7_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_7_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_7_gb.Location = new System.Drawing.Point(39, 182);
+            this.groupBox_7_gb.Location = new System.Drawing.Point(39, 213);
             this.groupBox_7_gb.Name = "groupBox_7_gb";
-            this.groupBox_7_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_7_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_7_gb.TabIndex = 14;
             this.groupBox_7_gb.TabStop = false;
             this.groupBox_7_gb.Text = "Faces && Upgrade Paths";
@@ -937,6 +828,7 @@ namespace MB_Studio.Manager
             this.face2_txt.Name = "face2_txt";
             this.face2_txt.Size = new System.Drawing.Size(252, 22);
             this.face2_txt.TabIndex = 8;
+            this.face2_txt.Text = "0";
             // 
             // face1_lbl
             // 
@@ -958,12 +850,13 @@ namespace MB_Studio.Manager
             this.face1_txt.Name = "face1_txt";
             this.face1_txt.Size = new System.Drawing.Size(252, 22);
             this.face1_txt.TabIndex = 6;
+            this.face1_txt.Text = "0";
             // 
             // showGroup_6_btn
             // 
             this.showGroup_6_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_6_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_6_btn.Location = new System.Drawing.Point(3, 153);
+            this.showGroup_6_btn.Location = new System.Drawing.Point(3, 184);
             this.showGroup_6_btn.Name = "showGroup_6_btn";
             this.showGroup_6_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_6_btn.TabIndex = 11;
@@ -974,7 +867,7 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_5_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_5_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_5_btn.Location = new System.Drawing.Point(3, 123);
+            this.showGroup_5_btn.Location = new System.Drawing.Point(3, 154);
             this.showGroup_5_btn.Name = "showGroup_5_btn";
             this.showGroup_5_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_5_btn.TabIndex = 9;
@@ -1000,9 +893,9 @@ namespace MB_Studio.Manager
             this.groupBox_5_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_5_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_5_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_5_gb.Location = new System.Drawing.Point(39, 122);
+            this.groupBox_5_gb.Location = new System.Drawing.Point(39, 153);
             this.groupBox_5_gb.Name = "groupBox_5_gb";
-            this.groupBox_5_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_5_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_5_gb.TabIndex = 10;
             this.groupBox_5_gb.TabStop = false;
             this.groupBox_5_gb.Text = "Proficiencies";
@@ -1015,6 +908,7 @@ namespace MB_Studio.Manager
             this.firearms_txt.Name = "firearms_txt";
             this.firearms_txt.Size = new System.Drawing.Size(77, 22);
             this.firearms_txt.TabIndex = 24;
+            this.firearms_txt.Text = "0";
             // 
             // throwing_txt
             // 
@@ -1024,6 +918,7 @@ namespace MB_Studio.Manager
             this.throwing_txt.Name = "throwing_txt";
             this.throwing_txt.Size = new System.Drawing.Size(77, 22);
             this.throwing_txt.TabIndex = 23;
+            this.throwing_txt.Text = "0";
             // 
             // crossbows_txt
             // 
@@ -1033,6 +928,7 @@ namespace MB_Studio.Manager
             this.crossbows_txt.Name = "crossbows_txt";
             this.crossbows_txt.Size = new System.Drawing.Size(77, 22);
             this.crossbows_txt.TabIndex = 22;
+            this.crossbows_txt.Text = "0";
             // 
             // archery_txt
             // 
@@ -1042,6 +938,7 @@ namespace MB_Studio.Manager
             this.archery_txt.Name = "archery_txt";
             this.archery_txt.Size = new System.Drawing.Size(77, 22);
             this.archery_txt.TabIndex = 21;
+            this.archery_txt.Text = "0";
             // 
             // polearms_txt
             // 
@@ -1051,6 +948,7 @@ namespace MB_Studio.Manager
             this.polearms_txt.Name = "polearms_txt";
             this.polearms_txt.Size = new System.Drawing.Size(77, 22);
             this.polearms_txt.TabIndex = 20;
+            this.polearms_txt.Text = "0";
             // 
             // firearms_lbl
             // 
@@ -1120,6 +1018,7 @@ namespace MB_Studio.Manager
             this.twohandedWeapon_txt.Name = "twohandedWeapon_txt";
             this.twohandedWeapon_txt.Size = new System.Drawing.Size(77, 22);
             this.twohandedWeapon_txt.TabIndex = 8;
+            this.twohandedWeapon_txt.Text = "0";
             // 
             // onehandedWeapon_lbl
             // 
@@ -1139,12 +1038,13 @@ namespace MB_Studio.Manager
             this.onehandedWeapon_txt.Name = "onehandedWeapon_txt";
             this.onehandedWeapon_txt.Size = new System.Drawing.Size(77, 22);
             this.onehandedWeapon_txt.TabIndex = 6;
+            this.onehandedWeapon_txt.Text = "0";
             // 
             // showGroup_4_btn
             // 
             this.showGroup_4_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_4_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_4_btn.Location = new System.Drawing.Point(3, 93);
+            this.showGroup_4_btn.Location = new System.Drawing.Point(3, 124);
             this.showGroup_4_btn.Name = "showGroup_4_btn";
             this.showGroup_4_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_4_btn.TabIndex = 7;
@@ -1166,9 +1066,9 @@ namespace MB_Studio.Manager
             this.groupBox_4_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_4_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_4_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_4_gb.Location = new System.Drawing.Point(39, 92);
+            this.groupBox_4_gb.Location = new System.Drawing.Point(39, 123);
             this.groupBox_4_gb.Name = "groupBox_4_gb";
-            this.groupBox_4_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_4_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_4_gb.TabIndex = 8;
             this.groupBox_4_gb.TabStop = false;
             this.groupBox_4_gb.Text = "Attributes && Level";
@@ -1191,6 +1091,7 @@ namespace MB_Studio.Manager
             this.level_txt.Name = "level_txt";
             this.level_txt.Size = new System.Drawing.Size(70, 22);
             this.level_txt.TabIndex = 14;
+            this.level_txt.Text = "0";
             // 
             // cha_lbl
             // 
@@ -1210,6 +1111,7 @@ namespace MB_Studio.Manager
             this.cha_txt.Name = "cha_txt";
             this.cha_txt.Size = new System.Drawing.Size(70, 22);
             this.cha_txt.TabIndex = 12;
+            this.cha_txt.Text = "0";
             // 
             // int_lbl
             // 
@@ -1229,6 +1131,7 @@ namespace MB_Studio.Manager
             this.int_txt.Name = "int_txt";
             this.int_txt.Size = new System.Drawing.Size(70, 22);
             this.int_txt.TabIndex = 10;
+            this.int_txt.Text = "0";
             // 
             // agi_lbl
             // 
@@ -1248,6 +1151,7 @@ namespace MB_Studio.Manager
             this.agi_txt.Name = "agi_txt";
             this.agi_txt.Size = new System.Drawing.Size(70, 22);
             this.agi_txt.TabIndex = 8;
+            this.agi_txt.Text = "0";
             // 
             // str_lbl
             // 
@@ -1267,12 +1171,13 @@ namespace MB_Studio.Manager
             this.str_txt.Name = "str_txt";
             this.str_txt.Size = new System.Drawing.Size(70, 22);
             this.str_txt.TabIndex = 6;
+            this.str_txt.Text = "0";
             // 
             // showGroup_3_btn
             // 
             this.showGroup_3_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_3_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_3_btn.Location = new System.Drawing.Point(3, 63);
+            this.showGroup_3_btn.Location = new System.Drawing.Point(3, 94);
             this.showGroup_3_btn.Name = "showGroup_3_btn";
             this.showGroup_3_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_3_btn.TabIndex = 5;
@@ -1284,7 +1189,7 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_2_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_2_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_2_btn.Location = new System.Drawing.Point(3, 33);
+            this.showGroup_2_btn.Location = new System.Drawing.Point(3, 64);
             this.showGroup_2_btn.Name = "showGroup_2_btn";
             this.showGroup_2_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_2_btn.TabIndex = 3;
@@ -1295,7 +1200,7 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_1_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_1_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_1_btn.Location = new System.Drawing.Point(3, 3);
+            this.showGroup_1_btn.Location = new System.Drawing.Point(3, 34);
             this.showGroup_1_btn.Name = "showGroup_1_btn";
             this.showGroup_1_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_1_btn.TabIndex = 4;
@@ -1318,9 +1223,9 @@ namespace MB_Studio.Manager
             this.groupBox_2_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_2_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_2_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_2_gb.Location = new System.Drawing.Point(39, 32);
+            this.groupBox_2_gb.Location = new System.Drawing.Point(39, 63);
             this.groupBox_2_gb.Name = "groupBox_2_gb";
-            this.groupBox_2_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_2_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_2_gb.TabIndex = 4;
             this.groupBox_2_gb.TabStop = false;
             this.groupBox_2_gb.Text = "Faction && Special Values";
@@ -1335,7 +1240,7 @@ namespace MB_Studio.Manager
             this.reserved_txt.Name = "reserved_txt";
             this.reserved_txt.Size = new System.Drawing.Size(118, 26);
             this.reserved_txt.TabIndex = 18;
-            this.reserved_txt.Text = "reserved";
+            this.reserved_txt.Text = "0";
             // 
             // reserved_lbl
             // 
@@ -1468,9 +1373,9 @@ namespace MB_Studio.Manager
             this.groupBox_1_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_1_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_1_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_1_gb.Location = new System.Drawing.Point(39, 2);
+            this.groupBox_1_gb.Location = new System.Drawing.Point(39, 33);
             this.groupBox_1_gb.Name = "groupBox_1_gb";
-            this.groupBox_1_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_1_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_1_gb.TabIndex = 2;
             this.groupBox_1_gb.TabStop = false;
             this.groupBox_1_gb.Text = "Flags && Guarantee";
@@ -1746,9 +1651,9 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_6_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_6_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_6_gb.Location = new System.Drawing.Point(39, 152);
+            this.groupBox_6_gb.Location = new System.Drawing.Point(39, 183);
             this.groupBox_6_gb.Name = "groupBox_6_gb";
-            this.groupBox_6_gb.Size = new System.Drawing.Size(750, 25);
+            this.groupBox_6_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_6_gb.TabIndex = 12;
             this.groupBox_6_gb.TabStop = false;
             this.groupBox_6_gb.Text = "Skills";
@@ -1812,187 +1717,6 @@ namespace MB_Studio.Manager
             this.reserved_XVII_lbl.Text = "Reserved XVII:";
             this.reserved_XVII_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // id_txt
-            // 
-            this.id_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.id_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.id_txt.Location = new System.Drawing.Point(532, 35);
-            this.id_txt.Name = "id_txt";
-            this.id_txt.Size = new System.Drawing.Size(267, 22);
-            this.id_txt.TabIndex = 0;
-            this.id_txt.TextChanged += new System.EventHandler(this.Id_txt_TextChanged);
-            // 
-            // id_lbl
-            // 
-            this.id_lbl.AutoSize = true;
-            this.id_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.id_lbl.Location = new System.Drawing.Point(499, 37);
-            this.id_lbl.Name = "id_lbl";
-            this.id_lbl.Size = new System.Drawing.Size(27, 16);
-            this.id_lbl.TabIndex = 5;
-            this.id_lbl.Text = "ID:";
-            // 
-            // name_lbl
-            // 
-            this.name_lbl.AutoSize = true;
-            this.name_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.name_lbl.Location = new System.Drawing.Point(425, 87);
-            this.name_lbl.Name = "name_lbl";
-            this.name_lbl.Size = new System.Drawing.Size(101, 16);
-            this.name_lbl.TabIndex = 7;
-            this.name_lbl.Text = "Single Name:";
-            // 
-            // name_txt
-            // 
-            this.name_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.name_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.name_txt.Location = new System.Drawing.Point(532, 85);
-            this.name_txt.Name = "name_txt";
-            this.name_txt.Size = new System.Drawing.Size(267, 22);
-            this.name_txt.TabIndex = 1;
-            // 
-            // plural_name_lbl
-            // 
-            this.plural_name_lbl.AutoSize = true;
-            this.plural_name_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.plural_name_lbl.Location = new System.Drawing.Point(429, 112);
-            this.plural_name_lbl.Name = "plural_name_lbl";
-            this.plural_name_lbl.Size = new System.Drawing.Size(97, 16);
-            this.plural_name_lbl.TabIndex = 9;
-            this.plural_name_lbl.Text = "Plural Name:";
-            // 
-            // plural_name_txt
-            // 
-            this.plural_name_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.plural_name_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.plural_name_txt.Location = new System.Drawing.Point(532, 110);
-            this.plural_name_txt.Name = "plural_name_txt";
-            this.plural_name_txt.Size = new System.Drawing.Size(267, 22);
-            this.plural_name_txt.TabIndex = 2;
-            // 
-            // title_lbl
-            // 
-            this.title_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title_lbl.ForeColor = System.Drawing.Color.Silver;
-            this.title_lbl.Location = new System.Drawing.Point(0, 0);
-            this.title_lbl.Name = "title_lbl";
-            this.title_lbl.Size = new System.Drawing.Size(744, 24);
-            this.title_lbl.TabIndex = 10;
-            this.title_lbl.Text = "TroopManager";
-            this.title_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // min_btn
-            // 
-            this.min_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.min_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.min_btn.FlatAppearance.BorderSize = 0;
-            this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.min_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.min_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.min_btn.ForeColor = System.Drawing.Color.White;
-            this.min_btn.Location = new System.Drawing.Point(750, -2);
-            this.min_btn.Name = "min_btn";
-            this.min_btn.Size = new System.Drawing.Size(32, 26);
-            this.min_btn.TabIndex = 0;
-            this.min_btn.TabStop = false;
-            this.min_btn.Text = "_";
-            this.min_btn.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.min_btn.UseVisualStyleBackColor = false;
-            this.min_btn.Click += new System.EventHandler(this.Min_btn_Click);
-            // 
-            // exit_btn
-            // 
-            this.exit_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.exit_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.exit_btn.FlatAppearance.BorderSize = 0;
-            this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.exit_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exit_btn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exit_btn.ForeColor = System.Drawing.Color.White;
-            this.exit_btn.Location = new System.Drawing.Point(782, 1);
-            this.exit_btn.Name = "exit_btn";
-            this.exit_btn.Size = new System.Drawing.Size(32, 23);
-            this.exit_btn.TabIndex = 0;
-            this.exit_btn.TabStop = false;
-            this.exit_btn.Text = "X";
-            this.exit_btn.UseVisualStyleBackColor = false;
-            this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
-            // 
-            // troopSelect_lb
-            // 
-            this.troopSelect_lb.BackColor = System.Drawing.Color.DimGray;
-            this.troopSelect_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.troopSelect_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.troopSelect_lb.ForeColor = System.Drawing.Color.White;
-            this.troopSelect_lb.FormattingEnabled = true;
-            this.troopSelect_lb.ItemHeight = 16;
-            this.troopSelect_lb.Items.AddRange(new object[] {
-            "New"});
-            this.troopSelect_lb.Location = new System.Drawing.Point(78, 58);
-            this.troopSelect_lb.Name = "troopSelect_lb";
-            this.troopSelect_lb.Size = new System.Drawing.Size(335, 114);
-            this.troopSelect_lb.TabIndex = 15;
-            this.troopSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TroopSelect_SelectedIndexChanged);
-            // 
-            // troopSelect_lbl
-            // 
-            this.troopSelect_lbl.AutoSize = true;
-            this.troopSelect_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.troopSelect_lbl.Location = new System.Drawing.Point(7, 37);
-            this.troopSelect_lbl.Name = "troopSelect_lbl";
-            this.troopSelect_lbl.Size = new System.Drawing.Size(65, 16);
-            this.troopSelect_lbl.TabIndex = 14;
-            this.troopSelect_lbl.Text = "Choose:";
-            // 
-            // closeAll_btn
-            // 
-            this.closeAll_btn.BackColor = System.Drawing.Color.DimGray;
-            this.closeAll_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeAll_btn.Location = new System.Drawing.Point(417, 149);
-            this.closeAll_btn.Name = "closeAll_btn";
-            this.closeAll_btn.Size = new System.Drawing.Size(177, 23);
-            this.closeAll_btn.TabIndex = 16;
-            this.closeAll_btn.Text = "CLOSE ALL";
-            this.closeAll_btn.UseVisualStyleBackColor = false;
-            this.closeAll_btn.Click += new System.EventHandler(this.CloseAll_btn_Click);
-            // 
-            // save_btn
-            // 
-            this.save_btn.BackColor = System.Drawing.Color.DimGray;
-            this.save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.save_btn.Location = new System.Drawing.Point(597, 149);
-            this.save_btn.Name = "save_btn";
-            this.save_btn.Size = new System.Drawing.Size(202, 23);
-            this.save_btn.TabIndex = 17;
-            this.save_btn.Text = "SAVE";
-            this.save_btn.UseVisualStyleBackColor = false;
-            this.save_btn.Click += new System.EventHandler(this.Save_btn_Click);
-            // 
-            // idINFO_lbl
-            // 
-            this.idINFO_lbl.AutoSize = true;
-            this.idINFO_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.idINFO_lbl.Location = new System.Drawing.Point(539, 60);
-            this.idINFO_lbl.Name = "idINFO_lbl";
-            this.idINFO_lbl.Size = new System.Drawing.Size(161, 13);
-            this.idINFO_lbl.TabIndex = 18;
-            this.idINFO_lbl.Text = "( adding \"trp_\" is optional )";
-            // 
-            // searchTroop_SearchTextBox
-            // 
-            this.searchTroop_SearchTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.searchTroop_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.searchTroop_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchTroop_SearchTextBox.ForeColor = System.Drawing.Color.White;
-            this.searchTroop_SearchTextBox.Location = new System.Drawing.Point(78, 35);
-            this.searchTroop_SearchTextBox.Name = "searchTroop_SearchTextBox";
-            this.searchTroop_SearchTextBox.Size = new System.Drawing.Size(335, 22);
-            this.searchTroop_SearchTextBox.TabIndex = 21;
-            this.searchTroop_SearchTextBox.Text = "Search ...";
-            this.searchTroop_SearchTextBox.TextChanged += new System.EventHandler(this.SearchTroop_SearchTextBox_TextChanged);
-            // 
             // _3DView_btn
             // 
             this._3DView_btn.BackColor = System.Drawing.Color.DimGray;
@@ -2010,40 +1734,37 @@ namespace MB_Studio.Manager
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(814, 430);
-            this.Controls.Add(this.searchTroop_SearchTextBox);
-            this.Controls.Add(this.idINFO_lbl);
-            this.Controls.Add(this.save_btn);
-            this.Controls.Add(this.closeAll_btn);
-            this.Controls.Add(this.troopSelect_lb);
-            this.Controls.Add(this.troopSelect_lbl);
-            this.Controls.Add(this.min_btn);
-            this.Controls.Add(this.exit_btn);
-            this.Controls.Add(this.title_lbl);
-            this.Controls.Add(this.plural_name_lbl);
-            this.Controls.Add(this.plural_name_txt);
-            this.Controls.Add(this.name_lbl);
-            this.Controls.Add(this.name_txt);
-            this.Controls.Add(this.id_lbl);
-            this.Controls.Add(this.id_txt);
-            this.Controls.Add(this.troopPanel);
+            this.ClientSize = new System.Drawing.Size(814, 431);
             this.Controls.Add(this._3DView_btn);
             this.DoubleBuffered = true;
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TroopManager";
-            this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TroopManager";
-            this.Load += new System.EventHandler(this.TroopManager_Load);
-            this.troopPanel.ResumeLayout(false);
+            this.Controls.SetChildIndex(this._3DView_btn, 0);
+            this.Controls.SetChildIndex(this.id_txt, 0);
+            this.Controls.SetChildIndex(this.id_lbl, 0);
+            this.Controls.SetChildIndex(this.name_txt, 0);
+            this.Controls.SetChildIndex(this.name_lbl, 0);
+            this.Controls.SetChildIndex(this.plural_name_txt, 0);
+            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
+            this.Controls.SetChildIndex(this.title_lbl, 0);
+            this.Controls.SetChildIndex(this.exit_btn, 0);
+            this.Controls.SetChildIndex(this.min_btn, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
+            this.Controls.SetChildIndex(this.closeAll_btn, 0);
+            this.Controls.SetChildIndex(this.save_btn, 0);
+            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
+            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
+            this.Controls.SetChildIndex(this.toolPanel, 0);
+            this.toolPanel.ResumeLayout(false);
+            this.groupBox_0_gb.ResumeLayout(false);
+            this.groupBox_0_gb.PerformLayout();
             this.groupBox_3_gb.ResumeLayout(false);
             this.groupBox_3_gb.PerformLayout();
             this.showItemsInOpenBrf_gb.ResumeLayout(false);
             this.showItemsInOpenBrf_gb.PerformLayout();
             this.itemSets_gb.ResumeLayout(false);
-            this.groupBox_8_gb.ResumeLayout(false);
-            this.groupBox_8_gb.PerformLayout();
             this.groupBox_7_gb.ResumeLayout(false);
             this.groupBox_7_gb.PerformLayout();
             this.groupBox_5_gb.ResumeLayout(false);
@@ -2067,7 +1788,6 @@ namespace MB_Studio.Manager
 
         #endregion
 
-        private System.Windows.Forms.Panel troopPanel;
         private System.Windows.Forms.Button showGroup_4_btn;
         private System.Windows.Forms.GroupBox groupBox_4_gb;
         private System.Windows.Forms.Button showGroup_3_btn;
@@ -2150,8 +1870,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label troopImage_lbl;
         private System.Windows.Forms.TextBox reserved_txt;
         private System.Windows.Forms.Label reserved_lbl;
-        private System.Windows.Forms.ListBox troopSelect_lb;
-        private System.Windows.Forms.Label troopSelect_lbl;
         private System.Windows.Forms.CheckBox randomize_face_cb;
         private System.Windows.Forms.CheckBox polearm_cb;
         private System.Windows.Forms.Label selectedItemFlags_lbl;
@@ -2163,10 +1881,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label reserved_XVII_lbl;
         private SearchTextBox searchItems_SearchTextBox;
         private SearchTextBox searchUsedItems_SearchTextBox;
-        private System.Windows.Forms.GroupBox groupBox_8_gb;
-        private System.Windows.Forms.Button showGroup_8_btn;
-        private System.Windows.Forms.Button save_translation_btn;
-        private System.Windows.Forms.ComboBox languages_cbb;
         private System.Windows.Forms.GroupBox itemSets_gb;
         private System.Windows.Forms.Button set_6_btn;
         private System.Windows.Forms.Button set_5_btn;
@@ -2174,24 +1888,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Button set_3_btn;
         private System.Windows.Forms.Button set_2_btn;
         private System.Windows.Forms.Button set_1_btn;
-        private SearchTextBox searchTroop_SearchTextBox;
-        private System.Windows.Forms.Label idINFO_lbl;
-        private System.Windows.Forms.Button save_btn;
-        private System.Windows.Forms.Button closeAll_btn;
-        private System.Windows.Forms.Label title_lbl;
-        private System.Windows.Forms.Label plural_name_lbl;
-        private System.Windows.Forms.TextBox plural_name_txt;
-        private System.Windows.Forms.Label name_lbl;
-        private System.Windows.Forms.TextBox name_txt;
-        private System.Windows.Forms.Label id_lbl;
-        private System.Windows.Forms.TextBox id_txt;
-        private System.Windows.Forms.Label pluralNameTranslation_lbl;
-        private System.Windows.Forms.TextBox pluralNameTranslation_txt;
-        private System.Windows.Forms.Label singleNameTranslation_lbl;
-        private System.Windows.Forms.TextBox singleNameTranslation_txt;
-        private System.Windows.Forms.Label language_lbl;
-        protected System.Windows.Forms.Button min_btn;
-        protected System.Windows.Forms.Button exit_btn;
         private System.Windows.Forms.Button _3DView_btn;
         private System.Windows.Forms.GroupBox showItemsInOpenBrf_gb;
         private System.Windows.Forms.ComboBox shield_cbb;

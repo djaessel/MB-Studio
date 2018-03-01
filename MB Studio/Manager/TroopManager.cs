@@ -7,206 +7,91 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using MB_Studio.Main;
-using WarbandTranslator;
 using brfManager;
 using importantLib;
 using skillhunter;
+using System.ComponentModel;
 
 namespace MB_Studio.Manager
 {
-    public partial class TroopManager : SpecialForm
+    public partial class TroopManager : ToolForm
     {
         #region Attributes
-
-        private FileSaver fileSaver;
 
         private Thread openBrfThread;
         private OpenBrfManager openBrfManager = null;
 
         private const string FACE_CODE_ZERO = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
-        private List<Troop> troops = new List<Troop>();
+        //private List<Troop> troops = new List<Troop>();
         private List<string> items = new List<string>();
-        private Item[] itemsRList = new Item[] { };
-
         private List<ulong> inventoryItemFlags = new List<ulong>();
-        private List<string[]> translations = new List<string[]>();
 
-        // instance member to keep reference to splash form
-        private SplashForm frmSplash;
-        // delegate for the UI updater
-        public delegate void UpdateUIDelegate(bool IsDataLoaded);
+        private Item[] itemsRList = new Item[] { };
 
         #endregion
 
         #region Loading
 
-        public TroopManager()
+        public TroopManager() : base(Skriptum.ObjectType.TROOP)
         {
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
+
             InitializeComponent();
-            title_lbl.MouseDown += Control_MoveForm_MouseDown;
         }
 
-        private void TroopManager_Load(object sender, EventArgs e)
+        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
         {
-            title_lbl.Text = Text;
-            // Update UI
-            UpdateUI(false);
-
-            // Show the splash form
-            frmSplash = new Loader(this, false) {
-                StartPosition = FormStartPosition.CenterScreen
-            };
-            frmSplash.Show();
-
-            // Do some time consuming work in separate thread
-            Thread t = new Thread(new ThreadStart(LoadControlsAndSettings)) { IsBackground = true };
-            t.Start();
+            return new Troop(raw_data);
         }
 
-        private void AddTroop3DPreviewToModuleIni()
+        protected override void LoadSettingsAndLists()
         {
-            int lastModuleIndex = 0;
-            bool foundEntry = false;
-            string troop3dpreview = "load_mod_resource = Troop3DPreview";
-            string iniFile = GetMABPath() + "\\Modules\\" + ProgramConsole.OriginalMod + "\\module.ini";
-            List<string> iniLines = new List<string>(File.ReadLines(iniFile));
+            base.LoadSettingsAndLists();
 
-            for (int i = 0; i < iniLines.Count; i++)
-            {
-                string tmp = iniLines[i].Split('#')[0].Split('=')[0].Trim();
-                if (tmp.Contains("load_") && tmp.Contains("_resource"))
-                {
-                    lastModuleIndex = i;
-                    if (iniLines[i].Trim().Equals(troop3dpreview))
-                    {
-                        foundEntry = !foundEntry;//true
-                        i = iniLines.Count;
-                    }
-                }
-            }
+            CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.ITEM]);
+            itemsRList = cr.ReadItem();
 
-            if (!foundEntry)
-            {
-                lastModuleIndex++;
-                iniLines.Insert(lastModuleIndex, troop3dpreview);
-                File.WriteAllLines(iniFile, iniLines);
-            }
-        }
-
-        private void LoadSettingsAndLists()
-        {
-            InitializeLists();
-            AddTroop3DPreviewToModuleIni();
-            LoadSets();
-            CreateSkillGroupBox();
-        }
-
-        /// <summary>
-        /// Updates the UI.
-        /// </summary>
-        protected void UpdateUI(bool IsDataLoaded)
-        {
-            if (IsDataLoaded)
-            {
-                //DONE INFO
-                Opacity = 100;
-                // close the splash form
-                if (frmSplash != null)
-                    frmSplash.Close();
-            }
-        }
-
-        private void LoadControlsAndSettings()
-        {
-            LoadSettingsAndLists();
+            for (int i = 0; i < CodeReader.Items.Length; i++)
+                items.Add(i + " - " + CodeReader.Items[i]);
 
             if (MB_Studio.Show3DView)
             {
+                AddTroop3DPreviewToModuleIni();
                 Invoke((MethodInvoker)delegate
                 {
                     openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
                     openBrfThread.Start();
                 });
             }
-            else
-            {
-                // Update UI
-                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
-            }
+
+            LoadSets();
         }
 
-        private void InitializeLists()
+        protected override void InitializeControls()
         {
-            CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.TROOP]);
-            Troop[] troopsX = cr.ReadTroop();
+            base.InitializeControls();
 
-            bool loadSavedTroops = Properties.Settings.Default.loadSavedObjects;//maybe change the access way later
+            _3DView_btn.Visible = MB_Studio.Show3DView;
 
-            List<Troop> savedTroops = new List<Troop>();
-            if (loadSavedTroops)
+            foreach (string item in items)
+                items_lb.Items.Add(item);
+            foreach (string scene in CodeReader.Scenes)
+                scenes_lb.Items.Add(scene);
+            foreach (string faction in CodeReader.Factions)
+                factions_lb.Items.Add(faction);
+            foreach (Skriptum troop in types)
             {
-                List<List<string>> savedTroopsDatas = MB_Studio.LoadAllPseudoCodeByObjectTypeID((int)Skriptum.ObjectType.TROOP);
-                foreach (List<string> savedTroopData in savedTroopsDatas)
-                    savedTroops.Add(new Troop(CodeReader.GetStringArrayStartFromIndex(savedTroopData.ToArray(), 1)));
+                upgradeTroop1_lb.Items.Add(((Troop)troop).ID);
+                upgradeTroop2_lb.Items.Add(((Troop)troop).ID);
             }
+            //upgradeTroop1_lb.Items.RemoveAt(1);//maybe a problem for other versions
+            //upgradeTroop2_lb.Items.RemoveAt(1);//maybe a problem for other versions
 
-            cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.ITEM]);
-            itemsRList = cr.ReadItem();
+            CreateSkillGroupBox();
 
-            bool found = false;
-            foreach (Troop troop in troopsX)
-            {
-                if (loadSavedTroops)
-                {
-                    found = false;
-                    for (int i = 0; i < savedTroops.Count; i++)
-                    {
-                        if (troop.ID.Equals(savedTroops[i].ID))
-                        {
-                            troops.Add(savedTroops[i]);
-                            found = true;
-                            i = savedTroops.Count;
-                        }
-                    }
-                }
-                if (!found)
-                    troops.Add(troop);
-            }
-
-            Invoke((MethodInvoker)delegate
-            {
-                _3DView_btn.Visible = MB_Studio.Show3DView;
-                foreach (Control c in troopPanel.Controls)
-                    if (c.Name.Split('_')[0].Equals("showGroup"))
-                        c.Click += C_Click;
-                for (int i = 0; i < CodeReader.Items.Length; i++)
-                {
-                    items.Add(i + " - " + CodeReader.Items[i]);
-                    items_lb.Items.Add(items[items.Count - 1]);
-                }
-                foreach (string scene in CodeReader.Scenes)
-                    scenes_lb.Items.Add(scene);
-                foreach (string faction in CodeReader.Factions)
-                    factions_lb.Items.Add(faction);
-                foreach (Troop troop in troops)
-                {
-                    troopSelect_lb.Items.Add(troop.ID);
-                    upgradeTroop1_lb.Items.Add(troop.ID);
-                    upgradeTroop2_lb.Items.Add(troop.ID);
-                }
-                upgradeTroop1_lb.Items.RemoveAt(1);
-                upgradeTroop2_lb.Items.RemoveAt(1);
-                if (!Directory.Exists(CodeReader.ModPath + "languages"))
-                    Directory.CreateDirectory(CodeReader.ModPath + "languages");
-                languages_cbb.SelectedIndex = 0;
-                foreach (string item in Directory.GetDirectories(CodeReader.ModPath + "languages"))
-                    if (!ComboBoxContainsInLines(languages_cbb, item.Substring(item.LastIndexOf('\\') + 1), '('))
-                        languages_cbb.Items.Add(item.Substring(item.LastIndexOf('\\') + 1) + " (" + item.Substring(item.LastIndexOf('\\') + 1).ToUpper() + ')');
-                for (int i = 0; i < languages_cbb.Items.Count; i++)
-                    translations.Add(new string[2]);
-            });
+            ResetControls();
         }
 
         private void CreateSkillGroupBox()
@@ -214,67 +99,60 @@ namespace MB_Studio.Manager
             Font font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Color backColor = Color.FromArgb(56, 56, 56);
             Color foreColor = Color.White;
-            int tabIndex;
-            Invoke((MethodInvoker)delegate
+            for (int i = 0; i < SkillHunter.Skillnames.Length - 8; i++)
             {
-                for (int i = 0; i < SkillHunter.Skillnames.Length - 8; i++)
-                {
-                    tabIndex = (i / 8 + 1) * 8 - (i - (i / 8) * 8) - 1;
-                    //MessageBox.Show("Index: " + tabIndex);
-                    // 
-                    // label
-                    // 
-                    Label skillLabelX = new Label()
-                    {
-                        BackColor = backColor,
-                        Font = font,
-                        ForeColor = foreColor,
-                        Location = new Point(6 + (i / 8) * 145, 27 + i * 26 - (i / 8) * 208),
-                        Name = SkillHunter.Skillnames[i] + "lbl",
-                        TabIndex = tabIndex,
-                        Tag = i,
-                        TabStop = false,
-                        Size = new Size(100, 13),
-                        TextAlign = ContentAlignment.MiddleRight
-                    };
-                    string text = SkillHunter.Skillnames[i].Replace('_', ' ').TrimEnd();
-                    int length = Math.Min(text.Length - 1, 12);
-                    text = text.Substring(0, 1).ToUpper() + text.Substring(1, length) + ':';
-                    skillLabelX.Text = text;
-                    groupBox_6_gb.Controls.Add(skillLabelX);
+                int tabIndex = (i / 8 + 1) * 8 - (i - (i / 8) * 8) - 1;
 
-                    // 
-                    // numeric
-                    // 
-                    NumericUpDown skillNumericX = new NumericUpDown()
-                    {
-                        BackColor = backColor,
-                        BorderStyle = BorderStyle.FixedSingle,
-                        Font = font,
-                        ForeColor = foreColor,
-                        Location = new Point(110 + (i / 8) * 145, 25 + i * 26 - (i / 8) * 208),
-                        Maximum = 15,
-                        Name = SkillHunter.Skillnames[i] + "num",
-                        Size = new Size(34, 20),
-                        TabIndex = tabIndex,
-                        Tag = i,
-                        TabStop = false
-                    };
-                    groupBox_6_gb.Controls.Add(skillNumericX);
-                }
-            });
+                // label
+                Label skillLabelX = new Label()
+                {
+                    BackColor = backColor,
+                    Font = font,
+                    ForeColor = foreColor,
+                    Location = new Point(6 + (i / 8) * 145, 27 + i * 26 - (i / 8) * 208),
+                    Name = SkillHunter.Skillnames[i] + "lbl",
+                    TabIndex = tabIndex,
+                    Tag = i,
+                    TabStop = false,
+                    Size = new Size(100, 13),
+                    TextAlign = ContentAlignment.MiddleRight
+                };
+                string text = SkillHunter.Skillnames[i].Replace('_', ' ').TrimEnd();
+                int length = Math.Min(text.Length - 1, 12);
+                text = text.Substring(0, 1).ToUpper() + text.Substring(1, length) + ':';
+                skillLabelX.Text = text;
+
+                // numeric
+                NumericUpDown skillNumericX = new NumericUpDown()
+                {
+                    BackColor = backColor,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Font = font,
+                    ForeColor = foreColor,
+                    Location = new Point(110 + (i / 8) * 145, 25 + i * 26 - (i / 8) * 208),
+                    Maximum = 15,
+                    Name = SkillHunter.Skillnames[i] + "num",
+                    Size = new Size(34, 20),
+                    TabIndex = tabIndex,
+                    Tag = i,
+                    TabStop = false
+                };
+
+                groupBox_6_gb.Controls.Add(skillLabelX);
+                groupBox_6_gb.Controls.Add(skillNumericX);
+            }
         }
 
         #endregion
 
         #region GUI
 
-        private void C_Click(object sender, EventArgs e)/// TODO: Change like Toolsform - or try again to make as Toolsform
+        /*private void C_Click(object sender, EventArgs e)/// TODO: Change like Toolsform - or try again to make as Toolsform
         {
             bool sub = false;
             Control button = (Control)sender;
             int index = int.Parse(button.Name.Split('_')[1]);
-            Control groupBox = troopPanel.Controls.Find("groupBox_" + index + "_gb", false)[0];
+            Control groupBox = toolPanel.Controls.Find("groupBox_" + index + "_gb", false)[0];
             if (groupBox.Height == ToolForm.GROUP_HEIGHT_MIN)
             {
                 groupBox.Height = ToolForm.GROUP_HEIGHT_MAX;
@@ -300,7 +178,7 @@ namespace MB_Studio.Manager
                 differ = differ - ToolForm.GROUP_HEIGHT_MIN;
             else if (button.Equals(showGroup_3_btn))
                 differ = 395;
-            foreach (Control c in troopPanel.Controls)
+            foreach (Control c in toolPanel.Controls)
             {
                 if (int.Parse(c.Name.Split('_')[1]) > index)
                 {
@@ -314,64 +192,15 @@ namespace MB_Studio.Manager
                 Height += differ;
             else
                 Height -= differ;
-        }
+        }*/
 
-        private void SearchTroop_SearchTextBox_TextChanged(object sender, EventArgs e)
+        protected override void ResetControls()
         {
-            troopSelect_lb.Items.Clear();
-            if (!searchTroop_SearchTextBox.Text.Contains("Search ...") && searchTroop_SearchTextBox.Text.Length > 0)
-            {
-                foreach (Troop troop in troops)
-                    if (troop.ID.Contains(searchTroop_SearchTextBox.Text) || troop.ID.Contains(searchTroop_SearchTextBox.Text))
-                        troopSelect_lb.Items.Add(troop.ID);
-            }
-            else
-                foreach (Troop troop in troops)
-                    troopSelect_lb.Items.Add(troop.ID);
-        }
+            base.ResetControls();
 
-        private void Exit_btn_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void Min_btn_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void TroopSelect_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (troopSelect_lb.Items.Count > 0)
-            {
-                if (troopSelect_lb.SelectedIndex > 0 || !troopSelect_lb.SelectedItem.ToString().Equals("New"))
-                    SetupTroop(troops[GetIndexOfTroopByID(troopSelect_lb.SelectedItem.ToString())]);
-                else
-                    ResetControls();
-            }
-        }
-
-        private int GetIndexOfTroopByID(string id)
-        {
-            int index = -1;
-            for (int i = 0; i < troops.Count; i++)
-            {
-                if (troops[i].ID.Equals(id))
-                {
-                    index = i;
-                    i = troops.Count;
-                }
-            }
-            return index;
-        }
-
-        private void ResetControls()
-        {
-            id_txt.ResetText();
-            name_txt.ResetText();
-            plural_name_txt.ResetText();
             usedItems_lb.Items.Clear();
-            foreach (Control groupC in troopPanel.Controls)
+
+            /*foreach (Control groupC in toolPanel.Controls)
             {
                 if (groupC.Name.Substring(groupC.Name.LastIndexOf('_') + 1).Equals("gb"))
                 {
@@ -395,74 +224,28 @@ namespace MB_Studio.Manager
                             c.Text = "Search ...";
                     }
                 }
-            }
+            }*/
+
             foreach (Control c in showItemsInOpenBrf_gb.Controls)
                 if (c.Name.Substring(c.Name.LastIndexOf('_') + 1).Equals("cbb"))
                     ((ComboBox)c).Items.Clear();
-            singleNameTranslation_txt.ResetText();
-            pluralNameTranslation_txt.ResetText();
-            languages_cbb.SelectedIndex = 0;
+
             face1_txt.Text = FACE_CODE_ZERO;
             face2_txt.Text = face1_txt.Text;
             reserved_txt.Text = "reserved";
-        }
-
-        private void CloseAll_btn_Click(object sender, EventArgs e)
-        {
-            Control c;
-            for (int i = 0; i < 7; i++)
-            {
-                c = troopPanel.Controls.Find("showGroup_" + (i + 1) + "_btn", false)[0];
-                c.Top = 3 + i * 30;
-                c.Height = 25;
-                c.Text = "v";
-            }
-            for (int i = 0; i < 7; i++)
-            {
-                c = troopPanel.Controls.Find("groupBox_" + (i + 1) + "_gb", false)[0];
-                c.Top = 2 + i * 30;
-                c.Height = 25;
-            }
-            Height = 428;
-        }
-
-        private void Id_txt_TextChanged(object sender, EventArgs e)
-        {
-            bool isInList = false;
-            string id = id_txt.Text.Trim();
-            if (id.IndexOf("trp_") != 0)
-                id = "trp_" + id;
-            for (int i = 0; i < troopSelect_lb.Items.Count; i++)
-            {
-                if (troopSelect_lb.Items[i].Equals(id))
-                {
-                    isInList = true;
-                    i = troopSelect_lb.Items.Count;
-                }
-            }
-            if (!isInList)
-                save_btn.Text = "CREATE";
-            else if (save_btn.Text.Equals("CREATE"))
-                save_btn.Text = "SAVE";
-            if (isInList)
-                troopSelect_lb.SelectedIndex = troopSelect_lb.Items.IndexOf(id);
         }
 
         #endregion
 
         #region Setups
 
-        private void SetupTroop(Troop troop)
+        protected override void SetupType(Skriptum type)
         {
-            ResetControls();
+            base.SetupType(type);
 
-            #region Names
-
-            id_txt.Text = troop.ID;
-            name_txt.Text = troop.ID;
-            plural_name_txt.Text = troop.PluralName;
-
-            #endregion
+            Troop troop = (Troop)type;
+            name_txt.Text = troop.Name;//will later be removed
+            plural_name_txt.Text = troop.PluralName;//will maybe removed later
 
             #region GROUP1 - Flags & Guarantee
 
@@ -584,17 +367,6 @@ namespace MB_Studio.Manager
                 MessageBox.Show("TROOP_UPGRADE_PATH2:" + Environment.NewLine + troop.UpgradeTroop2ErrorCode);
 
             #endregion
-
-            #region GROUP8 - Translation
-
-            for (int i = 0; i < languages_cbb.Items.Count; i++)
-                PrepareLanguageByIndex(i);
-            if (languages_cbb.SelectedIndex != 0)
-                languages_cbb.SelectedIndex = 0; // other code is in the SelectedIndex Changed Event
-            else
-                Language_cbb_SelectedIndexChanged();
-
-            #endregion
         }
 
         private void SelectFirstInventarComboBoxItems()
@@ -611,7 +383,6 @@ namespace MB_Studio.Manager
 
         private void SetupTroopItemBone(Item item)
         {
-
             #region ID OVERVIEW
 
             /* SKELETONS */
@@ -666,7 +437,6 @@ namespace MB_Studio.Manager
             switch (ItemManager.GetItemTypeIndex(item))
             {
                 case 1: //Horse
-                        //boneIndex = 0;//? 
                     skeletonId++;//is this correct for horse?
                     break;
                 case 7: //Shield
@@ -709,10 +479,8 @@ namespace MB_Studio.Manager
                 case 18://Bullets
                     carryPosition = 14;
                     break;
-                //case 19://Animal
-                //    //what to do here?
-                //    break;
                 //case 11://Goods
+                //case 19://Animal
                 //case 20://Book
                 default://none = 0
                     boneIndex = 5;
@@ -762,25 +530,9 @@ namespace MB_Studio.Manager
 
         #region SAVE
 
-        private void Save_btn_Click(object sender, EventArgs e)
+        protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            if (troopSelect_lb.SelectedIndex >= 0)
-            {
-                int index;
-                if (save_btn.Text.Equals("SAVE"))
-                    index = GetIndexOfTroopByID(troopSelect_lb.SelectedItem.ToString());
-                else
-                    index = troopSelect_lb.Items.Count;
-                SaveTroopByIndex(index);
-            }
-        }
-
-        private void SaveTroopByIndex(int selectedIndex)
-        {
-            List<Skriptum> list = new List<Skriptum>();
-            string[] values = new string[6];
-            string tmp = string.Empty;
-
+            /// Check if is set by default now - if not make it happen
             if (troopImage_txt.Text.Length == 0)
                 troopImage_txt.Text = "0";
             if (reserved_txt.Text.Length == 0)
@@ -789,71 +541,83 @@ namespace MB_Studio.Manager
                 face1_txt.Text = FACE_CODE_ZERO;
             if (face2_txt.Text.Length == 0)
                 face2_txt.Text = FACE_CODE_ZERO;
-            if (id_txt.Text.Length > 4)
-            {
-                if (!id_txt.Text.Substring(0, 4).Equals("trp_"))
-                    id_txt.Text = "trp_" + id_txt.Text;
-            }
-            else
+            /// Check if is set by default now - if not make it happen
+            
+            /*if (!id_txt.Text.StartsWith("trp_"))//should already be done in ToolForm
                 id_txt.Text = "trp_" + id_txt.Text;
+            else
+                id_txt.Text = "trp_" + id_txt.Text;*/
+            
+            string tmp/*values[0]*/ = /*id_txt.Text.Replace(' ', '_')*/values[0] + ' ' + name_txt.Text.Replace(' ', '_') + ' ' + plural_name_txt.Text.Replace(' ', '_') + ' ' + troopImage_txt.Text.Replace(' ', '_') + ' ';
+            /*values[0]*/tmp += GetFlagsValue().ToString() + ' ' + GetSceneCode().ToString() + ' ' + reserved_txt.Text + ' ';
+            /*values[0]*/tmp += factions_lb.SelectedIndex.ToString() + ' ' + upgradeTroop1_lb.SelectedIndex.ToString() + ' ' + upgradeTroop2_lb.SelectedIndex.ToString();
 
-            values[0] = id_txt.Text.Replace(' ', '_') + ' ' + name_txt.Text.Replace(' ', '_') + ' ' + plural_name_txt.Text.Replace(' ', '_') + ' ' + troopImage_txt.Text.Replace(' ', '_') + ' ';
-            values[0] += GetFlagsValue().ToString() + ' ' + GetSceneCode().ToString() + ' ' + reserved_txt.Text + ' ';
-            values[0] += factions_lb.SelectedIndex.ToString() + ' ' + upgradeTroop1_lb.SelectedIndex.ToString() + ' ' + upgradeTroop2_lb.SelectedIndex.ToString();
+            tmp += ";  ";
 
             for (int i = 0; i < usedItems_lb.Items.Count; i++)
-                tmp += usedItems_lb.Items[i].ToString().Split('-')[0] + inventoryItemFlags[i] + " "; // could be a problem when itemFlags are fucked up
+                tmp += usedItems_lb.Items[i].ToString().Split('-')[0] + inventoryItemFlags[i] + " ";//could be a problem when itemFlags are fucked up
 
             for (int i = 0; i < (64 - usedItems_lb.Items.Count); i++)
                 tmp += "-1 0 ";
 
-            values[1] = "  " + tmp;
+            tmp += ';';
 
-            values[2] = "  " + str_txt.Text + ' ' + agi_txt.Text + ' ' + int_txt.Text + ' ' + cha_txt.Text + ' ' + level_txt.Text;
+            //values[1] = "  " + tmp;
 
-            values[3] = " " + onehandedWeapon_txt.Text + ' ' + twohandedWeapon_txt.Text + ' ' + polearms_txt.Text + ' ' + archery_txt.Text + ' ' + crossbows_txt.Text + ' ' + throwing_txt.Text + ' '
+            /*values[2] = */tmp += "  " + str_txt.Text + ' ' + agi_txt.Text + ' ' + int_txt.Text + ' ' + cha_txt.Text + ' ' + level_txt.Text;
+
+            /*values[3] =*/tmp += " " + onehandedWeapon_txt.Text + ' ' + twohandedWeapon_txt.Text + ' ' + polearms_txt.Text + ' ' + archery_txt.Text + ' ' + crossbows_txt.Text + ' ' + throwing_txt.Text + ' '
                             + firearms_txt.Text;
 
+            tmp += ';';
+
             SuperGZ_192Bit skillsValue = new SuperGZ_192Bit(GetSkillCodes());
-            tmp = string.Empty;
+            //tmp = string.Empty;
             foreach (uint u in skillsValue.ValueUInt)
                 tmp += u + " ";
-            values[4] = tmp; // SKILLS
+            //values[4] = tmp;//SKILLS
+            tmp += ";  ";
 
             SuperGZ_256Bit faceCode1 = new SuperGZ_256Bit(face1_txt.Text);
             SuperGZ_256Bit faceCode2 = new SuperGZ_256Bit(face2_txt.Text);
-            tmp = string.Empty;
+            //tmp = string.Empty;
             for (int i = 0; i < faceCode1.ValueULong.Length; i++)
                 tmp += faceCode1.ValueULong[i] + " ";
             for (int i = 0; i < faceCode2.ValueULong.Length; i++)
                 tmp += faceCode2.ValueULong[i] + " ";
-            values[5] = "  " + tmp; // FACE CODES
+            //values[5] = "  " + tmp;//FACE CODES
 
-            //MessageBox.Show(values[0] + Environment.NewLine + values[1] + Environment.NewLine + values[2] + Environment.NewLine + values[3] + Environment.NewLine + values[4]
-            //                + Environment.NewLine + values[5]);
-
-            bool newOne = false;
+            /*bool newOne = false;
             Troop changed = new Troop(values);
 
             MB_Studio.SavePseudoCodeByType(changed, values);
 
-            if (selectedIndex < troopSelect_lb.Items.Count - 1)
-                troops[selectedIndex] = changed;
+            if (selectedIndex < typeSelect_lb.Items.Count - 1)
+                types[selectedIndex] = changed;
             else
             {
-                troops.Add(changed);
-                troopSelect_lb.Items.Add(changed.ID);
+                types.Add(changed);
+                typeSelect_lb.Items.Add(changed.ID);
                 newOne = !newOne;
             }
 
-            foreach (Troop troop in troops)
+            foreach (Troop troop in types)
                 list.Add(troop);
 
             SourceWriter.WriteAllObjects();
             new SourceWriter().WriteTroops(list);
 
             if (newOne)
-                troopSelect_lb.SelectedIndex = troopSelect_lb.Items.Count - 1;
+                typeSelect_lb.SelectedIndex = typeSelect_lb.Items.Count - 1;*/
+            
+            values.Clear();
+            values = new List<string>(tmp.Split(';'));
+            string[] valuesX = values.ToArray();
+            Troop t = new Troop(valuesX);
+
+            MB_Studio.SavePseudoCodeByType(t, valuesX);
+
+            base.SaveTypeByIndex(values, selectedIndex, t);
         }
 
         #region Calculations
@@ -1266,108 +1030,6 @@ namespace MB_Studio.Manager
 
         #endregion
 
-        #region Translation
-
-        private void PrepareLanguageByIndex(int index)
-        {
-            string[] tmp;
-            bool foundTroopSingle = false;
-            bool foundTroopPlural = false;
-            string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(index));
-            if (File.Exists(filePath))
-            {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    while (!sr.EndOfStream && (!foundTroopSingle || !foundTroopPlural))
-                    {
-                        tmp = sr.ReadLine().Split('|');
-                        if (!foundTroopSingle)
-                        {
-                            if (tmp[0].Equals(id_txt.Text) && tmp.Length > 1)
-                            {
-                                translations[index][0] = tmp[1];  //singleNameTranslation_txt.Text = tmp[1];
-                                foundTroopSingle = true;
-                            }
-                        }
-                        if (!foundTroopPlural)
-                        {
-                            if (tmp[0].Equals(id_txt.Text + "_pl") && tmp.Length > 1)
-                            {
-                                translations[index][1] = tmp[1];  //pluralNameTranslation_txt.Text = tmp[1];
-                                foundTroopPlural = true;
-                            }
-                        }
-                    }
-                }
-            }
-            //else
-            //    MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
-        }
-
-        private void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
-        {
-            if (translations.Count > 0)
-            {
-                string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT);
-                singleNameTranslation_txt.Text = translations[languages_cbb.SelectedIndex][0];
-                pluralNameTranslation_txt.Text = translations[languages_cbb.SelectedIndex][1];
-                fileSaver = new FileSaver(Path.GetDirectoryName(filePath), Path.GetFileName(filePath));
-            }
-        }
-
-        private string GetLanguageFromIndex(int index) { return languages_cbb.Items[index].ToString().Split('(')[0].TrimEnd(); }
-
-        private string CurrentLanguage { get { return GetLanguageFromIndex(languages_cbb.SelectedIndex); } }
-
-        private string GetSecondFilePath(string fileFormat, string language = null)
-        {
-            if (language == null)
-                language = CurrentLanguage;
-            return "languages\\" + language + "\\troops" + fileFormat;
-        }
-
-        private void Save_translation_btn_Click(object sender, EventArgs e)
-        {
-            List<string> list = new List<string>();
-            string id = id_txt.Text.Replace(' ', '_');
-            bool singleFound = false;
-            bool pluralFound = false;
-            string[] orgLines = new string[] { FileSaver.LockItVersion.ToString() };
-            if (File.Exists(fileSaver.FilePath))
-            {
-                orgLines = File.ReadAllLines(fileSaver.FilePath);
-                for (int i = 0; i < orgLines.Length; i++)
-                {
-                    string s = orgLines[i].Split('|')[0];
-                    if (!singleFound)
-                    {
-                        if (s.Equals(id))
-                        {
-                            orgLines[i] = id + '|' + singleNameTranslation_txt.Text;
-                            singleFound = true;
-                        }
-                    }
-                    if (!pluralFound)
-                    {
-                        if (s.Equals(id + "_pl"))
-                        {
-                            orgLines[i] = id + "_pl|" + pluralNameTranslation_txt.Text;
-                            pluralFound = true;
-                        }
-                    }
-                    if (pluralFound && singleFound)
-                        i = orgLines.Length;
-                }
-            }
-            if (!singleFound)
-                list.Add(id + "|" + singleNameTranslation_txt.Text);
-            if (!pluralFound)
-                list.Add(id + "_pl|" + pluralNameTranslation_txt.Text);
-            fileSaver.SaveFile(list, ImportantMethods.StringArrayToList(orgLines, 1));
-        }
-
-        #endregion
-
         #region OpenBrf
 
         protected override void OnHandleDestroyed(EventArgs e)
@@ -1480,6 +1142,36 @@ namespace MB_Studio.Manager
                 {
                     Console.WriteLine(ex.ToString());
                 }
+            }
+        }
+
+        private void AddTroop3DPreviewToModuleIni()
+        {
+            int lastModuleIndex = 0;
+            bool foundEntry = false;
+            string troop3dpreview = "load_mod_resource = Troop3DPreview";
+            string iniFile = GetMABPath() + "\\Modules\\" + ProgramConsole.OriginalMod + "\\module.ini";
+            List<string> iniLines = new List<string>(File.ReadLines(iniFile));
+
+            for (int i = 0; i < iniLines.Count; i++)
+            {
+                string tmp = iniLines[i].Split('#')[0].Split('=')[0].Trim();
+                if (tmp.Contains("load_") && tmp.Contains("_resource"))
+                {
+                    lastModuleIndex = i;
+                    if (iniLines[i].Trim().Equals(troop3dpreview))
+                    {
+                        foundEntry = !foundEntry;//true
+                        i = iniLines.Count;
+                    }
+                }
+            }
+
+            if (!foundEntry)
+            {
+                lastModuleIndex++;
+                iniLines.Insert(lastModuleIndex, troop3dpreview);
+                File.WriteAllLines(iniFile, iniLines);
             }
         }
 

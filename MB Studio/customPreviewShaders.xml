@@ -1,7 +1,5 @@
 <!DOCTYPE customPreviewShaders>
-
 <OpenBRF>
-
   <previewShader>
     <techniques>
       <!--a comma separated list of all "techniques" that should be previewed by this -->
@@ -79,5 +77,4 @@
 
     </fragmentProgram>
   </previewShader>
-
 </OpenBRF>

@@ -3,7 +3,6 @@ using importantLib;
 using MB_Decompiler;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
-using MB_Studio.Main;
 using skillhunter;
 using System;
 using System.Collections.Generic;
@@ -43,7 +42,7 @@ namespace MB_Studio.Manager
         public ItemManager() : base(Skriptum.ObjectType.ITEM)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
 
             InitializeComponent();
         }
@@ -56,8 +55,6 @@ namespace MB_Studio.Manager
         protected override void LoadSettingsAndLists()
         {
             base.LoadSettingsAndLists();
-
-            _3DView_btn.Visible = MB_Studio.Show3DView;
 
             if (MB_Studio.Show3DView)
             {
@@ -1351,9 +1348,6 @@ namespace MB_Studio.Manager
 
                 Thread.Sleep(50);
 
-                //int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
-                //if (idx >= 0)
-                //    LoadMeshWithOpenBrf(((Item)types[idx]).Meshes[0].Split()[0]);
                 Change3DView();
 
                 // Update UI
@@ -1362,20 +1356,6 @@ namespace MB_Studio.Manager
                 Console.WriteLine("Loaded 3D View successfully! - laut Programmablauf");
             });
         }
-
-        /*private void LoadMeshWithOpenBrf(string resourceName)
-        {
-            try
-            {
-                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName));// change for multiple meshs somehow?
-                Thread.Sleep(125);
-                openBrfManager.SelectItemNameByKind("JSYS");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }*/
 
         private void ShowGroup_3_btn_Click(object sender, EventArgs e)
         {

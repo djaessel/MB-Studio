@@ -1,6 +1,6 @@
 ﻿using importantLib;
 
-namespace MB_Studio.Main
+namespace MB_Studio.Manager
 {
     partial class ToolForm
     {

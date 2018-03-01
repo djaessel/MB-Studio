@@ -9,11 +9,12 @@ using System.Threading;
 using System.Windows.Forms;
 using WarbandTranslator;
 using System.ComponentModel;
+using MB_Studio.Main;
 
-namespace MB_Studio.Main
+namespace MB_Studio.Manager
 {
     // (DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!! - am Ende abstract)
-    // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  < NOT ANYMORE?! >  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
+    // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  < DESIGNER ERRORS >  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     public partial class ToolForm : SpecialForm
     {
@@ -26,21 +27,27 @@ namespace MB_Studio.Main
         public const int GROUP_HEIGHT_MAX = GROUP_HEIGHT_DIF + GROUP_HEIGHT_MIN;
 
         protected List<string[]> translations = new List<string[]>();
-        protected List<Skriptum> types = new List<Skriptum>();
         protected List<string> typesIDs = new List<string>();
+        protected List<Skriptum> types = new List<Skriptum>();
         
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
         // delegate for the UI updater
-        public delegate void UpdateUIDelegate(bool IsDataLoaded);
+        protected delegate void UpdateUIDelegate(bool IsDataLoaded);
+
+        #region Properties
 
         public ObjectType ObjectType { get; private set; }
+
         public int ObjectTypeID
         {
             get { return (int)ObjectType; }
             private set { ObjectType = (ObjectType)value; }
         }
+
         public string Prefix { get { return Prefixes[ObjectTypeID] + '_'; } }
+
+        #endregion
 
         #endregion
 
@@ -99,13 +106,8 @@ namespace MB_Studio.Main
         protected void UpdateUI(bool IsDataLoaded)
         {
             if (IsDataLoaded)
-            {
-                //DONE INFO
-                Opacity = 100;
-                // close the splash form
                 if (frmSplash != null)
                     frmSplash.Close();
-            }
         }
 
         private void LoadControlsAndSettings()
@@ -280,11 +282,9 @@ namespace MB_Studio.Main
             if (!ContainsPrefix(id_txt.Text))
                 id_txt.Text = Prefix + id_txt.Text;
 
-            List<string> list =
-                new List<string>
-                    {
-                        id_txt.Text.Replace(' ', '_') + ' ' + name_txt.Text.Replace(' ', '_')
-                    };
+            List<string> list = new List<string> {
+                id_txt.Text.Replace(' ', '_') + ' ' + name_txt.Text.Replace(' ', '_')
+            };
 
             int index;
             if (typeSelect_lb.SelectedIndex > 0/* && typeSelect_lb.SelectedIndex < typeSelect_lb.Items.Count*/)
@@ -296,6 +296,7 @@ namespace MB_Studio.Main
             }
             else
                 index = typeSelect_lb.Items.Count;
+
             SaveTypeByIndex(list, index);
         }
 
@@ -451,7 +452,7 @@ namespace MB_Studio.Main
 
         #endregion
 
-        #region SAVE
+        #region Save
 
         protected virtual void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
@@ -464,19 +465,15 @@ namespace MB_Studio.Main
 
                 if (selectedIndex >= 0)
                 {
-                    if (selectedIndex < typesIDs.Count) // was typesIDs.Count - 1 before
+                    if (selectedIndex < typesIDs.Count)//was typesIDs.Count - 1 before
                         types[selectedIndex] = changed;
                     else
                     {
                         types.Add(changed);
                         typesIDs.Add(changed.ID);
-                        typeSelect_lb.Items.Add(changed.ID); // maybe check name is always correct - if needed
-                        newOne = !newOne; // true
+                        typeSelect_lb.Items.Add(changed.ID);//maybe check name is always correct - if needed
+                        newOne = !newOne;//true
                     }
-
-                    /*List<Skriptum> list = new List<Skriptum>();
-                    foreach (Skriptum type in types)
-                        list.Add(type);*/
                     
                     SourceWriter.WriteAllObjects();
                     new SourceWriter().WriteObjectType(types, ObjectTypeID);
@@ -485,7 +482,7 @@ namespace MB_Studio.Main
                         typeSelect_lb.SelectedIndex = typeSelect_lb.Items.Count - 1;
                 }
                 else
-                    MessageBox.Show("ERROR: 0xf3" + Environment.NewLine + "This index isn't correct --> Please contact the publisher!");
+                    MessageBox.Show("ERROR: 0xf3 - INVALID_INDEX" + Environment.NewLine + " --> Please report Bug!");
             }
             else
                 Console.WriteLine("Warning: Not saved yet!");
