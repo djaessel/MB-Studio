@@ -1387,7 +1387,7 @@ namespace MB_Studio.Manager
                 Thread.Sleep(10);
             Invoke((MethodInvoker)delegate
             {
-                openBrfManager.AddWindowHandleToControlsParent(this);//ImportantMethods.AddWindowHandleToControl(openBrfManager.Handle, Parent, Height, Width, Top);
+                openBrfManager.AddWindowHandleToControlsParent(this);
 
                 Thread.Sleep(50);
 
@@ -1487,7 +1487,7 @@ namespace MB_Studio.Manager
                 _3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
                 _3DView_btn.Visible = false;
 
-                openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, GetMABPath());
+                openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
 
                 showGroup_3_btn.PerformClick();
 

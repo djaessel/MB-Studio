@@ -293,7 +293,7 @@ private slots:
 	bool navigateUp();
 	bool navigateDown();
 	bool searchBrf();
-	void refreshReference();
+	bool refreshReference();
 	bool refreshIni();
 	bool checkIni();
 	bool searchIni();

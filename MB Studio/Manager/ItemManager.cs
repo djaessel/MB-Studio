@@ -7,6 +7,7 @@ using MB_Studio.Main;
 using skillhunter;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -41,7 +42,9 @@ namespace MB_Studio.Manager
 
         public ItemManager() : base(Skriptum.ObjectType.ITEM)
         {
-            types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // ansonsten für alle in Toolform
+
             InitializeComponent();
         }
 
@@ -1356,8 +1359,7 @@ namespace MB_Studio.Manager
         {
             try
             {
-                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName)); // change for multiple meshs somehow?
-                //openBrfManager.AddMeshToTroopDummy(resourceName);
+                Console.WriteLine("SUCCESS: " + openBrfManager.SelectItemNameByKind(resourceName));// change for multiple meshs somehow?
                 Thread.Sleep(125);
                 openBrfManager.SelectItemNameByKind("JSYS");
             }

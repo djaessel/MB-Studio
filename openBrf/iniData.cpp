@@ -748,9 +748,9 @@ void IniData::searchAllNamesV(const QString &s, int t,const std::vector<T> &v, i
 }
 
 template <class T>
-void IniData::searchNameInV(const QString &s, int t, const std::vector<T> &v, int j, std::vector<std::vector<int>> &foundings) const {
+void IniData::searchNameInV(const QString &s, int type, const std::vector<T> &v, int j, std::vector<std::vector<int>> &foundings) const {
 	int kind = T::tokenIndex();
-	if (t != -1 && t != kind) return;
+	if (/*type != -1 && */type != kind) return;//what is with -1?
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		if (QString(v[i].name).split('.')[0] == s)
@@ -1001,29 +1001,61 @@ bool IniData::findErrors(int maxErr){
 
 }
 
-typedef std::vector<int> IntArray;
-/*QString*/std::vector<IntArray>/**/ IniData::searchOneName(const QString &s, int to, bool cr) const{
+typedef vector<int> IntArray;
+vector<IntArray> IniData::searchOneName(const QString &s, int type, bool cr) const {
+
 	int fileSize = (int)file.size();
-	std::vector<IntArray> indices;
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].texture, i, indices);
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].shader, i, indices);
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].material, i, indices);
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].mesh, i, indices);
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].body, i, indices);
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].skeleton, i, indices);
-	for (int i = 0; i<fileSize; i++) if (origin[i] == MODULE_RES || cr)
-		searchNameInV(s, to, file[i].animation, i, indices);
+	vector<IntArray> indices;
+	
+	if (type >= MESH && type <= BODY) {
+		for (int i = 0; i < fileSize; i++) {
+			if (origin[i] == MODULE_RES || cr) {
+				switch (type)
+				{
+					case MESH: searchNameInV(s, type, file[i].mesh, i, indices); break;
+					case TEXTURE: searchNameInV(s, type, file[i].texture, i, indices); break;
+					case SHADER: searchNameInV(s, type, file[i].shader, i, indices); break;
+					case MATERIAL: searchNameInV(s, type, file[i].material, i, indices); break;
+					case SKELETON: searchNameInV(s, type, file[i].skeleton, i, indices); break;
+					case ANIMATION: searchNameInV(s, type, file[i].animation, i, indices); break;
+					case BODY: searchNameInV(s, type, file[i].body, i, indices);// break;
+					default: break;
+				}
+			}
+		}
+	}
+	else {
+		MessageBoxA(NULL, "UNHANDLED ERROR - INVALID KIND GIVEN FOR SEARCH!", "ERROR", MB_ICONERROR);
+	}
+
+	/*for (int i = 0; i<fileSize; i++) 
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].texture, i, indices);
+	for (int i = 0; i<fileSize; i++)
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].shader, i, indices);
+	for (int i = 0; i<fileSize; i++)
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].material, i, indices);
+	for (int i = 0; i<fileSize; i++)
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].mesh, i, indices);
+	for (int i = 0; i<fileSize; i++)
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].body, i, indices);
+	for (int i = 0; i<fileSize; i++)
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].skeleton, i, indices);
+	for (int i = 0; i<fileSize; i++)
+		if (origin[i] == MODULE_RES || cr)
+			searchNameInV(s, type, file[i].animation, i, indices);*/
+
 	//MessageBoxA(NULL, to_string((int)indices.size()).c_str(), "FOUNDINGS SIZE", 0);
+
 	return indices;
 }
 
-QString IniData::searchAllNames(const QString &s, bool cr, int to) const{
+QString IniData::searchAllNames(const QString &s, bool cr, int to) const {
   QString res;
   int fileSize = (int)file.size();
   for (int i=0; i<fileSize; i++) if (origin[i]==MODULE_RES || cr)

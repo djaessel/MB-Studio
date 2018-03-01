@@ -23,6 +23,8 @@ namespace MB_Studio
         public const string CSV_FORMAT = ".csv";
         public const string TEXT_FORMAT = ".txt";
 
+        public const string EOF_TXT = "EOF";
+
         private bool FullScreen = true;
 
         private const int C_GRIP = 16;                      // Grip size
@@ -360,7 +362,7 @@ namespace MB_Studio
         protected override void SetFullScreenByHandle(IntPtr hWnd = default(IntPtr))
         {
             base.SetFullScreenByHandle(hWnd);
-            maxnorm_btn.Text = "◱"; // "⬜"
+            maxnorm_btn.Text = "◱";//"⬜"
         }
 
         private void SetNormalScreen(Screen s)
@@ -376,7 +378,8 @@ namespace MB_Studio
                 container.Width - drawRectangle.Width - drawRectangle.X,
                 drawRectangle.Y,
                 drawRectangle.Width,
-                drawRectangle.Height);
+                drawRectangle.Height
+            );
         }
 
         /*private void MB_Studio_MdiChildActivate(object sender, EventArgs e)
@@ -414,7 +417,9 @@ namespace MB_Studio
         private void AddNewTab(Form frm)
         {
             bool specialForm = false;
-            TabPage tab = new TabPage(frm.Text);
+            TabPage tab = new TabPage(frm.Text) {
+                Name = frm.Name//is the same name good idea?
+            };
             Control[] ccc = frm.Controls.Find("title_lbl", false);
 
             if (ccc.Length != 0)
@@ -467,12 +472,12 @@ namespace MB_Studio
                     if (tabControl.TabPages[index].Controls[i].Height > maxHeight)
                         maxHeight = tabControl.TabPages[index].Controls[i].Height;
                 }
-                MessageBox.Show(
-                                frm.Height + ";" + frm.Width + ";" + maxWidth + ";" + maxHeight,
-                                Application.ProductName,
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information
-                                );
+                /*MessageBox.Show(//Debug MessageBox for resize
+                    frm.Height + ";" + frm.Width + ";" + maxWidth + ";" + maxHeight,
+                    Application.ProductName,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );*/
                 if (frm.Width > (tabControl.TabPages[index].Width - maxWidth))
                 {
                     if (frm.Height <= (tabControl.TabPages[index].Height - maxHeight))
@@ -483,11 +488,11 @@ namespace MB_Studio
                     else
                     {
                         MessageBox.Show(
-                                        "ERROR:RESIZE_NOT_IMPLEMENTED --> CONTACT PUBLISHER!",
-                                        Application.ProductName,
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Error
-                                        );
+                            "ERROR: RESIZE_NOT_IMPLEMENTED",
+                            Application.ProductName,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
                     }
                 }
                 else
@@ -567,7 +572,12 @@ namespace MB_Studio
             if (endPoint.Equals("mbsp"))
                 LoadProject(ProgramConsole.ReadProjectFileInfoFromFile(openFile_ofd.FileName)[1]);
             else
-                MessageBox.Show(openFile_ofd.FileName);
+                MessageBox.Show(
+                    "Invalid Projectformat: " + endPoint + Environment.NewLine + "Selected file: " + openFile_ofd.FileName,
+                    Application.ProductName,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
         }
 
         private void RemoveAllTabPagesExeptConsole()
@@ -584,7 +594,7 @@ namespace MB_Studio
             PrepareToolBar(projectShown);
             projectFiles_lb.Items.Clear();
 
-            // VORERST //
+            // VORERST // - AddRange later with optimized file names(?)
             projectFiles_lb.Items.Add("Troops");
             projectFiles_lb.Items.Add("Party Templates");
             projectFiles_lb.Items.Add("Parties");
@@ -601,10 +611,14 @@ namespace MB_Studio
 
             if (projectFiles_lb.SelectedIndex >= 0)
             {
+                int index = -1;
                 string item = projectFiles_lb.SelectedItem.ToString();
 
                 if (item.Equals("Troops"))
+                {
                     form = new TroopManager();
+                    index = tabControl.TabPages.IndexOfKey("ItemManager");
+                }
                 else if (item.Equals("Party Templates"))
                     form = new PartyTemplateManager();
                 else if (item.Equals("Parties"))
@@ -612,9 +626,15 @@ namespace MB_Studio
                 else if (item.Equals("Menus"))
                     form = new MenuManager();
                 else if (item.Equals("Items"))
+                {
                     form = new ItemManager();
+                    index = tabControl.TabPages.IndexOfKey("TroopManager");
+                }
                 /*else if (item.Equals("Presentations"))
                     form = new PresentationManager();*/
+                
+                if (index >= 0)
+                    tabControl.TabPages[index].Dispose();
             }
 
             if (form != null)
@@ -622,22 +642,8 @@ namespace MB_Studio
                 if (!IsShownAsTab(form))
                     AddNewTab(form);
                 else
-                    tabControl.SelectedIndex = TabControlGetIndexOf(form.Text);
+                    tabControl.SelectedIndex = tabControl.TabPages.IndexOfKey(form.Name);//TabControlGetIndexOf(form.Text);
             }
-        }
-
-        private int TabControlGetIndexOf(string text)
-        {
-            int idx = -1;
-            for (int i = 0; i < tabControl.TabPages.Count; i++)
-            {
-                if (tabControl.TabPages[i].Text.Equals(text))
-                {
-                    idx = i;
-                    i = tabControl.TabPages.Count;
-                }
-            }
-            return idx;
         }
 
         private void PrepareToolBar(bool projectShown = true)
@@ -646,17 +652,18 @@ namespace MB_Studio
             if (projectOpenAlready != projectShown)
             {
                 int widthToMove = 0;
-                List<Button> unusedButtons = new List<Button>
-                {
+                List<Button> unusedButtons = new List<Button> {
                     project_btn,
                     build_btn
                 };
+
                 foreach (Button b in unusedButtons)
                 {
                     widthToMove += b.Width;
                     b.Visible = !b.Visible;
                 }
-                if (projectShown && !projectOpenAlready) // maybe change this later as well --> automated on used Controls / Buttons
+
+                if (projectShown && !projectOpenAlready)// maybe change this later as well --> automated on used Controls / Buttons
                 {
                     help_btn.Left += widthToMove;
                     mbOptions_btn.Left += widthToMove;
@@ -713,7 +720,7 @@ namespace MB_Studio
                             {
                                 typeCodeX.Add(line);
                                 line = sr.ReadLine();
-                            } while (!IsNewPseudoCode(line) && !line.Equals("EOF"));
+                            } while (!IsNewPseudoCode(line) && !line.Equals(EOF_TXT));
                             typesCodes.Add(typeCodeX);
                         }
                         else
@@ -780,7 +787,7 @@ namespace MB_Studio
                 foreach (List<string> typeCodeX in typesCodes)
                     foreach (string line in typeCodeX)
                         wr.WriteLine(line);
-                wr.Write("EOF");
+                wr.Write(EOF_TXT);
             }
         }
 

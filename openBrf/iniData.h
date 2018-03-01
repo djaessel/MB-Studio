@@ -90,8 +90,8 @@ public:
   QStringList errorList; // list all error strings when scanning module
   bool findErrors(int maxErr); // true if there's more
   
-  /*QString/**/std::vector<std::vector<int>>/**/ searchOneName(const QString &s, int to, bool cr) const;
-  QString searchAllNames(const QString &s,bool commonResToo, int token) const;
+  std::vector<std::vector<int>> searchOneName(const QString &s, int to, bool cr) const;
+  QString searchAllNames(const QString &s, bool commonResToo, int token) const;
 
   QString errorStringOnScan; // string on scan
 

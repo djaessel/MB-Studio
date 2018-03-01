@@ -12,8 +12,10 @@ using System.ComponentModel;
 
 namespace MB_Studio.Main
 {
-    public partial class ToolForm : SpecialForm 
-    // DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!! - am Ende abstract
+    // (DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!! - am Ende abstract)
+    // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  < NOT ANYMORE?! >  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    public partial class ToolForm : SpecialForm
     {
         #region Attributes
 
@@ -71,23 +73,24 @@ namespace MB_Studio.Main
         private void ToolForm_Load(object sender, EventArgs e)
         {
             title_lbl.Text = Text;
+
             // Update UI
             UpdateUI(false);
 
             // Show the splash form
-            //if (!(DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime))
-            //{
-                /*frmSplash = new Loader(this, false);
-                {
-                    StartPosition = FormStartPosition.CenterScreen;
-                }
+            if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
+            {
+                frmSplash = new Loader(this, false) {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
                 frmSplash.Show();/**/
-            //}
 
-            // Do some time consuming work in separate thread
-            /*Thread t = new Thread(new ThreadStart(LoadControlsAndSettings)) { IsBackground = true };
-            t.Start();/**/
-            LoadControlsAndSettings(); // USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING
+                // Do some time consuming work in separate thread
+                Thread t = new Thread(new ThreadStart(LoadControlsAndSettings)) { IsBackground = true };
+                t.Start();/**/
+            }
+            else
+                LoadControlsAndSettings();// USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING
         }
 
         /// <summary>
@@ -112,7 +115,7 @@ namespace MB_Studio.Main
             Invoke((MethodInvoker)delegate { InitializeControls(); });
 
             // Update UI
-            if (!(DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime))
+            if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
         }
 
@@ -125,7 +128,7 @@ namespace MB_Studio.Main
 
             typeSelect_lb.SelectedIndex = 0;
 
-            //ResetControls();
+            //ResetControls();//removed because as well in FormShown Event(?)
         }
 
         protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
@@ -135,10 +138,10 @@ namespace MB_Studio.Main
 
         protected virtual void LoadSettingsAndLists(bool loadSavedTypes = true)
         {
-            //if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
-            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in jeweiligen Forms, falls BUG NICHT gehoben!
+            if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);
 
-            //bool loadSavedTypes = true; // maybe make this universal in MB Studio as option to select but default true
+            //bool loadSavedTypes = true;// maybe make this universal in MB Studio as option to select but default true
 
             if (loadSavedTypes)
             {
@@ -179,7 +182,7 @@ namespace MB_Studio.Main
             bool b = false;
             if (text.Contains(Prefix))
                 if (text.Substring(0, Prefix.Length).Equals(Prefix))
-                    b = !b; // true
+                    b = !b;//true
             return b;
         }
 

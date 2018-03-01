@@ -833,29 +833,24 @@ static void quickHackFixName(BrfData &ref){
 	}
 }
 
-void MainWindow::refreshReference(){
-	bool loaded = false;
-	if (usingModReference()) {
-		// attempt to use module spcific folder
-		QString fn = referenceFilename(1);
-		//qDebug("Trying to load '%s'",fn.toLatin1().data());
-		if (reference.Load(fn.toStdWString().c_str())) {
-			loadedModReference = true;
-			loaded = true;
-			quickHackFixName( reference );
-		}
-	}
-	if (!loaded) {
-		loadedModReference = false;
-		QString fn = referenceFilename(0);
-		//qDebug("Trying to standard load '%s'",fn.toLatin1().data());
-		if (reference.Load(fn.toStdWString().c_str()))  loaded = true;
-		quickHackFixName( reference );//( reference );
-	}
-	if (loaded) {
+bool MainWindow::refreshReference(){
+
+	loadedModReference = usingModReference();
+
+	QString fn;
+	if (loadedModReference) fn = referenceFilename(1);
+	else fn = referenceFilename(0);
+
+	if (reference.Load(fn.toStdWString().c_str())) {
+		quickHackFixName(reference);//moved here by Johandros
 		guiPanel->setReference(&reference);
 		updateGui();
+		return true;
 	}
+
+	MessageBoxA(NULL, QString("Reference Path: " + fn).toStdString().c_str(), "ERROR: REFERENCE_PATH_NOT_FOUND", MB_ICONERROR);
+	loadedModReference = false;
+	return false;
 }
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
@@ -1588,34 +1583,19 @@ void MainWindow::hitboxSymmetrize(){
 
 void MainWindow::hitboxActivate(bool a){
 	//BrfSkeleton &s = getSelected<BrfSkeleton>();
-
 	BrfSkeleton &s = *currentDisplaySkeleton();
 
 	if (!&s) return;
 
-	//MessageBoxA(NULL, "FOUND HITBOX!? - 1", "INFO", 0);
-
 	int b = guiPanel->getCurrentSubpieceIndex(SKELETON);
 	BrfBody *hit = hitboxSet.FindBody(s.name);
 
-	//MessageBoxA(NULL, "FOUND HITBOX!? - 2", "INFO", 0);
-
-	if (b<0) return; // (remove by Johandros)
-
-	//MessageBoxA(NULL, "FOUND HITBOX!? - 3", "INFO", 0);
-
+	if (b<0) return;
 	if (!hit) return;
-
-	//MessageBoxA(NULL, "FOUND HITBOX!? - 4", "INFO", 0);
-
 	if (b>=(int)hit->part.size()) return;
-
-	//MessageBoxA(NULL, "FOUND HITBOX!? - 5", "INFO", 0);
 
 	if (!a) hit->part[b].SetEmpty();
 	else hit->part[b].type = BrfBodyPart::CAPSULE;
-
-	//MessageBoxA(NULL, "FOUND HITBOX!? - 6", "INFO", 0);
 
 	setModifiedHitboxes(true);
 	updateGl();
@@ -3823,17 +3803,15 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPo
 
 /* method created by Johandros */
 bool MainWindow::hasDependencyProblems() {
-	bool hasProblems = true;
-	//QString sss = QString("E:\\SteamLibrary\\steamapps\\common\\MountBlade Warband\\MB Studio\\reference.brf");
-	const wchar_t* fileName = referenceFilename(0).toStdWString().c_str()/*sss.toStdWString().c_str();*/;
-
-	if (reference.Load(fileName)) hasProblems = !hasProblems;//false
-	quickHackFixName(reference);// (reference);
-
-	if (hasProblems)
-		MessageBoxA(NULL, QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf File not in the same folder as openBrf or path is invalid! - Path: %1")
-			.arg(fileName).toStdString().c_str(), "ERROR", MB_ICONERROR);
-
+	bool hasProblems = !refreshReference();//Problems with Windows 7 SP1(?)
+	if (hasProblems) {
+		MessageBoxA(
+			NULL,
+			"ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf file is not in the same folder as openBrf or path is invalid!\nAlso check for dependency problems if possible!",
+			"ERROR",
+			MB_ICONERROR
+		);
+	}
 	return hasProblems;
 }
 
@@ -5442,23 +5420,16 @@ bool MainWindow::refreshSkeletonBodiesXml(){
 bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 {
 	bool found = false;
-
-	//static bool optA = true; // DO I NEED THIS?
-	//static int optB = -1; // DO I NEED THIS?
-	//static QString optC; // DO I NEED THIS?
+	QString lastFileName = QString(".");
+	typedef vector<vector<int>> NameItems;
+	vector<int> idxs;
 
 	inidata.loadAll(4);
 
-	typedef vector<vector<int>> NameItems;
 	NameItems nameItems = inidata.searchOneName(name, type, cr);
 	const size_t size = nameItems.size();
-	QString lastFileName = QString(".");
-	vector<int> idxs;
+	bool sizeIsOne = (size == 1);
 
-	//std::string sType = std::to_string(type);
-	//MessageBoxA(NULL, sType.c_str(), "TEST", 0);
-	//std::string sSize = std::to_string(size);
-	//MessageBoxA(NULL, sSize.c_str(), "TEST", 0);
 	if (size > 0)
 	{
 		for (size_t i = 0; i < size; i++)
@@ -5466,38 +5437,31 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 			int file = nameItems[i][0];
 			int index = nameItems[i][1];
 			int kind = nameItems[i][2];
-
-			//MessageBoxA(NULL, inidata.filename[file].toStdString().c_str(), "Name", 0);
-			//MessageBoxA(NULL, to_string(file).c_str(), "Name", 0);
-			//MessageBoxA(NULL, to_string(index).c_str(), "Name", 0);
-			//MessageBoxA(NULL, to_string(kind).c_str(), "Name", 0);
-
 			if (type == kind)
 			{
-				//MessageBoxA(NULL, "SECOND ONE!", "TEST", 0);
-				if (lastFileName != inidata.filename[file])
+				if (lastFileName != inidata.filename[file])//for itemsmanager (is important I guess)
 				{
 					lastFileName = inidata.filename[file];
 					loadFile(lastFileName);
-					//MessageBoxA(NULL, "THIRD ONE!", "TEST", 0);
 				}
-				
-				selectOne(kind, index);
 
-				//MessageBoxA(NULL, "FOURTH ONE!", "TEST", 0);
-
-				if (size > 1)
-					idxs.push_back(index);
-				else
-					found = true;
+				//if (size > 1)
+				idxs.push_back(index);
+				//else
+				//	found = true;
+				if (sizeIsOne) {
+					found = !found;
+					i = size;
+				}
 			}
 		}
 		
-		if (!found && idxs.size() != 0)
-		{
-			//MessageBoxA(NULL, "FIFTH ONE!", "TEST", 0);
+		if (found) {
+			selectOne(type, idxs[0]);
+		}
+		else if (/*!found && */idxs.size() != 0) {
 			selectCurManyIndicesByList(idxs);
-			found = true; //check maybe some more
+			found = !found;//true //check maybe some more
 		}
 	}
 	return found;
@@ -5518,7 +5482,6 @@ bool MainWindow::searchIni(){
 	static int optB = -1;
 	static QString optC;
 	AskModErrorDialog *d = new AskModErrorDialog(this, inidata, true, lastSearchString);
-	//MessageBoxA(NULL, "Pos1", "TEST", 0);
 	d->setOptions(optA,optB,optC);
 	d->setup();
 	d->exec();
@@ -5535,11 +5498,8 @@ bool MainWindow::searchIni(){
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (maybeSave()) {
-		event->accept();
-	} else {
-		event->ignore();
-	}
+	if (maybeSave()) event->accept();
+	else event->ignore();
 }
 
 void MainWindow::newFile(){
@@ -5571,8 +5531,6 @@ void MainWindow::registerExtension(){
 		//QSettings settings("HKEY_LOCAL_MACHINE", QSettings::NativeFormat);
 		//settings.beginGroup("SOFTWARE");
 		//settings.beginGroup("Classes");
-
-
 		//settings.beginGroup(".brf");
 		QSettings settings(QSettings::NativeFormat,QSettings::SystemScope, "classes", ".brf");
 		settings.setValue("","brf.resourceT");

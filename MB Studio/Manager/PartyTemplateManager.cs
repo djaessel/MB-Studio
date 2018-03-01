@@ -6,6 +6,7 @@ using MB_Studio.Main;
 using skillhunter;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace MB_Studio.Manager
@@ -19,7 +20,9 @@ namespace MB_Studio.Manager
 
         public PartyTemplateManager() : base(Skriptum.ObjectType.PARTY_TEMPLATE)
         {
-            //types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID); // später vielleicht wieder in ToolForm, falls BUG gehoben!
+            if (DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
+
             InitializeComponent();
             foreach (Control c in groupBox_1_gb.Controls)
             {

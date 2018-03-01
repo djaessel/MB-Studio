@@ -25,40 +25,34 @@ static void showUsage(){
   );
 }
 
+
 extern const char* applVersion;
-static MainWindow* curWindow;
-static QApplication* curApp;
-static int windowShownMode = -1;//startValue
+static MainWindow* curWindow = nullptr;
+static QApplication* curApp = nullptr;
+static bool windowShown = false;
 
-static void MainWindowNotFound()
+
+static void MainNotFoundErrorMessage()
 {
-	MessageBoxA(NULL, "CURWINDOW_NOT_FOUND", "ERROR", MB_ICONERROR);
+	MessageBoxA(NULL, "CUR_WINDOW_NOT_FOUND", "ERROR", MB_ICONERROR);
 }
 
-static bool CurWindowIsShown(/*bool showError = true*/)
+static bool CurWindowIsShown(bool showError = true)
 {
-	bool b = (curWindow);
-	if (!b/* && showError*/)
-		MainWindowNotFound();
-	return b;
+	if (curWindow) return true;
+	if (showError) MainNotFoundErrorMessage();
+	return false;
 }
 
-static bool CurAppIsNotNull()
+DLL_EXPORT byte DLL_EXPORT_DEF_CALLCONV IsCurHWndShown()
 {
-	return (curApp);
-}
-
-DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV IsCurHWndShown()
-{
-	bool bb = false;
-	if (windowShownMode > 0) bb = !bb;
-	return bb;
+	return CurWindowIsShown(false);
 }
 
 DLL_EXPORT_VOID CloseApp()
 {
-	curApp->quit();
-	windowShownMode = 0x00;
+	if (curApp)
+		curApp->quit();
 }
 
 DLL_EXPORT INT_PTR DLL_EXPORT_DEF_CALLCONV GetCurWindowPtr()
@@ -68,7 +62,7 @@ DLL_EXPORT INT_PTR DLL_EXPORT_DEF_CALLCONV GetCurWindowPtr()
 
 DLL_EXPORT_VOID SetModPath(char* modPath)
 {
-	if (CurWindowIsShown(/*false*/))
+	if (IsCurHWndShown())
 		curWindow->setModPathExternal(modPath);
 }
 
@@ -112,7 +106,7 @@ DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char*
 	return found;
 }
 
-DLL_EXPORT/*_VOID*//**/ bool DLL_EXPORT_DEF_CALLCONV/**/ AddMeshToXViewModel(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/)
+DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/)
 {
 	bool retur = SelectItemByNameAndKind(meshName);
 	if (retur) {//includes CurWindowIsShown()
@@ -155,26 +149,24 @@ DLL_EXPORT_VOID ClearTroop3DPreview()
 */
 DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 {
-#ifdef DEBUG_MODE
-	bool debugMode = false;
+	/*bool debugMode = false;
 	if (argc == 1)
 		if (argv[0] == "--debug")
-			debugMode = !debugMode; // true
-#endif // DEBUG_MODE
+			debugMode = !debugMode;//true
+	*/
 
-	windowShownMode = 0x00;
+	windowShown = false;
 
 	QString nextTranslator;
 	QApplication app(argc, argv);
-
-	curApp = &app;
-
 	QStringList arguments = QCoreApplication::arguments();
 
 	app.setApplicationVersion(applVersion);
 	app.setApplicationName("OpenBrf");
-	app.setOrganizationName("Marco Tarini");
-	app.setOrganizationDomain("Marco Tarini");
+	app.setOrganizationName("Marco Tarini / J.SYS");
+	app.setOrganizationDomain("Marco Tarini / J.SYS");
+
+	curApp = &app;
 
 	bool changeModule = false;
 	bool useAlphaC = false;
@@ -232,57 +224,28 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 		app.installTranslator(&qtTranslator);
 
 		MainWindow w;
-		curWindow = &w;
-		
-		//windowShownMode = 0x01;
-
-#ifdef DEBUG_MODE
-		if (debugMode)
-			MessageBoxA(NULL, "MAIN() - MainWindow initialized!", "INFO", 0); //NOT WORKING
-#endif // DEBUG_MODE
-
 		w.setUseAlphaCommands(useAlphaC);
-
-#ifdef DEBUG_MODE
-		if (debugMode)
-			MessageBoxA(NULL, "MAIN() - MainWindow settings changed!", "INFO", 0); //NOT WORKING
-#endif // DEBUG_MODE
-
 		w.show();
 
-#ifdef DEBUG_MODE
-		if (debugMode)
-			MessageBoxA(NULL, "MAIN() - MainWindow shown!", "INFO", 0); //NOT WORKING
-#endif // DEBUG_MODE
+		curWindow = &w;
 
 		if (changeModule)
 			w.setModPathExternal((char*)arguments[3].toStdString().c_str());
 
-#ifdef DEBUG_MODE
-		if (debugMode)
-			MessageBoxA(NULL, "MAIN() - Modpath set!", "INFO", 0); //NOT WORKING
-#endif // DEBUG_MODE
+		if (arguments.size() > 1) 
+			w.loadFile(arguments[1]);
+		arguments.clear();
 
-		if (arguments.size() > 1) w.loadFile(arguments[1]); arguments.clear();
-
-#ifdef DEBUG_MODE
-		if (debugMode)
-			MessageBoxA(NULL, "MAIN() - FINAL TEST!", "INFO", 0); //NOT WORKING
-#endif // DEBUG_MODE
-
-		windowShownMode = 0x64;//100
+		windowShown = true;
 
 		if (app.exec() == 101) {
 			nextTranslator = w.getNextTranslatorFilename();
-			continue; // just changed language! another run
+			continue;//just changed language! -> another run
 		}
 
-		windowShownMode = 0x00;
-
-#ifdef DEBUG_MODE
-		if (debugMode)
-			MessageBoxA(NULL, "MAIN() - APPLICATION CLOSED!", "INFO", 0); //NOT WORKING
-#endif // DEBUG_MODE
+		windowShown = false;
+		curWindow = nullptr;
+		curApp = nullptr;
 
 		break;
 	}

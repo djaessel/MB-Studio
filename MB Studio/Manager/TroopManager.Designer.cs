@@ -1930,9 +1930,9 @@ namespace MB_Studio.Manager
             this.troopSelect_lb.ItemHeight = 16;
             this.troopSelect_lb.Items.AddRange(new object[] {
             "New"});
-            this.troopSelect_lb.Location = new System.Drawing.Point(127, 58);
+            this.troopSelect_lb.Location = new System.Drawing.Point(78, 58);
             this.troopSelect_lb.Name = "troopSelect_lb";
-            this.troopSelect_lb.Size = new System.Drawing.Size(277, 114);
+            this.troopSelect_lb.Size = new System.Drawing.Size(335, 114);
             this.troopSelect_lb.TabIndex = 15;
             this.troopSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TroopSelect_SelectedIndexChanged);
             // 
@@ -1940,7 +1940,7 @@ namespace MB_Studio.Manager
             // 
             this.troopSelect_lbl.AutoSize = true;
             this.troopSelect_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.troopSelect_lbl.Location = new System.Drawing.Point(56, 37);
+            this.troopSelect_lbl.Location = new System.Drawing.Point(7, 37);
             this.troopSelect_lbl.Name = "troopSelect_lbl";
             this.troopSelect_lbl.Size = new System.Drawing.Size(65, 16);
             this.troopSelect_lbl.TabIndex = 14;
@@ -1986,9 +1986,9 @@ namespace MB_Studio.Manager
             this.searchTroop_SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.searchTroop_SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchTroop_SearchTextBox.ForeColor = System.Drawing.Color.White;
-            this.searchTroop_SearchTextBox.Location = new System.Drawing.Point(127, 35);
+            this.searchTroop_SearchTextBox.Location = new System.Drawing.Point(78, 35);
             this.searchTroop_SearchTextBox.Name = "searchTroop_SearchTextBox";
-            this.searchTroop_SearchTextBox.Size = new System.Drawing.Size(277, 22);
+            this.searchTroop_SearchTextBox.Size = new System.Drawing.Size(335, 22);
             this.searchTroop_SearchTextBox.TabIndex = 21;
             this.searchTroop_SearchTextBox.Text = "Search ...";
             this.searchTroop_SearchTextBox.TextChanged += new System.EventHandler(this.SearchTroop_SearchTextBox_TextChanged);
@@ -1999,7 +1999,7 @@ namespace MB_Studio.Manager
             this._3DView_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._3DView_btn.Location = new System.Drawing.Point(13, 149);
             this._3DView_btn.Name = "_3DView_btn";
-            this._3DView_btn.Size = new System.Drawing.Size(108, 23);
+            this._3DView_btn.Size = new System.Drawing.Size(59, 23);
             this._3DView_btn.TabIndex = 22;
             this._3DView_btn.Text = "3D View";
             this._3DView_btn.UseVisualStyleBackColor = false;
@@ -2011,7 +2011,6 @@ namespace MB_Studio.Manager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.ClientSize = new System.Drawing.Size(814, 430);
-            this.Controls.Add(this._3DView_btn);
             this.Controls.Add(this.searchTroop_SearchTextBox);
             this.Controls.Add(this.idINFO_lbl);
             this.Controls.Add(this.save_btn);
@@ -2028,6 +2027,7 @@ namespace MB_Studio.Manager
             this.Controls.Add(this.id_lbl);
             this.Controls.Add(this.id_txt);
             this.Controls.Add(this.troopPanel);
+            this.Controls.Add(this._3DView_btn);
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
