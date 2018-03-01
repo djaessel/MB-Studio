@@ -19,6 +19,8 @@ namespace MB_Studio.Main
         {
             title_lbl.Text = Name;
             projectsFolder_txt.Text = Path.GetFullPath(Properties.Settings.Default.projectsFolderPath);
+            show3DView_cb.Checked = Properties.Settings.Default.show3DView;
+            options_tree.HideSelection = false;
             options_tree.SelectedNode = options_tree.Nodes[0];
         }
 
@@ -34,17 +36,26 @@ namespace MB_Studio.Main
 
         private void Options_tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            string eNodeBegin = e.Node.Name.Substring(0, 5);
+            string eNodeName = e.Node.Name;
 
-            projects_panel.Visible = false;
+            foreach (Control panel in Controls)
+                if (GetNameEndOfControl(panel).Equals("panel"))
+                    panel.Visible = false;
 
-            if (eNodeBegin.Equals("gener"))
-                new HeaderValueTool().ShowDialog();
-            else if (eNodeBegin.Equals("proje"))
+            if (eNodeName.StartsWith("general"))
+            {
+                generalSettings_panel.Visible = true;
+                generalSettings_panel.BringToFront();
+            }
+            else if (eNodeName.StartsWith("projectsS"))
+                options_tree.SelectedNode = options_tree.SelectedNode.Nodes[0];
+            else if (eNodeName.StartsWith("projectsF"))
             {
                 projects_panel.Visible = true;
                 projects_panel.BringToFront();
             }
+            else if (eNodeName.StartsWith("generate"))
+                new HeaderValueTool().ShowDialog();
         }
 
         private void Save_ProjectsFolder_btn_Click(object sender, EventArgs e)
@@ -163,6 +174,13 @@ namespace MB_Studio.Main
             if (projectsPathBrowser_fbd.SelectedPath != null)
                 if (!projectsPathBrowser_fbd.SelectedPath.Equals(string.Empty))
                     projectsFolder_txt.Text = projectsPathBrowser_fbd.SelectedPath + '\\';
+        }
+
+        private void Show3DView_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.show3DView = show3DView_cb.Checked;
+            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Reload();
         }
     }
 }

@@ -126,5 +126,17 @@ namespace MB_Studio.Properties {
                 this["languageIndex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool show3DView {
+            get {
+                return ((bool)(this["show3DView"]));
+            }
+            set {
+                this["show3DView"] = value;
+            }
+        }
     }
 }

@@ -28,8 +28,13 @@
         /// </summary>
         private new void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Projects Folder");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Generate Header");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Projects Folder");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Projects", new System.Windows.Forms.TreeNode[] {
+            treeNode17});
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Generate Header");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
+            treeNode19});
             this.min_btn = new System.Windows.Forms.Button();
             this.maxnorm_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
@@ -40,8 +45,11 @@
             this.projectsFolder_txt = new System.Windows.Forms.TextBox();
             this.selectProjectsFolder_btn = new System.Windows.Forms.Button();
             this.projects_panel = new System.Windows.Forms.Panel();
+            this.generalSettings_panel = new System.Windows.Forms.Panel();
             this.projectsPathBrowser_fbd = new System.Windows.Forms.FolderBrowserDialog();
+            this.show3DView_cb = new System.Windows.Forms.CheckBox();
             this.projects_panel.SuspendLayout();
+            this.generalSettings_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // min_btn
@@ -124,13 +132,24 @@
             this.options_tree.LineColor = System.Drawing.Color.White;
             this.options_tree.Location = new System.Drawing.Point(8, 42);
             this.options_tree.Name = "options_tree";
-            treeNode1.Name = "projectsFolder_node";
-            treeNode1.Text = "Projects Folder";
-            treeNode2.Name = "generateHeader_node";
-            treeNode2.Text = "Generate Header";
+            treeNode16.Name = "generalSettings_node";
+            treeNode16.Text = "General";
+            treeNode16.ToolTipText = "General Settings";
+            treeNode17.Name = "projectsFolder_node";
+            treeNode17.Text = "Projects Folder";
+            treeNode17.ToolTipText = "Folder where all the mod projects are stored";
+            treeNode18.Name = "projectsSettings_node";
+            treeNode18.Text = "Projects";
+            treeNode18.ToolTipText = "Projects Settings";
+            treeNode19.Name = "generateHeader_node";
+            treeNode19.Text = "Generate Header";
+            treeNode20.Name = "Tools_node";
+            treeNode20.Text = "Tools";
+            treeNode20.ToolTipText = "Extra Tools";
             this.options_tree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode16,
+            treeNode18,
+            treeNode20});
             this.options_tree.Size = new System.Drawing.Size(192, 258);
             this.options_tree.TabIndex = 20;
             this.options_tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Options_tree_AfterSelect);
@@ -206,10 +225,33 @@
             this.projects_panel.TabIndex = 22;
             this.projects_panel.Visible = false;
             // 
+            // generalSettings_panel
+            // 
+            this.generalSettings_panel.Controls.Add(this.show3DView_cb);
+            this.generalSettings_panel.Location = new System.Drawing.Point(206, 41);
+            this.generalSettings_panel.Name = "generalSettings_panel";
+            this.generalSettings_panel.Size = new System.Drawing.Size(978, 251);
+            this.generalSettings_panel.TabIndex = 23;
+            this.generalSettings_panel.Visible = false;
+            // 
             // projectsPathBrowser_fbd
             // 
             this.projectsPathBrowser_fbd.Description = "Select the new directory for your MB Studio projects here";
             this.projectsPathBrowser_fbd.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // show3DView_cb
+            // 
+            this.show3DView_cb.AutoSize = true;
+            this.show3DView_cb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.show3DView_cb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.show3DView_cb.ForeColor = System.Drawing.Color.DarkGray;
+            this.show3DView_cb.Location = new System.Drawing.Point(103, 57);
+            this.show3DView_cb.Name = "show3DView_cb";
+            this.show3DView_cb.Size = new System.Drawing.Size(130, 24);
+            this.show3DView_cb.TabIndex = 31;
+            this.show3DView_cb.Text = "show3DView";
+            this.show3DView_cb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.show3DView_cb.UseVisualStyleBackColor = false;
             // 
             // MBOptions
             // 
@@ -217,6 +259,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.ClientSize = new System.Drawing.Size(1187, 308);
+            this.Controls.Add(this.generalSettings_panel);
             this.Controls.Add(this.options_tree);
             this.Controls.Add(this.min_btn);
             this.Controls.Add(this.maxnorm_btn);
@@ -230,6 +273,8 @@
             this.Load += new System.EventHandler(this.ExtraOptions_Load);
             this.projects_panel.ResumeLayout(false);
             this.projects_panel.PerformLayout();
+            this.generalSettings_panel.ResumeLayout(false);
+            this.generalSettings_panel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -246,5 +291,7 @@
         private System.Windows.Forms.Button selectProjectsFolder_btn;
         private System.Windows.Forms.Panel projects_panel;
         private System.Windows.Forms.FolderBrowserDialog projectsPathBrowser_fbd;
+        private System.Windows.Forms.Panel generalSettings_panel;
+        private System.Windows.Forms.CheckBox show3DView_cb;
     }
 }

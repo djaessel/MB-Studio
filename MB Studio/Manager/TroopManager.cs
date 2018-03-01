@@ -123,11 +123,14 @@ namespace MB_Studio.Manager
         {
             LoadSettingsAndLists();
 
-            Invoke((MethodInvoker)delegate
+            if (MB_Studio.Show3DView)
             {
-                openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
-                openBrfThread.Start();
-            });
+                Invoke((MethodInvoker)delegate
+                {
+                    openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
+                    openBrfThread.Start();
+                });
+            }
 
             // Update UI
             //Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true }); // IS IN openBrfThread!
@@ -508,14 +511,18 @@ namespace MB_Studio.Manager
 
             #region GROUP3 - Items
 
-            openBrfManager.Troop3DPreviewClear();
-            Console.WriteLine("Cleared Troop 3D Preview! (laut Codefluss)");
+            if (MB_Studio.Show3DView)
+            {
+                openBrfManager.Troop3DPreviewClear();
+                Console.WriteLine("Cleared Troop 3D Preview! (laut Codefluss)");
+            }
 
             foreach (int itemID in troop.Items)
             {
                 Item itemX = itemsRList[itemID];
                 AddItemToInventarComboboxByKind(itemID, itemX.Prefix + itemX.ID);
-                SetupTroopItemBone(itemX);
+                if (MB_Studio.Show3DView)
+                    SetupTroopItemBone(itemX);
                 usedItems_lb.Items.Add(itemID + " - " + itemX.Prefix + itemX.ID);
             }
 
@@ -523,8 +530,11 @@ namespace MB_Studio.Manager
 
             inventoryItemFlags = troop.ItemFlags;
 
-            openBrfManager.Troop3DPreviewShow();
-            Console.WriteLine("Show Troop 3D Preview! (laut Codefluss)");
+            if (MB_Studio.Show3DView)
+            {
+                openBrfManager.Troop3DPreviewShow();
+                Console.WriteLine("Show Troop 3D Preview! (laut Codefluss)");
+            }
 
             #endregion
 
@@ -707,21 +717,24 @@ namespace MB_Studio.Manager
                     break;
             }
 
-            if (skeletonId == 0)//no horse on screen!
+            if (MB_Studio.Show3DView)
             {
-                foreach (string meshName in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
+                if (skeletonId == 0)//no horse on screen!
                 {
-                    string mName = meshName.Split()[0].Trim();
-                    if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
-                        Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
-                    else
-                        Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
+                    foreach (string meshName in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
+                    {
+                        string mName = meshName.Split()[0].Trim();
+                        if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
+                            Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
+                        else
+                            Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
+                    }
                 }
+                //else/* if (skeletonId == 1)*/
+                //{
+                //    // CODE
+                //}
             }
-            //else/* if (skeletonId == 1)*/
-            //{
-            //    // CODE
-            //}
         }
 
         private void SetupTroopSkills(Troop troop)
@@ -1162,7 +1175,8 @@ namespace MB_Studio.Manager
             {
                 if (inventoryItemFlags.Count > selectedIndex)
                     selectedItemFlags_txt.Text = inventoryItemFlags[selectedIndex].ToString();
-                LoadCurrentMeshWithOpenBrf((ListBox)sender);
+                if (MB_Studio.Show3DView)
+                    LoadCurrentMeshWithOpenBrf((ListBox)sender);
             }
         }
 
@@ -1402,7 +1416,8 @@ namespace MB_Studio.Manager
 
         private void Items_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadCurrentMeshWithOpenBrf((ListBox)sender);
+            if (MB_Studio.Show3DView)
+                LoadCurrentMeshWithOpenBrf((ListBox)sender);
         }
 
         private void LoadCurrentMeshWithOpenBrf(ListBox lb)
@@ -1468,7 +1483,7 @@ namespace MB_Studio.Manager
 
         private void ShowGroup_3_btn_Click(object sender, EventArgs e)
         {
-            if (showGroup_3_btn.Text.Equals("v"))
+            if (showGroup_3_btn.Text.Equals("v") && MB_Studio.Show3DView)
                 StartOpenBrfManager();
         }
 
@@ -1482,18 +1497,21 @@ namespace MB_Studio.Manager
 
         private void _3DView_btn_Click(object sender, EventArgs e)
         {
-            if (openBrfManager == null && _3DView_btn.Enabled)
+            if (MB_Studio.Show3DView)
             {
-                _3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
-                _3DView_btn.Visible = false;
+                if (openBrfManager == null && _3DView_btn.Enabled)
+                {
+                    _3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
+                    _3DView_btn.Visible = false;
 
-                openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
+                    openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
 
-                showGroup_3_btn.PerformClick();
+                    showGroup_3_btn.PerformClick();
 
-                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
-                int result = openBrfManager.Show(MB_Studio.DebugMode);
-                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+                    Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                    int result = openBrfManager.Show(MB_Studio.DebugMode);
+                    Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+                }
             }
         }
 

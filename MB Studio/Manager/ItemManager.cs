@@ -57,11 +57,14 @@ namespace MB_Studio.Manager
         {
             base.LoadSettingsAndLists(loadSavedTypes);
 
-            Invoke((MethodInvoker)delegate
+            if (MB_Studio.Show3DView)
             {
-                openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
-                openBrfThread.Start();
-            });
+                Invoke((MethodInvoker)delegate
+                {
+                    openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
+                    openBrfThread.Start();
+                });
+            }
         }
 
         protected override void InitializeControls()
@@ -1366,40 +1369,41 @@ namespace MB_Studio.Manager
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                MessageBox.Show(ex.Message);
             }
         }
 
         private void ShowGroup_3_btn_Click(object sender, EventArgs e)
         {
-            if (showGroup_3_btn.Text.Equals("v"))
+            if (showGroup_3_btn.Text.Equals("v") && MB_Studio.Show3DView)
                 StartOpenBrfManager();
         }
 
         private void _3DView_btn_Click(object sender, EventArgs e)
         {
-            //Button _3DView_btn = (Button)sender;
-            if (openBrfManager == null && _3DView_btn.Enabled)
+            if (MB_Studio.Show3DView)
             {
-                //_3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
-                _3DView_btn.Visible = false;
+                if (openBrfManager == null && _3DView_btn.Enabled)
+                {
+                    _3DView_btn.Visible = false;
 
-                string mabPath = ProgramConsole.GetModuleInfoPath();
-                mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-                mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-                openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, mabPath);
+                    string mabPath = ProgramConsole.GetModuleInfoPath();
+                    mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+                    mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+                    openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, mabPath);
 
-                showGroup_3_btn.PerformClick();
+                    showGroup_3_btn.PerformClick();
 
-                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
-                int result = openBrfManager.Show(MB_Studio.DebugMode);
-                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+                    Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                    int result = openBrfManager.Show(MB_Studio.DebugMode);
+                    Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+                }
             }
         }
 
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Change3DView();
+            if (MB_Studio.Show3DView)
+                Change3DView();
         }
 
         private void Change3DView()

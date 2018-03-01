@@ -36,6 +36,8 @@ namespace MB_Studio
 
         public static bool DebugMode = false;
 
+        public static bool Show3DView { get { return Properties.Settings.Default.show3DView; } }
+
         #endregion
 
         #region Loading
