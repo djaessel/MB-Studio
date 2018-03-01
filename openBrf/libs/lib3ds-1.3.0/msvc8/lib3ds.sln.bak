@@ -1,13 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib3ds", "lib3ds.vcxproj", "{9CF2B398-9087-4D33-90EB-0320F42C78F4}"
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib3ds", "lib3ds.vcproj", "{9CF2B398-9087-4D33-90EB-0320F42C78F4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3dsdump", "3dsdump.vcxproj", "{583C3AA7-9150-4BBD-A7F9-49E5C2D39D53}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3dsdump", "3dsdump.vcproj", "{583C3AA7-9150-4BBD-A7F9-49E5C2D39D53}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CF2B398-9087-4D33-90EB-0320F42C78F4} = {9CF2B398-9087-4D33-90EB-0320F42C78F4}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3dsplay", "3dsplay.vcxproj", "{79DF8E20-21D9-47C2-8558-1F982A60264B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3dsplay", "3dsplay.vcproj", "{79DF8E20-21D9-47C2-8558-1F982A60264B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CF2B398-9087-4D33-90EB-0320F42C78F4} = {9CF2B398-9087-4D33-90EB-0320F42C78F4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
