@@ -30,7 +30,7 @@ namespace MB_Studio.Manager
         private static readonly List<string> ItemTypes = new List<string>() {"none","horse","one_handed_wpn","two_handed_wpn","polearm","arrows","bolts","shield","bow","crossbow","thrown","goods",
                                                       "head_armor","body_armor","foot_armor","hand_armor","pistol","musket","bullets","animal","book"};
 
-        //private Thread openBrfThread;
+        private Thread openBrfThread;
         private OpenBrfManager openBrfManager = null;
 
         private List<int[]> memberValues = new List<int[]>();
@@ -57,11 +57,11 @@ namespace MB_Studio.Manager
         {
             base.LoadSettingsAndLists(loadSavedTypes);
 
-            /*Invoke((MethodInvoker)delegate
+            Invoke((MethodInvoker)delegate
             {
                 openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
                 openBrfThread.Start();
-            });*/
+            });
         }
 
         protected override void InitializeControls()
@@ -1319,7 +1319,7 @@ namespace MB_Studio.Manager
         private void KillOpenBrfThread()
         {
             openBrfManager.Close();
-            //Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+            Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
         }
 
         private void StartOpenBrfManager()
