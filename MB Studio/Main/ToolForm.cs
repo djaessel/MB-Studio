@@ -136,14 +136,12 @@ namespace MB_Studio.Main
             throw new NotImplementedException();
         }
 
-        protected virtual void LoadSettingsAndLists(bool loadSavedTypes = true)
+        protected virtual void LoadSettingsAndLists()
         {
             if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);
 
-            //bool loadSavedTypes = true;// maybe make this universal in MB Studio as option to select but default true
-
-            if (loadSavedTypes)
+            if (Properties.Settings.Default.loadSavedObjects)//maybe change the access way later
             {
                 List<Skriptum> savedTypes = new List<Skriptum>();
                 List<List<string>> savedTypesDatas = MB_Studio.LoadAllPseudoCodeByObjectTypeID(ObjectTypeID);

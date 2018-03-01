@@ -37,10 +37,10 @@ namespace MB_Studio.Manager
             return new Party(raw_data);
         }
 
-        /*protected override void LoadSettingsAndLists()
+        protected override void LoadSettingsAndLists()
         {
             base.LoadSettingsAndLists();
-        }*/
+        }
 
         protected override void InitializeControls()
         {

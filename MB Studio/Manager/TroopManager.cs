@@ -55,8 +55,7 @@ namespace MB_Studio.Manager
             UpdateUI(false);
 
             // Show the splash form
-            frmSplash = new Loader(this, false)
-            {
+            frmSplash = new Loader(this, false) {
                 StartPosition = FormStartPosition.CenterScreen
             };
             frmSplash.Show();
@@ -131,9 +130,11 @@ namespace MB_Studio.Manager
                     openBrfThread.Start();
                 });
             }
-
-            // Update UI
-            //Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true }); // IS IN openBrfThread!
+            else
+            {
+                // Update UI
+                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
+            }
         }
 
         private void InitializeLists()
@@ -141,7 +142,7 @@ namespace MB_Studio.Manager
             CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.TROOP]);
             Troop[] troopsX = cr.ReadTroop();
 
-            bool loadSavedTroops = true; // maybe make this universal in MB Studio as option to select but default true
+            bool loadSavedTroops = Properties.Settings.Default.loadSavedObjects;//maybe change the access way later
 
             List<Troop> savedTroops = new List<Troop>();
             if (loadSavedTroops)
@@ -176,6 +177,7 @@ namespace MB_Studio.Manager
 
             Invoke((MethodInvoker)delegate
             {
+                _3DView_btn.Visible = MB_Studio.Show3DView;
                 foreach (Control c in troopPanel.Controls)
                     if (c.Name.Split('_')[0].Equals("showGroup"))
                         c.Click += C_Click;

@@ -37,9 +37,9 @@ namespace MB_Studio.Manager
             return new PartyTemplate(raw_data);
         }
 
-        protected override void LoadSettingsAndLists(bool loadSavedTypes = true)
+        protected override void LoadSettingsAndLists()
         {
-            base.LoadSettingsAndLists(loadSavedTypes);
+            base.LoadSettingsAndLists();
 
             no_label_rb.CheckedChanged += No_Label_CheckBox_CheckedChanged;
             village_rb.CheckedChanged += Village_rb_CheckedChanged;

@@ -53,9 +53,11 @@ namespace MB_Studio.Manager
             return new Item(raw_data);
         }
 
-        protected override void LoadSettingsAndLists(bool loadSavedTypes = true)
+        protected override void LoadSettingsAndLists()
         {
-            base.LoadSettingsAndLists(loadSavedTypes);
+            base.LoadSettingsAndLists();
+
+            _3DView_btn.Visible = MB_Studio.Show3DView;
 
             if (MB_Studio.Show3DView)
             {
@@ -78,6 +80,8 @@ namespace MB_Studio.Manager
             meshTag = int.Parse(showGroup_3_btn.Tag.ToString());
 
             type_cbb.Items.AddRange(ItemTypes.ToArray());
+
+            _3DView_btn.Visible = MB_Studio.Show3DView;
 
             ResetControls();
         }
@@ -1347,9 +1351,10 @@ namespace MB_Studio.Manager
 
                 Thread.Sleep(50);
 
-                int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
-                if (idx >= 0)
-                    LoadMeshWithOpenBrf(((Item)types[idx]).Meshes[0].Split()[0]);
+                //int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
+                //if (idx >= 0)
+                //    LoadMeshWithOpenBrf(((Item)types[idx]).Meshes[0].Split()[0]);
+                Change3DView();
 
                 // Update UI
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
@@ -1358,7 +1363,7 @@ namespace MB_Studio.Manager
             });
         }
 
-        private void LoadMeshWithOpenBrf(string resourceName)
+        /*private void LoadMeshWithOpenBrf(string resourceName)
         {
             try
             {
@@ -1370,7 +1375,7 @@ namespace MB_Studio.Manager
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }*/
 
         private void ShowGroup_3_btn_Click(object sender, EventArgs e)
         {

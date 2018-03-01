@@ -267,6 +267,10 @@
             // 
             this.typeSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TypeSelect_lb_SelectedIndexChanged);
             // 
+            // typeSelect_lbl
+            // 
+            this.typeSelect_lbl.Location = new System.Drawing.Point(16, 37);
+            // 
             // title_lbl
             // 
             this.title_lbl.Text = "ToolForm";
@@ -3019,10 +3023,10 @@
             this._3DView_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._3DView_btn.Location = new System.Drawing.Point(21, 147);
             this._3DView_btn.Name = "_3DView_btn";
-            this._3DView_btn.Size = new System.Drawing.Size(100, 25);
+            this._3DView_btn.Size = new System.Drawing.Size(60, 25);
             this._3DView_btn.TabIndex = 37;
             this._3DView_btn.Tag = "140";
-            this._3DView_btn.Text = "Enable 3D View";
+            this._3DView_btn.Text = "3D View";
             this._3DView_btn.UseVisualStyleBackColor = false;
             this._3DView_btn.Click += new System.EventHandler(this._3DView_btn_Click);
             // 

@@ -138,5 +138,17 @@ namespace MB_Studio.Properties {
                 this["show3DView"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool loadSavedObjects {
+            get {
+                return ((bool)(this["loadSavedObjects"]));
+            }
+            set {
+                this["loadSavedObjects"] = value;
+            }
+        }
     }
 }

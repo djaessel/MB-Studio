@@ -31,11 +31,11 @@ namespace MB_Studio.Manager
             InitializeComponent();
         }
 
-        protected override void LoadSettingsAndLists(bool loadSavedTypes = true)
+        protected override void LoadSettingsAndLists()
         {
             mno_translations = new string[sbyte.MaxValue + 1];
 
-            base.LoadSettingsAndLists(loadSavedTypes);
+            base.LoadSettingsAndLists();
 
             designer = new MenuDesigner();
         }
