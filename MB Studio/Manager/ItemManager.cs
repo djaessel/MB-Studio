@@ -29,7 +29,7 @@ namespace MB_Studio.Manager
         private static readonly List<string> ItemTypes = new List<string>() {"none","horse","one_handed_wpn","two_handed_wpn","polearm","arrows","bolts","shield","bow","crossbow","thrown","goods",
                                                       "head_armor","body_armor","foot_armor","hand_armor","pistol","musket","bullets","animal","book"};
 
-        private Thread openBrfThread;
+        private Thread openBrfThread = null;
         private OpenBrfManager openBrfManager = null;
 
         private List<int[]> memberValues = new List<int[]>();
@@ -60,7 +60,7 @@ namespace MB_Studio.Manager
             {
                 Invoke((MethodInvoker)delegate
                 {
-                    openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
+                    openBrfThread = new Thread(new ThreadStart(StartOpenBrfManager)) { IsBackground = true };
                     openBrfThread.Start();
                 });
             }
@@ -77,8 +77,6 @@ namespace MB_Studio.Manager
             meshTag = int.Parse(showGroup_3_btn.Tag.ToString());
 
             type_cbb.Items.AddRange(ItemTypes.ToArray());
-
-            _3DView_btn.Visible = MB_Studio.Show3DView;
 
             ResetControls();
         }
@@ -1323,19 +1321,8 @@ namespace MB_Studio.Manager
         private void KillOpenBrfThread()
         {
             openBrfManager.Close();
-            Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
-        }
-
-        private void StartOpenBrfManager()
-        {
-            if (openBrfManager == null && _3DView_btn.Enabled)
-                Invoke((MethodInvoker)delegate { _3DView_btn.PerformClick(); });
-            else if (_3DView_btn.Enabled)
-            {
-                Invoke((MethodInvoker)delegate { _3DView_btn.Enabled = false; });
-                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
-                t.Start();
-            }
+            if (openBrfThread != null)
+                Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
         }
 
         private void AddOpenBrfAsChildThread()
@@ -1348,7 +1335,8 @@ namespace MB_Studio.Manager
 
                 Thread.Sleep(50);
 
-                Change3DView();
+                //typeSelect_lb.SelectedIndex = 0;
+                //Change3DView();
 
                 // Update UI
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
@@ -1357,32 +1345,12 @@ namespace MB_Studio.Manager
             });
         }
 
-        private void ShowGroup_3_btn_Click(object sender, EventArgs e)
+        private static string GetMABPath()
         {
-            if (showGroup_3_btn.Text.Equals("v") && MB_Studio.Show3DView)
-                StartOpenBrfManager();
-        }
-
-        private void _3DView_btn_Click(object sender, EventArgs e)
-        {
-            if (MB_Studio.Show3DView)
-            {
-                if (openBrfManager == null && _3DView_btn.Enabled)
-                {
-                    _3DView_btn.Visible = false;
-
-                    string mabPath = ProgramConsole.GetModuleInfoPath();
-                    mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-                    mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-                    openBrfManager = new OpenBrfManager(ProgramConsole.OriginalMod, mabPath);
-
-                    showGroup_3_btn.PerformClick();
-
-                    Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
-                    int result = openBrfManager.Show(MB_Studio.DebugMode);
-                    Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
-                }
-            }
+            string mabPath = ProgramConsole.GetModuleInfoPath();
+            mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+            mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+            return mabPath;
         }
 
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
@@ -1425,6 +1393,26 @@ namespace MB_Studio.Manager
                 }
             }
             return b;
+        }
+
+        private void StartOpenBrfManager()//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
+        {
+            Invoke((MethodInvoker)delegate { StartOpenBrfManager_btn_Click(null, null); });
+        }
+
+        private void StartOpenBrfManager_btn_Click(object sender, EventArgs e)//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
+        {
+            if (MB_Studio.Show3DView && openBrfManager == null)
+            {
+                openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
+
+                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
+                t.Start();
+
+                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                int result = openBrfManager.Show(MB_Studio.DebugMode);
+                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+            }
         }
 
         #endregion

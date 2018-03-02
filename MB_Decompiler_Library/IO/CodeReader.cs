@@ -196,20 +196,19 @@ namespace MB_Decompiler_Library.IO
         public const ulong TABLEAU_MAT_MIN = 1729382256910270464;
         public const ulong TABLEAU_MAT_MAX = 1730000000000000000;
 
-        public const ulong ANIM_MIN = 1801439850948198400;
-        public const ulong ANIM_MAX = 1810000000000000000;//public const ulong ANIM_MAX = ulong.MaxValue - int.MaxValue;
-
         public const ulong TRACK_MIN = 1657324662872342528;
         public const ulong TRACK_MAX = 1660000000000000000;
 
-        public const ulong MAP_ICON_MIN = ‭1297036692682702848‬;
-        public const ulong MAP_ICON_MAX = ‭1300000000000000000‬;
+        public const ulong MAP_ICON_MIN = 129703669268270;
+        public const ulong MAP_ICON_MAX = 130000000000000;
 
-        /*
-INFO_PAGE
-DIALOG
-POST_FX
-        */
+        //INFO_PAGE
+        //DIALOG
+        //POST_FX
+
+        public const ulong ANIM_MIN = 1801439850948198400;
+        public const ulong ANIM_MAX = 1810000000000000000;//public const ulong ANIM_MAX = ulong.MaxValue - int.MaxValue;
+
         #endregion
 
         #endregion

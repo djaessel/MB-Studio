@@ -177,16 +177,16 @@ namespace MB_Studio.Main
                     projectsFolder_txt.Text = projectsPathBrowser_fbd.SelectedPath + '\\';
         }
 
-        private void Show3DView_cb_CheckedChanged(object sender, EventArgs e)
+        private void LoadSavedObjects_cb_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.show3DView = show3DView_cb.Checked;
+            Properties.Settings.Default.loadSavedObjects = loadSavedObjects_cb.Checked;
             Properties.Settings.Default.Save();
             Properties.Settings.Default.Reload();
         }
 
-        private void LoadSavedObjects_cb_CheckedChanged(object sender, EventArgs e)
+        private void Show3DView_cb_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.loadSavedObjects = loadSavedObjects_cb.Checked;
+            Properties.Settings.Default.show3DView = show3DView_cb.Checked;
             Properties.Settings.Default.Save();
             Properties.Settings.Default.Reload();
         }

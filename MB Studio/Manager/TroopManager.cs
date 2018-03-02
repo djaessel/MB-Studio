@@ -23,7 +23,6 @@ namespace MB_Studio.Manager
 
         private const string FACE_CODE_ZERO = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
-        //private List<Troop> troops = new List<Troop>();
         private List<string> items = new List<string>();
         private List<ulong> inventoryItemFlags = new List<ulong>();
 
@@ -61,7 +60,7 @@ namespace MB_Studio.Manager
                 AddTroop3DPreviewToModuleIni();
                 Invoke((MethodInvoker)delegate
                 {
-                    openBrfThread = new Thread(StartOpenBrfManager) { IsBackground = true };
+                    openBrfThread = new Thread(new ThreadStart(StartOpenBrfManager)) { IsBackground = true };
                     openBrfThread.Start();
                 });
             }
@@ -72,8 +71,6 @@ namespace MB_Studio.Manager
         protected override void InitializeControls()
         {
             base.InitializeControls();
-
-            _3DView_btn.Visible = MB_Studio.Show3DView;
 
             foreach (string item in items)
                 items_lb.Items.Add(item);
@@ -147,88 +144,19 @@ namespace MB_Studio.Manager
 
         #region GUI
 
-        /*private void C_Click(object sender, EventArgs e)/// TODO: Change like Toolsform - or try again to make as Toolsform
-        {
-            bool sub = false;
-            Control button = (Control)sender;
-            int index = int.Parse(button.Name.Split('_')[1]);
-            Control groupBox = toolPanel.Controls.Find("groupBox_" + index + "_gb", false)[0];
-            if (groupBox.Height == ToolForm.GROUP_HEIGHT_MIN)
-            {
-                groupBox.Height = ToolForm.GROUP_HEIGHT_MAX;
-                if (button.Equals(showGroup_6_btn))// || button.Equals(showGroup_3_btn))
-                    groupBox.Height += ToolForm.GROUP_HEIGHT_MAX + ToolForm.GROUP_HEIGHT_MIN;
-                else if (button.Equals(showGroup_8_btn))
-                    groupBox.Height -= ToolForm.GROUP_HEIGHT_MIN;
-                else if (button.Equals(showGroup_3_btn))
-                    groupBox.Height = 420;
-                button.Text = "ʌ";
-            }
-            else
-            {
-                groupBox.Height = ToolForm.GROUP_HEIGHT_MIN;
-                button.Text = "v";
-                sub = !sub;
-            }
-            button.Height = groupBox.Height;
-            int differ = ToolForm.GROUP_HEIGHT_DIF;
-            if (button.Equals(showGroup_6_btn))// || button.Equals(showGroup_3_btn))
-                differ += ToolForm.GROUP_HEIGHT_MAX + ToolForm.GROUP_HEIGHT_MIN;
-            else if (button.Equals(showGroup_8_btn))
-                differ = differ - ToolForm.GROUP_HEIGHT_MIN;
-            else if (button.Equals(showGroup_3_btn))
-                differ = 395;
-            foreach (Control c in toolPanel.Controls)
-            {
-                if (int.Parse(c.Name.Split('_')[1]) > index)
-                {
-                    if (!sub)
-                        c.Top += differ;
-                    else
-                        c.Top -= differ;
-                }
-            }
-            if (!sub)
-                Height += differ;
-            else
-                Height -= differ;
-        }*/
-
         protected override void ResetControls()
         {
             base.ResetControls();
 
             usedItems_lb.Items.Clear();
 
-            /*foreach (Control groupC in toolPanel.Controls)
-            {
-                if (groupC.Name.Substring(groupC.Name.LastIndexOf('_') + 1).Equals("gb"))
-                {
-                    GroupBox groupBox = (GroupBox)groupC;
-                    foreach (Control c in groupBox.Controls)
-                    {
-                        string nameEnd = GetNameEndOfControl(c);
-                        if (nameEnd.Equals("txt"))
-                            c.Text = "0";
-                        else if (nameEnd.Equals("num") || c.Name.Substring(c.Name.LastIndexOf('_') + 1).Equals("numeric"))
-                            ((NumericUpDown)c).Value = 0;
-                        else if (nameEnd.Equals("lb"))
-                        {
-                            ListBox lb = (ListBox)c;
-                            if (lb.Items.Count > 0)
-                                lb.SelectedIndex = 0;
-                        }
-                        else if (nameEnd.Equals("cb"))
-                            ((CheckBox)c).CheckState = CheckState.Unchecked;
-                        else if (nameEnd.Equals("SearchTextBox"))
-                            c.Text = "Search ...";
-                    }
-                }
-            }*/
-
             foreach (Control c in showItemsInOpenBrf_gb.Controls)
                 if (c.Name.Substring(c.Name.LastIndexOf('_') + 1).Equals("cbb"))
                     ((ComboBox)c).Items.Clear();
+
+            if (items_lb.Items.Count != 0 && openBrfManager != null)
+                if (openBrfManager.IsShown && items_lb.SelectedIndex != 0)
+                    items_lb.SelectedIndex = 0;
 
             face1_txt.Text = FACE_CODE_ZERO;
             face2_txt.Text = face1_txt.Text;
@@ -528,7 +456,7 @@ namespace MB_Studio.Manager
 
         #endregion
 
-        #region SAVE
+        #region Save
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
@@ -548,11 +476,17 @@ namespace MB_Studio.Manager
             else
                 id_txt.Text = "trp_" + id_txt.Text;*/
             
-            string tmp/*values[0]*/ = /*id_txt.Text.Replace(' ', '_')*/values[0] + ' ' + name_txt.Text.Replace(' ', '_') + ' ' + plural_name_txt.Text.Replace(' ', '_') + ' ' + troopImage_txt.Text.Replace(' ', '_') + ' ';
-            /*values[0]*/tmp += GetFlagsValue().ToString() + ' ' + GetSceneCode().ToString() + ' ' + reserved_txt.Text + ' ';
-            /*values[0]*/tmp += factions_lb.SelectedIndex.ToString() + ' ' + upgradeTroop1_lb.SelectedIndex.ToString() + ' ' + upgradeTroop2_lb.SelectedIndex.ToString();
-
-            tmp += ";  ";
+            string tmp = 
+                /*id_txt.Text.Replace(' ', '_')*/values[0] + ' ' + 
+                name_txt.Text.Replace(' ', '_') + ' ' + 
+                plural_name_txt.Text.Replace(' ', '_') + ' ' + 
+                troopImage_txt.Text.Replace(' ', '_') + ' ' +
+                GetFlagsValue().ToString() + ' ' + 
+                GetSceneCode().ToString() + ' ' + 
+                reserved_txt.Text + ' ' +
+                factions_lb.SelectedIndex.ToString() + ' ' + 
+                upgradeTroop1_lb.SelectedIndex.ToString() + ' ' + 
+                upgradeTroop2_lb.SelectedIndex.ToString() + ";  ";
 
             for (int i = 0; i < usedItems_lb.Items.Count; i++)
                 tmp += usedItems_lb.Items[i].ToString().Split('-')[0] + inventoryItemFlags[i] + " ";//could be a problem when itemFlags are fucked up
@@ -560,32 +494,33 @@ namespace MB_Studio.Manager
             for (int i = 0; i < (64 - usedItems_lb.Items.Count); i++)
                 tmp += "-1 0 ";
 
-            tmp += ';';
+            tmp += ";  ";
 
-            //values[1] = "  " + tmp;
-
-            /*values[2] = */tmp += "  " + str_txt.Text + ' ' + agi_txt.Text + ' ' + int_txt.Text + ' ' + cha_txt.Text + ' ' + level_txt.Text;
-
-            /*values[3] =*/tmp += " " + onehandedWeapon_txt.Text + ' ' + twohandedWeapon_txt.Text + ' ' + polearms_txt.Text + ' ' + archery_txt.Text + ' ' + crossbows_txt.Text + ' ' + throwing_txt.Text + ' '
-                            + firearms_txt.Text;
-
-            tmp += ';';
+            tmp += 
+                str_txt.Text + ' ' + 
+                agi_txt.Text + ' ' + 
+                int_txt.Text + ' ' + 
+                cha_txt.Text + ' ' + 
+                level_txt.Text + ' ' + 
+                onehandedWeapon_txt.Text + ' ' + 
+                twohandedWeapon_txt.Text + ' ' + 
+                polearms_txt.Text + ' ' + 
+                archery_txt.Text + ' ' + 
+                crossbows_txt.Text + ' ' + 
+                throwing_txt.Text + ' ' +
+                firearms_txt.Text + ';';
 
             SuperGZ_192Bit skillsValue = new SuperGZ_192Bit(GetSkillCodes());
-            //tmp = string.Empty;
             foreach (uint u in skillsValue.ValueUInt)
                 tmp += u + " ";
-            //values[4] = tmp;//SKILLS
             tmp += ";  ";
 
             SuperGZ_256Bit faceCode1 = new SuperGZ_256Bit(face1_txt.Text);
             SuperGZ_256Bit faceCode2 = new SuperGZ_256Bit(face2_txt.Text);
-            //tmp = string.Empty;
             for (int i = 0; i < faceCode1.ValueULong.Length; i++)
                 tmp += faceCode1.ValueULong[i] + " ";
             for (int i = 0; i < faceCode2.ValueULong.Length; i++)
                 tmp += faceCode2.ValueULong[i] + " ";
-            //values[5] = "  " + tmp;//FACE CODES
 
             /*bool newOne = false;
             Troop changed = new Troop(values);
@@ -749,18 +684,6 @@ namespace MB_Studio.Manager
 
         private void AddItemToInventarComboboxByKind(int itemID, string itemName)
         {
-            /*Item itemX = null;
-            for (int i = 0; i < itemsRList.Length; i++)
-            {
-                if (itemsRList[i].ID.Equals(item.Split('-')[1].TrimStart()))
-                {
-                    itemX = itemsRList[i];
-                    i = itemsRList.Length;
-                }
-            }*/
-
-            //int itemID = int.Parse(item.Split('-')[0].TrimEnd());
-            //string itemName = item.Split('-')[1].TrimStart();
             switch (ItemManager.GetItemTypeIndex(itemsRList[itemID]))
             {
                 case 1: //Horse
@@ -801,81 +724,6 @@ namespace MB_Studio.Manager
                     calfR_cbb.Items.Add(itemName);
                     break;
             }
-
-            /*if (itemX != null)
-            {
-                string kind;
-                //try
-                //
-                    kind = itemX.ModBits;
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show(ex.ToString());
-                //    kind = "ERROR";
-                //}
-
-                if (kind.Contains("_type_"))
-                {
-                    if (kind.Contains("|"))
-                        kind = kind.Substring(kind.IndexOf("itp_type_")).Split('|')[0];
-                }
-                else
-                    kind = "NONE - " + kind;
-
-                Console.WriteLine("TEST - " + kind);*/
-
-                /*
-                itp_type_horse           = 0x0000000000000001 !
-                itp_type_one_handed_wpn  = 0x0000000000000002 !
-                itp_type_two_handed_wpn  = 0x0000000000000003 !
-                itp_type_polearm         = 0x0000000000000004 !
-                itp_type_arrows          = 0x0000000000000005 !
-                itp_type_bolts           = 0x0000000000000006 !
-                itp_type_shield          = 0x0000000000000007 !
-                itp_type_bow             = 0x0000000000000008 !
-                itp_type_crossbow        = 0x0000000000000009 !
-                itp_type_thrown          = 0x000000000000000a !
-                itp_type_goods           = 0x000000000000000b ?
-                itp_type_head_armor      = 0x000000000000000c !
-                itp_type_body_armor      = 0x000000000000000d !
-                itp_type_foot_armor      = 0x000000000000000e !
-                itp_type_hand_armor      = 0x000000000000000f !
-                itp_type_pistol          = 0x0000000000000010 !
-                itp_type_musket          = 0x0000000000000011 !
-                itp_type_bullets         = 0x0000000000000012 !
-                itp_type_animal          = 0x0000000000000013 X
-                itp_type_book            = 0x0000000000000014 ?
-                */
-
-                /*if (kind.Equals("itp_type_head_armor"))
-                    head_cbb.Items.Add(item);
-                
-                if (kind.Equals("itp_type_body_armor"))
-                    body_cbb.Items.Add(item);
-
-                if (kind.Equals("itp_type_foot_armor"))
-                    feet_cbb.Items.Add(item);
-
-                if (kind.Equals("itp_type_one_handed_wpn") || kind.Equals("itp_type_two_handed_wpn") || kind.Equals("itp_type_polearm") || kind.Equals("itp_type_arrows") ||
-                    kind.Equals("itp_type_bolts") || kind.Equals("itp_type_bow") || kind.Equals("itp_type_crossbow") || kind.Equals("itp_type_thrown") || kind.Equals("itp_type_pistol") ||
-                    kind.Equals("itp_type_musket") || kind.Equals("itp_type_bullets")) // itp_type_goods, itp_type_book, 0
-                    weapon_cbb.Items.Add(item);
-                
-                if (kind.Equals("itp_type_shield"))
-                    shield_cbb.Items.Add(item); // if weapon is onehanded
-
-                if (kind.Equals("itp_type_horse"))
-                    horse_cbb.Items.Add(item);
-
-                if (kind.Equals("itp_type_animal"))
-                {
-                    DialogResult dlr = MessageBox.Show("This is marked as animal!" + Environment.NewLine + "Do you really want to add this item?",
-                                                        Application.ProductName); // TODO: Add condition for this!
-                    if (dlr == DialogResult.Yes)
-                        weapon_cbb.Items.Add(item);
-                }
-            }*/
         }
 
         private void UsedItemUP_btn_Click(object sender, EventArgs e)
@@ -1043,20 +891,9 @@ namespace MB_Studio.Manager
         //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         private void KillOpenBrfThread()
         {
-            openBrfManager.Close();
+            if (openBrfManager != null)
+                openBrfManager.Close();
             Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
-        }
-
-        private void StartOpenBrfManager()
-        {
-            if (openBrfManager == null && _3DView_btn.Enabled)
-                Invoke((MethodInvoker)delegate { _3DView_btn.PerformClick(); });
-            else if (_3DView_btn.Enabled)
-            {
-                Invoke((MethodInvoker)delegate { _3DView_btn.Enabled = false; });
-                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
-                t.Start();
-            }
         }
 
         private void AddOpenBrfAsChildThread()
@@ -1069,7 +906,8 @@ namespace MB_Studio.Manager
 
                 Thread.Sleep(50);
 
-                items_lb.SelectedIndex = 0;
+                //if (items_lb.Items.Count != 0)
+                //    items_lb.SelectedIndex = 0;
 
                 // Update UI
                 Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
@@ -1080,7 +918,7 @@ namespace MB_Studio.Manager
 
         private void Items_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (MB_Studio.Show3DView)
+            if (MB_Studio.Show3DView && openBrfManager != null)
                 LoadCurrentMeshWithOpenBrf((ListBox)sender);
         }
 
@@ -1175,12 +1013,6 @@ namespace MB_Studio.Manager
             }
         }
 
-        private void ShowGroup_3_btn_Click(object sender, EventArgs e)
-        {
-            if (showGroup_3_btn.Text.Equals("v") && MB_Studio.Show3DView)
-                StartOpenBrfManager();
-        }
-
         private static string GetMABPath()
         {
             string mabPath = ProgramConsole.GetModuleInfoPath();
@@ -1189,23 +1021,23 @@ namespace MB_Studio.Manager
             return mabPath;
         }
 
-        private void _3DView_btn_Click(object sender, EventArgs e)
+        private void StartOpenBrfManager()//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
         {
-            if (MB_Studio.Show3DView)
+            Invoke((MethodInvoker)delegate { StartOpenBrfManager_btn_Click(null, null); });
+        }
+
+        private void StartOpenBrfManager_btn_Click(object sender, EventArgs e)//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
+        {
+            if (MB_Studio.Show3DView && openBrfManager == null)
             {
-                if (openBrfManager == null && _3DView_btn.Enabled)
-                {
-                    _3DView_btn.Text = _3DView_btn.Text.Remove(_3DView_btn.Text.LastIndexOf(' ')) + " Enabled";
-                    _3DView_btn.Visible = false;
+                openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
 
-                    openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
+                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
+                t.Start();
 
-                    showGroup_3_btn.PerformClick();
-
-                    Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
-                    int result = openBrfManager.Show(MB_Studio.DebugMode);
-                    Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
-                }
+                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                int result = openBrfManager.Show(MB_Studio.DebugMode);
+                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
             }
         }
 

@@ -147,7 +147,7 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl = new System.Windows.Forms.Label();
             this.reserved_XVII_num = new System.Windows.Forms.NumericUpDown();
             this.reserved_XVII_lbl = new System.Windows.Forms.Label();
-            this._3DView_btn = new System.Windows.Forms.Button();
+            this.StartOpenBrfManager_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_3_gb.SuspendLayout();
@@ -185,7 +185,7 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.Add(this.groupBox_2_gb);
             this.toolPanel.Controls.Add(this.groupBox_1_gb);
             this.toolPanel.Controls.Add(this.groupBox_6_gb);
-            this.toolPanel.Size = new System.Drawing.Size(778, 241);
+            this.toolPanel.Size = new System.Drawing.Size(779, 225);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_6_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_1_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
@@ -212,12 +212,14 @@ namespace MB_Studio.Manager
             this.min_btn.FlatAppearance.BorderSize = 0;
             this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.min_btn.Location = new System.Drawing.Point(748, -2);
             // 
             // exit_btn
             // 
             this.exit_btn.FlatAppearance.BorderSize = 0;
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.exit_btn.Location = new System.Drawing.Point(780, 1);
             // 
             // groupBox_3_gb
             // 
@@ -238,7 +240,7 @@ namespace MB_Studio.Manager
             this.groupBox_3_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_3_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 93);
+            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 87);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
             this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_3_gb.TabIndex = 6;
@@ -731,10 +733,11 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_7_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_7_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_7_btn.Location = new System.Drawing.Point(3, 214);
+            this.showGroup_7_btn.Location = new System.Drawing.Point(3, 200);
             this.showGroup_7_btn.Name = "showGroup_7_btn";
             this.showGroup_7_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_7_btn.TabIndex = 13;
+            this.showGroup_7_btn.Tag = "0";
             this.showGroup_7_btn.Text = "v";
             this.showGroup_7_btn.UseVisualStyleBackColor = false;
             // 
@@ -751,7 +754,7 @@ namespace MB_Studio.Manager
             this.groupBox_7_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_7_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_7_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_7_gb.Location = new System.Drawing.Point(39, 213);
+            this.groupBox_7_gb.Location = new System.Drawing.Point(39, 199);
             this.groupBox_7_gb.Name = "groupBox_7_gb";
             this.groupBox_7_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_7_gb.TabIndex = 14;
@@ -856,10 +859,11 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_6_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_6_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_6_btn.Location = new System.Drawing.Point(3, 184);
+            this.showGroup_6_btn.Location = new System.Drawing.Point(3, 172);
             this.showGroup_6_btn.Name = "showGroup_6_btn";
             this.showGroup_6_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_6_btn.TabIndex = 11;
+            this.showGroup_6_btn.Tag = "150";
             this.showGroup_6_btn.Text = "v";
             this.showGroup_6_btn.UseVisualStyleBackColor = false;
             // 
@@ -867,10 +871,11 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_5_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_5_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_5_btn.Location = new System.Drawing.Point(3, 154);
+            this.showGroup_5_btn.Location = new System.Drawing.Point(3, 144);
             this.showGroup_5_btn.Name = "showGroup_5_btn";
             this.showGroup_5_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_5_btn.TabIndex = 9;
+            this.showGroup_5_btn.Tag = "0";
             this.showGroup_5_btn.Text = "v";
             this.showGroup_5_btn.UseVisualStyleBackColor = false;
             // 
@@ -893,7 +898,7 @@ namespace MB_Studio.Manager
             this.groupBox_5_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_5_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_5_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_5_gb.Location = new System.Drawing.Point(39, 153);
+            this.groupBox_5_gb.Location = new System.Drawing.Point(39, 143);
             this.groupBox_5_gb.Name = "groupBox_5_gb";
             this.groupBox_5_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_5_gb.TabIndex = 10;
@@ -1044,10 +1049,11 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_4_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_4_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_4_btn.Location = new System.Drawing.Point(3, 124);
+            this.showGroup_4_btn.Location = new System.Drawing.Point(3, 116);
             this.showGroup_4_btn.Name = "showGroup_4_btn";
             this.showGroup_4_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_4_btn.TabIndex = 7;
+            this.showGroup_4_btn.Tag = "0";
             this.showGroup_4_btn.Text = "v";
             this.showGroup_4_btn.UseVisualStyleBackColor = false;
             // 
@@ -1066,7 +1072,7 @@ namespace MB_Studio.Manager
             this.groupBox_4_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_4_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_4_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_4_gb.Location = new System.Drawing.Point(39, 123);
+            this.groupBox_4_gb.Location = new System.Drawing.Point(39, 115);
             this.groupBox_4_gb.Name = "groupBox_4_gb";
             this.groupBox_4_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_4_gb.TabIndex = 8;
@@ -1177,22 +1183,23 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_3_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_3_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_3_btn.Location = new System.Drawing.Point(3, 94);
+            this.showGroup_3_btn.Location = new System.Drawing.Point(3, 88);
             this.showGroup_3_btn.Name = "showGroup_3_btn";
             this.showGroup_3_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_3_btn.TabIndex = 5;
+            this.showGroup_3_btn.Tag = "295";
             this.showGroup_3_btn.Text = "v";
             this.showGroup_3_btn.UseVisualStyleBackColor = false;
-            this.showGroup_3_btn.Click += new System.EventHandler(this.ShowGroup_3_btn_Click);
             // 
             // showGroup_2_btn
             // 
             this.showGroup_2_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_2_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_2_btn.Location = new System.Drawing.Point(3, 64);
+            this.showGroup_2_btn.Location = new System.Drawing.Point(3, 60);
             this.showGroup_2_btn.Name = "showGroup_2_btn";
             this.showGroup_2_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_2_btn.TabIndex = 3;
+            this.showGroup_2_btn.Tag = "0";
             this.showGroup_2_btn.Text = "v";
             this.showGroup_2_btn.UseVisualStyleBackColor = false;
             // 
@@ -1200,10 +1207,11 @@ namespace MB_Studio.Manager
             // 
             this.showGroup_1_btn.BackColor = System.Drawing.Color.DimGray;
             this.showGroup_1_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showGroup_1_btn.Location = new System.Drawing.Point(3, 34);
+            this.showGroup_1_btn.Location = new System.Drawing.Point(3, 32);
             this.showGroup_1_btn.Name = "showGroup_1_btn";
             this.showGroup_1_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_1_btn.TabIndex = 4;
+            this.showGroup_1_btn.Tag = "0";
             this.showGroup_1_btn.Text = "v";
             this.showGroup_1_btn.UseVisualStyleBackColor = false;
             // 
@@ -1223,7 +1231,7 @@ namespace MB_Studio.Manager
             this.groupBox_2_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_2_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_2_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_2_gb.Location = new System.Drawing.Point(39, 63);
+            this.groupBox_2_gb.Location = new System.Drawing.Point(39, 59);
             this.groupBox_2_gb.Name = "groupBox_2_gb";
             this.groupBox_2_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_2_gb.TabIndex = 4;
@@ -1373,7 +1381,7 @@ namespace MB_Studio.Manager
             this.groupBox_1_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_1_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_1_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_1_gb.Location = new System.Drawing.Point(39, 33);
+            this.groupBox_1_gb.Location = new System.Drawing.Point(39, 31);
             this.groupBox_1_gb.Name = "groupBox_1_gb";
             this.groupBox_1_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_1_gb.TabIndex = 2;
@@ -1651,7 +1659,7 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_6_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_6_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_6_gb.Location = new System.Drawing.Point(39, 183);
+            this.groupBox_6_gb.Location = new System.Drawing.Point(39, 171);
             this.groupBox_6_gb.Name = "groupBox_6_gb";
             this.groupBox_6_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_6_gb.TabIndex = 12;
@@ -1717,30 +1725,32 @@ namespace MB_Studio.Manager
             this.reserved_XVII_lbl.Text = "Reserved XVII:";
             this.reserved_XVII_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // _3DView_btn
+            // StartOpenBrfManager_btn
             // 
-            this._3DView_btn.BackColor = System.Drawing.Color.DimGray;
-            this._3DView_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._3DView_btn.Location = new System.Drawing.Point(13, 149);
-            this._3DView_btn.Name = "_3DView_btn";
-            this._3DView_btn.Size = new System.Drawing.Size(59, 23);
-            this._3DView_btn.TabIndex = 22;
-            this._3DView_btn.Text = "3D View";
-            this._3DView_btn.UseVisualStyleBackColor = false;
-            this._3DView_btn.Click += new System.EventHandler(this._3DView_btn_Click);
+            this.StartOpenBrfManager_btn.BackColor = System.Drawing.Color.DimGray;
+            this.StartOpenBrfManager_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartOpenBrfManager_btn.Location = new System.Drawing.Point(0, 0);
+            this.StartOpenBrfManager_btn.Name = "StartOpenBrfManager_btn";
+            this.StartOpenBrfManager_btn.Size = new System.Drawing.Size(38, 103);
+            this.StartOpenBrfManager_btn.TabIndex = 0;
+            this.StartOpenBrfManager_btn.TabStop = false;
+            this.StartOpenBrfManager_btn.Tag = "";
+            this.StartOpenBrfManager_btn.UseVisualStyleBackColor = false;
+            this.StartOpenBrfManager_btn.Visible = false;
+            this.StartOpenBrfManager_btn.Click += new System.EventHandler(this.StartOpenBrfManager_btn_Click);
             // 
             // TroopManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(814, 431);
-            this.Controls.Add(this._3DView_btn);
+            this.ClientSize = new System.Drawing.Size(815, 415);
+            this.Controls.Add(this.StartOpenBrfManager_btn);
             this.DoubleBuffered = true;
             this.Name = "TroopManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TroopManager";
-            this.Controls.SetChildIndex(this._3DView_btn, 0);
+            this.Controls.SetChildIndex(this.StartOpenBrfManager_btn, 0);
             this.Controls.SetChildIndex(this.id_txt, 0);
             this.Controls.SetChildIndex(this.id_lbl, 0);
             this.Controls.SetChildIndex(this.name_txt, 0);
@@ -1888,7 +1898,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Button set_3_btn;
         private System.Windows.Forms.Button set_2_btn;
         private System.Windows.Forms.Button set_1_btn;
-        private System.Windows.Forms.Button _3DView_btn;
         private System.Windows.Forms.GroupBox showItemsInOpenBrf_gb;
         private System.Windows.Forms.ComboBox shield_cbb;
         private System.Windows.Forms.Label shield_lbl;
@@ -1906,5 +1915,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label calfR_lbl;
         private System.Windows.Forms.ComboBox hand_cbb;
         private System.Windows.Forms.Label hand_lbl;
+        private System.Windows.Forms.Button StartOpenBrfManager_btn;
     }
 }

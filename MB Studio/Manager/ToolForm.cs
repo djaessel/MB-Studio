@@ -634,8 +634,11 @@ namespace MB_Studio.Manager
         protected int GetIndexOfTypeByID(string id)
         {
             int index = -1;
-            //if (ObjectType != ObjectType.ITEM)
-            id = id.Substring(id.IndexOf('_') + 1);
+            if (types.Count != 0)
+            {
+                if (!types[0].ID.StartsWith(Prefix))//if (ObjectType != ObjectType.ITEM)
+                    id = id.Substring(id.IndexOf('_') + 1);
+            }
             for (int i = 0; i < types.Count; i++)
             {
                 if (types[i].ID.Equals(id))

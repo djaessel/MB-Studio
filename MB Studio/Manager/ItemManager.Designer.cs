@@ -225,7 +225,7 @@
             this.consequence_lbl = new System.Windows.Forms.Label();
             this.consequence_rtb = new System.Windows.Forms.RichTextBox();
             this.condition_lbl = new System.Windows.Forms.Label();
-            this._3DView_btn = new System.Windows.Forms.Button();
+            this.StartOpenBrfManager_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_1_gb.SuspendLayout();
@@ -266,10 +266,6 @@
             // typeSelect_lb
             // 
             this.typeSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TypeSelect_lb_SelectedIndexChanged);
-            // 
-            // typeSelect_lbl
-            // 
-            this.typeSelect_lbl.Location = new System.Drawing.Point(16, 37);
             // 
             // title_lbl
             // 
@@ -2231,7 +2227,6 @@
             this.showGroup_3_btn.Tag = "-24";
             this.showGroup_3_btn.Text = "v";
             this.showGroup_3_btn.UseVisualStyleBackColor = false;
-            this.showGroup_3_btn.Click += new System.EventHandler(this.ShowGroup_3_btn_Click);
             // 
             // groupBox_3_gb
             // 
@@ -3017,27 +3012,29 @@
             this.condition_lbl.TabIndex = 45;
             this.condition_lbl.Text = "Condition:";
             // 
-            // _3DView_btn
+            // StartOpenBrfManager_btn
             // 
-            this._3DView_btn.BackColor = System.Drawing.Color.DimGray;
-            this._3DView_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._3DView_btn.Location = new System.Drawing.Point(21, 147);
-            this._3DView_btn.Name = "_3DView_btn";
-            this._3DView_btn.Size = new System.Drawing.Size(60, 25);
-            this._3DView_btn.TabIndex = 37;
-            this._3DView_btn.Tag = "140";
-            this._3DView_btn.Text = "3D View";
-            this._3DView_btn.UseVisualStyleBackColor = false;
-            this._3DView_btn.Click += new System.EventHandler(this._3DView_btn_Click);
+            this.StartOpenBrfManager_btn.BackColor = System.Drawing.Color.DimGray;
+            this.StartOpenBrfManager_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartOpenBrfManager_btn.Location = new System.Drawing.Point(0, 0);
+            this.StartOpenBrfManager_btn.Name = "StartOpenBrfManager_btn";
+            this.StartOpenBrfManager_btn.Size = new System.Drawing.Size(8, 8);
+            this.StartOpenBrfManager_btn.TabIndex = 0;
+            this.StartOpenBrfManager_btn.TabStop = false;
+            this.StartOpenBrfManager_btn.Tag = "";
+            this.StartOpenBrfManager_btn.UseVisualStyleBackColor = false;
+            this.StartOpenBrfManager_btn.Visible = false;
+            this.StartOpenBrfManager_btn.Click += new System.EventHandler(this.StartOpenBrfManager_btn_Click);
             // 
             // ItemManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(814, 417);
-            this.Controls.Add(this._3DView_btn);
+            this.Controls.Add(this.StartOpenBrfManager_btn);
             this.Name = "ItemManager";
             this.Opacity = 1D;
             this.Text = "ItemManager";
+            this.Controls.SetChildIndex(this.StartOpenBrfManager_btn, 0);
             this.Controls.SetChildIndex(this.id_txt, 0);
             this.Controls.SetChildIndex(this.id_lbl, 0);
             this.Controls.SetChildIndex(this.name_txt, 0);
@@ -3054,7 +3051,6 @@
             this.Controls.SetChildIndex(this.idINFO_lbl, 0);
             this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
             this.Controls.SetChildIndex(this.toolPanel, 0);
-            this.Controls.SetChildIndex(this._3DView_btn, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
@@ -3311,7 +3307,7 @@
         private System.Windows.Forms.Button addTrigger_btn;
         private System.Windows.Forms.ComboBox thrust_damage_type_cbb;
         private System.Windows.Forms.ComboBox swing_damage_type_cbb;
-        private System.Windows.Forms.Button _3DView_btn;
         private System.Windows.Forms.Label show_column_lbl;
+        private System.Windows.Forms.Button StartOpenBrfManager_btn;
     }
 }
