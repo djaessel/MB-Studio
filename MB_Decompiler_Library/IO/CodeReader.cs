@@ -123,24 +123,27 @@ namespace MB_Decompiler_Library.IO
         // ÄNDERN ?!
         public static readonly string[] Files = { "scripts.txt", "mission_templates.txt", "presentations.txt", "menus.txt", "troops.txt", "item_kinds1.txt", "strings.txt", "simple_triggers.txt",
                 "triggers.txt", "info_pages.txt", "meshes.txt", "music.txt", "quests.txt", "sounds.txt", "scene_props.txt", "tableau_materials.txt", "map_icons.txt", "conversation.txt",
-                "factions.txt", "actions.txt", "party_templates.txt", "parties.txt", "skills.txt", "postfx.txt", "skins.txt", "particle_systems.txt", "scenes.txt" };
+                "factions.txt", "actions.txt", "party_templates.txt", "parties.txt", "skills.txt", "postfx.txt", "skins.txt", "particle_systems.txt", "scenes.txt"
+        };
 
         private static string[] UNUSED_CODES = { "else_try_begin", "end_try" };
 
         public const ulong LOCAL_MIN = 1224979098644774912;
-        public const ulong LOCAL_MAX = 1224979098644775040; // max. 128 local variables
+        public const ulong LOCAL_MAX = 1224979098644775040;//max. 128 local variables
 
         public const ulong REG0 = 72057594037927936;
-        public const ulong REG127 = 72057594037928063;
+        public const ulong REG127 = 72057594037928063;//max. 128 registers
 
         public const ulong QUICKSTRING_MIN = 1585267068834414592;
         public const ulong QUICKSTRING_MAX = 1600000000000000000;
 
-        public const ulong TRP_PLAYER = 360287970189639680;
-        public const ulong TROOP_MAX = 370000000000000000;
-
         public const ulong GLOBAL_MIN = 144115188075855872;
         public const ulong GLOBAL_MAX = 145000000000000000;
+
+        #region TYPES
+
+        public const ulong TRP_PLAYER = 360287970189639680;
+        public const ulong TROOP_MAX = 370000000000000000;
 
         public const ulong SCRIPT_MIN = 936748722493063168;
         public const ulong SCRIPT_MAX = 940000000000000000;
@@ -194,10 +197,20 @@ namespace MB_Decompiler_Library.IO
         public const ulong TABLEAU_MAT_MAX = 1730000000000000000;
 
         public const ulong ANIM_MIN = 1801439850948198400;
-        public const ulong ANIM_MAX = 1810000000000000000; //public const ulong ANIM_MAX = ulong.MaxValue - int.MaxValue;
+        public const ulong ANIM_MAX = 1810000000000000000;//public const ulong ANIM_MAX = ulong.MaxValue - int.MaxValue;
 
         public const ulong TRACK_MIN = 1657324662872342528;
         public const ulong TRACK_MAX = 1660000000000000000;
+
+        public const ulong MAP_ICON_MIN = ‭1297036692682702848‬;
+        public const ulong MAP_ICON_MAX = ‭1300000000000000000‬;
+
+        /*
+INFO_PAGE
+DIALOG
+POST_FX
+        */
+        #endregion
 
         #endregion
 
@@ -1998,7 +2011,7 @@ namespace MB_Decompiler_Library.IO
             else if (code >= REG0 && code <= REG127)
                 codeLine = codeLine.TrimEnd('\"') + "reg" + (code - REG0);
             else if (code >= QUICKSTRING_MIN && code < QUICKSTRING_MAX)
-                codeLine +=  QuickStrings[GetObjIdx(code, QUICKSTRING_MIN)];
+                codeLine += QuickStrings[GetObjIdx(code, QUICKSTRING_MIN)];
             else if (code >= GLOBAL_MIN && code < GLOBAL_MAX)
                 codeLine += GlobalVariables[GetObjIdx(code, GLOBAL_MIN)];
             else if (code >= SCRIPT_MIN && code < SCRIPT_MAX)
@@ -2039,6 +2052,8 @@ namespace MB_Decompiler_Library.IO
                 codeLine += Quests[GetObjIdx(code, QUEST_MIN)];
             else if (code >= TABLEAU_MAT_MIN && code < TABLEAU_MAT_MAX)
                 codeLine += TableauMaterials[GetObjIdx(code, TABLEAU_MAT_MIN)];
+            else if (code >= MAP_ICON_MIN && code < MAP_ICON_MAX)
+                codeLine += MapIcons[GetObjIdx(code, MAP_ICON_MAX)];
             else if (code >= TRACK_MIN && code < TRACK_MAX)
                 codeLine += Tracks[GetObjIdx(code, TRACK_MIN)];
             else if (code <= ulong.MaxValue && code >= ANIM_MAX)
