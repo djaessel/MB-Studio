@@ -1,5 +1,5 @@
-﻿using MB_Decompiler_Library.IO;
-using skillhunter;
+﻿using skillhunter;
+using MB_Decompiler_Library.IO;
 using System.Collections.Generic;
 
 namespace MB_Decompiler_Library.Objects

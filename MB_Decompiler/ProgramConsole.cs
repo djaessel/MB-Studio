@@ -604,7 +604,7 @@ namespace MB_Decompiler
             string path = SourceWriter.ModuleFilesPath;
             File.WriteAllText(path + "module_info.py", "export_dir = \"" + GetDestinationModPathFromVariable(GetModuleInfoPath()).Replace('\\', '/') + '\"'); //File.Copy(ModuleInfoRealFile, path + "module_info.py", true);
             File.Copy(CodeReader.FILES_PATH + "module_constants.py", path + "module_constants.py", true);
-            File.Copy(CodeReader.FILES_PATH + "module_my_mod_set.py", path + "module_my_mod_set.py", true);
+            //File.Copy(CodeReader.FILES_PATH + "module_my_mod_set.py", path + "module_my_mod_set.py", true);//probably unused!
             File.Copy(CodeReader.FILES_PATH + "header_mb_decompiler.py", ImportantMethods.GetDirectoryPathOnly(path) + "\\headerFiles\\header_mb_decompiler.py", true);
         }
 
