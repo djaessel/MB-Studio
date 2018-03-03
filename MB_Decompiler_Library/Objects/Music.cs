@@ -135,7 +135,7 @@ namespace MB_Decompiler_Library.Objects
             return flagsGZ;
         }
 
-        public string TrackFile { get { return trackFile; } }
+        public string TrackFile { get { return trackFile; } }//change to Name if possible
 
         public string TrackFlags { get { return flags; } }
 

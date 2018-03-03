@@ -79,7 +79,7 @@ namespace MB_Decompiler_Library.IO
                 }
 
                 using (StreamWriter wr = new StreamWriter(GetIDFileNameByIndex(sourceIndex)))
-                    for (int j = 0; j < CodeReader.Elements[i].Length; j++)
+                    for (int j = 0; j < CodeReader.Elements[i].Count; j++)
                         wr.WriteLine(CodeReader.Elements[i][j] + " = " + j);
 
                 sourceIndex++;

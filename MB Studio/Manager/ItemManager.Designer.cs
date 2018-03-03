@@ -225,7 +225,6 @@
             this.consequence_lbl = new System.Windows.Forms.Label();
             this.consequence_rtb = new System.Windows.Forms.RichTextBox();
             this.condition_lbl = new System.Windows.Forms.Label();
-            this.StartOpenBrfManager_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_1_gb.SuspendLayout();
@@ -3012,29 +3011,13 @@
             this.condition_lbl.TabIndex = 45;
             this.condition_lbl.Text = "Condition:";
             // 
-            // StartOpenBrfManager_btn
-            // 
-            this.StartOpenBrfManager_btn.BackColor = System.Drawing.Color.DimGray;
-            this.StartOpenBrfManager_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartOpenBrfManager_btn.Location = new System.Drawing.Point(0, 0);
-            this.StartOpenBrfManager_btn.Name = "StartOpenBrfManager_btn";
-            this.StartOpenBrfManager_btn.Size = new System.Drawing.Size(8, 8);
-            this.StartOpenBrfManager_btn.TabIndex = 0;
-            this.StartOpenBrfManager_btn.TabStop = false;
-            this.StartOpenBrfManager_btn.Tag = "";
-            this.StartOpenBrfManager_btn.UseVisualStyleBackColor = false;
-            this.StartOpenBrfManager_btn.Visible = false;
-            this.StartOpenBrfManager_btn.Click += new System.EventHandler(this.StartOpenBrfManager_btn_Click);
-            // 
             // ItemManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(814, 417);
-            this.Controls.Add(this.StartOpenBrfManager_btn);
             this.Name = "ItemManager";
             this.Opacity = 1D;
             this.Text = "ItemManager";
-            this.Controls.SetChildIndex(this.StartOpenBrfManager_btn, 0);
             this.Controls.SetChildIndex(this.id_txt, 0);
             this.Controls.SetChildIndex(this.id_lbl, 0);
             this.Controls.SetChildIndex(this.name_txt, 0);
@@ -3308,6 +3291,5 @@
         private System.Windows.Forms.ComboBox thrust_damage_type_cbb;
         private System.Windows.Forms.ComboBox swing_damage_type_cbb;
         private System.Windows.Forms.Label show_column_lbl;
-        private System.Windows.Forms.Button StartOpenBrfManager_btn;
     }
 }

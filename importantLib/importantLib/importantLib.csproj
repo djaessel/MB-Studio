@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="ControlWriter.cs" />
     <Compile Include="ImportantMethods.cs" />
+    <Compile Include="ToolTips\ToolTipListBoxItem.cs" />
     <Compile Include="SearchTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -113,6 +114,12 @@
     <Compile Include="SuperGZ.cs" />
     <Compile Include="SuperGZ_192Bit.cs" />
     <Compile Include="SuperGZ_256Bit.cs" />
+    <Compile Include="ToolTips\ToolTipListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolTips\ToolTipListBox.Designer.cs">
+      <DependentUpon>ToolTipListBox.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SpecialFormBlack.resx">

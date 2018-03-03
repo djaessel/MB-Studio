@@ -69,11 +69,11 @@ namespace MB_Studio.Manager
 
         protected override void SetupType(Skriptum type)
         {
+            base.SetupType(type);
+
             GameMenu menu = (GameMenu)type;
             mno_translations = new string[menu.MenuOptions.Length];
             name_txt.Text = menu.Text;
-
-            base.SetupType(type);
 
             //int idx = typeSelect_lb.SelectedIndex - 1;
             //if (idx < types.Count && idx >= 0)

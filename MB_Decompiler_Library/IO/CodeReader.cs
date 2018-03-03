@@ -58,40 +58,40 @@ namespace MB_Decompiler_Library.IO
         private static List<string> tracks = new List<string>();            // 21
         private static List<string> mapicons = new List<string>();*/        // 22
 
-        private static List<string[]> elements = new List<string[]>();
+        private static List<List<string>> elements = new List<List<string>>();
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        public static string[][] Elements { get { return elements.ToArray(); } }
+        public static List<string>[] Elements { get { return elements.ToArray(); } }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        public static string[] Scripts { get { return elements[0]; } }
-        public static string[] MissionTemplates { get { return elements[1]; } }
-        public static string[] Presentations { get { return elements[2]; } }
-        public static string[] GameMenus { get { return elements[3]; } }
-        public static string[] Troops { get { return elements[4]; } }
-        public static string[] Items { get { return elements[5]; } }
-        public static string[] Strings { get { return elements[6]; } }
+        public static List<string> Scripts { get { return elements[0]; } }
+        public static List<string> MissionTemplates { get { return elements[1]; } }
+        public static List<string> Presentations { get { return elements[2]; } }
+        public static List<string> GameMenus { get { return elements[3]; } }
+        public static List<string> Troops { get { return elements[4]; } }
+        public static List<string> Items { get { return elements[5]; } }
+        public static List<string> Strings { get { return elements[6]; } }
         //SimpleTriggers    - NONE
         //Triggers          - NONE
-        public static string[] InfoPages { get { return elements[7]; } }
-        public static string[] Meshes { get { return elements[8]; } }
-        public static string[] Tracks { get { return elements[9]; } }
-        public static string[] Quests { get { return elements[10]; } }
-        public static string[] Sounds { get { return elements[11]; } }
-        public static string[] SceneProps { get { return elements[12]; } }
-        public static string[] TableauMaterials { get { return elements[13]; } }
-        public static string[] MapIcons { get { return elements[14]; } }
+        public static List<string> InfoPages { get { return elements[7]; } }
+        public static List<string> Meshes { get { return elements[8]; } }
+        public static List<string> Tracks { get { return elements[9]; } }
+        public static List<string> Quests { get { return elements[10]; } }
+        public static List<string> Sounds { get { return elements[11]; } }
+        public static List<string> SceneProps { get { return elements[12]; } }
+        public static List<string> TableauMaterials { get { return elements[13]; } }
+        public static List<string> MapIcons { get { return elements[14]; } }
         //Dialogs           - NONE
-        public static string[] Factions { get { return elements[15]; } }
-        public static string[] Animations { get { return elements[16]; } }
-        public static string[] PartyTemplates { get { return elements[17]; } }
-        public static string[] Parties { get { return elements[18]; } }
-        public static string[] Skills { get { return elements[19]; } }
-        public static string[] PostFXParams { get { return elements[20]; } }
+        public static List<string> Factions { get { return elements[15]; } }
+        public static List<string> Animations { get { return elements[16]; } }
+        public static List<string> PartyTemplates { get { return elements[17]; } }
+        public static List<string> Parties { get { return elements[18]; } }
+        public static List<string> Skills { get { return elements[19]; } }
+        public static List<string> PostFXParams { get { return elements[20]; } }
         //Skins             - NONE
-        public static string[] ParticleSystems { get { return elements[21]; } }
-        public static string[] Scenes { get { return elements[22]; } }
+        public static List<string> ParticleSystems { get { return elements[21]; } }
+        public static List<string> Scenes { get { return elements[22]; } }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        public static string[] QuickStrings { get { return elements[23]; } } // Always last if possible
-        public static string[] GlobalVariables { get { return elements[24]; } } // Always last if possible
+        public static List<string> QuickStrings { get { return elements[23]; } } // Always last if possible
+        public static List<string> GlobalVariables { get { return elements[24]; } } // Always last if possible
 
         #endregion
 
@@ -121,7 +121,7 @@ namespace MB_Decompiler_Library.IO
         public const string MINUS = "-";
 
         // ÄNDERN ?!
-        public static readonly string[] Files = { "scripts.txt", "mission_templates.txt", "presentations.txt", "menus.txt", "troops.txt", "item_kinds1.txt", "strings.txt", "simple_triggers.txt",
+        public static readonly List<string> Files = new List<string> { "scripts.txt", "mission_templates.txt", "presentations.txt", "menus.txt", "troops.txt", "item_kinds1.txt", "strings.txt", "simple_triggers.txt",
                 "triggers.txt", "info_pages.txt", "meshes.txt", "music.txt", "quests.txt", "sounds.txt", "scene_props.txt", "tableau_materials.txt", "map_icons.txt", "conversation.txt",
                 "factions.txt", "actions.txt", "party_templates.txt", "parties.txt", "skills.txt", "postfx.txt", "skins.txt", "particle_systems.txt", "scenes.txt"
         };
@@ -256,15 +256,15 @@ namespace MB_Decompiler_Library.IO
             return GetTypeIndexFromID(Items, id);
         }
 
-        public static int GetTypeIndexFromID(string[] typeList, string id)
+        public static int GetTypeIndexFromID(List<string> typeList, string id)
         {
             int index = -1;
-            for (int i = 0; i < typeList.Length; i++)
+            for (int i = 0; i < typeList.Count; i++)
             {
                 if (typeList[i].Equals(id))
                 {
                     index = i;
-                    i = typeList.Length;
+                    i = typeList.Count;
                 }
             }
             return index;
@@ -299,16 +299,16 @@ namespace MB_Decompiler_Library.IO
             }
         }
 
-        private static string[] ReadGlobalVariables()
+        private static List<string> ReadGlobalVariables()
         {
             List<string> globalVariables = new List<string>();
             using (StreamReader sr = new StreamReader(modPath + "variables.txt"))
                 while (!sr.EndOfStream)
                     globalVariables.Add('$' + sr.ReadLine());
-            return globalVariables.ToArray();
+            return globalVariables;
         }
 
-        private static string[] ReadScriptNames()
+        private static List<string> ReadScriptNames()
         {
             string s;
             List<string> scriptNames = new List<string>();
@@ -323,10 +323,10 @@ namespace MB_Decompiler_Library.IO
                         scriptNames.Add("script_" + s);
                 }
             }
-            return scriptNames.ToArray();
+            return scriptNames;
         }
 
-        private static string[] ReadQuickStrings()
+        private static List<string> ReadQuickStrings()
         {
             List<string> quick_strings = new List<string>();
             using (StreamReader sr = new StreamReader(modPath + "quick_strings.txt"))
@@ -335,10 +335,10 @@ namespace MB_Decompiler_Library.IO
                 while (!sr.EndOfStream)
                     quick_strings.Add('@' + sr.ReadLine().Split(' ')[1].Replace('_',' ').Replace("\"", "\\\""));
             }
-            return quick_strings.ToArray();
+            return quick_strings;
         }
 
-        private static string[] ReadPresentations()
+        private static List<string> ReadPresentations()
         {
             string s;
             List<string> presentations = new List<string>();
@@ -352,10 +352,10 @@ namespace MB_Decompiler_Library.IO
                         presentations.Add(s);
                 }
             }
-            return presentations.ToArray();
+            return presentations;
         }
 
-        private static string[] ReadStrings()
+        private static List<string> ReadStrings()
         {
             string tmp;
             List<string> strings = new List<string>();
@@ -370,10 +370,10 @@ namespace MB_Decompiler_Library.IO
                         strings.Add(tmp);
                 }
             }
-            return strings.ToArray();
+            return strings;
         }
 
-        private static string[] ReadItems()
+        private static List<string> ReadItems()
         {
             string s;
             List<string> items = new List<string>();
@@ -386,10 +386,10 @@ namespace MB_Decompiler_Library.IO
                         items.Add(s);
                 }
             }
-            return items.ToArray();
+            return items;
         }
 
-        private static string[] ReadFactions()
+        private static List<string> ReadFactions()
         {
             string[] s;
             List<string> factions = new List<string>();
@@ -412,10 +412,10 @@ namespace MB_Decompiler_Library.IO
                     }
                 }
             }
-            return factions.ToArray();
+            return factions;
         }
 
-        private static string[] ReadTroops()
+        private static List<string> ReadTroops()
         {
             string s;
             List<string> troops = new List<string>();
@@ -428,10 +428,10 @@ namespace MB_Decompiler_Library.IO
                         troops.Add(s);
                 }
             }
-            return troops.ToArray();
+            return troops;
         }
 
-        private static string[] ReadSceneProps()
+        private static List<string> ReadSceneProps()
         {
             string s;
             List<string> scene_props = new List<string>();
@@ -444,10 +444,10 @@ namespace MB_Decompiler_Library.IO
                         scene_props.Add(s);
                 }
             }
-            return scene_props.ToArray();
+            return scene_props;
         }
 
-        private static string[] ReadParties()
+        private static List<string> ReadParties()
         {
             string[] s;
             List<string> parties = new List<string>();
@@ -460,10 +460,10 @@ namespace MB_Decompiler_Library.IO
                         parties.Add(s[3]);
                 }
             }
-            return parties.ToArray();
+            return parties;
         }
 
-        private static string[] ReadPartyTemplates()
+        private static List<string> ReadPartyTemplates()
         {
             string s;
             List<string> party_templates = new List<string>();
@@ -476,10 +476,10 @@ namespace MB_Decompiler_Library.IO
                         party_templates.Add(s);
                 }
             }
-            return party_templates.ToArray();
+            return party_templates;
         }
 
-        private static string[] ReadMeshes()
+        private static List<string> ReadMeshes()
         {
             string s;
             List<string> meshes = new List<string>();
@@ -492,10 +492,10 @@ namespace MB_Decompiler_Library.IO
                         meshes.Add(s);
                 }
             }
-            return meshes.ToArray();
+            return meshes;
         }
 
-        private static string[] ReadSkills()
+        private static List<string> ReadSkills()
         {
             string s;
             List<string> skills = new List<string>();
@@ -508,10 +508,10 @@ namespace MB_Decompiler_Library.IO
                         skills.Add(s);
                 }
             }
-            return skills.ToArray();
+            return skills;
         }
 
-        private static string[] ReadMissionTemplates()
+        private static List<string> ReadMissionTemplates()
         {
             string s;
             List<string> mission_templates = new List<string>();
@@ -524,10 +524,10 @@ namespace MB_Decompiler_Library.IO
                         mission_templates.Add('m' + s.Substring(2));
                 }
             }
-            return mission_templates.ToArray();
+            return mission_templates;
         }
 
-        private static string[] ReadSounds()
+        private static List<string> ReadSounds()
         {
             string s;
             List<string> sounds = new List<string>();
@@ -540,10 +540,10 @@ namespace MB_Decompiler_Library.IO
                         sounds.Add(s);
                 }
             }
-            return sounds.ToArray();
+            return sounds;
         }
 
-        private static string[] ReadParticles()
+        private static List<string> ReadParticles()
         {
             string s;
             List<string> particles = new List<string>();
@@ -556,10 +556,10 @@ namespace MB_Decompiler_Library.IO
                         particles.Add(s);
                 }
             }
-            return particles.ToArray();
+            return particles;
         }
 
-        private static string[] ReadGameMenus()
+        private static List<string> ReadGameMenus()
         {
             string s;
             List<string> menus = new List<string>();
@@ -573,10 +573,10 @@ namespace MB_Decompiler_Library.IO
                             menus.Add("m" + s.Substring(2));
                 }
             }
-            return menus.ToArray();
+            return menus;
         }
 
-        private static string[] ReadQuests()
+        private static List<string> ReadQuests()
         {
             string s;
             List<string> quests = new List<string>();
@@ -589,10 +589,10 @@ namespace MB_Decompiler_Library.IO
                         quests.Add(s);
                 }
             }
-            return quests.ToArray();
+            return quests;
         }
 
-        private static string[] ReadTableauMaterials()
+        private static List<string> ReadTableauMaterials()
         {
             string s;
             List<string> tableau_materials = new List<string>();
@@ -605,10 +605,10 @@ namespace MB_Decompiler_Library.IO
                         tableau_materials.Add(s.Replace("tab_", "tableau_"));
                 }
             }
-            return tableau_materials.ToArray();
+            return tableau_materials;
         }
 
-        private static string[] ReadAnimations()
+        private static List<string> ReadAnimations()
         {
             string s;
             List<string> animations = new List<string>();
@@ -621,10 +621,10 @@ namespace MB_Decompiler_Library.IO
                         animations.Add("anim_" + s);
                 }
             }
-            return animations.ToArray();
+            return animations;
         }
 
-        private static string[] ReadScenes()
+        private static List<string> ReadScenes()
         {
             string s;
             List<string> scenes = new List<string>();
@@ -637,10 +637,10 @@ namespace MB_Decompiler_Library.IO
                         scenes.Add(s);
                 }
             }
-            return scenes.ToArray();
+            return scenes;
         }
 
-        private static string[] ReadTracks()
+        private static List<string> ReadTracks()
         {
             string s;
             List<string> tracks = new List<string>();
@@ -666,10 +666,10 @@ namespace MB_Decompiler_Library.IO
                     }
                 }
             }
-            return tracks.ToArray();
+            return tracks;
         }
 
-        private static string[] ReadMapIcons()
+        private static List<string> ReadMapIcons()
         {
             string s;
             List<string> map_icons = new List<string>();
@@ -683,10 +683,10 @@ namespace MB_Decompiler_Library.IO
                         map_icons.Add("icon_" + s);
                 }
             }
-            return map_icons.ToArray();
+            return map_icons;
         }
 
-        private static string[] ReadInfoPages()
+        private static List<string> ReadInfoPages()
         {
             string s;
             List<string> infoPages = new List<string>();
@@ -699,10 +699,10 @@ namespace MB_Decompiler_Library.IO
                         infoPages.Add(s);
                 }
             }
-            return infoPages.ToArray();
+            return infoPages;
         }
 
-        private static string[] ReadPostFXParams()
+        private static List<string> ReadPostFXParams()
         {
             string s;
             List<string> postFXParams = new List<string>();
@@ -715,7 +715,7 @@ namespace MB_Decompiler_Library.IO
                         postFXParams.Add(s);
                 }
             }
-            return postFXParams.ToArray();
+            return postFXParams;
         }
 
         #endregion
@@ -823,7 +823,7 @@ namespace MB_Decompiler_Library.IO
         {
             Reset();
             List<List<Skriptum>> objects = new List<List<Skriptum>>();
-            for (int i = 0; i < Files.Length; i++)
+            for (int i = 0; i < Files.Count; i++)
                 objects.Add(new CodeReader(ModPath + Files[i]).ReadObjectType(i));
             return objects;
         }
@@ -1202,7 +1202,7 @@ namespace MB_Decompiler_Library.IO
                     for (int j = 0; j < otherScenes.Length; j++)
                     {
                         tmpX = int.Parse(tmp[j + 1]);
-                        if (Scenes.Length > tmpX && tmpX >= 0)
+                        if (Scenes.Count > tmpX && tmpX >= 0)
                             otherScenes[j] = Scenes[tmpX];
                         else if (tmpX == 100000)
                             otherScenes[j] = "exit";

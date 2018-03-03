@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using importantLib;
+using skillhunter;
 
 namespace MB_Decompiler
 {
@@ -95,20 +96,20 @@ namespace MB_Decompiler
             if (sp.Length > 2)
             {
                 int typeID = int.Parse(sp[2]);
-                if (typeID < CodeReader.Files.Length && typeID >= 0)
+                if (typeID < CodeReader.Files.Count && typeID >= 0)
                 {
-                    /*List<List<Skriptum>> sss = new List<List<Skriptum>>();
+                    List<List<Skriptum>> sss = new List<List<Skriptum>>();
                     CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[typeID]);
                     sss.Add(cr.ReadObjectType(typeID));
                     SourceWriter.WriteAllObjects(sss);
                     PrintCodeReaderInfo();
-                    sss.Clear();*/
+                    sss.Clear();//
                 }
                 else
                 {
                     Console.Write("INDEX OUT OF RANGE! --> ");
-                    if (typeID >= CodeReader.Files.Length)
-                        Console.WriteLine("FILE COUNT: " + CodeReader.Files.Length + " is lower than " + typeID);
+                    if (typeID >= CodeReader.Files.Count)
+                        Console.WriteLine("FILE COUNT: " + CodeReader.Files.Count + " is lower than " + typeID);
                     else
                         Console.WriteLine("POSITIVE NUMBERS ONLY!!!");
                 }

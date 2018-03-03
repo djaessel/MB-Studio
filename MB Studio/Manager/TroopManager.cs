@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
-using brfManager;
 using importantLib;
 using skillhunter;
 using System.ComponentModel;
@@ -18,10 +16,7 @@ namespace MB_Studio.Manager
     {
         #region Attributes
 
-        private Thread openBrfThread;
-        private OpenBrfManager openBrfManager = null;
-
-        private const string FACE_CODE_ZERO = "0x0000000000000000000000000000000000000000000000000000000000000000";
+        public const string FACE_CODE_ZERO = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
         private List<string> items = new List<string>();
         private List<ulong> inventoryItemFlags = new List<ulong>();
@@ -32,7 +27,7 @@ namespace MB_Studio.Manager
 
         #region Loading
 
-        public TroopManager() : base(Skriptum.ObjectType.TROOP)
+        public TroopManager() : base(Skriptum.ObjectType.TROOP, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
@@ -52,18 +47,11 @@ namespace MB_Studio.Manager
             CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.ITEM]);
             itemsRList = cr.ReadItem();
 
-            for (int i = 0; i < CodeReader.Items.Length; i++)
+            for (int i = 0; i < CodeReader.Items.Count; i++)
                 items.Add(i + " - " + CodeReader.Items[i]);
 
-            if (MB_Studio.Show3DView)
-            {
+            if (Has3DView)
                 AddTroop3DPreviewToModuleIni();
-                Invoke((MethodInvoker)delegate
-                {
-                    openBrfThread = new Thread(new ThreadStart(StartOpenBrfManager)) { IsBackground = true };
-                    openBrfThread.Start();
-                });
-            }
 
             LoadSets();
         }
@@ -172,8 +160,6 @@ namespace MB_Studio.Manager
             base.SetupType(type);
 
             Troop troop = (Troop)type;
-            name_txt.Text = troop.Name;//will later be removed
-            plural_name_txt.Text = troop.PluralName;//will maybe removed later
 
             #region GROUP1 - Flags & Guarantee
 
@@ -224,7 +210,7 @@ namespace MB_Studio.Manager
 
             #region GROUP3 - Items
 
-            if (MB_Studio.Show3DView)
+            if (Has3DView)
             {
                 openBrfManager.Troop3DPreviewClear();
                 Console.WriteLine("Cleared Troop 3D Preview! (laut Codefluss)");
@@ -234,7 +220,7 @@ namespace MB_Studio.Manager
             {
                 Item itemX = itemsRList[itemID];
                 AddItemToInventarComboboxByKind(itemID, itemX.Prefix + itemX.ID);
-                if (MB_Studio.Show3DView)
+                if (Has3DView)
                     SetupTroopItemBone(itemX);
                 usedItems_lb.Items.Add(itemID + " - " + itemX.Prefix + itemX.ID);
             }
@@ -243,7 +229,7 @@ namespace MB_Studio.Manager
 
             inventoryItemFlags = troop.ItemFlags;
 
-            if (MB_Studio.Show3DView)
+            if (Has3DView)
             {
                 openBrfManager.Troop3DPreviewShow();
                 Console.WriteLine("Show Troop 3D Preview! (laut Codefluss)");
@@ -415,7 +401,7 @@ namespace MB_Studio.Manager
                     break;
             }
 
-            if (MB_Studio.Show3DView)
+            if (Has3DView)
             {
                 if (skeletonId == 0)//no horse on screen!
                 {
@@ -789,34 +775,24 @@ namespace MB_Studio.Manager
             {
                 if (inventoryItemFlags.Count > selectedIndex)
                     selectedItemFlags_txt.Text = inventoryItemFlags[selectedIndex].ToString();
-                if (MB_Studio.Show3DView)
+                if (Has3DView)
                     LoadCurrentMeshWithOpenBrf((ListBox)sender);
             }
         }
 
         private void SearchItems_TextChanged(object sender, EventArgs e)
         {
-            items_lb.Items.Clear();
-            if (!searchItems_SearchTextBox.Text.Contains("Search ...") && searchItems_SearchTextBox.Text.Length > 0)
-            {
-                foreach (string item in items)
-                    if (item.Replace(" ", string.Empty).Split('-')[1].Contains(searchItems_SearchTextBox.Text))
-                        items_lb.Items.Add(item);
-            }
-            else
-                foreach (string item in items)
-                    items_lb.Items.Add(item);
+            SearchForContaining(items_lb, itemsRList, searchItems_SearchTextBox.Text, null, true);
         }
 
         private void SearchUsedItems_txt_TextChanged(object sender, EventArgs e)
         {
-            usedItems_lb.ClearSelected();
-            if (!searchUsedItems_SearchTextBox.Text.Contains("Search ...") && searchUsedItems_SearchTextBox.Text.Length > 0)
-            {
-                for (int i = 0; i < usedItems_lb.Items.Count; i++)
-                    if (usedItems_lb.Items[i].ToString().Replace(" ", string.Empty).Split('-')[1].Contains(searchUsedItems_SearchTextBox.Text))
-                        usedItems_lb.SelectedItems.Add(usedItems_lb.Items[i]);
-            }
+            List<int> troopItems = ((Troop)types[typeSelect_lb.SelectedIndex]).Items;
+            List<Skriptum> list = new List<Skriptum>();
+            for (int i = 0; i < itemsRList.Length; i++)
+                if (troopItems.Contains(i))
+                    list.Add(itemsRList[i]);
+            SearchForContaining(usedItems_lb, itemsRList, searchUsedItems_SearchTextBox.Text, list, true);
         }
 
         private void LoadSets()
@@ -880,45 +856,9 @@ namespace MB_Studio.Manager
 
         #region OpenBrf
 
-        protected override void OnHandleDestroyed(EventArgs e)
-        {
-            if (openBrfThread != null)
-                KillOpenBrfThread();
-
-            base.OnHandleDestroyed(e);
-        }
-
-        //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
-        private void KillOpenBrfThread()
-        {
-            if (openBrfManager != null)
-                openBrfManager.Close();
-            Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
-        }
-
-        private void AddOpenBrfAsChildThread()
-        {
-            while (!openBrfManager.IsShown)
-                Thread.Sleep(10);
-            Invoke((MethodInvoker)delegate
-            {
-                openBrfManager.AddWindowHandleToControlsParent(this);
-
-                Thread.Sleep(50);
-
-                //if (items_lb.Items.Count != 0)
-                //    items_lb.SelectedIndex = 0;
-
-                // Update UI
-                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
-
-                Console.WriteLine("Loaded 3D View successfully! (laut Codefluss)");
-            });
-        }
-
         private void Items_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (MB_Studio.Show3DView && openBrfManager != null)
+            if (Has3DView && openBrfManager != null)
                 LoadCurrentMeshWithOpenBrf((ListBox)sender);
         }
 
@@ -1010,34 +950,6 @@ namespace MB_Studio.Manager
                 lastModuleIndex++;
                 iniLines.Insert(lastModuleIndex, troop3dpreview);
                 File.WriteAllLines(iniFile, iniLines);
-            }
-        }
-
-        private static string GetMABPath()
-        {
-            string mabPath = ProgramConsole.GetModuleInfoPath();
-            mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-            mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-            return mabPath;
-        }
-
-        private void StartOpenBrfManager()//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
-        {
-            Invoke((MethodInvoker)delegate { StartOpenBrfManager_btn_Click(null, null); });
-        }
-
-        private void StartOpenBrfManager_btn_Click(object sender, EventArgs e)//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
-        {
-            if (MB_Studio.Show3DView && openBrfManager == null)
-            {
-                openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
-
-                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
-                t.Start();
-
-                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
-                int result = openBrfManager.Show(MB_Studio.DebugMode);
-                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
             }
         }
 

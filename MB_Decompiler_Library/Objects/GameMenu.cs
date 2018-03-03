@@ -22,7 +22,7 @@ namespace MB_Decompiler_Library.Objects
             menuOptions = DecompileGameMenuOptions(raw_data[1].Split(), int.Parse(tmpS[tmpS.Length - 1]));
         }
 
-        public string Text { get { return text; } }
+        public string Text { get { return text; } }//change to Name?
 
         public string Flags { get { return flags; } }
 

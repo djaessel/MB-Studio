@@ -1,25 +1,26 @@
-﻿using importantLib;
-using MB_Decompiler_Library.IO;
-using skillhunter;
-using static skillhunter.Skriptum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using WarbandTranslator;
 using System.ComponentModel;
+using WarbandTranslator;
+using importantLib;
+using brfManager;
+using skillhunter;
+using MB_Decompiler_Library.IO;
 using MB_Studio.Main;
+using static skillhunter.Skriptum;
+using importantLib.ToolTipsListBox;
 
 namespace MB_Studio.Manager
 {
-    // (DEADCTIVATE types initialization in LoadSettingsAndLists(bool loadSavedTypes = true) and the frmSplash (Loading Window for editing)!!! - am Ende abstract)
-    // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  < DESIGNER ERRORS >  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     public partial class ToolForm : SpecialForm
     {
         #region Attributes
 
+        private bool uses3DView = false;
+        private bool has3DView = false;
         protected FileSaver fileSaver;
 
         public const int GROUP_HEIGHT_MIN = 25;
@@ -29,7 +30,10 @@ namespace MB_Studio.Manager
         protected List<string[]> translations = new List<string[]>();
         protected List<string> typesIDs = new List<string>();
         protected List<Skriptum> types = new List<Skriptum>();
-        
+
+        private Thread openBrfThread = null;
+        protected OpenBrfManager openBrfManager = null;
+
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
         // delegate for the UI updater
@@ -47,6 +51,13 @@ namespace MB_Studio.Manager
 
         public string Prefix { get { return Prefixes[ObjectTypeID] + '_'; } }
 
+        public bool Uses3DView {
+            get { return uses3DView; }
+            //set if needed later for toggle
+        }
+
+        public bool Has3DView { get { return has3DView; } }
+
         #endregion
 
         #endregion
@@ -58,15 +69,19 @@ namespace MB_Studio.Manager
             Init();
         }
 
-        public ToolForm(ObjectType objectType) : base()
+        public ToolForm(ObjectType objectType, bool uses3DView = false) : base()
         {
-            Init(objectType);
+            Init(objectType, uses3DView);
         }
 
-        private void Init(ObjectType objectType = ObjectType.SCRIPT)
+        private void Init(ObjectType objectType = ObjectType.SCRIPT, bool uses3DView = false)
         {
+            this.uses3DView = uses3DView;
+            has3DView = uses3DView && MB_Studio.Show3DView;
             ObjectType = objectType;
+
             InitializeComponent();
+
             idINFO_lbl.Text = idINFO_lbl.Text.Replace("ID_", Prefix);
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
             Shown += ToolForm_Shown;
@@ -90,18 +105,18 @@ namespace MB_Studio.Manager
                 frmSplash = new Loader(this, false) {
                     StartPosition = FormStartPosition.CenterScreen
                 };
-                frmSplash.Show();/**/
+                frmSplash.Show();
 
                 // Do some time consuming work in separate thread
                 Thread t = new Thread(new ThreadStart(LoadControlsAndSettings)) { IsBackground = true };
-                t.Start();/**/
+                t.Start();
             }
             else
                 LoadControlsAndSettings();// USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING
         }
 
         /// <summary>
-        /// Updates the UI.
+        /// Updates the UI
         /// </summary>
         protected void UpdateUI(bool IsDataLoaded)
         {
@@ -124,18 +139,13 @@ namespace MB_Studio.Manager
         protected virtual void InitializeControls()
         {
             foreach (string typeID in typesIDs)
-                typeSelect_lb.Items.Add(typeID);
+                typeSelect_lb.Items.Add(new ToolTipListBoxItem(typeID, typeID));
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 translations.Add(new string[2]);
 
             typeSelect_lb.SelectedIndex = 0;
 
             //ResetControls();//removed because as well in FormShown Event(?)
-        }
-
-        protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            throw new NotImplementedException();
         }
 
         protected virtual void LoadSettingsAndLists()
@@ -175,6 +185,20 @@ namespace MB_Studio.Manager
             foreach (Control c in toolPanel.Controls)
                 if (c.Name.Split('_')[0].Equals("showGroup"))
                     c.Click += C_Click;
+
+            if (Has3DView)
+            {
+                Invoke((MethodInvoker)delegate
+                {
+                    openBrfThread = new Thread(new ThreadStart(StartOpenBrfManager)) { IsBackground = true };
+                    openBrfThread.Start();
+                });
+            }
+        }
+
+        protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
+        {
+            throw new NotImplementedException();
         }
 
         protected bool ContainsPrefix(string text)
@@ -193,7 +217,6 @@ namespace MB_Studio.Manager
         protected void C_Click(object sender, EventArgs e)
         {
             bool sub = false;
-            bool closed;
             Control button = (Control)sender;
             int index = int.Parse(button.Name.Split('_')[1]);
             int tag;
@@ -202,7 +225,7 @@ namespace MB_Studio.Manager
             else
                 tag = int.Parse(button.Tag.ToString());
             Control groupBox = toolPanel.Controls.Find("groupBox_" + index + "_gb", false)[0];
-            closed = groupBox.Height == GROUP_HEIGHT_MIN;
+            bool closed = groupBox.Height == GROUP_HEIGHT_MIN;
             if (closed)
             {
                 groupBox.Height = GROUP_HEIGHT_MAX;
@@ -210,18 +233,16 @@ namespace MB_Studio.Manager
                     groupBox.Height += tag;
                 else
                     groupBox.Height -= -tag;
-                //button.Text = "ʌ";
             }
             else
             {
                 groupBox.Height = GROUP_HEIGHT_MIN;
-                //button.Text = "v";
                 sub = !sub;
             }
             button.Height = groupBox.Height;
             int differ = GROUP_HEIGHT_DIF;
             if (tag != 0)
-                differ = differ + tag;
+                differ += tag;
             foreach (Control c in toolPanel.Controls)
             {
                 if (int.Parse(c.Name.Split('_')[1]) > index)
@@ -328,29 +349,36 @@ namespace MB_Studio.Manager
 
         private void SearchType_SearchTextBox_TextChanged(object sender, EventArgs e)
         {
-            typeSelect_lb.Items.Clear();
-            if (!searchType_SearchTextBox.Text.Contains("Search ...") && searchType_SearchTextBox.Text.Length > 0)
-            {
-                foreach (Skriptum type in types)
-                {
-                    if (type.ID.Contains(searchType_SearchTextBox.Text) || type.ID.Contains(searchType_SearchTextBox.Text))
-                    {
-                        string typeID = type.ID;
-                        //if (type.ObjectTyp != ObjectType.ITEM)
-                            typeID = Prefix + typeID;
-                        typeSelect_lb.Items.Add(Prefix + type.ID);//2 times prefix ???
-                    }
-                }
-            }
+            SearchForContaining(typeSelect_lb, types, searchType_SearchTextBox.Text);
+        }
+
+        protected void SearchForContaining(ListBox lb, Skriptum[] orgList, string searchText, List<Skriptum> usedList = null, bool addID = false)
+        {
+            SearchForContaining(lb, new List<Skriptum>(orgList), searchText, usedList, addID);//no addNew for arrays!
+        }
+
+        protected void SearchForContaining(ListBox lb, List<Skriptum> orgList, string searchText, List<Skriptum> usedList = null, bool addID = false, bool addNew = false)
+        {
+            List<Skriptum> ddd;
+            if (usedList == null)
+                ddd = orgList;
             else
+                ddd = usedList;
+            lb.Items.Clear();
+            bool defaultList = searchText.Contains("Search ...") || searchText.Length == 0;
+            if (defaultList && addNew)
+                lb.Items.Add("New");
+            if (!int.TryParse(searchText, out int id))
             {
-                foreach (Skriptum type in types)
-                {
-                    string typeID = type.ID;
-                    //if (type.ObjectTyp != ObjectType.ITEM)
-                        typeID = Prefix + typeID;
-                    typeSelect_lb.Items.Add(Prefix + type.ID);//2 times prefix ???s
-                }
+                foreach (Skriptum type in ddd)
+                    if ((type.ID.Contains(searchText) || type.ID.Contains(searchText)) || defaultList)
+                        lb.Items.Add(((addID) ? orgList.IndexOf(type) + " - " : string.Empty) + type.Prefix + type.ID);
+            }
+            else if (id < orgList.Count && id >= 0)
+            {
+                Skriptum skriptum = orgList[id];
+                if (ddd.Contains(skriptum))
+                    lb.Items.Add(((addID) ? id + " - " : string.Empty) + skriptum.Prefix + skriptum.ID);
             }
         }
 
@@ -361,8 +389,7 @@ namespace MB_Studio.Manager
                 if (/*(*/typeSelect_lb.SelectedIndex > 0/* && save_btn.Text.Equals("SAVE"))*/ || !typeSelect_lb.SelectedItem.ToString().Equals("New"))
                 {
                     int idx = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                    Skriptum type = types[idx];
-                    SetupType(type);
+                    SetupType(types[idx]);
                 }
                 else
                     ResetControls();
@@ -379,11 +406,11 @@ namespace MB_Studio.Manager
             name_txt.ResetText();
             plural_name_txt.ResetText();
 
-            List<string> excluded = new List<string>() { language_cbb.Name };
+            List<string> excluded = new List<string>() { language_cbb.Name };//maybe make accessable in child later - as attribute or method to add
 
-            foreach (Control groupC in toolPanel.Controls)
-                if (GetNameEndOfControl(groupC).Equals("gb"))
-                    ResetGroupBox((GroupBox)groupC, excluded);
+            foreach (Control c in toolPanel.Controls)
+                if (GetNameEndOfControl(c).Equals("gb"))
+                    ResetGroupBox((GroupBox)c, excluded);
 
             singleNameTranslation_txt.ResetText();
             pluralNameTranslation_txt.ResetText();
@@ -433,7 +460,8 @@ namespace MB_Studio.Manager
             ResetControls();
 
             id_txt.Text = type.ID;
-            //name_txt.Text = type.Name; //maybe implement later
+            name_txt.Text = ClassGetPropertyValueByName(type, "Name");
+            plural_name_txt.Text = ClassGetPropertyValueByName(type, "PluralName");
 
             #region Translation
 
@@ -443,9 +471,9 @@ namespace MB_Studio.Manager
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 PrepareLanguageByIndex(i);
             if (language_cbb.SelectedIndex != Properties.Settings.Default.languageIndex)
-                language_cbb.SelectedIndex = Properties.Settings.Default.languageIndex; // other code is in the SelectedIndex Changed Event
+                language_cbb.SelectedIndex = Properties.Settings.Default.languageIndex;// other code is in the SelectedIndex Changed Event
             else
-                Language_cbb_SelectedIndexChanged(); //Rethink
+                Language_cbb_SelectedIndexChanged();//Rethink
 
             #endregion
         }
@@ -615,30 +643,77 @@ namespace MB_Studio.Manager
 
         #endregion
 
-        #region Useful Methods
+        #region OpenBrf
 
-        protected int GetIndexOfSkriptumByID(string id, string[] skriptumList)
+        protected override void OnHandleDestroyed(EventArgs e)
         {
-            int index = -1;
-            for (int i = 0; i < skriptumList.Length; i++)
-            {
-                if (skriptumList[i].Equals(id))
-                {
-                    index = i;
-                    i = skriptumList.Length;
-                }
-            }
-            return index;
+            if (openBrfManager != null)
+                KillOpenBrfThread();
+
+            base.OnHandleDestroyed(e);
         }
+
+        //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
+        private void KillOpenBrfThread()
+        {
+            openBrfManager.Close();
+            if (openBrfThread != null)
+                Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+        }
+
+        private void AddOpenBrfAsChildThread()
+        {
+            while (!openBrfManager.IsShown)
+                Thread.Sleep(10);
+            Invoke((MethodInvoker)delegate
+            {
+                openBrfManager.AddWindowHandleToControlsParent(this);
+
+                Thread.Sleep(50);
+
+                // Update UI
+                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
+
+                Console.WriteLine("Loaded 3D View successfully! - laut Programmablauf");
+            });
+        }
+
+        protected static string GetMABPath()
+        {
+            string mabPath = MB_Decompiler.ProgramConsole.GetModuleInfoPath();
+            mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+            mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+            return mabPath;
+        }
+
+        private void StartOpenBrfManager()//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                if (Has3DView && openBrfManager == null)
+                {
+                    openBrfManager = new OpenBrfManager(GetMABPath(), MB_Decompiler.ProgramConsole.OriginalMod);
+
+                    Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
+                    t.Start();
+
+                    Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                    int result = openBrfManager.Show(MB_Studio.DebugMode);
+                    Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+                }
+            });
+        }
+
+        #endregion
+
+        #region Useful Methods
 
         protected int GetIndexOfTypeByID(string id)
         {
             int index = -1;
             if (types.Count != 0)
-            {
-                if (!types[0].ID.StartsWith(Prefix))//if (ObjectType != ObjectType.ITEM)
+                if (!types[0].ID.StartsWith(Prefix))//&& id.StartsWith(Prefix)
                     id = id.Substring(id.IndexOf('_') + 1);
-            }
             for (int i = 0; i < types.Count; i++)
             {
                 if (types[i].ID.Equals(id))
@@ -648,6 +723,21 @@ namespace MB_Studio.Manager
                 }
             }
             return index;
+        }
+
+        /// <summary>
+        /// Returns value of property or empty string if property does not exists.
+        /// </summary>
+        /// <param name="classObject"></param>
+        /// <param name="propertyName"></param>
+        /// <returns>Property Value</returns>
+        protected string ClassGetPropertyValueByName(object classObject, string propertyName)
+        {
+            string val = string.Empty;
+            foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(classObject))
+                if (prop.Name.Equals(propertyName))
+                    val = prop.GetValue(classObject).ToString();
+            return val;
         }
 
         #endregion

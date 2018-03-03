@@ -1,5 +1,4 @@
-﻿using System;
-using importantLib;
+﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using skillhunter;
 
@@ -12,13 +11,13 @@ namespace MB_Decompiler_Library.Objects
         private int id;
         private ulong flagsGZ;
         private double[] relations;
-        private string factionName, flags, colorCode;
+        private string name, flags, colorCode;
         private string[] ranks = new string[0];
 
         public Faction(string[] raw_data) : base(raw_data[0].Split()[0].Replace("fac_", string.Empty), ObjectType.FACTION)
         {
             string[] tmp = raw_data[0].Split();
-            factionName = tmp[1];
+            name = tmp[1];
             if (ImportantMethods.IsNumericGZ(tmp[2]))
             {
                 flagsGZ = ulong.Parse(tmp[2]);
@@ -102,7 +101,7 @@ namespace MB_Decompiler_Library.Objects
 
         public static void ResetIDs() { lastID = -1; }
 
-        public string FactionName { get { return factionName; } }
+        public string Name { get { return name; } }
 
         public ulong FlagsGZ { get { return flagsGZ; } }
 

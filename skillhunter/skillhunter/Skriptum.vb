@@ -36,8 +36,12 @@
     Private type As ObjectType
 
     Public Sub New(s_id_name As String, type As ObjectType)
-        Me.s_id_name = s_id_name ' CHECK IF THIS IS OK!!!
         Me.type = type
+        s_id_name = s_id_name.Trim()
+        If s_id_name.StartsWith(Prefix) Then
+            s_id_name = s_id_name.Substring(Prefix.Length)
+        End If
+        Me.s_id_name = s_id_name
     End Sub
 
     Public ReadOnly Property ID As String

@@ -65,7 +65,7 @@ namespace MB_Studio.Manager
                 troops_lb.Items.Add(troop);
             foreach (string fac in CodeReader.Factions)
                 faction_cbb.Items.Add(fac);
-            for (int i = 1; i < CodeReader.GameMenus.Length; i++)
+            for (int i = 1; i < CodeReader.GameMenus.Count; i++)
                 menuID_cbb.Items.Add(CodeReader.GameMenus[i]);
             ResetControls();
         }
@@ -224,8 +224,8 @@ namespace MB_Studio.Manager
         protected override void SetupType(Skriptum type)
         {
             base.SetupType(type);
+
             PartyTemplate partyTemplate = (PartyTemplate)type;
-            name_txt.Text = partyTemplate.PartyTemplateName;
 
             #region GROUP2 - Flags
 
@@ -327,12 +327,12 @@ namespace MB_Studio.Manager
             string tmp = values[0] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " " + GetPersonality();
 
             for (int i = 0; i < stack_troops_lb.Items.Count; i++)
-                tmp += " " + GetIndexOfSkriptumByID("trp_" + stack_troops_lb.Items[i].ToString(), CodeReader.Troops) + " " + memberValues[i][0] + " " + memberValues[i][1] + " " + memberValues[i][2];
+                tmp += " " + CodeReader.Troops.IndexOf("trp_" + stack_troops_lb.Items[i].ToString()) + " " + memberValues[i][0] + " " + memberValues[i][1] + " " + memberValues[i][2];
 
-            // for invalid troops
+            //for invalid troops
             for (int i = 0; i < 6 - stack_troops_lb.Items.Count; i++)
                 tmp += " -1 0 0 0";
-            // for invalid troops
+            //for invalid troops
 
             values.Clear();
             foreach (string value in tmp.Split())

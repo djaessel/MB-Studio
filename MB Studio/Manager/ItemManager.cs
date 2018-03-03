@@ -1,6 +1,4 @@
-﻿using brfManager;
-using importantLib;
-using MB_Decompiler;
+﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using skillhunter;
@@ -9,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace MB_Studio.Manager
@@ -29,9 +26,6 @@ namespace MB_Studio.Manager
         private static readonly List<string> ItemTypes = new List<string>() {"none","horse","one_handed_wpn","two_handed_wpn","polearm","arrows","bolts","shield","bow","crossbow","thrown","goods",
                                                       "head_armor","body_armor","foot_armor","hand_armor","pistol","musket","bullets","animal","book"};
 
-        private Thread openBrfThread = null;
-        private OpenBrfManager openBrfManager = null;
-
         private List<int[]> memberValues = new List<int[]>();
         private List<SimpleTrigger> itemTrigger = new List<SimpleTrigger>();
 
@@ -39,7 +33,7 @@ namespace MB_Studio.Manager
 
         #region Loading
 
-        public ItemManager() : base(Skriptum.ObjectType.ITEM)
+        public ItemManager() : base(Skriptum.ObjectType.ITEM, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
@@ -56,14 +50,7 @@ namespace MB_Studio.Manager
         {
             base.LoadSettingsAndLists();
 
-            if (MB_Studio.Show3DView)
-            {
-                Invoke((MethodInvoker)delegate
-                {
-                    openBrfThread = new Thread(new ThreadStart(StartOpenBrfManager)) { IsBackground = true };
-                    openBrfThread.Start();
-                });
-            }
+
         }
 
         protected override void InitializeControls()
@@ -158,8 +145,6 @@ namespace MB_Studio.Manager
             base.SetupType(type);
 
             Item item = (Item)type;
-            name_txt.Text = item.Name;//will later be removed
-            plural_name_txt.Text = item.PluralName;//will maybe removed later
 
             #region Property Flags
 
@@ -304,7 +289,7 @@ namespace MB_Studio.Manager
                 facs[i] = CodeReader.Factions[item.Factions[i]];
 
             if (groupBox_6_gb.Controls.Count == 0)
-                InitializeGroupBoxCheckBoxesByArray_Create(groupBox_6_gb, CodeReader.Factions, facs);
+                InitializeGroupBoxCheckBoxesByArray_Create(groupBox_6_gb, CodeReader.Factions.ToArray(), facs);
             else
                 InitializeGroupBoxCheckBoxesByArray_Change(groupBox_6_gb, facs);
 
@@ -1309,53 +1294,9 @@ namespace MB_Studio.Manager
 
         #region OpenBrf
 
-        protected override void OnHandleDestroyed(EventArgs e)
-        {
-            if (openBrfManager != null)
-                KillOpenBrfThread();
-
-            base.OnHandleDestroyed(e);
-        }
-
-        //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
-        private void KillOpenBrfThread()
-        {
-            openBrfManager.Close();
-            if (openBrfThread != null)
-                Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
-        }
-
-        private void AddOpenBrfAsChildThread()
-        {
-            while (!openBrfManager.IsShown)
-                Thread.Sleep(10);
-            Invoke((MethodInvoker)delegate
-            {
-                openBrfManager.AddWindowHandleToControlsParent(this);
-
-                Thread.Sleep(50);
-
-                //typeSelect_lb.SelectedIndex = 0;
-                //Change3DView();
-
-                // Update UI
-                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
-
-                Console.WriteLine("Loaded 3D View successfully! - laut Programmablauf");
-            });
-        }
-
-        private static string GetMABPath()
-        {
-            string mabPath = ProgramConsole.GetModuleInfoPath();
-            mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-            mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-            return mabPath;
-        }
-
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (MB_Studio.Show3DView)
+            if (Has3DView)
                 Change3DView();
         }
 
@@ -1393,26 +1334,6 @@ namespace MB_Studio.Manager
                 }
             }
             return b;
-        }
-
-        private void StartOpenBrfManager()//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
-        {
-            Invoke((MethodInvoker)delegate { StartOpenBrfManager_btn_Click(null, null); });
-        }
-
-        private void StartOpenBrfManager_btn_Click(object sender, EventArgs e)//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
-        {
-            if (MB_Studio.Show3DView && openBrfManager == null)
-            {
-                openBrfManager = new OpenBrfManager(GetMABPath(), ProgramConsole.OriginalMod);
-
-                Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
-                t.Start();
-
-                Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
-                int result = openBrfManager.Show(MB_Studio.DebugMode);
-                Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
-            }
         }
 
         #endregion

@@ -152,6 +152,10 @@
       <Project>{fc643914-80e5-42ff-806b-c23e37dd9ec5}</Project>
       <Name>MB_Decompiler_Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\skillhunter\skillhunter\skillhunter.vbproj">
+      <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
+      <Name>skillhunter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

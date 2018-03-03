@@ -1,7 +1,6 @@
 ﻿using MB_Decompiler_Library.Objects.Support;
 using skillhunter;
 using System.Collections.Generic;
-using System;
 
 namespace MB_Decompiler_Library.Objects
 {

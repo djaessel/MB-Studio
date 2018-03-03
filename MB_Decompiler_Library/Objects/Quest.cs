@@ -6,11 +6,11 @@ namespace MB_Decompiler_Library.Objects
     public class Quest : Skriptum
     {
         private ulong flagsGZ;
-        private string questName, description, flags;
+        private string name, description, flags;
 
         public Quest(string[] raw_data) : base(raw_data[0], ObjectType.QUEST)
         {
-            questName = raw_data[1];
+            name = raw_data[1];
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
                 flagsGZ = ulong.Parse(raw_data[2]);
@@ -59,7 +59,7 @@ namespace MB_Decompiler_Library.Objects
 
         public string Flags { get { return flags; } }
 
-        public string QuestName { get { return questName; } }
+        public string Name { get { return name; } }
 
         public string Description { get { return description; } }
 

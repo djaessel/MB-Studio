@@ -1,4 +1,5 @@
 ﻿using importantLib;
+using importantLib.ToolTipsListBox;
 
 namespace MB_Studio.Manager
 {
@@ -34,7 +35,7 @@ namespace MB_Studio.Manager
             this.idINFO_lbl = new System.Windows.Forms.Label();
             this.save_btn = new System.Windows.Forms.Button();
             this.closeAll_btn = new System.Windows.Forms.Button();
-            this.typeSelect_lb = new System.Windows.Forms.ListBox();
+            this.typeSelect_lb = new ToolTipListBox();
             this.typeSelect_lbl = new System.Windows.Forms.Label();
             this.min_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
@@ -76,7 +77,7 @@ namespace MB_Studio.Manager
             // 
             this.idINFO_lbl.AutoSize = true;
             this.idINFO_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.idINFO_lbl.Location = new System.Drawing.Point(525, 57);
+            this.idINFO_lbl.Location = new System.Drawing.Point(509, 58);
             this.idINFO_lbl.Name = "idINFO_lbl";
             this.idINFO_lbl.Size = new System.Drawing.Size(159, 13);
             this.idINFO_lbl.TabIndex = 35;
@@ -114,8 +115,7 @@ namespace MB_Studio.Manager
             this.typeSelect_lb.ForeColor = System.Drawing.Color.White;
             this.typeSelect_lb.FormattingEnabled = true;
             this.typeSelect_lb.ItemHeight = 16;
-            this.typeSelect_lb.Items.AddRange(new object[] {
-            "New"});
+            this.typeSelect_lb.Items.AddRange(new object[] {"New"});
             this.typeSelect_lb.Location = new System.Drawing.Point(87, 58);
             this.typeSelect_lb.Name = "typeSelect_lb";
             this.typeSelect_lb.Size = new System.Drawing.Size(317, 114);
@@ -413,7 +413,7 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Label idINFO_lbl;
         protected System.Windows.Forms.Button save_btn;
         protected System.Windows.Forms.Button closeAll_btn;
-        protected System.Windows.Forms.ListBox typeSelect_lb;
+        protected ToolTipListBox typeSelect_lb;
         protected System.Windows.Forms.Label typeSelect_lbl;
         protected System.Windows.Forms.Label title_lbl;
         protected System.Windows.Forms.Label plural_name_lbl;

@@ -55,7 +55,7 @@ namespace MB_Studio.Manager
                 ai_target_p_cbb.Items.Add(p);
             foreach (string fac in CodeReader.Factions)
                 faction_cbb.Items.Add(fac);
-            for (int i = 1; i < CodeReader.GameMenus.Length; i++)
+            for (int i = 1; i < CodeReader.GameMenus.Count; i++)//start with 1 correct?
                 menuID_cbb.Items.Add(CodeReader.GameMenus[i]);
             ResetControls();
         }
@@ -217,7 +217,7 @@ namespace MB_Studio.Manager
             base.SetupType(type);
 
             Party party = (Party)type;
-            name_txt.Text = party.PartyName;
+            name_txt.Text = party.Name;
 
             #region GROUP2 - Flags
 
@@ -325,16 +325,15 @@ namespace MB_Studio.Manager
             tmp += x_axis_txt.Text + " " + y_axis_txt.Text + "      " + stack_troops_lb.Items.Count;
 
             for (int i = 0; i < stack_troops_lb.Items.Count; i++)
-                tmp += " " + GetIndexOfSkriptumByID("trp_" + stack_troops_lb.Items[i].ToString(), CodeReader.Troops) + " " + memberValues[i][0] + " " + memberValues[i][1] + " " + memberValues[i][2];
+                tmp += " " + CodeReader.Troops.IndexOf("trp_" + stack_troops_lb.Items[i].ToString()) + " " + memberValues[i][0] + " " + memberValues[i][1] + " " + memberValues[i][2];
 
-            // for invalid troops
+            //for invalid troops - still needed?
             //for (int i = 0; i < 6 - stack_troops_lb.Items.Count; i++)
             //    values[0] += " -1 0 0 0";
-            // for invalid troops
+            //for invalid troops
 
             values.Clear();
-            values = new List<string>(tmp.Split())
-            {
+            values = new List<string>(tmp.Split()) {
                 direction_in_degrees_txt.Text
             };
             string[] valuesX = values.ToArray();

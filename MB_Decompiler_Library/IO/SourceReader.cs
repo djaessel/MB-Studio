@@ -123,50 +123,50 @@ namespace MB_Decompiler_Library.IO
                 {
                     if (ImportantMethods.IsNumericGZ(parts[i].Replace("reg", string.Empty)))
                         parts[i] = (CodeReader.REG0 + ulong.Parse(parts[i].Replace("reg", string.Empty))).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.QuickStrings, parts[i]))
-                        parts[i] = (CodeReader.QUICKSTRING_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.QuickStrings, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.GlobalVariables, parts[i]))
-                        parts[i] = (CodeReader.GLOBAL_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.GlobalVariables, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Scripts, parts[i]))
-                        parts[i] = (CodeReader.SCRIPT_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Scripts, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.SceneProps, parts[i]))
-                        parts[i] = (CodeReader.SPR_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.SceneProps, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Strings, parts[i]))
-                        parts[i] = (CodeReader.STRING_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Strings, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Factions, parts[i]))
-                        parts[i] = (CodeReader.FAC_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Factions, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Troops, parts[i]))
-                        parts[i] = (CodeReader.TRP_PLAYER + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Troops, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Presentations, parts[i]))
-                        parts[i] = (CodeReader.PRSNT_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Presentations, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Scenes, parts[i]))
-                        parts[i] = (CodeReader.SCENE_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Scenes, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Meshes, parts[i]))
-                        parts[i] = (CodeReader.MESH_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Meshes, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Items, parts[i]))
-                        parts[i] = (CodeReader.ITM_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Items, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Parties, parts[i]))
-                        parts[i] = (CodeReader.P_MAIN_PARTY + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Parties, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.PartyTemplates, parts[i]))
-                        parts[i] = (CodeReader.PT_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.PartyTemplates, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.MissionTemplates, parts[i]))
-                        parts[i] = (CodeReader.MT_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.MissionTemplates, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Animations, parts[i]))
-                        parts[i] = (CodeReader.ANIM_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Animations, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Skills, parts[i]))
-                        parts[i] = (CodeReader.SKL_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Skills, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Sounds, parts[i]))
-                        parts[i] = (CodeReader.SND_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Sounds, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.ParticleSystems, parts[i]))
-                        parts[i] = (CodeReader.PSYS_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.ParticleSystems, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.GameMenus, parts[i]))
-                        parts[i] = (CodeReader.MENU_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.GameMenus, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Quests, parts[i]))
-                        parts[i] = (CodeReader.QUEST_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Quests, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.TableauMaterials, parts[i]))
-                        parts[i] = (CodeReader.TABLEAU_MAT_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.TableauMaterials, parts[i])).ToString();
-                    else if (ImportantMethods.ArrayContainsString(CodeReader.Tracks, parts[i]))
-                        parts[i] = (CodeReader.TRACK_MIN + (ulong)ImportantMethods.ArrayIndexOfString(CodeReader.Tracks, parts[i])).ToString();
+                    else if (CodeReader.QuickStrings.Contains(parts[i]))
+                        parts[i] = (CodeReader.QUICKSTRING_MIN + (ulong)CodeReader.QuickStrings.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.GlobalVariables.Contains(parts[i]))
+                        parts[i] = (CodeReader.GLOBAL_MIN + (ulong)CodeReader.GlobalVariables.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Scripts.Contains(parts[i]))
+                        parts[i] = (CodeReader.SCRIPT_MIN + (ulong)CodeReader.Scripts.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.SceneProps.Contains(parts[i]))
+                        parts[i] = (CodeReader.SPR_MIN + (ulong)CodeReader.SceneProps.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Strings.Contains(parts[i]))
+                        parts[i] = (CodeReader.STRING_MIN + (ulong)CodeReader.Strings.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Factions.Contains(parts[i]))
+                        parts[i] = (CodeReader.FAC_MIN + (ulong)CodeReader.Factions.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Troops.Contains(parts[i]))
+                        parts[i] = (CodeReader.TRP_PLAYER + (ulong)CodeReader.Troops.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Presentations.Contains(parts[i]))
+                        parts[i] = (CodeReader.PRSNT_MIN + (ulong)CodeReader.Presentations.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Scenes.Contains(parts[i]))
+                        parts[i] = (CodeReader.SCENE_MIN + (ulong)CodeReader.Scenes.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Meshes.Contains(parts[i]))
+                        parts[i] = (CodeReader.MESH_MIN + (ulong)CodeReader.Meshes.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Items.Contains(parts[i]))
+                        parts[i] = (CodeReader.ITM_MIN + (ulong)CodeReader.Items.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Parties.Contains(parts[i]))
+                        parts[i] = (CodeReader.P_MAIN_PARTY + (ulong)CodeReader.Parties.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.PartyTemplates.Contains(parts[i]))
+                        parts[i] = (CodeReader.PT_MIN + (ulong)CodeReader.PartyTemplates.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.MissionTemplates.Contains(parts[i]))
+                        parts[i] = (CodeReader.MT_MIN + (ulong)CodeReader.MissionTemplates.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Animations.Contains(parts[i]))
+                        parts[i] = (CodeReader.ANIM_MIN + (ulong)CodeReader.Animations.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Skills.Contains(parts[i]))
+                        parts[i] = (CodeReader.SKL_MIN + (ulong)CodeReader.Skills.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Sounds.Contains(parts[i]))
+                        parts[i] = (CodeReader.SND_MIN + (ulong)CodeReader.Sounds.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.ParticleSystems.Contains(parts[i]))
+                        parts[i] = (CodeReader.PSYS_MIN + (ulong)CodeReader.ParticleSystems.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.GameMenus.Contains(parts[i]))
+                        parts[i] = (CodeReader.MENU_MIN + (ulong)CodeReader.GameMenus.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Quests.Contains(parts[i]))
+                        parts[i] = (CodeReader.QUEST_MIN + (ulong)CodeReader.Quests.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.TableauMaterials.Contains(parts[i]))
+                        parts[i] = (CodeReader.TABLEAU_MAT_MIN + (ulong)CodeReader.TableauMaterials.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.Tracks.Contains(parts[i]))
+                        parts[i] = (CodeReader.TRACK_MIN + (ulong)CodeReader.Tracks.IndexOf(parts[i])).ToString();
                     else if (ImportantMethods.IsNumericGZ(parts[i]))
                         parts[i] = (ulong.MaxValue + (ulong)(int.Parse(parts[i]) + 1)).ToString();
                     else if (ConstantsFinder.ContainsConst(parts[i]))
@@ -1190,7 +1190,6 @@ namespace MB_Decompiler_Library.IO
         {
             string[] sp1, sp2, sp3;
             string line = string.Empty;
-            //string[] otherScenes, chestTroops, tmp;
             List<Scene> scenes = new List<Scene>();
             List<string> sceneLines = new List<string>();
             List<string> sceneIDs = new List<string>();
@@ -1246,17 +1245,8 @@ namespace MB_Decompiler_Library.IO
                     }
                 }
 
-                for (int j = 0; j < CodeReader.Troops.Length; j++)
-                {
-                    for (int i = 0; i < sp3.Length; i++)
-                    {
-                        if (CodeReader.Troops[j].Replace("trp_", string.Empty).Equals(sp3[i]))
-                        {
-                            sp3[i] = j.ToString();
-                            i = sp3.Length;
-                        }
-                    }
-                }
+                for (int i = 0; i < sp3.Length; i++)
+                    sp3[i] = CodeReader.Troops.IndexOf("trp_" + sp3[i]).ToString();//is trp_ needed?
 
                 scenes.Add(new Scene(sp1, sp2, sp3, line));
             }
@@ -1518,16 +1508,7 @@ namespace MB_Decompiler_Library.IO
                             sp[3] = "0.15";
 
                         if (!ImportantMethods.IsNumericGZ(sp[4]))
-                        {
-                            for (int i = 0; i < CodeReader.Sounds.Length; i++)
-                            {
-                                if (CodeReader.Sounds[i].Equals(sp[4]))
-                                {
-                                    sp[4] = i.ToString();
-                                    i = CodeReader.Sounds.Length;
-                                }
-                            }
-                        }
+                            sp[4] = CodeReader.Sounds.IndexOf(sp[4]).ToString();
 
                         MapIcon icon = new MapIcon(sp);
 

@@ -7,11 +7,11 @@ namespace MB_Decompiler_Library.Objects
     {
         private int maxLevel;
         private ulong flagsGZ;
-        private string skillName, flags, description;
+        private string name, flags, description;
 
         public Skill(string[] raw_data) : base(raw_data[0], ObjectType.SKILL)
         {
-            skillName = raw_data[1].Replace('_', ' ');
+            name = raw_data[1].Replace('_', ' ');
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
                 flagsGZ = ulong.Parse(raw_data[2]);
@@ -78,7 +78,7 @@ namespace MB_Decompiler_Library.Objects
             this.flags = flags.TrimStart('|');
         }
 
-        public string SkillName { get { return skillName; } }
+        public string Name { get { return name; } }
 
         public string Description { get { return description; } }
 

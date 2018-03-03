@@ -49,7 +49,7 @@ namespace MB_Decompiler_Library.Objects
 
         public string VoiceOverSoundFile { get { return voiceOverSoundFile; } }
 
-        public int StartDialogStateID { get { return startDialogStateID; } }
+        public int StartDialogStateID { get { return startDialogStateID; } }//Name?
 
         public int EndDialogStateID { get { return endDialogStateID; } }
 

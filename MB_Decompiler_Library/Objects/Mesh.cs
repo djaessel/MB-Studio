@@ -18,7 +18,7 @@ namespace MB_Decompiler_Library.Objects
 
         public string Flags { get { return flags; } }
 
-        public string ResourceName { get { return resourceName; } }
+        public string ResourceName { get { return resourceName; } }//change to Name if good idea later
 
         public double[] AxisTranslation { get { return new double[] { manipulations[0], manipulations[1], manipulations[2] }; } }
 

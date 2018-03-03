@@ -1,18 +1,17 @@
-﻿using System;
-using skillhunter;
+﻿using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
     public class Presentation : Skriptum
     {
         private ulong flags;
-        private int mesh_id;
+        private int meshID;
         private SimpleTrigger[] simple_triggers;
 
         public Presentation(string name, ulong flags, int mesh_id, int triggerCount) : base(name, ObjectType.PRESENTATION)
         {
             this.flags = flags;
-            this.mesh_id = mesh_id;
+            this.meshID = mesh_id;
             simple_triggers = new SimpleTrigger[triggerCount];
         }
 
@@ -38,7 +37,7 @@ namespace MB_Decompiler_Library.Objects
 
         public ulong Flags { get { return flags; } }
 
-        public int MeshID { get { return mesh_id; } }
+        public int MeshID { get { return meshID; } }
 
         public SimpleTrigger[] SimpleTriggers { get { return simple_triggers; } }
 

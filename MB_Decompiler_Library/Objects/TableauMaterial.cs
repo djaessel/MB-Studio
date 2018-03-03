@@ -14,7 +14,7 @@ namespace MB_Decompiler_Library.Objects
         {
             flagsGZ = ulong.Parse(raw_data[1]);
             flags = flagsGZ.ToString();//change if flags available
-            sampleMaterialName = raw_data[2];
+            sampleMaterialName = raw_data[2];//change to name if good idea later
             width = int.Parse(raw_data[3]);
             height = int.Parse(raw_data[4]);
             minX = int.Parse(raw_data[5]);

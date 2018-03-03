@@ -147,7 +147,6 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl = new System.Windows.Forms.Label();
             this.reserved_XVII_num = new System.Windows.Forms.NumericUpDown();
             this.reserved_XVII_lbl = new System.Windows.Forms.Label();
-            this.StartOpenBrfManager_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_3_gb.SuspendLayout();
@@ -169,8 +168,17 @@ namespace MB_Studio.Manager
             // 
             this.title_lbl.Text = "ToolForm";
             // 
+            // plural_name_lbl
+            // 
+            this.plural_name_lbl.Visible = true;
+            // 
+            // plural_name_txt
+            // 
+            this.plural_name_txt.Visible = true;
+            // 
             // toolPanel
             // 
+            this.toolPanel.Controls.Add(this.groupBox_2_gb);
             this.toolPanel.Controls.Add(this.groupBox_3_gb);
             this.toolPanel.Controls.Add(this.showGroup_7_btn);
             this.toolPanel.Controls.Add(this.groupBox_7_gb);
@@ -182,13 +190,11 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.Add(this.showGroup_3_btn);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Controls.Add(this.groupBox_2_gb);
             this.toolPanel.Controls.Add(this.groupBox_1_gb);
             this.toolPanel.Controls.Add(this.groupBox_6_gb);
             this.toolPanel.Size = new System.Drawing.Size(779, 225);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_6_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_1_gb, 0);
-            this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_3_btn, 0);
@@ -202,6 +208,7 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
             // 
             // groupBox_0_gb
             // 
@@ -594,7 +601,7 @@ namespace MB_Studio.Manager
             // 
             this.selectedItemFlags_lbl.AutoSize = true;
             this.selectedItemFlags_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectedItemFlags_lbl.Location = new System.Drawing.Point(357, 152);
+            this.selectedItemFlags_lbl.Location = new System.Drawing.Point(356, 153);
             this.selectedItemFlags_lbl.Name = "selectedItemFlags_lbl";
             this.selectedItemFlags_lbl.Size = new System.Drawing.Size(84, 16);
             this.selectedItemFlags_lbl.TabIndex = 18;
@@ -623,7 +630,7 @@ namespace MB_Studio.Manager
             this.usedItemREMOVE_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.usedItemREMOVE_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usedItemREMOVE_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemREMOVE_btn.Location = new System.Drawing.Point(630, 114);
+            this.usedItemREMOVE_btn.Location = new System.Drawing.Point(643, 114);
             this.usedItemREMOVE_btn.Name = "usedItemREMOVE_btn";
             this.usedItemREMOVE_btn.Size = new System.Drawing.Size(80, 24);
             this.usedItemREMOVE_btn.TabIndex = 16;
@@ -642,7 +649,7 @@ namespace MB_Studio.Manager
             this.usedItemDOWN_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.usedItemDOWN_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usedItemDOWN_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemDOWN_btn.Location = new System.Drawing.Point(630, 89);
+            this.usedItemDOWN_btn.Location = new System.Drawing.Point(643, 89);
             this.usedItemDOWN_btn.Name = "usedItemDOWN_btn";
             this.usedItemDOWN_btn.Size = new System.Drawing.Size(80, 24);
             this.usedItemDOWN_btn.TabIndex = 15;
@@ -661,7 +668,7 @@ namespace MB_Studio.Manager
             this.addItemToUsedItems_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addItemToUsedItems_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addItemToUsedItems_btn.ForeColor = System.Drawing.Color.White;
-            this.addItemToUsedItems_btn.Location = new System.Drawing.Point(294, 64);
+            this.addItemToUsedItems_btn.Location = new System.Drawing.Point(307, 64);
             this.addItemToUsedItems_btn.Name = "addItemToUsedItems_btn";
             this.addItemToUsedItems_btn.Size = new System.Drawing.Size(43, 110);
             this.addItemToUsedItems_btn.TabIndex = 14;
@@ -680,7 +687,7 @@ namespace MB_Studio.Manager
             this.usedItemUP_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.usedItemUP_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usedItemUP_btn.ForeColor = System.Drawing.Color.White;
-            this.usedItemUP_btn.Location = new System.Drawing.Point(630, 64);
+            this.usedItemUP_btn.Location = new System.Drawing.Point(643, 64);
             this.usedItemUP_btn.Name = "usedItemUP_btn";
             this.usedItemUP_btn.Size = new System.Drawing.Size(80, 24);
             this.usedItemUP_btn.TabIndex = 12;
@@ -1264,7 +1271,7 @@ namespace MB_Studio.Manager
             // 
             this.troopImageINFO_lbl.AutoSize = true;
             this.troopImageINFO_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.troopImageINFO_lbl.Location = new System.Drawing.Point(360, 94);
+            this.troopImageINFO_lbl.Location = new System.Drawing.Point(375, 94);
             this.troopImageINFO_lbl.Name = "troopImageINFO_lbl";
             this.troopImageINFO_lbl.Size = new System.Drawing.Size(328, 16);
             this.troopImageINFO_lbl.TabIndex = 16;
@@ -1693,7 +1700,7 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl.Size = new System.Drawing.Size(100, 13);
             this.reserved_XVIII_lbl.TabIndex = 41;
             this.reserved_XVIII_lbl.Tag = "41";
-            this.reserved_XVIII_lbl.Text = "Reserved XVIII:";
+            this.reserved_XVIII_lbl.Text = "Reserved 18:";
             // 
             // reserved_XVII_num
             // 
@@ -1722,22 +1729,8 @@ namespace MB_Studio.Manager
             this.reserved_XVII_lbl.Size = new System.Drawing.Size(100, 13);
             this.reserved_XVII_lbl.TabIndex = 40;
             this.reserved_XVII_lbl.Tag = "40";
-            this.reserved_XVII_lbl.Text = "Reserved XVII:";
+            this.reserved_XVII_lbl.Text = "Reserved 17:";
             this.reserved_XVII_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // StartOpenBrfManager_btn
-            // 
-            this.StartOpenBrfManager_btn.BackColor = System.Drawing.Color.DimGray;
-            this.StartOpenBrfManager_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartOpenBrfManager_btn.Location = new System.Drawing.Point(0, 0);
-            this.StartOpenBrfManager_btn.Name = "StartOpenBrfManager_btn";
-            this.StartOpenBrfManager_btn.Size = new System.Drawing.Size(38, 103);
-            this.StartOpenBrfManager_btn.TabIndex = 0;
-            this.StartOpenBrfManager_btn.TabStop = false;
-            this.StartOpenBrfManager_btn.Tag = "";
-            this.StartOpenBrfManager_btn.UseVisualStyleBackColor = false;
-            this.StartOpenBrfManager_btn.Visible = false;
-            this.StartOpenBrfManager_btn.Click += new System.EventHandler(this.StartOpenBrfManager_btn_Click);
             // 
             // TroopManager
             // 
@@ -1745,28 +1738,10 @@ namespace MB_Studio.Manager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.ClientSize = new System.Drawing.Size(815, 415);
-            this.Controls.Add(this.StartOpenBrfManager_btn);
             this.DoubleBuffered = true;
             this.Name = "TroopManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TroopManager";
-            this.Controls.SetChildIndex(this.StartOpenBrfManager_btn, 0);
-            this.Controls.SetChildIndex(this.id_txt, 0);
-            this.Controls.SetChildIndex(this.id_lbl, 0);
-            this.Controls.SetChildIndex(this.name_txt, 0);
-            this.Controls.SetChildIndex(this.name_lbl, 0);
-            this.Controls.SetChildIndex(this.plural_name_txt, 0);
-            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
-            this.Controls.SetChildIndex(this.title_lbl, 0);
-            this.Controls.SetChildIndex(this.exit_btn, 0);
-            this.Controls.SetChildIndex(this.min_btn, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
-            this.Controls.SetChildIndex(this.closeAll_btn, 0);
-            this.Controls.SetChildIndex(this.save_btn, 0);
-            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
-            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
-            this.Controls.SetChildIndex(this.toolPanel, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
@@ -1915,6 +1890,5 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label calfR_lbl;
         private System.Windows.Forms.ComboBox hand_cbb;
         private System.Windows.Forms.Label hand_lbl;
-        private System.Windows.Forms.Button StartOpenBrfManager_btn;
     }
 }

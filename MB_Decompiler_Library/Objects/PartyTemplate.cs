@@ -10,13 +10,13 @@ namespace MB_Decompiler_Library.Objects
     public class PartyTemplate : Skriptum
     {
         private PMember[] ptMembers = new PMember[6];
-        private string partyTemplateName, menuIDString, faction, flags;
+        private string name, menuIDString, faction, flags;
         private int menuID, personality, factionID;
         private ulong flagsGZ;
 
         public PartyTemplate(string[] raw_data) : base(raw_data[0], ObjectType.PARTY_TEMPLATE)
         {
-            partyTemplateName = raw_data[1];
+            name = raw_data[1];
             flagsGZ = ulong.Parse(raw_data[2]);
             SetFlagsString();
             menuID = int.Parse(raw_data[3]);
@@ -34,38 +34,26 @@ namespace MB_Decompiler_Library.Objects
 
         public PartyTemplate(string[] source_data, bool second) : base(source_data[0], ObjectType.PARTY)
         {
-            partyTemplateName = source_data[1];
+            int curIdx = 0;
 
-            flags = source_data[2];
+            name = source_data[curIdx++];
+
+            flags = source_data[curIdx++];
             SetFlagsGZ();
 
-            menuIDString = source_data[3];
+            menuIDString = source_data[curIdx++];
             if (menuIDString.Equals("no_menu"))
                 menuID = 0;
             else
-                for (int i = 0; i < CodeReader.GameMenus.Length; i++)
-                {
-                    if (CodeReader.GameMenus[i].Equals(menuIDString))
-                    {
-                        menuID = i;
-                        i = CodeReader.GameMenus.Length;
-                    }
-                }
+                menuID = CodeReader.GameMenus.IndexOf(menuIDString);
 
-            faction = source_data[4];
-            if (faction.Equals("no_faction"))
-                factionID = -1;
-            else
-                for (int i = 0; i < CodeReader.Factions.Length; i++)
-                {
-                    if (CodeReader.Factions[i].Equals(faction))
-                    {
-                        factionID = i;
-                        i = CodeReader.Factions.Length;
-                    }
-                }
+            //faction = source_data[curIdx++];
+            //if (faction.Equals("no_faction"))
+            //    factionID = -1;
+            //else
+            factionID = CodeReader.Factions.IndexOf(source_data[curIdx++]);
 
-            string tmpS = source_data[5].Replace("soldier_personality", "aggressiveness_8|courage_9");
+            string tmpS = source_data[curIdx++].Replace("soldier_personality", "aggressiveness_8|courage_9");
             tmpS = tmpS.Replace("merchant_personality", "aggressiveness_0|courage_7");
             tmpS = tmpS.Replace("escorted_merchant_personality", "aggressiveness_0|courage_11");
             tmpS = tmpS.Replace("bandit_personality", "aggressiveness_3|courage_8|banditness");
@@ -90,22 +78,16 @@ namespace MB_Decompiler_Library.Objects
             ptMembers = new PMember[x];
             for (int i = 0; i < x; i++)
             {
-                if (!ImportantMethods.IsNumericGZ(source_data[11 + i * 3]))
-                {
-                    for (int j = 0; j < CodeReader.Troops.Length; j++)
-                    {
-                        if (CodeReader.Troops[j].Equals(source_data[11 + i * 3]))
-                        {
-                            source_data[11 + i * 3] = j.ToString();
-                            j = CodeReader.Troops.Length;
-                        }
-                    }
-                }
-                if (source_data[13 + i * 3].Equals("pmf_is_prisoner"))
-                    source_data[13 + i * 3] = "1";
-                if (!ImportantMethods.IsNumericGZ(source_data[13 + i * 3]))
+                curIdx = 11 + i * 3;
+                if (!ImportantMethods.IsNumericGZ(source_data[curIdx]))
+                    source_data[curIdx] = CodeReader.Troops.IndexOf(source_data[curIdx]).ToString();
+                curIdx += 2;
+                if (source_data[curIdx].Equals("pmf_is_prisoner"))
+                    source_data[curIdx] = "1";
+                if (!ImportantMethods.IsNumericGZ(source_data[curIdx]))
                     DisplayErrorMessage();
-                ptMembers[i] = new PMember(new string[] { source_data[11 + i * 3], source_data[12 + i * 3], source_data[13 + i * 3] });
+                curIdx -= 2;
+                ptMembers[i] = new PMember(new string[] { source_data[curIdx], source_data[curIdx++], source_data[curIdx] });
             }
         }
 
@@ -161,16 +143,7 @@ namespace MB_Decompiler_Library.Objects
                         flagsGZ |= (ulong)((x / 20) << 56) & 0xff00000000000000;
                 }
                 else if (flagS.StartsWith("icon_"))
-                {
-                    for (int i = 0; i < CodeReader.MapIcons.Length; i++)
-                    {
-                        if (CodeReader.MapIcons[i].Equals(flagsGZ))
-                        {
-                            flagsGZ |= (uint)i;
-                            i = CodeReader.MapIcons.Length;
-                        }
-                    }
-                }
+                    flagsGZ |= (uint)CodeReader.MapIcons.IndexOf(flagS);
             }
 
             this.flagsGZ = flagsGZ;
@@ -185,7 +158,7 @@ namespace MB_Decompiler_Library.Objects
         {
             char[] cc = SkillHunter.Dec2Hex_16CHARS(flagsGZ).ToCharArray();
             string tmp = SkillHunter.Hex2Dec("000000" + cc[cc.Length - 2] + cc[cc.Length - 1]).ToString();
-            if (CodeReader.MapIcons.Length > 0)
+            if (CodeReader.MapIcons.Count > 0)
                 flags = CodeReader.MapIcons[int.Parse(tmp)];
 
             byte b = byte.Parse(cc[13].ToString());
@@ -275,7 +248,7 @@ namespace MB_Decompiler_Library.Objects
 
         public PMember[] Members { get { return ptMembers; } }
 
-        public string PartyTemplateName { get { return partyTemplateName; } }
+        public string Name { get { return name; } }
 
         public int FactionID { get { return factionID; } }
 
