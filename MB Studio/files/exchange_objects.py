@@ -1396,4 +1396,106 @@ store_random_party_of_template > random_party_of_template[X],0 # fails if no par
 #mission ones:
 store_remaining_team_no > remaining_team_no[X]
 
-# CONTINUE IN LINE 1315 OF header_operations.py !!!
+store_mission_timer_a_msec > m_timer_a_ms[X] # = 2365	# (store_mission_timer_a_msec,<destination>),
+store_mission_timer_b_msec > m_timer_b_ms[X] # = 2366	# (store_mission_timer_b_msec,<destination>),
+store_mission_timer_c_msec > m_timer_c_ms[X] # = 2367	# (store_mission_timer_c_msec,<destination>),
+
+store_mission_timer_a > m_timer_a[X] # = 2370	# (store_mission_timer_a,<destination>),
+store_mission_timer_b > m_timer_b[X] # = 2371	# (store_mission_timer_b,<destination>),
+store_mission_timer_c > m_timer_c[X] # = 2372	# (store_mission_timer_c,<destination>),
+
+#reset_mission_timer_a = 2375	# (reset_mission_timer_a),
+#reset_mission_timer_b = 2376	# (reset_mission_timer_b),
+#reset_mission_timer_c = 2377	# (reset_mission_timer_c),
+
+#set_cheer_at_no_enemy = 2379    # (set_cheer_at_no_enemy, <value>), # values:0->do not cheer (do as commander says), 1->cheer
+
+store_enemy_count > enemy_count[X] #= 2380 # (store_enemy_count,<destination>),
+store_friend_count > friend_count[X] #= 2381 # (store_friend_count,<destination>),
+store_ally_count > ally_count[X] #= 2382 # (store_ally_count,<destination>),
+store_defender_count > defender_count[X] #= 2383 # (store_defender_count,<destination>),
+store_attacker_count attacker_count[X] #= 2384 # (store_attacker_count,<destination>),
+store_normalized_team_count > normalized_team_count[X],0 #= 2385 #(store_normalized_team_count,<destination>, <team_no>), #Counts the number of agents belonging to a team
+                                                                                            # and normalizes the result regarding battle_size and advantage.
+#set_postfx                  = 2386 #???
+#set_river_shader_to_mud     = 2387 #changes river material for muddy env
+#show_troop_details          = 2388 # (show_troop_details, <troop_id>, <position>, <troop_price>)
+#set_skybox                  = 2389 # (set_skybox, <non_hdr_skybox_index>, <hdr_skybox_index>)	#forces selected skybox for a scene, use -1 to disable 
+#set_startup_sun_light       = 2390 # (set_startup_sun_light, <r>, <g>, <b>)	#changes the sun light color
+#set_startup_ambient_light   = 2391 # (set_startup_ambient_light, <r>, <g>, <b>)	#changes the ambient light color
+#set_startup_ground_ambient_light = 2392 # (set_startup_ground_ambient_light, <r>, <g>, <b>)	#changes the ground ambient light color
+#rebuild_shadow_map          = 2393 # (rebuild_shadow_map),
+
+#get_startup_sun_light       = 2394  # (get_startup_sun_light, <position_no>),
+#get_startup_ambient_light   = 2395  # (get_startup_ambient_light, <position_no>),
+#get_startup_ground_ambient_light = 2396 # (get_startup_ground_ambient_light, <position_no>),
+
+#set_shader_param_int        = 2400 # (set_shader_param_int, <parameter_name>, <value>),	#Sets the int shader parameter <parameter_name> to <value>
+#set_shader_param_float			= 2401 # (set_shader_param_float, <parameter_name>, <value>),	#Sets the float shader parameter <parameter_name> to <value>
+#set_shader_param_float4			= 2402 # (set_shader_param_float4, <parameter_name>, <valuex>, <valuey>, <valuez>, <valuew>),	#Sets the float4 shader parameter <parameter_name> to <valuex/y/z/w>
+#set_shader_param_float4x4		= 2403 # (set_shader_param_float4x4, <parameter_name>, [0][0], [0][1], [0][2], [1][0], [1][1], [1][2], [2][0], [2][1], [2][2], [3][0], [3][1], [3][2]),	#Sets the float4x4 shader parameter <parameter_name> to the given values .w components are 0001 by default
+
+#prop_instance_deform_to_time              = 2610 # (prop_instance_deform_to_time, <prop_instance_no>, <value>), # value gives the vertex animation time.
+#prop_instance_deform_in_range             = 2611 # (prop_instance_deform_in_range, <prop_instance_no>, <start_frame>, <end_frame>, <duration-in-1/1000-seconds>), #play animation from start frame to end frame
+#prop_instance_deform_in_cycle_loop        = 2612 # (prop_instance_deform_in_cycle_loop, <prop_instance_no>, <start_frame>, <end_frame>, <duration-in-1/1000-seconds> #cyclical animation within start-end frame
+prop_instance_get_current_deform_progress > prop_cur_deform_progress[X],0 #= 2615 # (prop_instance_get_current_deform_progress, <destination>, <prop_instance_no>), #returns a percentage value between 0 and 100 if animation is still in progress. returns 100 otherwise.
+prop_instance_get_current_deform_frame > prop_cur_deform_frame[X],0 #= 2616 # (prop_instance_get_current_deform_frame, <destination>, <prop_instance_no>), #returns current frame with round to nearest
+#prop_instance_set_material                = 2617 # (prop_instance_set_material, <prop_instance_no>, <sub_mesh_no>, <string_register>), #give sub mesh as -1 to change all meshes' materials.
+
+agent_ai_get_num_cached_enemies > ai_num_nearby_enemies[X],0 #= 2670 # (agent_ai_get_num_cached_enemies, <destination>, <agent_no>),  #nearby enemies, nearest to farthest
+agent_ai_get_cached_enemy > ai_nearby_enemy_agent[X],0 #= 2671 # (agent_ai_get_cached_enemy, <destination>, <agent_no>, <cache_index>), #this operation may return -1 if the cached enemy is not active anymore
+
+item_get_weight > i_weight[X],0 #= 2700 # (item_get_weight, <destination_fixed_point>, <item_kind_no>), #Stores <item_kind_no>'s weight into <destination_fixed_point>
+item_get_value > i_value[X],0 #= 2701 # (item_get_value, <destination>, <item_kind_no>), #Stores <item_kind_no>'s value into <destination>
+item_get_difficulty > i_difficulty[X],0 #= 2702 # (item_get_difficulty, <destination>, <item_kind_no>), #Stores <item_kind_no>'s difficulty into <destination>
+item_get_head_armor > i_head_armor[X],0 #= 2703 # (item_get_head_armor, <destination>, <item_kind_no>), #Stores <item_kind_no>'s head armor into <destination>
+item_get_body_armor > i_body_armor[X],0 #= 2704 # (item_get_body_armor, <destination>, <item_kind_no>), #Stores <item_kind_no>'s body armor into <destination>
+item_get_leg_armor > i_leg_armor[X],0 #= 2705 # (item_get_leg_armor, <destination>, <item_kind_no>), #Stores <item_kind_no>'s leg armor into <destination>
+item_get_hit_points > i_hit_points[X],0 #= 2706 # (item_get_hit_points, <destination>, <item_kind_no>), #Stores <item_kind_no>'s hit points into <destination>
+item_get_weapon_length > i_weapon_length[X],0 #= 2707 # (item_get_weapon_length, <destination>, <item_kind_no>), #Stores <item_kind_no>'s weapon length into <destination>
+item_get_speed_rating > i_speed_rating[X],0 #= 2708 # (item_get_speed_rating, <destination>, <item_kind_no>), #Stores <item_kind_no>'s speed rating into <destination>
+item_get_missile_speed > i_missile_speed[X],0 #= 2709 # (item_get_missile_speed, <destination>, <item_kind_no>), #Stores <item_kind_no>'s missile speed into <destination>
+item_get_max_ammo > i_max_ammo[X],0 #= 2710 # (item_get_max_ammo, <destination>, <item_kind_no>), #Stores <item_kind_no>'s max ammo into <destination>
+item_get_accuracy > i_accuracy[X],0 #= 2711 # (item_get_accuracy, <destination>, <item_kind_no>), #Stores <item_kind_no>'s accuracy into <destination>
+item_get_shield_height > i_shield_height[X],0 #= 2712 # (item_get_shield_height, <destination_fixed_point>, <item_kind_no>), #Stores <item_kind_no>'s shield height into <destination>
+item_get_horse_scale > i_horse_scale[X],0 #= 2713 # (item_get_horse_scale, <destination_fixed_point>, <item_kind_no>), #Stores <item_kind_no>'s horse scale into <destination>
+item_get_horse_speed > i_horse_speed[X],0 #= 2714 # (item_get_horse_speed, <destination>, <item_kind_no>), #Stores <item_kind_no>'s horse speed into <destination>
+item_get_horse_maneuver > i_horse_maneuver[X],0 #= 2715 # (item_get_horse_maneuver, <destination>, <item_kind_no>), #Stores <item_kind_no>'s horse maneuver into <destination>
+item_get_food_quality > i_food_quality[X],0 #= 2716 # (item_get_food_quality, <destination>, <item_kind_no>), #Stores <item_kind_no>'s food quality into <destination>
+item_get_abundance > i_abundance[X],0 #= 2717 # (item_get_abundance, <destination>, <item_kind_no>), #Stores <item_kind_no>'s abundance into <destination>
+item_get_thrust_damage > i_thrust_damage[X],0 #= 2718 # (item_get_thrust_damage, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage into <destination>
+item_get_thrust_damage_type > i_thrust_damage_type[X],0 #= 2719 # (item_get_thrust_damage_type, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage type into <destination>
+item_get_swing_damage > i_swing_damage[X],0 #= 2720 # (item_get_swing_damage, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage into <destination>
+item_get_swing_damage_type > i_swing_damage_type[X],0 #= 2721 # (item_get_swing_damage_type, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage type into <destination>
+item_get_horse_charge_damage > i_horse_charge_damage[X],0 #= 2722 # (item_get_horse_charge_damage, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage into <destination>
+#item_has_property                     = 2723 # (item_has_property, <item_kind_no>, <property>), #Fails if <item_kind_no> doesn't have <property>
+#item_has_capability                   = 2724 # (item_has_capability, <item_kind_no>, <capability>), #Fails if <item_kind_no> doesn't have <capability>
+#item_has_modifier                     = 2725 # (item_has_modifier, <item_kind_no>, <item_modifier_no>), #Fails if <item_modifier_no> is not a valid modifier for <item_kind_no> # use imod_xxx instead of imodbit_xxx
+#item_has_faction                      = 2726 # (item_has_faction, <item_kind_no>, <faction_no>), #Fails if <item_kind_no> doesn't have <faction_no> in its faction list
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#   Check for string_no or pos_no or else - are they 0 or not?
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#str_store_player_face_keys            = 2747 # (str_store_player_face_keys, <string_no>, <player_id>), #Stores <player_id>'s face key into string.
+#player_set_face_keys                  = 2748 # (player_set_face_keys, <player_id>, <string_no>), #Sets <player_id>'s face keys from string.
+#str_store_troop_face_keys             = 2750 # (str_store_troop_face_keys, <string_no>, <troop_no>, [<alt>]), #Stores <troop_no>'s face key into string. if [<alt>] is non-zero the second pair of face keys is stored
+#troop_set_face_keys                   = 2751 # (troop_set_face_keys, <troop_no>, <string_no>, [<alt>]), #Sets <troop_no>'s face keys from string. if [<alt>] is non-zero the second pair of face keys is set.
+face_keys_get_hair > f_hair[X],0 #= 2752 # (face_keys_get_hair, <destination>, <string_no>), #Stores face key's hair value into <destination>
+#face_keys_set_hair                    = 2753 # (face_keys_set_hair, <string_no>, <value>), #Sets face key's hair value
+face_keys_get_beard > f_beard[X],0 #= 2754 # (face_keys_get_beard, <destination>, <string_no>), #Stores face key's beard value into <destination>
+#face_keys_set_beard                   = 2755 # (face_keys_set_beard, <string_no>, <value>), #Sets face key's beard value
+face_keys_get_face_texture > f_face_texture[X],0 #= 2756 # (face_keys_get_face_texture, <destination>, <string_no>), #Stores face key's face texture value into <destination>
+#face_keys_set_face_texture            = 2757 # (face_keys_set_face_texture, <string_no>, <value>), #Sets face key's face texture value
+face_keys_get_hair_texture > f_hair_texture[X],0 #= 2758 # (face_keys_get_hair_texture, <destination>, <string_no>), #Stores face key's hair texture value into <destination>
+#face_keys_set_hair_texture            = 2759 # (face_keys_set_hair_texture, <string_no>, <value>), #Sets face key's hair texture value
+face_keys_get_hair_color > f_hair_color[X],0 #= 2760 # (face_keys_get_hair_color, <destination>, <string_no>), #Stores face key's hair color value into <destination>
+#face_keys_set_hair_color              = 2761 # (face_keys_set_hair_color, <string_no>, <value>), #Sets face key's hair color value
+face_keys_get_age > f_age #= 2762 # (face_keys_get_age, <destination>, <string_no>), #Stores face key's age value into <destination>
+#face_keys_set_age                     = 2763 # (face_keys_set_age, <string_no>, <value>), #Sets face key's age value
+face_keys_get_skin_color > f_skin_color[X],0 #= 2764 # (face_keys_get_skin_color, <destination>, <string_no>), #Stores face key's skin color value into <destination>
+#face_keys_set_skin_color              = 2765 # (face_keys_set_skin_color, <string_no>, <value>), #Sets face key's skin color value
+face_keys_get_morph_key > f_morph_key[X],0,0 #= 2766 # (face_keys_get_morph_key, <destination>, <string_no>, <key_no>), #Stores face key's morph key value (0-7) into <destination>
+#face_keys_set_morph_key               = 2767 # (face_keys_set_morph_key, <string_no>, <key_no>, <value>), #Sets face key's morph key value (0-7)
+
+# END OF CURRENT OPERATIONS

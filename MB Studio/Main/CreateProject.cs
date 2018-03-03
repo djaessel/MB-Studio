@@ -549,7 +549,7 @@ namespace MB_Studio.Main
             if (copyNonTextFiles_cb.Checked)
                 infoText = "With this checked, the creating process could take a while!";
             else
-                infoText = "Without this files, the mod can't be started! But if you are just testing around with Visual Studio it's ok.";
+                infoText = "Without this files, the mod can't be started! But if you are just testing around (with MB Studio) it's ok.";
             MessageBox.Show(infoText, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         }
     }

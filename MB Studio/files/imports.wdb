@@ -2,6 +2,7 @@
 
 scripts:0 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_items import *;
 	from header_map_icons import *;
@@ -17,7 +18,7 @@ scripts:0 {
 	from module_constants import *;
 	from module_factions import *;
 	from module_items import *;
-	from module_my_mod_set import *;
+	#from module_my_mod_set import *#probably unused;
 	]
   DESCRIPTION [
 	scripts is a list of script records.;
@@ -48,6 +49,7 @@ slot_array_version  = 996 # see array_version;
 }
 mission_templates:1 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_operations import *;
 	from header_mission_templates import *;
@@ -80,6 +82,7 @@ mission_templates:1 {
 }
 presentations:2 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_presentations import *;
 	from header_mission_templates import *;
@@ -100,6 +103,7 @@ presentations:2 {
 }
 game_menus:3 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_game_menus import *;
 	from header_items import *;
 	from header_mission_templates import *;
@@ -133,6 +137,7 @@ game_menus:3 {
 }
 troops:4 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_items import *;
 	from header_mb_decompiler import *;
@@ -575,6 +580,7 @@ sounds:13 {
 }
 scene_props:14 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_operations import *;
 	from header_scene_props import *;
@@ -719,6 +725,7 @@ check_ladder_animation_finish_trigger = (ti_on_scene_prop_animation_finished,;
 }
 tableaus:15 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_items import *;
 	from header_mission_templates import *;
@@ -816,6 +823,7 @@ dialogs:17 {
 }
 factions:18 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_factions import *;
 	]
   DESCRIPTION [
@@ -983,6 +991,7 @@ pf_neutral_town = pf_is_static|pf_always_visible|pf_hide_defenders|pf_label_larg
 }
 skills:22 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_skills import *;
 	]
@@ -1106,6 +1115,7 @@ particle_systems:25 {
 }
 scenes:26 {
   IMPORTS [
+	# -*- coding: cp1252 -*-;
 	from header_common import *;
 	from header_operations import *;
 	from header_scenes import *;

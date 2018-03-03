@@ -165,6 +165,8 @@ namespace MB_Decompiler_Library.IO
                         parts[i] = (CodeReader.QUEST_MIN + (ulong)CodeReader.Quests.IndexOf(parts[i])).ToString();
                     else if (CodeReader.TableauMaterials.Contains(parts[i]))
                         parts[i] = (CodeReader.TABLEAU_MAT_MIN + (ulong)CodeReader.TableauMaterials.IndexOf(parts[i])).ToString();
+                    else if (CodeReader.MapIcons.Contains(parts[i]))
+                        parts[i] = (CodeReader.MAP_ICON_MIN + (ulong)CodeReader.MapIcons.IndexOf(parts[i])).ToString();
                     else if (CodeReader.Tracks.Contains(parts[i]))
                         parts[i] = (CodeReader.TRACK_MIN + (ulong)CodeReader.Tracks.IndexOf(parts[i])).ToString();
                     else if (ImportantMethods.IsNumericGZ(parts[i]))
@@ -814,7 +816,11 @@ namespace MB_Decompiler_Library.IO
 
                         tmpX = string.Empty;
                         foreach (string item in sp0)
+                        {
                             tmpX += item + Environment.NewLine;
+                            Console.WriteLine(item);
+                        }
+                        
                         System.Windows.Forms.MessageBox.Show(tmpX);
 
                         //troops.Add(new Troop(sp0));
@@ -1781,51 +1787,81 @@ namespace MB_Decompiler_Library.IO
             return skills.ToArray();
         }
 
-        // NOT IMPLEMENTED
+        // ADDED
         public PostFX[] ReadPostFX()
         {
-            PostFX[] postfxs;
+            string line = string.Empty;
+            List<PostFX> postfxs = new List<PostFX>();
             using (StreamReader sr = new StreamReader(filePath))
             {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine().Split()[0]);
-                //objectsExpected += count;
-                postfxs = new PostFX[count];
-                for (int i = 0; i < postfxs.Length; i++)
-                    postfxs[i] = new PostFX(sr.ReadLine().Substring(4));
-            }
-            //objectsRead += postfxs.Length;
-            return postfxs;
-        }
+                while (!sr.EndOfStream && !line.Equals("post_fxs = ["))
+                    line = sr.ReadLine();
 
-        // NOT IMPLEMENTED
-        public ParticleSystem[] ReadParticleSystem()
-        {
-            ParticleSystem[] particleSystems;
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                //objectsExpected += count;
-                particleSystems = new ParticleSystem[count];
-                for (int i = 0; i < particleSystems.Length; i++)
+                while (!sr.EndOfStream && !line.Equals("]"))
                 {
-                    List<string[]> list = new List<string[]>
-                    {
-                        sr.ReadLine().Substring(5).Replace("  ", ":").TrimEnd().Split(':'),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':'),
-                        sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':')
-                    };
-                    particleSystems[i] = new ParticleSystem(list);
+                    line = RemNTrimAllXtraSp(
+                        sr.ReadLine().Split('#')[0].TrimStart('(').Replace("],", " ").Replace('[', ' ').Replace('\"', ' ').Replace(',', ' ')
+                    ).TrimEnd(')').Trim();
+                    if (!line.Equals("]") && line.Length != 0)
+                        postfxs.Add(new PostFX(line));
                 }
             }
-            //objectsRead += particleSystems.Length;
-            return particleSystems;
+            return postfxs.ToArray();
+        }
+
+        // NOT IMPLEMENTED YET - FLAGS MISSING
+        public ParticleSystem[] ReadParticleSystem()
+        {
+            List<string[]> rawData = new List<string[]>();
+            string line = string.Empty;
+            List<ParticleSystem> particleSystems = new List<ParticleSystem>();
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                while (!sr.EndOfStream && !line.Equals("post_fxs = ["))
+                    line = sr.ReadLine();
+
+                while (!sr.EndOfStream && !line.Equals("]"))
+                {
+                    line = sr.ReadLine().Trim();
+                    if (line.StartsWith("(\""))
+                    {
+                        List<string> list = new List<string>();
+                        do
+                        {
+                            line = RemNTrimAllXtraSp(
+                                line.Split('#')[0].Replace('(', ' ').Replace(')', ' ').Replace('\"', ' ').Replace(',', ' ')
+                            ).Trim();
+
+                            list.Add(line);
+
+                            line = sr.ReadLine().Trim();
+
+                        } while (!line.Equals("),") && line.Length != 0);
+
+                        if (list.Count >= 10)
+                        {
+                            rawData.Add(new string[] { list[0], list[1] });
+                            for (int i = 2; i < 7; i++)
+                                rawData.Add(list[i].Split());
+                            rawData.Add(new string[] { list[7], list[8], list[9] });
+                            if (list.Count > 10)
+                                line = list[10];
+                            else
+                                line = "0.000000 0.000000";
+                            rawData.Add(line.Split());
+
+                            list.Clear();
+
+                            particleSystems.Add(new ParticleSystem(rawData));
+
+                            rawData.Clear();
+                        }
+                        //else
+                        //    Console.WriteLine("ERROR");
+                    }
+                }
+            }
+            return particleSystems.ToArray();
         }
 
         // NOT IMPLEMENTED

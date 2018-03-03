@@ -11,7 +11,7 @@ from header_triggers import *
 # that it will be easy to change it if you need to.
 ##############################################################
 
-warband_version = 1168  #matching what is in module.ini
+warband_version = 1168  #matching what is in module.ini - NEEDS TO BE UPDATED!!!!!
 vc_version = 2028
 
 ########################################################
@@ -723,6 +723,7 @@ slot_party_unrested_morale_penalty            = 250    #motomataru chief morale 
 trade_goods_error_var = 0
 num_trade_goods = 0
 
+#by Johandros for module checking
 def test():
     num_trade_goods = itm_siege_supply
     try:
@@ -2319,6 +2320,7 @@ trade_goods_end = "itm_no_item"
 food_begin = "itm_no_item"
 food_end = "itm_no_item"
 
+#by Johandros for module checking
 def test2():
     trade_goods_begin = "itm_spice"
     if trade_goods_error_var == 1:

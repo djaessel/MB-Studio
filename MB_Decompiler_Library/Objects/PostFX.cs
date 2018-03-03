@@ -5,7 +5,8 @@ namespace MB_Decompiler_Library.Objects
 {
     public class PostFX : Skriptum
     {
-        private ulong flags, tonemapOperatorType;
+        private string flagsg;
+        private ulong flagsGZ, tonemapOperatorType;
         List<string[]> shaderParameters123 = new List<string[]>();
 
         public PostFX(string raw_data) : base(raw_data.Split()[0], ObjectType.POST_FX)
@@ -15,9 +16,23 @@ namespace MB_Decompiler_Library.Objects
                 raw_data = raw_data.Replace("  ", " ");
 
             string[] tmpS = raw_data.Split();
-            //string[] tmpS2 = tmpS[0].Split();
-            flags = ulong.Parse(tmpS[1]);
+
+            if (importantLib.ImportantMethods.IsNumericGZ(tmpS[1]))
+            {
+                flagsGZ = ulong.Parse(tmpS[1]);
+                if ((flagsGZ & 0x1) == 1)
+                    flagsg = "fxf_highhdr";//change if more than one flag
+            }
+            else
+            {
+                flagsg = tmpS[1];
+                flagsGZ = 0;
+                if (flagsg.Equals("fxf_highhdr"))//change if more than one flag
+                    flagsGZ |= 0x1;
+            }
+
             tonemapOperatorType = ulong.Parse(tmpS[2]);
+
             //for (int i = 1; i < tmpS.Length; i++)
             //    shaderParameters123.Add(tmpS[i].Split());
             AddValueFromIndexToShaderParameters123(tmpS, 3, 6);
@@ -37,7 +52,7 @@ namespace MB_Decompiler_Library.Objects
             shaderParameters123.Add(valuesX.ToArray());
         }
 
-        public ulong Flags { get { return flags; } }
+        public ulong Flags { get { return flagsGZ; } }
 
         public ulong TonemapOperatorType { get { return tonemapOperatorType; } }
 
