@@ -1,22 +1,39 @@
-﻿using skillhunter;
+﻿using importantLib;
+using skillhunter;
 using MB_Decompiler_Library.IO;
+using System.IO;
 using System.Collections.Generic;
 
 namespace MB_Decompiler_Library.Objects
 {
     public class ParticleSystem : Skriptum
     {
+        private static List<HeaderVariable> headerVariables = null;
+
         private int particlesPerSecond;
-        private ulong flags;
-        private string meshName;
+        private ulong flagsGZ;
+        private string meshName, flags;
         private double particleLife, damping, gravityStrength, turbulanceSize, turbulanceStrength, emitDirRandomness, particleRotationSpeed, particleRotationDamping;
         private double[] alphaKeys, redKeys, greenKeys, blueKeys, scaleKeys, emitBoxScale, emitVelocity;
 
         public ParticleSystem(List<string[]> raw_data) : base(raw_data[0][0].Split()[0], ObjectType.PARTICLE_SYSTEM)
         {
+            if (headerVariables == null)
+                headerVariables = GetHeaderVariableList();
+
             string[] sp = raw_data[0][0].Split();
 
-            flags = ulong.Parse(sp[1]);
+            if (ImportantMethods.IsNumericGZ(sp[1]))
+            {
+                flagsGZ = ulong.Parse(sp[1]);
+                SetFlags();
+            }
+            else
+            {
+                flags = sp[1];
+                SetFlagsGZ();
+            }
+
             meshName = sp[2];
             sp = raw_data[0][1].Split();
 
@@ -56,6 +73,70 @@ namespace MB_Decompiler_Library.Objects
             }
         }
 
+        //place normalized version in Skriptum ? for every Skriptum Object and public
+        private void SetFlagsGZ()
+        {
+            string flags = string.Empty;
+            foreach (HeaderVariable headerVar in headerVariables)
+            {
+                ulong x = ulong.Parse(headerVar.VariableValue);
+                if ((x & flagsGZ) == x)
+                    flags += headerVar.VariableName + '|';
+            }
+
+            if (flags.Length != 0)
+                flags = flags.TrimEnd('|');
+            else
+                flags = flagsGZ.ToString();
+
+            this.flags = flags;
+        }
+
+        //place normalized version in Skriptum ? for every Skriptum Object and public
+        private void SetFlags()
+        {
+            ulong flagsGZ = 0;
+            string[] sp = flags.Split('|');
+            foreach (HeaderVariable headerVar in headerVariables)
+                foreach (string flag in sp)
+                    if (headerVar.VariableName.Equals(flag))
+                        flagsGZ |= ulong.Parse(headerVar.VariableValue);
+            this.flagsGZ = flagsGZ;
+        }
+
+        //place normalized version in Skriptum ? for every Skriptum Object and public
+        private List<HeaderVariable> GetHeaderVariableList(string file = "header_particle_systems.py")
+        {
+            string[] tmp;
+            string s = string.Empty;
+            List<HeaderVariable> list = new List<HeaderVariable>();
+            using (StreamReader sr = new StreamReader(SkillHunter.FilesPath + "moduleSystem\\" + file))
+            {
+                while (!sr.EndOfStream && !s.Equals(string.Empty))
+                {
+                    s = sr.ReadLine().Split('#')[0].Trim();
+                    if (s.Length != 0 && s.Contains("="))
+                    {
+                        tmp = s.Replace('\t', ' ').Replace(" ", string.Empty).Split('=');
+
+                        s = SkillHunter.Hex2Dec(tmp[1].Substring(2).TrimStart('0')).ToString();
+
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            if (list[i].VariableValue.Equals(s))
+                            {
+                                list.RemoveAt(i);//if no conflict remove comment
+                                i = list.Count;
+                            }
+                        }
+
+                        list.Add(new HeaderVariable(s, tmp[0]));
+                    }
+                }
+            }
+            return list;
+        }
+
         private static double[] ConvertStringArrayIntoDouble(string[] s_array)
         {
             double[] dd = new double[s_array.Length];
@@ -64,7 +145,7 @@ namespace MB_Decompiler_Library.Objects
             return dd;
         }
 
-        public ulong Flags { get { return flags; } }
+        public ulong Flags { get { return flagsGZ; } }
 
         public string MeshName { get { return meshName; } }
 

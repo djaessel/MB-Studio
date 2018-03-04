@@ -823,7 +823,7 @@ namespace MB_Decompiler_Library.IO
                         
                         System.Windows.Forms.MessageBox.Show(tmpX);
 
-                        //troops.Add(new Troop(sp0));
+                        troops.Add(new Troop(sp0));
                     }
                 }
             }
@@ -1809,7 +1809,7 @@ namespace MB_Decompiler_Library.IO
             return postfxs.ToArray();
         }
 
-        // NOT IMPLEMENTED YET - FLAGS MISSING
+        // ADDED
         public ParticleSystem[] ReadParticleSystem()
         {
             List<string[]> rawData = new List<string[]>();
@@ -1823,14 +1823,14 @@ namespace MB_Decompiler_Library.IO
                 while (!sr.EndOfStream && !line.Equals("]"))
                 {
                     line = sr.ReadLine().Trim();
+
                     if (line.StartsWith("(\""))
                     {
                         List<string> list = new List<string>();
+
                         do
                         {
-                            line = RemNTrimAllXtraSp(
-                                line.Split('#')[0].Replace('(', ' ').Replace(')', ' ').Replace('\"', ' ').Replace(',', ' ')
-                            ).Trim();
+                            line = RemNTrimAllXtraSp(line.Split('#')[0].Replace('(', ' ').Replace(')', ' ').Replace('\"', ' ').Replace(',', ' ')).Trim();
 
                             list.Add(line);
 
@@ -1838,26 +1838,28 @@ namespace MB_Decompiler_Library.IO
 
                         } while (!line.Equals("),") && line.Length != 0);
 
-                        if (list.Count >= 10)
+                        if (list.Count >= 10)//remove this if - if you want
                         {
                             rawData.Add(new string[] { list[0], list[1] });
+
                             for (int i = 2; i < 7; i++)
                                 rawData.Add(list[i].Split());
+
                             rawData.Add(new string[] { list[7], list[8], list[9] });
-                            if (list.Count > 10)
-                                line = list[10];
-                            else
+
+                            if (list.Count == 10)
                                 line = "0.000000 0.000000";
+                            else
+                                line = list[10];
+
                             rawData.Add(line.Split());
 
-                            list.Clear();
+                            //list.Clear();//should be deleted anyways (or not?)
 
                             particleSystems.Add(new ParticleSystem(rawData));
 
                             rawData.Clear();
                         }
-                        //else
-                        //    Console.WriteLine("ERROR");
                     }
                 }
             }
