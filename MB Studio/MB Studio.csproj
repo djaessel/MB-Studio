@@ -289,6 +289,12 @@
     <EmbeddedResource Include="Manager\TroopManager.resx">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="installerScripts\header\mb_studio_universal.nsh" />
+    <None Include="installerScripts\header\mb_studio_x64.nsh" />
+    <None Include="installerScripts\header\mb_studio_x86.nsh" />
+    <None Include="installerScripts\mb_studio_installer_universal.nsi" />
+    <None Include="installerScripts\mb_studio_installer_x64.nsi" />
+    <None Include="installerScripts\mb_studio_installer_x86.nsi" />
     <None Include="qt.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -683,9 +689,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="installerScripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
