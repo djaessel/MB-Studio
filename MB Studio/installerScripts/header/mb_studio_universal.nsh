@@ -174,7 +174,7 @@ StrCpy $0 0
   
   ShowInstDetails "show"
   ShowUninstDetails "show"
-  SetCompressor "bzip2"
+  SetCompressor "bzip2";maybe change later!
   
 ;--------------------------------
 ;Folder selection page
@@ -237,14 +237,14 @@ StrCpy $0 0
   
 ;write Python uninstall path
 
-  DetailPrint "TEST: [$1] - [$2]"
+;  DetailPrint "TEST: [$1] - [$2]"
 
   ClearErrors
   ${IF} $2 == "" ; if 32Bit System or not found in 64Bit registry part
     ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 32
   ${ENDIF}
   
-  DetailPrint "TEST: [$1] - [$2]"
+;  DetailPrint "TEST: [$1] - [$2]"
   
 ;  ${IF} ${Errors}
 ;  ${ORIF} $1 == ""
@@ -252,7 +252,7 @@ StrCpy $0 0
     StrCpy $1 "NOT_FOUND"
   ${ENDIF}
   
-  DetailPrint "TEST: [$1] - [$2]"
+;  DetailPrint "TEST: [$1] - [$2]"
   
   SetRegView 32
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall" "$1"
@@ -261,7 +261,7 @@ StrCpy $0 0
   SetRegView 32
   ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall"
   
-  DetailPrint "TEST: $R0"
+;  DetailPrint "TEST: $R0"
   
 !macroend
 

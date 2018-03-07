@@ -34,6 +34,14 @@ Section "Install" installInfo
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "EstimatedSize" "${SIZE_OF_FILE_32}"
   ${EndIf}
   
+;
+; DOWNLOAD EXAMPLE WHICH COULD DOWNLOAD PYTHON AND MAYBE OTHER FILES LATER (UPDATER?)
+;  
+;  inetc::get "https://www.dropbox.com/s/x6fznmxh99b1mgn/test.txt?dl=1" "$INSTDIR\test.txt"
+;  Pop $0 ;Return value from download - OK is good!
+;  MessageBox MB_OK $0
+;
+    
   ${If} ${RunningX64}
     ${InstallPython64Bit}
   ${Else}
