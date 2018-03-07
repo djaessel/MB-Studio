@@ -1,12 +1,12 @@
 <!DOCTYPE customPreviewShaders>
+
 <OpenBRF>
   <previewShader>
     <techniques>
       <!--a comma separated list of all "techniques" that should be previewed by this -->
       example1, example2
     </techniques>
-    <vertexProgram>
-    #version 120
+    <vertexProgram>#version 120
 
     varying vec3 lightDir;
     varying vec4 color;
@@ -29,8 +29,7 @@
         /*norm = normalize(norm);*/
     }
     </vertexProgram>
-    <fragmentProgram>
-    #version 120
+    <fragmentProgram>#version 120
 
     uniform vec3 spec_col;
     uniform float spec_exp;
