@@ -33,6 +33,7 @@
   File "x64\common\MB_Decompiler.exe"
   File "universal\common\MB_Decompiler -CONSOLE.lnk"
 ;  File "x64\common\MB_Decompiler_GUI.exe"
+  File "x64\common\MB Studio Updater.exe"
   File "x64\common\MB_Decompiler_Library.dll"
   File "x64\common\skillhunter.dll"
   File "x64\common\Warband - Translator.exe"
