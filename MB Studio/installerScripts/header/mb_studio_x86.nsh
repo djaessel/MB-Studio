@@ -42,10 +42,9 @@
   File "x86\common\brfManager.dll"
   File "x86\common\openBrf.dll"
   
-;  File "universal\common\openBrf.exe"
   File "universal\common\qt.conf"
   File "universal\common\reference.brf"
-;  File "universal\common\customPreviewShaders.xml";because of graphics error
+  File "universal\common\customPreviewShaders.xml"
   File "universal\common\carry_positions.txt"
   
   File /r "x86\imageformats"
@@ -67,15 +66,19 @@
 
 !define InstallPython32Bit "!insertmacro InstallPython32Bit"
 !macro InstallPython32Bit
-  File "x86\python\python-2.7.13.msi"
+;  File "x86\python\python-2.7.13.msi"
+
+  CreateDirectory "$PLUGINSDIR\python"
+  inetc::get "https://www.dropbox.com/s/x6fznmxh99b1mgn/test.txt?dl=1" "$PLUGINSDIR\python\python-2.7.13.msi"
+  Pop $0 ;Return value from download - OK is good!
   
-  ;Executes MSI Installer for Python
+; Executes MSI Installer for Python
   ExecWait '"$SYSDIR\msiexec" /i "python-2.7.13.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
   
 ;  StrCpy $4 "Python 2.7.13" ; check if 32 Bit name is correct
   StrCpy $4 "$INSTDIR\"
  
-  Delete "python-2.7.13.msi"
+;  Delete "python-2.7.13.msi"
 !macroend
 
 ;--------------------------------

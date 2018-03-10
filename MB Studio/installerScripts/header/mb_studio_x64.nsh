@@ -42,10 +42,9 @@
   File "x64\common\brfManager.dll"
   File "x64\common\openBrf.dll"
   
-;  File "universal\common\openBrf.exe"
   File "universal\common\qt.conf"
   File "universal\common\reference.brf"
-;  File "universal\common\customPreviewShaders.xml";because of graphics error
+  File "universal\common\customPreviewShaders.xml"
   File "universal\common\carry_positions.txt"
   
   File /r "x64\imageformats"
@@ -67,9 +66,13 @@
 
 !define InstallPython64Bit "!insertmacro InstallPython64Bit"
 !macro InstallPython64Bit
-  File "x64\python\python-2.7.13.amd64.msi"
-  
-  ;Executes MSI Installer for Python
+;  File "x64\python\python-2.7.13.amd64.msi"
+
+  CreateDirectory "$PLUGINSDIR\python"
+  inetc::get "https://www.dropbox.com/s/x6fznmxh99b1mgn/test.txt?dl=1" "$PLUGINSDIR\python\python-2.7.13.amd64.msi"
+  Pop $0 ;Return value from download - OK is good!
+
+; Executes MSI Installer for Python
   ExecWait '"$SYSDIR\msiexec" /i "python-2.7.13.amd64.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
   
 ;  StrCpy $4 "Python 2.7.13 (64-bit)"
@@ -77,7 +80,7 @@
   StrCpy $4 "$INSTDIR\"
   ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 64
   
-  Delete "python-2.7.13.amd64.msi"
+;  Delete "python-2.7.13.amd64.msi"
 !macroend
 
 ;--------------------------------

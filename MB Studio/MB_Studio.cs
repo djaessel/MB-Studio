@@ -3,11 +3,14 @@ using MB_Decompiler;
 using MB_Decompiler_Library.IO;
 using MB_Studio.Main;
 using MB_Studio.Manager;
+using MB_Studio_Updater;
 using skillhunter;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace MB_Studio
@@ -27,11 +30,15 @@ namespace MB_Studio
 
         private bool FullScreen = true;
 
+        // instance member to keep reference to splash form
+        private SplashForm frmSplash;
+        // delegate for the UI updater
+        private delegate void UpdateUIDelegate(bool IsDataLoaded);
+        private Thread loadingThread;
+
         private const int C_GRIP = 16;                      // Grip size
         private const int C_CAPTION = 32;                   // Caption bar height;
-        //private const int HT_CAPTION = 2;                 // Make Caption
         private const int HT_BOTTOM_RIGHT = 17;             // Caption position
-
         private const int WM_NCHITTEST = 0x84;              // Message Type
 
         public static bool DebugMode = false;
@@ -44,12 +51,22 @@ namespace MB_Studio
 
         public MB_Studio()
         {
+            StartLoadingForm();
+            CheckForUpdates();
+
             InitializeComponent();
             SetStyle(ControlStyles.ResizeRedraw, true);
             ResizeEnd += MB_Studio_ResizeEnd;
             name_lbl.MouseDown += Control_MoveForm_MouseDown;
             file_btn.Click += Button_Open_ContextMenuStrip_Click;
             project_btn.Click += Button_Open_ContextMenuStrip_Click;
+        }
+
+        private void CheckForUpdates()
+        {
+            //WriteIndexFile with Updater CLI for Upload Versions!
+            MBStudioUpdater updater = new MBStudioUpdater(Properties.Settings.Default.updateChannel);//updateChannel is stable but must be changeable in settings later!!!
+            updater.CheckForUpdates();
         }
 
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)
@@ -69,6 +86,54 @@ namespace MB_Studio
             InitializeTabControl();
             InitializeProject();
             LoadLastOpenedProjects();
+
+            CloseLoadingForm();
+        }
+
+        private void StartLoadingForm()
+        {
+            loadingThread = new Thread(new ThreadStart(ShowLoadingForm))
+            {
+                IsBackground = true
+            };
+            loadingThread.Start();
+        }
+
+        private void ShowLoadingForm()
+        {
+            // Update UI
+            UpdateUI(false);
+
+            // Show the splash form
+            if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
+            {
+                frmSplash = new Loader(this, false) {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                WindowState = FormWindowState.Minimized;
+                Application.Run(frmSplash);
+            }
+        }
+
+        private void CloseLoadingForm()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                UpdateUI(true);
+            });
+        }
+
+        /// <summary>
+        /// Updates the UI
+        /// </summary>
+        protected void UpdateUI(bool IsDataLoaded)
+        {
+            if (IsDataLoaded)
+            {
+                if (frmSplash != null)
+                    frmSplash.Close();
+                WindowState = FormWindowState.Normal;
+            }
         }
 
         private void LoadProject(string projectPath)

@@ -334,6 +334,10 @@
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MB Studio Updater\MB Studio Updater.csproj">
+      <Project>{40722579-f755-49f9-9ea7-7967efb59b1d}</Project>
+      <Name>MB Studio Updater</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MB_Decompiler\MB_Decompiler.csproj">
       <Project>{6e4a3036-1e9c-4539-b64f-1814a82dbd62}</Project>
       <Name>MB_Decompiler</Name>

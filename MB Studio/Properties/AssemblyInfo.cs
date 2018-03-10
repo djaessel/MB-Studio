@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("MB Studio")]
-[assembly: AssemblyDescription("Erinnert an Visual Studio von Microsoft und soll dir auch so dienen")]
+[assembly: AssemblyDescription("Erinnert an Visual Studio von Microsoft und soll dir auch so für die Moderstellung dienen")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("J.SYS")]
 [assembly: AssemblyProduct("MB Studio")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.8.2.0")]
-[assembly: AssemblyFileVersion("2.8.2.0")]
+[assembly: AssemblyVersion("2.9.0.0")]
+[assembly: AssemblyFileVersion("2.9.0.0")]

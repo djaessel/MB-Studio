@@ -18,9 +18,6 @@ namespace MB_Studio.Manager
     public partial class ToolForm : SpecialForm
     {
         #region Attributes
-
-        private bool uses3DView = false;
-        private bool has3DView = false;
         protected FileSaver fileSaver;
 
         public const int GROUP_HEIGHT_MIN = 25;
@@ -51,12 +48,9 @@ namespace MB_Studio.Manager
 
         public string Prefix { get { return Prefixes[ObjectTypeID] + '_'; } }
 
-        public bool Uses3DView {
-            get { return uses3DView; }
-            //set if needed later for toggle
-        }
+        public bool Uses3DView { get; private set; } = false; // maybe later needed to toggle 
 
-        public bool Has3DView { get { return has3DView; } }
+        public bool Has3DView { get; private set; } = false;
 
         #endregion
 
@@ -76,8 +70,8 @@ namespace MB_Studio.Manager
 
         private void Init(ObjectType objectType = ObjectType.SCRIPT, bool uses3DView = false)
         {
-            this.uses3DView = uses3DView;
-            has3DView = uses3DView && MB_Studio.Show3DView;
+            this.Uses3DView = uses3DView;
+            Has3DView = uses3DView && MB_Studio.Show3DView;
             ObjectType = objectType;
 
             InitializeComponent();

@@ -58,5 +58,8 @@
     <Setting Name="loadSavedObjects" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="updateChannel" Type="System.String" Scope="User">
+      <Value Profile="(Default)">stable</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
