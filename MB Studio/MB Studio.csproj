@@ -289,6 +289,7 @@
     <EmbeddedResource Include="Manager\TroopManager.resx">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="installerScripts\Compile All.bat" />
     <None Include="installerScripts\header\mb_studio_universal.nsh" />
     <None Include="installerScripts\header\mb_studio_x64.nsh" />
     <None Include="installerScripts\header\mb_studio_x86.nsh" />

@@ -33,7 +33,7 @@
   File "x86\common\MB_Decompiler.exe"
   File "universal\common\MB_Decompiler -CONSOLE.lnk"
 ;  File "x86\common\MB_Decompiler_GUI.exe"
-  File "x86\common\MB Studio Updater.exe"
+  File "..\updater\x86\MB Studio Updater.exe"
   File "x86\common\MB_Decompiler_Library.dll"
   File "x86\common\skillhunter.dll"
   File "x86\common\Warband - Translator.exe"
@@ -70,7 +70,7 @@
 ;  File "x86\python\python-2.7.13.msi"
 
   CreateDirectory "$PLUGINSDIR\python"
-  inetc::get "https://www.dropbox.com/s/x6fznmxh99b1mgn/test.txt?dl=1" "$PLUGINSDIR\python\python-2.7.13.msi"
+  inetc::get "https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi" "$PLUGINSDIR\python\python-2.7.13.msi"
   Pop $0 ;Return value from download - OK is good!
   
 ; Executes MSI Installer for Python

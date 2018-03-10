@@ -136,11 +136,15 @@ namespace MB_Studio_Updater
             }
             else
             {
-                string downloadPart = "";//UPDATER DOWNLOAD PART GOES HERE!!!
+                string downloadPart;
+                if (Environment.Is64BitOperatingSystem)
+                    downloadPart = "bz1wa88ptglc1st";//update if changed!!!
+                else
+                    downloadPart = "kc61q6vzrizxxrp";//update if changed!!!
                 path = File.ReadAllText("path.info");
                 File.Delete(path);
                 using (WebClient client = new WebClient())
-                    client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "?dl=1", path);
+                    client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", path);
             }
         }
 
