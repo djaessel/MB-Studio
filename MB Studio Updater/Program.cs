@@ -36,7 +36,8 @@ namespace MB_Studio_Updater
                 }
             }
 
-            //folderPath = @"F:\WORKINGAREA\Visual Studio Projects\MB_Decompiler\MB Studio\bin\x86\Release";//only for Debug!
+            if (channel.Equals("testing"))
+                folderPath = @"F:\WORKINGAREA\Visual Studio Projects\MB_Decompiler\MB Studio\bin\x86\Release";//only for Debug!
 
             consoleTitle += " Channel: " + channel; 
             Console.Title = consoleTitle;
@@ -58,49 +59,57 @@ namespace MB_Studio_Updater
                 if (!UnusedFile(file))
                     list.Add(MD5Maker.CreateMD5ChecksumString(file.FullName) + "|" + file.LastWriteTimeUtc.ToFileTime() + "|." + file.FullName.Substring(folderPath.Length));
 
-            using (WebClient client = new WebClient())
-                client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
-
-            Console.Write(Environment.NewLine + "Überprüfe " + list.Count + " Dateien auf Updates ..." + Environment.NewLine);
-
-            List<string[]> updateFiles = new List<string[]>();
-            string[] indexList = File.ReadAllLines("index.mbi");
-            foreach (string item in indexList)
+            if (channel.Equals("testing"))
             {
-                if (!list.Contains(item))
+                File.WriteAllLines("stable.index.mbi", list);
+            }
+            else
+            {
+                using (WebClient client = new WebClient())
+                    client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
+
+                Console.Write(Environment.NewLine + "Überprüfe " + list.Count + " Dateien auf Updates ..." + Environment.NewLine);
+
+                List<string[]> updateFiles = new List<string[]>();
+                string[] indexList = File.ReadAllLines("index.mbi");
+                foreach (string item in indexList)
                 {
-                    string[] infoIndex = item.Split('|');
-                    for (int i = 0; i < list.Count; i++)
+                    if (!list.Contains(item))
                     {
-                        string[] infoList = list[i].Split('|');
-                        if (infoList[2].Equals(infoIndex[2]) && ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1]))//if (outdated)
+                        string[] infoIndex = item.Split('|');
+                        for (int i = 0; i < list.Count; i++)
                         {
-                            updateFiles.Add(new string[] { infoIndex[2], infoIndex[3] });
-                            i = list.Count;
+                            string[] infoList = list[i].Split('|');
+                            if (infoList[2].Equals(infoIndex[2]) && ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1]))//if (outdated)
+                            {
+                                updateFiles.Add(new string[] { infoIndex[2], infoIndex[3] });
+                                i = list.Count;
+                            }
                         }
                     }
                 }
-            }
 
-            Console.WriteLine(Environment.NewLine + " --> Es werden " + updateFiles.Count + " Dateien aktualisiert:" + Environment.NewLine);
+                Console.WriteLine(Environment.NewLine + " --> Es werden " + updateFiles.Count + " Dateien aktualisiert:" + Environment.NewLine);
 
-            //folderPath = "E:\\tmp\\testDownload\\";//only for Debug!
+                if (channel.Equals("testing2"))
+                    folderPath = "E:\\tmp\\testDownload\\";//only for Debug!
 
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadProgressChanged += Client_DownloadProgressChanged;
-                client.DownloadFileCompleted += Client_DownloadFileCompleted;
-                for (int i = 0; i < updateFiles.Count; i++)
+                using (WebClient client = new WebClient())
                 {
-                    curFile = " - Aktualisiere " + updateFiles[i][0].Substring(2);
-                    Console.WriteLine(curFile);
-                    fileDownloadActive = true;
-                    client.DownloadFileAsync(new Uri("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1"), folderPath + updateFiles[i][0].Substring(1));
-                    while (fileDownloadActive) Thread.Sleep(10);
+                    client.DownloadProgressChanged += Client_DownloadProgressChanged;
+                    client.DownloadFileCompleted += Client_DownloadFileCompleted;
+                    for (int i = 0; i < updateFiles.Count; i++)
+                    {
+                        curFile = " - Aktualisiere " + updateFiles[i][0].Substring(2);
+                        Console.WriteLine(curFile);
+                        fileDownloadActive = true;
+                        client.DownloadFileAsync(new Uri("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1"), folderPath + updateFiles[i][0].Substring(1));
+                        while (fileDownloadActive) Thread.Sleep(10);
+                    }
                 }
-            }
 
-            Console.Title = consoleTitle + " - Finished Updating";
+                Console.Title = consoleTitle + " - Finished Updating";
+            }
 
             //Console.Write(Environment.NewLine + " Press any key to close ...");//only for Debug!
             //Console.ReadKey();//only for Debug!
