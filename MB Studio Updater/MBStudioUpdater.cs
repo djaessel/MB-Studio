@@ -22,8 +22,6 @@ namespace MB_Studio_Updater
         private string pathExtra;
         private string folderPath;
 
-        private string consoleTitle;
-
         private List<string> list;
 
         #endregion
@@ -98,7 +96,7 @@ namespace MB_Studio_Updater
                 }
             }
 
-            Console.Title = consoleTitle + " - Finished Updating";
+            Console.Title = ConsoleTitle + " - Finished Updating";
         }
 
         private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -108,7 +106,7 @@ namespace MB_Studio_Updater
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Console.Title = consoleTitle + curFile + " Progress: " + e.ProgressPercentage + " %";
+            Console.Title = ConsoleTitle + curFile + " Progress: " + e.ProgressPercentage + " %";
         }
 
         private static bool IsUpdaterOutdated(List<string[]> updateFiles)
@@ -162,8 +160,8 @@ namespace MB_Studio_Updater
         {
             if (pathExtra != null && list != null && !forceLoading) return;
 
-            consoleTitle += " Channel: " + channel;
-            Console.Title = consoleTitle;
+            ConsoleTitle += " Channel: " + channel;
+            Console.Title = ConsoleTitle;
 
             if (channel.Equals("dev"))
                 pathExtra = "3hb1y883a23520v";
