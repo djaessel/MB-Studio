@@ -19,7 +19,6 @@ namespace MB_Studio_Updater
 
         private string channel;
         private string curFile;
-        private string pathExtra;
         private string folderPath;
 
         private List<string> list;
@@ -34,12 +33,7 @@ namespace MB_Studio_Updater
             this.folderPath = Path.GetFullPath(folderPath);
             this.startMBStudioAU = startMBStudioAU;
 
-            try
-            {
-                Console.Title = MB_STUDIO_UPDATER;
-                IsConsole = true;
-            } catch (Exception) { }
-
+            SetIsConsole();
             CleanUpdaterTemp();
         }
 
@@ -48,6 +42,22 @@ namespace MB_Studio_Updater
         public void WriteIndexFile()
         {
             LoadData();
+
+            List<FileVersionCode> downloadedFVCs = FileVersionCode.ConvertToFileVersions(File.ReadAllLines("index.mbi"));
+            List<FileVersionCode> generatedFVCs = FileVersionCode.ConvertToFileVersions(list);
+            list.Clear();
+            foreach (FileVersionCode downloadedFVC in downloadedFVCs)
+            {
+                for (int i = 0; i < generatedFVCs.Count; i++)
+                {
+                    if (generatedFVCs[i].FilePath.Equals(downloadedFVC.FilePath))
+                    {
+                        FileVersionCode f = FileVersionCode.CombineFileVersionCodes(downloadedFVC, generatedFVCs[i]);
+                        list.Add(f.Code);
+                        i = generatedFVCs.Count;
+                    }
+                }
+            }
 
             File.WriteAllLines(channel + ".index.mbi", list);
         }
@@ -59,9 +69,6 @@ namespace MB_Studio_Updater
         public void CheckForUpdates()
         {
             LoadData();
-
-            using (WebClient client = new WebClient())
-                client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
 
             if (IsConsole)
                 Console.Write(Environment.NewLine + "Überprüfe " + list.Count + " Dateien auf Updates ..." + Environment.NewLine);
@@ -97,31 +104,41 @@ namespace MB_Studio_Updater
             {
                 CloseMBStudioIfRunning();
 
-                using (WebClient client = new WebClient())
+                using (StreamWriter wr = new StreamWriter("update_log.mbi", true))
                 {
-                    try
+                    using (WebClient client = new WebClient())
                     {
-                        for (int i = 0; i < updateFiles.Count; i++)//foreach block console_output - but would be better(?)
+                        try
                         {
-                            string file = updateFiles[i][0].Substring(2);
-                            //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
-                            curFile = " - Aktualisiere " + file;
-                            if (IsConsole)
-                                Console.Write(curFile);
-                            file = folderPath + updateFiles[i][0].Substring(1);
-                            if (IsConsole)
-                                Console.WriteLine(" >> " + file);
-                            client.DownloadFile("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1", file);
+                            for (int i = 0; i < updateFiles.Count; i++)//foreach block console_output - but would be better(?)
+                            {
+                                string file = updateFiles[i][0].Substring(2);
+                                //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
+                                curFile = " -> Aktualisiere " + file;
+                                wr.Write(curFile);
+                                if (IsConsole)
+                                    Console.Write(curFile);
+                                file = folderPath + updateFiles[i][0].Substring(1);
+                                if (IsConsole)
+                                    Console.WriteLine(" >> " + file);
+                                wr.WriteLine("  Download Token: " + updateFiles[i][1]);
+                                wr.WriteLine("  Destination: " + file);
+                                client.DownloadFile("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1", file);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(Environment.NewLine + ex.ToString() + Environment.NewLine);
                         }
                     }
-                    catch (Exception ex)
+
+                    if (startMBStudioAU)
                     {
-                        Console.WriteLine(Environment.NewLine + ex.ToString() + Environment.NewLine);
+                        wr.Write("Starting MB Studio...");
+                        Process.Start("MB Studio.exe");
+                        wr.WriteLine("Done.");
                     }
                 }
-
-                if (startMBStudioAU)
-                    Process.Start("MB Studio.exe");
             }
 
             if (IsConsole)
@@ -182,6 +199,16 @@ namespace MB_Studio_Updater
 
         #region Helper Methods
 
+        private void SetIsConsole()
+        {
+            try
+            {
+                Console.Title = MB_STUDIO_UPDATER;
+                IsConsole = true;
+            }
+            catch (Exception) { }
+        }
+
         private void CleanUpdaterTemp()
         {
             if (Directory.Exists(MB_STUDIO_UPDATER_TEMP))
@@ -190,7 +217,7 @@ namespace MB_Studio_Updater
 
         private void LoadData(bool forceLoading = false)
         {
-            if (pathExtra != null && list != null && !forceLoading) return;
+            if (list != null && !forceLoading) return;
 
             ConsoleTitle += " Channel: " + channel;
 
@@ -199,6 +226,7 @@ namespace MB_Studio_Updater
 
             bool Is64Bit = Environment.Is64BitOperatingSystem;
 
+            string pathExtra;
             if (channel.Equals("dev"))
                 pathExtra = (Is64Bit) ? "3hb1y883a23520v" : "dd4c75fu8ap6klf";//change if invalid
             else if (channel.Equals("beta"))
@@ -213,6 +241,9 @@ namespace MB_Studio_Updater
             foreach (FileInfo file in files)
                 if (!UnusedFile(file))
                     list.Add(MD5Maker.CreateMD5ChecksumString(file.FullName) + "|" + file.LastWriteTimeUtc.ToFileTime() + "|." + file.FullName.Substring(folderPath.Length));
+
+            using (WebClient client = new WebClient())
+                client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
         }
 
         private static bool UnusedFile(FileInfo file)

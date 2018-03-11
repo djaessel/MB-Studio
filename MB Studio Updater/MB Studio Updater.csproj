@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileVersionCode.cs" />
     <Compile Include="MBStudioUpdater.cs" />
     <Compile Include="MD5Maker.cs" />
     <Compile Include="Program.cs" />

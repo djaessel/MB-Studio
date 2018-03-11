@@ -694,9 +694,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projectExplorer_group.Controls.Add(this.projectFiles_lb);
             this.projectExplorer_group.ForeColor = System.Drawing.Color.White;
-            this.projectExplorer_group.Location = new System.Drawing.Point(708, 92);
+            this.projectExplorer_group.Location = new System.Drawing.Point(708, 98);
             this.projectExplorer_group.Name = "projectExplorer_group";
-            this.projectExplorer_group.Size = new System.Drawing.Size(238, 420);
+            this.projectExplorer_group.Size = new System.Drawing.Size(238, 414);
             this.projectExplorer_group.TabIndex = 21;
             this.projectExplorer_group.TabStop = false;
             this.projectExplorer_group.Text = "Projektmappen-Explorer";
