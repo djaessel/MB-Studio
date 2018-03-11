@@ -163,12 +163,14 @@ namespace MB_Studio_Updater
             ConsoleTitle += " Channel: " + channel;
             Console.Title = ConsoleTitle;
 
+            bool Is64Bit = Environment.Is64BitOperatingSystem;
+
             if (channel.Equals("dev"))
-                pathExtra = "3hb1y883a23520v";
+                pathExtra = (Is64Bit) ? "3hb1y883a23520v" : "dd4c75fu8ap6klf";//change if invalid
             else if (channel.Equals("beta"))
-                pathExtra = "h7fh3m5i0pi7zwl";
+                pathExtra = (Is64Bit) ? "h7fh3m5i0pi7zwl" : "6e63rtfhqdt2y6w";//change if invalid
             else// if (channel.Equals("stable"))
-                pathExtra = "x6fznmxh99b1mgn";
+                pathExtra = (Is64Bit) ? "x6fznmxh99b1mgn" : "7q27bh2kzemz01k";//change if invalid
 
             pathExtra += "/" + channel;
 

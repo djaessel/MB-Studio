@@ -24,7 +24,7 @@ namespace MB_Studio_Updater
             if (args.Length != 0)
             {
                 string channel = args[0].TrimStart('-');
-                string folderPath = Path.GetFullPath(".");
+                string folderPath = ".";
 
                 //if (channel.Equals("testing"))
                 //    folderPath = @"F:\WORKINGAREA\Visual Studio Projects\MB_Decompiler\MB Studio\bin\x86\Release";//only for Debug!
@@ -46,6 +46,8 @@ namespace MB_Studio_Updater
                         writeIndex = (args[2].Equals("-index")) ? true : false;
                 }
 
+				folderPath = Path.GetFullPath(folderPath);
+				
                 updater = new MBStudioUpdater(channel, folderPath);
             }
             else

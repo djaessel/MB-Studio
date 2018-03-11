@@ -74,7 +74,7 @@
   Pop $0 ;Return value from download - OK is good!
   
 ; Executes MSI Installer for Python
-  ExecWait '"$SYSDIR\msiexec" /i "python-2.7.13.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
+  ExecWait '"$SYSDIR\msiexec" /i "$PLUGINSDIR\python\python-2.7.13.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
   
 ;  StrCpy $4 "Python 2.7.13" ; check if 32 Bit name is correct
   StrCpy $4 "$INSTDIR\"
