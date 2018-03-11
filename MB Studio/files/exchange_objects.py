@@ -1414,7 +1414,7 @@ store_enemy_count > enemy_count[X] #= 2380 # (store_enemy_count,<destination>),
 store_friend_count > friend_count[X] #= 2381 # (store_friend_count,<destination>),
 store_ally_count > ally_count[X] #= 2382 # (store_ally_count,<destination>),
 store_defender_count > defender_count[X] #= 2383 # (store_defender_count,<destination>),
-store_attacker_count attacker_count[X] #= 2384 # (store_attacker_count,<destination>),
+store_attacker_count > attacker_count[X] #= 2384 # (store_attacker_count,<destination>),
 store_normalized_team_count > normalized_team_count[X],0 #= 2385 #(store_normalized_team_count,<destination>, <team_no>), #Counts the number of agents belonging to a team
                                                                                             # and normalizes the result regarding battle_size and advantage.
 #set_postfx                  = 2386 #???

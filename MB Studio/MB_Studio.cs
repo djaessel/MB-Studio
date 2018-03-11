@@ -68,8 +68,10 @@ namespace MB_Studio
             Process process = new Process();
             process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
             //if (!ShowUpdaterConsole)
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.UseShellExecute = false;
+            //{
+            //  process.StartInfo.CreateNoWindow = true;
+            //  process.StartInfo.UseShellExecute = false;
+            //}
             process.StartInfo.FileName = Application.StartupPath + '\\' + MBStudioUpdater.MB_STUDIO_UPDATER;
             process.Start();
             

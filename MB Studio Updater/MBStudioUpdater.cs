@@ -268,13 +268,13 @@ namespace MB_Studio_Updater
 
         private static bool UnusedFile(FileInfo file)
         {
-            string ext = file.Extension.Substring(1);
-
+            string ext = file.Extension.TrimStart('.');
             bool unused = file.Name.Contains("skillhunter.xml");
 
             if (!unused) unused = file.Name.Contains("module_info.path");
             if (!unused) unused = (ext.Equals("pdb") || ext.Equals("mbi") || ext.Equals("config"));
             if (!unused) unused = file.DirectoryName.Contains(Path.GetFullPath(".\\Projects"));
+            if (!unused) unused = file.DirectoryName.Contains(Path.GetFullPath(".\\Python"));
 
             return unused;
         }
