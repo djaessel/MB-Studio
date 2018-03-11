@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace MB_Studio_Updater
 {
@@ -7,13 +6,7 @@ namespace MB_Studio_Updater
     {
         static void Main(string[] args)
         {
-            Init();
             RunUpdater(args);
-        }
-
-        private static void Init()
-        {
-            Console.Title = MBStudioUpdater.ConsoleTitle;
         }
 
         private static void RunUpdater(string[] args)
@@ -25,9 +18,6 @@ namespace MB_Studio_Updater
             {
                 string channel = args[0].TrimStart('-');
                 string folderPath = ".";
-
-                //if (channel.Equals("testing"))
-                //    folderPath = @"F:\WORKINGAREA\Visual Studio Projects\MB_Decompiler\MB Studio\bin\x86\Release";//only for Debug!
 
                 if (args.Length > 1)
                 {
@@ -48,7 +38,7 @@ namespace MB_Studio_Updater
 
 				folderPath = Path.GetFullPath(folderPath);
 				
-                updater = new MBStudioUpdater(channel, folderPath);
+                updater = new MBStudioUpdater(channel, folderPath, args[2].Equals("-startOE"));
             }
             else
                 updater = new MBStudioUpdater();

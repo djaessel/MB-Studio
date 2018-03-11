@@ -93,7 +93,6 @@
   <ItemGroup>
     <Compile Include="ControlWriter.cs" />
     <Compile Include="ImportantMethods.cs" />
-    <Compile Include="MD5Maker.cs" />
     <Compile Include="ToolTips\ToolTipListBoxItem.cs" />
     <Compile Include="SearchTextBox.cs">
       <SubType>Component</SubType>

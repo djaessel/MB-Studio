@@ -8,6 +8,7 @@ using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -64,9 +65,16 @@ namespace MB_Studio
 
         private void CheckForUpdates()
         {
-            //WriteIndexFile with Updater CLI for Upload Versions!
-            MBStudioUpdater updater = new MBStudioUpdater(Properties.Settings.Default.updateChannel);//updateChannel is stable but must be changeable in settings later!!!
-            updater.CheckForUpdates();
+            Process process = new Process();
+            process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
+            //if (!ShowUpdaterConsole)
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.FileName = Application.StartupPath + '\\' + MBStudioUpdater.MB_STUDIO_UPDATER;
+            process.Start();
+            
+            //WARNING --> this isn't optimal code - not working if update is needed!!! - errors/bugs
+            //process.WaitForExit();
         }
 
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)

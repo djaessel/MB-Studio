@@ -66,17 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MBStudioUpdater.cs" />
+    <Compile Include="MD5Maker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\importantLib\importantLib\importantLib.csproj">
-      <Project>{dcff1576-1736-4bfd-9a3e-901246b7e8c9}</Project>
-      <Name>importantLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

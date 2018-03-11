@@ -684,7 +684,7 @@
             this.projectFiles_lb.ItemHeight = 29;
             this.projectFiles_lb.Location = new System.Drawing.Point(12, 24);
             this.projectFiles_lb.Name = "projectFiles_lb";
-            this.projectFiles_lb.Size = new System.Drawing.Size(214, 406);
+            this.projectFiles_lb.Size = new System.Drawing.Size(214, 377);
             this.projectFiles_lb.TabIndex = 20;
             this.projectFiles_lb.SelectedIndexChanged += new System.EventHandler(this.ProjectFiles_lb_SelectedIndexChanged);
             // 
@@ -694,9 +694,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projectExplorer_group.Controls.Add(this.projectFiles_lb);
             this.projectExplorer_group.ForeColor = System.Drawing.Color.White;
-            this.projectExplorer_group.Location = new System.Drawing.Point(708, 75);
+            this.projectExplorer_group.Location = new System.Drawing.Point(708, 92);
             this.projectExplorer_group.Name = "projectExplorer_group";
-            this.projectExplorer_group.Size = new System.Drawing.Size(238, 437);
+            this.projectExplorer_group.Size = new System.Drawing.Size(238, 420);
             this.projectExplorer_group.TabIndex = 21;
             this.projectExplorer_group.TabStop = false;
             this.projectExplorer_group.Text = "Projektmappen-Explorer";
