@@ -68,44 +68,61 @@ namespace MB_Studio_Updater
 
         public void CheckForUpdates()
         {
-            LoadData();
-
-            if (IsConsole)
-                Console.Write(Environment.NewLine + "Überprüfe " + list.Count + " Dateien auf Updates ..." + Environment.NewLine);
-
-            List<string[]> updateFiles = new List<string[]>();
-            string[] indexList = File.ReadAllLines("index.mbi");
-            foreach (string item in indexList)
+            using (StreamWriter wr = new StreamWriter("update_log.mbi", true))
             {
-                if (!list.Contains(item))
+                LoadData();
+
+                wr.WriteLine("[" + DateTime.Now + "]  Data loadad." + Environment.NewLine);
+
+                string logInfo = "Überprüfe " + list.Count + " Dateien auf Updates ..." + Environment.NewLine;
+
+                wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
+
+                if (IsConsole)
+                    Console.Write(Environment.NewLine + logInfo);
+
+                List<string[]> updateFiles = new List<string[]>();
+                string[] indexList = File.ReadAllLines("index.mbi");
+                foreach (string item in indexList)
                 {
-                    string[] infoIndex = item.Split('|');
-                    for (int i = 0; i < list.Count; i++)
+                    if (!list.Contains(item))
                     {
-                        string[] infoList = list[i].Split('|');
-                        if (infoList[2].Equals(infoIndex[2])
-                            && (ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])
-                            && !infoList[0].Equals(infoIndex[0])))//if (outdated)
+                        string[] infoIndex = item.Split('|');
+                        for (int i = 0; i < list.Count; i++)
                         {
-                            updateFiles.Add(new string[] { infoIndex[2], infoIndex[3] });
-                            i = list.Count;
+                            string[] infoList = list[i].Split('|');
+                            if (infoList[2].Equals(infoIndex[2])
+                                && (ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])
+                                && !infoList[0].Equals(infoIndex[0])))//if (outdated)
+                            {
+                                updateFiles.Add(new string[] { infoIndex[2], infoIndex[3] });
+                                i = list.Count;
+                            }
                         }
                     }
                 }
-            }
 
-            if (IsConsole)
-                Console.WriteLine(Environment.NewLine + " --> Es werden " + updateFiles.Count + " Dateien aktualisiert" + Environment.NewLine);
+                logInfo = " --> Es werden " + updateFiles.Count + " Dateien aktualisiert" + Environment.NewLine;
 
-            if (IsUpdaterOutdated(updateFiles))
-                SelfUpdate();
+                if (IsConsole)
+                    Console.WriteLine(Environment.NewLine + logInfo);
 
-            if (updateFiles.Count != 0)
-            {
-                CloseMBStudioIfRunning();
+                wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
 
-                using (StreamWriter wr = new StreamWriter("update_log.mbi", true))
+                if (IsUpdaterOutdated(updateFiles))
                 {
+                    wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update");
+                    SelfUpdate();
+                }
+                else
+                    wr.WriteLine("[" + DateTime.Now + "]  Updater up-to-date");
+
+                if (updateFiles.Count != 0)
+                {
+                    wr.Write("[" + DateTime.Now + "]  Closing MB Studio (if open)...");
+                    CloseMBStudioIfRunning();
+                    wr.WriteLine("Done");
+
                     using (WebClient client = new WebClient())
                     {
                         try
@@ -115,34 +132,37 @@ namespace MB_Studio_Updater
                                 string file = updateFiles[i][0].Substring(2);
                                 //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
                                 curFile = " -> Aktualisiere " + file;
-                                wr.Write(curFile);
+                                wr.Write("[" + DateTime.Now + "]" + curFile);
                                 if (IsConsole)
                                     Console.Write(curFile);
                                 file = folderPath + updateFiles[i][0].Substring(1);
                                 if (IsConsole)
                                     Console.WriteLine(" >> " + file);
-                                wr.WriteLine("  Download Token: " + updateFiles[i][1]);
-                                wr.WriteLine("  Destination: " + file);
+                                wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFiles[i][1]);
+                                wr.WriteLine("[" + DateTime.Now + "]  Destination: " + file);
                                 client.DownloadFile("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1", file);
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(Environment.NewLine + ex.ToString() + Environment.NewLine);
+                            string error = ex.ToString() + Environment.NewLine;
+                            Console.WriteLine(error);
+                            wr.WriteLine("[" + DateTime.Now + "]  " + error);
                         }
                     }
 
                     if (startMBStudioAU)
                     {
-                        wr.Write("Starting MB Studio...");
+                        wr.Write("[" + DateTime.Now + "]  Starting MB Studio...");
                         Process.Start("MB Studio.exe");
-                        wr.WriteLine("Done.");
+                        wr.WriteLine("Done");
                     }
-                }
-            }
 
-            if (IsConsole)
-                Console.Title = ConsoleTitle + " - Finished Updating";
+                }
+
+                if (IsConsole)
+                    Console.Title = ConsoleTitle + " - Finished Updating";
+            }
         }
 
         private static bool IsUpdaterOutdated(List<string[]> updateFiles)
