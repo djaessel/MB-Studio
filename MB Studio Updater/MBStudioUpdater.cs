@@ -124,7 +124,7 @@ namespace MB_Studio_Updater
                 {
                     wr.Write("[" + DateTime.Now + "]  Closing MB Studio (if open)...");
                     CloseMBStudioIfRunning();
-                    wr.WriteLine("Done");
+                    wr.WriteLine("Done" + Environment.NewLine);
 
                     using (WebClient client = new WebClient())
                     {
@@ -134,15 +134,15 @@ namespace MB_Studio_Updater
                             {
                                 string file = updateFiles[i][0].Substring(2);
                                 //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
-                                curFile = " -> Aktualisiere " + file;
-                                wr.Write("[" + DateTime.Now + "]" + curFile);
+                                curFile = " Aktualisiere \"" + file + '\"';
+                                wr.WriteLine("[" + DateTime.Now + "]" + curFile);
                                 if (IsConsole)
                                     Console.Write(curFile);
                                 file = folderPath + updateFiles[i][0].Substring(1);
                                 if (IsConsole)
                                     Console.WriteLine(" >> " + file);
                                 wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFiles[i][1]);
-                                wr.WriteLine("[" + DateTime.Now + "]  Destination: " + file);
+                                wr.WriteLine("[" + DateTime.Now + "]  Destination: \"" + file + '\"');
                                 client.DownloadFile("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1", file);
                             }
                         }
@@ -156,13 +156,14 @@ namespace MB_Studio_Updater
 
                     if (startMBStudioAU)
                     {
-                        wr.Write("[" + DateTime.Now + "]  Starting MB Studio...");
+                        wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
                         Process.Start("MB Studio.exe");
                         wr.WriteLine("Done");
                     }
 
                 }
 
+                wr.WriteLine(Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine);
                 if (IsConsole)
                     Console.Title = ConsoleTitle + " - Finished Updating";
             }

@@ -67,7 +67,7 @@ namespace MB_Studio
         {
             Process process = new Process();
             process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
-            //if (!ShowUpdaterConsole)
+            //if (ShowUpdaterConsole)//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
             //{
             //  process.StartInfo.CreateNoWindow = true;
             //  process.StartInfo.UseShellExecute = false;
