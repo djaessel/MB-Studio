@@ -85,21 +85,24 @@ namespace MB_Studio_Updater
                 string[] indexList = File.ReadAllLines("index.mbi");
                 foreach (string item in indexList)
                 {
+                    string[] infoIndex = item.Split('|');
+                    string[] newOrUpdated = new string[] { infoIndex[2], infoIndex[3] };
                     if (!list.Contains(item))
                     {
-                        string[] infoIndex = item.Split('|');
                         for (int i = 0; i < list.Count; i++)
                         {
                             string[] infoList = list[i].Split('|');
                             if (infoList[2].Equals(infoIndex[2])
-                                && (ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])
-                                && !infoList[0].Equals(infoIndex[0])))//if (outdated)
+                                && (/*ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])//deactivated for now because of old files - replace with version later
+                                && */!infoList[0].Equals(infoIndex[0])))//if (outdated)
                             {
-                                updateFiles.Add(new string[] { infoIndex[2], infoIndex[3] });
+                                updateFiles.Add(newOrUpdated);
                                 i = list.Count;
                             }
                         }
                     }
+                    else
+                        updateFiles.Add(newOrUpdated);
                 }
 
                 logInfo = " --> Es werden " + updateFiles.Count + " Dateien aktualisiert" + Environment.NewLine;

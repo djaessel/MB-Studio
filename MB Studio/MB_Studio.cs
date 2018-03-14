@@ -74,9 +74,6 @@ namespace MB_Studio
             //}
             process.StartInfo.FileName = Application.StartupPath + '\\' + MBStudioUpdater.MB_STUDIO_UPDATER;
             process.Start();
-            
-            //WARNING --> this isn't optimal code - not working if update is needed!!! - errors/bugs
-            //process.WaitForExit();
         }
 
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)
