@@ -76,7 +76,7 @@ namespace MB_Studio_Updater
 
                 string logInfo = "Überprüfe " + list.Count + " Dateien auf Updates ..." + Environment.NewLine;
 
-                wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
+                wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
 
                 if (IsConsole)
                     Console.Write(Environment.NewLine + logInfo);
@@ -115,61 +115,65 @@ namespace MB_Studio_Updater
                 if (IsUpdaterOutdated(updateFiles))
                 {
                     wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update");
-                    SelfUpdate();
+                    wr.WriteLine("[" + DateTime.Now + "] Please contact publisher!");
+                    //SelfUpdate();
                 }
                 else
+                {
                     wr.WriteLine("[" + DateTime.Now + "]  Updater up-to-date");
 
-                if (updateFiles.Count != 0)
-                {
-                    wr.Write("[" + DateTime.Now + "]  Closing MB Studio (if open)...");
-                    CloseMBStudioIfRunning();
-                    wr.WriteLine("Done" + Environment.NewLine);
-
-                    using (WebClient client = new WebClient())
+                    if (updateFiles.Count != 0)
                     {
-                        try
+                        wr.Write("[" + DateTime.Now + "]  Closing MB Studio (if open)...");
+                        CloseMBStudioIfRunning();
+                        wr.WriteLine("Done" + Environment.NewLine);
+
+                        using (WebClient client = new WebClient())
                         {
-                            for (int i = 0; i < updateFiles.Count; i++)//foreach block console_output - but would be better(?)
+                            try
                             {
-                                string file = updateFiles[i][0].Substring(2);
-                                //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
-                                curFile = " Aktualisiere \"" + file + '\"';
-                                wr.WriteLine("[" + DateTime.Now + "]" + curFile);
-                                if (IsConsole)
-                                    Console.Write(curFile);
-                                file = folderPath + updateFiles[i][0].Substring(1);
-                                if (IsConsole)
-                                    Console.WriteLine(" >> " + file);
-                                wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFiles[i][1]);
-                                wr.WriteLine("[" + DateTime.Now + "]  Destination: \"" + file + '\"');
-                                client.DownloadFile("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1", file);
+                                for (int i = 0; i < updateFiles.Count; i++)//foreach block console_output - but would be better(?)
+                                {
+                                    string file = updateFiles[i][0].Substring(2);
+                                    //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
+                                    curFile = " Aktualisiere \"" + file + '\"';
+                                    wr.WriteLine("[" + DateTime.Now + "]" + curFile);
+                                    if (IsConsole)
+                                        Console.Write(curFile);
+                                    file = folderPath + updateFiles[i][0].Substring(1);
+                                    if (IsConsole)
+                                        Console.WriteLine(" >> " + file);
+                                    wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFiles[i][1]);
+                                    wr.WriteLine("[" + DateTime.Now + "]  Destination: \"" + file + '\"');
+                                    client.DownloadFile("https://www.dropbox.com/s/" + updateFiles[i][1] + "?dl=1", file);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                string error = ex.ToString() + Environment.NewLine;
+                                Console.WriteLine(error);
+                                wr.WriteLine("[" + DateTime.Now + "]  " + error);
                             }
                         }
-                        catch (Exception ex)
+
+                        if (startMBStudioAU)
                         {
-                            string error = ex.ToString() + Environment.NewLine;
-                            Console.WriteLine(error);
-                            wr.WriteLine("[" + DateTime.Now + "]  " + error);
+                            wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
+                            Process.Start("MB Studio.exe");
+                            wr.WriteLine("Done");
                         }
+
                     }
 
-                    if (startMBStudioAU)
-                    {
-                        wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
-                        Process.Start("MB Studio.exe");
-                        wr.WriteLine("Done");
-                    }
+                    wr.WriteLine(Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine);
 
+                    if (IsConsole)
+                        Console.Title = ConsoleTitle + " - Finished Updating";
                 }
-
-                wr.WriteLine(Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine);
-                if (IsConsole)
-                    Console.Title = ConsoleTitle + " - Finished Updating";
             }
         }
 
-        private static bool IsUpdaterOutdated(List<string[]> updateFiles)
+        public static bool IsUpdaterOutdated(List<string[]> updateFiles)
         {
             bool updaterOutdated = false;
             foreach (string[] a in updateFiles)
@@ -193,17 +197,25 @@ namespace MB_Studio_Updater
             }
         }
 
-        private static void SelfUpdate()
+        private void SelfUpdate()
         {
             CloseMBStudioIfRunning();
 
             string path = Path.GetFullPath(".");
-            if (!path.Substring(path.LastIndexOf('\\') + 1).ToLower().Equals(MB_STUDIO_UPDATER_TEMP))
+
+            bool isTemp = Path.GetDirectoryName(path).Equals(MB_STUDIO_UPDATER_TEMP);
+
+            if (IsConsole)
+                Console.WriteLine("PATH_X: " + Path.GetDirectoryName(path) + Environment.NewLine + "PATH_T: " + MB_STUDIO_UPDATER_TEMP
+                    + Environment.NewLine + "IsTemp: " + isTemp);
+
+            if (!isTemp)//if (!path.Substring(path.LastIndexOf('\\') + 1).ToLower().Equals(MB_STUDIO_UPDATER_TEMP))
             {
                 string tempPath = path + '\\' + MB_STUDIO_UPDATER_TEMP;
                 Directory.CreateDirectory(tempPath);
                 File.Copy(path + '\\' + MB_STUDIO_UPDATER, tempPath + '\\' + MB_STUDIO_UPDATER);
                 File.WriteAllText(tempPath + "\\path.info", path);
+                Process.Start(tempPath + '\\' + MB_STUDIO_UPDATER);
             }
             else
             {
@@ -213,6 +225,7 @@ namespace MB_Studio_Updater
                 else
                     downloadPart = "kc61q6vzrizxxrp";//update if changed!!!
                 path = File.ReadAllText("path.info");
+                System.Threading.Thread.Sleep(2500);//should be not needed!!!
                 File.Delete(path);
                 using (WebClient client = new WebClient())
                     client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", path);

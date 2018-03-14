@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -65,15 +66,41 @@ namespace MB_Studio
 
         private void CheckForUpdates()
         {
-            Process process = new Process();
-            process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
-            //if (ShowUpdaterConsole)//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
-            //{
-            //  process.StartInfo.CreateNoWindow = true;
-            //  process.StartInfo.UseShellExecute = false;
-            //}
-            process.StartInfo.FileName = Application.StartupPath + '\\' + MBStudioUpdater.MB_STUDIO_UPDATER;
-            process.Start();
+            string startPath = MBStudioUpdater.MB_STUDIO_UPDATER;
+            if (!File.Exists("version.dat") || Directory.Exists(startPath + MBStudioUpdater.MB_STUDIO_UPDATER_TEMP))
+            {
+                startPath = MBStudioUpdater.MB_STUDIO_UPDATER_TEMP + '\\' + startPath;
+
+                string downloadPart;
+                if (Environment.Is64BitOperatingSystem)
+                    downloadPart = "bz1wa88ptglc1st";//update if changed!!!
+                else
+                    downloadPart = "kc61q6vzrizxxrp";//update if changed!!!
+
+                File.Delete(MBStudioUpdater.MB_STUDIO_UPDATER);
+
+                using (WebClient client = new WebClient())
+                    client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", MBStudioUpdater.MB_STUDIO_UPDATER);
+
+                //Directory.Delete(startPath.Remove(startPath.LastIndexOf('\\')), true);
+                File.WriteAllText("version.dat", "1.0.0.0");
+
+                Application.Exit();//.Restart();
+            }
+            else
+            {
+                startPath = Application.StartupPath + '\\' + startPath;
+
+                Process process = new Process();
+                process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
+                //if (ShowUpdaterConsole)//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
+                //{
+                //  process.StartInfo.CreateNoWindow = true;
+                //  process.StartInfo.UseShellExecute = false;
+                //}
+                process.StartInfo.FileName = startPath;
+                process.Start();
+            }
         }
 
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)
@@ -99,8 +126,7 @@ namespace MB_Studio
 
         private void StartLoadingForm()
         {
-            loadingThread = new Thread(new ThreadStart(ShowLoadingForm))
-            {
+            loadingThread = new Thread(new ThreadStart(ShowLoadingForm)) {
                 IsBackground = true
             };
             loadingThread.Start();
