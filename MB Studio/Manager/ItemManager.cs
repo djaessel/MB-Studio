@@ -407,7 +407,8 @@ namespace MB_Studio.Manager
                 Name = "ixmesh_" + i + "_cbb",
                 Size = new Size(meshKind_column_lbl.Width - 12, MESH_CONTROLS_TOP_HEIGHT - 4),
             };
-            ixmesh_cbb.Items.AddRange(new object[] {
+            ixmesh_cbb.Items.AddRange(
+                new object[] {
                     "none",
                     "inventory",
                     "flying_ammo",
@@ -473,7 +474,7 @@ namespace MB_Studio.Manager
         private void Show_cb_CheckedChanged(object sender, EventArgs e)
         {
             if (!show3D_Override)
-                Change3DView();
+                Change3DView();//change to second method or change original - need to show temp meshes aswell!!!
         }
 
         private void Ixmesh_btn_Click(object sender, EventArgs e)

@@ -6,12 +6,12 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using WarbandTranslator;
 using importantLib;
-using brfManager;
 using skillhunter;
 using MB_Decompiler_Library.IO;
 using MB_Studio.Main;
 using static skillhunter.Skriptum;
 using importantLib.ToolTipsListBox;
+using brfManager;
 
 namespace MB_Studio.Manager
 {

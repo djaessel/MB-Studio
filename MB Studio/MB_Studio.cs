@@ -67,9 +67,9 @@ namespace MB_Studio
         private void CheckForUpdates()
         {
             string startPath = MBStudioUpdater.MB_STUDIO_UPDATER;
-            if (!File.Exists("version.dat") || Directory.Exists(startPath + MBStudioUpdater.MB_STUDIO_UPDATER_TEMP))
-            {
-                startPath = MBStudioUpdater.MB_STUDIO_UPDATER_TEMP + '\\' + startPath;
+            //if (!File.Exists("version.dat") || Directory.Exists(startPath + MBStudioUpdater.MB_STUDIO_UPDATER_TEMP))
+            //{
+                //startPath = MBStudioUpdater.MB_STUDIO_UPDATER_TEMP + '\\' + startPath;
 
                 string downloadPart;
                 if (Environment.Is64BitOperatingSystem)
@@ -83,24 +83,25 @@ namespace MB_Studio
                     client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", MBStudioUpdater.MB_STUDIO_UPDATER);
 
                 //Directory.Delete(startPath.Remove(startPath.LastIndexOf('\\')), true);
-                File.WriteAllText("version.dat", "1.0.0.0");
+                if (!File.Exists("version.dat"))
+                    File.WriteAllText("version.dat", "1.0.0.0");
 
-                Application.Exit();//.Restart();
-            }
-            else
-            {
+            //    Application.Exit();//.Restart();
+            //}
+            //else
+            //{
                 startPath = Application.StartupPath + '\\' + startPath;
 
                 Process process = new Process();
                 process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
-                //if (ShowUpdaterConsole)//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
+                //if (!ShowUpdaterConsole)//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
                 //{
                 //  process.StartInfo.CreateNoWindow = true;
                 //  process.StartInfo.UseShellExecute = false;
                 //}
                 process.StartInfo.FileName = startPath;
-                process.Start();
-            }
+                ///process.Start();///activate later!!!
+            //}
         }
 
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)

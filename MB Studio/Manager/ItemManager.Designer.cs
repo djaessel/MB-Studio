@@ -294,7 +294,7 @@
             this.toolPanel.Controls.Add(this.showGroup_3_btn);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Size = new System.Drawing.Size(778, 227);
+            this.toolPanel.Size = new System.Drawing.Size(778, 342);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_3_btn, 0);
@@ -2241,7 +2241,7 @@
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
             this.groupBox_3_gb.Location = new System.Drawing.Point(39, 86);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
-            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
+            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 199);
             this.groupBox_3_gb.TabIndex = 27;
             this.groupBox_3_gb.TabStop = false;
             this.groupBox_3_gb.Tag = "";
@@ -3014,26 +3014,10 @@
             // ItemManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(814, 417);
+            this.ClientSize = new System.Drawing.Size(814, 532);
             this.Name = "ItemManager";
             this.Opacity = 1D;
             this.Text = "ItemManager";
-            this.Controls.SetChildIndex(this.id_txt, 0);
-            this.Controls.SetChildIndex(this.id_lbl, 0);
-            this.Controls.SetChildIndex(this.name_txt, 0);
-            this.Controls.SetChildIndex(this.name_lbl, 0);
-            this.Controls.SetChildIndex(this.plural_name_txt, 0);
-            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
-            this.Controls.SetChildIndex(this.title_lbl, 0);
-            this.Controls.SetChildIndex(this.exit_btn, 0);
-            this.Controls.SetChildIndex(this.min_btn, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
-            this.Controls.SetChildIndex(this.closeAll_btn, 0);
-            this.Controls.SetChildIndex(this.save_btn, 0);
-            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
-            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
-            this.Controls.SetChildIndex(this.toolPanel, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
