@@ -55,6 +55,8 @@ public:
 	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 
+	vector<wstring> getAllMessNames();
+
 	void removeMeshByNameFromXViewMesh(char* meshName);
 	void removeLastSelectedFromXViewMesh();
 

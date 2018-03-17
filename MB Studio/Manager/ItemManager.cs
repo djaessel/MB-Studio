@@ -383,13 +383,28 @@ namespace MB_Studio.Manager
             };
 
             // ixmesh_txt
-            TextBox ixmesh_txt = new TextBox
+            /*TextBox ixmesh_txt = new TextBox
             {
                 Location = new Point(ixmesh_lbl.Left + ixmesh_lbl.Width + 8, lastTopLocation + 1),
                 Name = "ixmesh_" + i + "_txt",
                 Size = new Size(resourceName_column_lbl.Width - 8, MESH_CONTROLS_TOP_HEIGHT - 7),
                 Text = tmp[0],
+            };*/
+            ComboBox ixmesh_txt = new ComboBox //change name and code which uses it later
+            {
+                BackColor = Color.FromArgb(56, 56, 56),
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.WhiteSmoke,
+                FormattingEnabled = true,
+                AutoCompleteMode = AutoCompleteMode.SuggestAppend,
+                AutoCompleteSource = AutoCompleteSource.ListItems,
+                ItemHeight = 20,
+                Location = new Point(ixmesh_lbl.Left + ixmesh_lbl.Width + 8, lastTopLocation + 1),
+                Name = "ixmesh_" + i + "_txt",
+                Size = new Size(resourceName_column_lbl.Width - 8, MESH_CONTROLS_TOP_HEIGHT - 4),
+                Text = tmp[0],
             };
+            ixmesh_txt.Items.AddRange(openBrfManager.GetAllMResourceNames());//should allow resources from all available modules in the same folder if needed
 
             // ixmesh_cbb
             ComboBox ixmesh_cbb = new ComboBox

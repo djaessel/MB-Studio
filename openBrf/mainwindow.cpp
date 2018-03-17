@@ -3872,9 +3872,9 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
 
-	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
-	createFileIfNotExists(xViewMeshFile);//Warband only for now!
-	/*if (!curFile.compare(xViewMeshFile)) */loadFile(xViewMeshFile);
+	/// QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
+	/// createFileIfNotExists(xViewMeshFile);//Warband only for now!
+	/// /*if (!curFile.compare(xViewMeshFile)) */loadFile(xViewMeshFile);
 
 	tempMeshList.push_back(newMesh);
 
@@ -3927,7 +3927,7 @@ void MainWindow::showTroop3DPreview() {
 		brfdata.mesh.clear();
 		for each (BrfMesh m in tempMeshList)
 			brfdata.mesh.push_back(m);
-		///save();
+		save();//workaround? - save not needed for function but otherwise bug saves random data anyways
 	}
 
 	selector->selectAll();
@@ -4251,16 +4251,17 @@ void MainWindow::setUseAlphaCommands(bool mode){
 	optionAoInAlpha->setVisible(mode);
 }
 
-void MainWindow::selectTypeAndIndex(int type, int index)
-{
+/* method created by Johandros */
+void MainWindow::selectTypeAndIndex(int type, int index) {
 	selector->selectOne(type, index);
 }
 
-void MainWindow::selectCurManyIndicesByList(vector<int> idxs)
-{
+/* method created by Johandros */
+void MainWindow::selectCurManyIndicesByList(vector<int> idxs) {
 	selector->selectMany(idxs);
 }
 
+/* method created by Johandros */
 void MainWindow::selectCurManyIndices(int sIdx, int end)
 {
 	vector<int> idxs;
@@ -4269,9 +4270,19 @@ void MainWindow::selectCurManyIndices(int sIdx, int end)
 	selector->selectMany(idxs);
 }
 
+/* method created by Johandros */
+vector<wstring> MainWindow::getAllMessNames()
+{
+	vector<wstring> allNames;
+	inidata.loadAll(4);
+	inidata.getTypeAllNames(MESH, allNames);
+	return allNames;
+}
+
+/* method created by Johandros */
 vector<char*> MainWindow::getMeshNames()
 {
-	std::vector<char*> names;
+	vector<char*> names;
 	for (size_t i = 0; i < brfdata.mesh.size(); i++)
 		names.push_back(brfdata.mesh[i].name);
 	return names;

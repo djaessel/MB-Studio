@@ -717,8 +717,6 @@ void IniData::checkFile(int i, int j, int kind, char* usedFile, QDir *d0, QDir *
 
 }
 
-
-
 template <class T>
 bool IniData::checkDuplicated(std::vector<T> &v, int j, int maxErr){
   int kind = T::tokenIndex();
@@ -739,7 +737,7 @@ bool IniData::checkDuplicated(std::vector<T> &v, int j, int maxErr){
 }
 
 template <class T>
-void IniData::searchAllNamesV(const QString &s, int t,const std::vector<T> &v, int j, QString &res) const{
+void IniData::searchAllNamesV(const QString &s, int t, const vector<T> &v, int j, QString &res) const{
   int kind = T::tokenIndex();
   if (t!=-1 && t!=kind) return;
   for (unsigned int i=0; i<v.size(); i++)
@@ -748,14 +746,14 @@ void IniData::searchAllNamesV(const QString &s, int t,const std::vector<T> &v, i
 }
 
 template <class T>
-void IniData::searchNameInV(const QString &s, int type, const std::vector<T> &v, int j, std::vector<std::vector<int>> &foundings) const {
+void IniData::searchNameInV(const QString &s, int type, const vector<T> &v, int j, vector<vector<int>> &foundings) const {
 	int kind = T::tokenIndex();
 	if (/*type != -1 && */type != kind) return;//what is with -1?
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		if (QString(v[i].name).split('.')[0] == s)
 		{
-			std::vector<int> found;
+			vector<int> found;
 			found.push_back(j);
 			found.push_back(i);
 			found.push_back(kind);
@@ -764,14 +762,28 @@ void IniData::searchNameInV(const QString &s, int type, const std::vector<T> &v,
 	}
 }
 
-/*template <class T>
-void IniData::searchNameInV(const QString &s, int t, const std::vector<T> &v, int j, QString &res) const {
-	int kind = T::tokenIndex();
-	if (t != -1 && t != kind) return;
-	for (unsigned int i = 0; i<v.size(); i++)
-		if (QString(v[i].name).split('.')[0] == s)//.contains(s, Qt::CaseInsensitive))
-			res += link(j, i, kind) + "<br>";
-}*/
+template <class T>
+void IniData::getVecAllNames(const vector<T> &v, vector<wstring> &allNames) const {
+	for (size_t j = 0; j < v.size(); j++) {
+		allNames.push_back(QString(v[j].name).toStdWString());
+	}
+}
+
+void IniData::getTypeAllNames(int type, vector<wstring> &allNames) const {
+	for (size_t i = 0; i < file.size(); i++) {
+		switch (type)
+		{
+			case TEXTURE: getVecAllNames(file[i].texture, allNames); break;
+			case SHADER: getVecAllNames(file[i].shader, allNames); break;
+			case MATERIAL: getVecAllNames(file[i].material, allNames); break;
+			case SKELETON: getVecAllNames(file[i].skeleton, allNames); break;
+			case ANIMATION: getVecAllNames(file[i].animation, allNames); break;
+			case BODY: getVecAllNames(file[i].body, allNames); break;
+			case MESH: getVecAllNames(file[i].mesh, allNames);//break;
+			default: break;
+		}
+	}
+}
 
 void IniData::checkUses(int i, int j, int kind, char* usedName, int usedKind){
 
@@ -1025,32 +1037,8 @@ vector<IntArray> IniData::searchOneName(const QString &s, int type, bool cr) con
 		}
 	}
 	else {
-		MessageBoxA(NULL, "UNHANDLED ERROR - INVALID KIND GIVEN FOR SEARCH!", "ERROR", MB_ICONERROR);
+		MessageBoxA(NULL, "UNHANDLED_EXCEPTION - INVALID_KIND_FOR_SEARCH!", "ERROR", MB_ICONERROR);
 	}
-
-	/*for (int i = 0; i<fileSize; i++) 
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].texture, i, indices);
-	for (int i = 0; i<fileSize; i++)
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].shader, i, indices);
-	for (int i = 0; i<fileSize; i++)
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].material, i, indices);
-	for (int i = 0; i<fileSize; i++)
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].mesh, i, indices);
-	for (int i = 0; i<fileSize; i++)
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].body, i, indices);
-	for (int i = 0; i<fileSize; i++)
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].skeleton, i, indices);
-	for (int i = 0; i<fileSize; i++)
-		if (origin[i] == MODULE_RES || cr)
-			searchNameInV(s, type, file[i].animation, i, indices);*/
-
-	//MessageBoxA(NULL, to_string((int)indices.size()).c_str(), "FOUNDINGS SIZE", 0);
 
 	return indices;
 }

@@ -143,6 +143,86 @@ DLL_EXPORT_VOID ClearTempMeshesTroop3DPreview() {
 		curWindow->clearTempTroop3DPreviewMeshes();
 }
 
+// CreateSafeArrayFromBSTRArray()
+// This function will create a SafeArray of BSTRs using the BSTR elements found inside
+// the first parameter "pBSTRArray".
+//
+// Note well that the output SafeArray will contain COPIES of the original BSTRs
+// inside the input parameter "pBSTRArray".
+//
+long CreateSafeArrayFromBSTRArray(
+	BSTR* pBSTRArray,
+	ULONG ulArraySize,
+	SAFEARRAY** ppSafeArrayReceiver
+) {
+	HRESULT hrRetTemp = S_OK;
+	SAFEARRAY* pSAFEARRAYRet = NULL;
+	SAFEARRAYBOUND rgsabound[1];
+	ULONG ulIndex = 0;
+	long lRet = 0;
+
+	// Initialise receiver.
+	if (ppSafeArrayReceiver)
+		*ppSafeArrayReceiver = NULL;
+
+	if (pBSTRArray)
+	{
+		rgsabound[0].lLbound = 0;
+		rgsabound[0].cElements = ulArraySize;
+
+		pSAFEARRAYRet = (SAFEARRAY*)SafeArrayCreate
+		(
+			(VARTYPE)VT_BSTR,
+			(unsigned int)1,
+			(SAFEARRAYBOUND*)rgsabound
+		);
+	}
+
+	for (ulIndex = 0; ulIndex < ulArraySize; ulIndex++)
+	{
+		long lIndexVector[1];
+
+		lIndexVector[0] = ulIndex;
+
+		// Since pSAFEARRAYRet is created as a SafeArray of VT_BSTR,
+		// SafeArrayPutElement() will create a copy of each BSTR
+		// inserted into the SafeArray.
+		SafeArrayPutElement
+		(
+			(SAFEARRAY*)pSAFEARRAYRet,
+			(long*)lIndexVector,
+			(void*)(pBSTRArray[ulIndex])
+		);
+	}
+
+	if (pSAFEARRAYRet)
+		*ppSafeArrayReceiver = pSAFEARRAYRet;
+
+	return lRet;
+}
+
+DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver)
+{
+	vector<wstring> allNames = curWindow->getAllMessNames();
+	uint namesCount = allNames.size();
+	vector<BSTR> bstrArray;//BSTR bstrArray[10] = { 0 };
+	for (int i = 0; i < namesCount; i++)
+		bstrArray.push_back(::SysAllocString((BSTR)allNames[i].c_str()));//bstrArray[i] = ::SysAllocString(allNames[i].c_str()));
+
+	SAFEARRAY* pSafeArrayOfBSTR = NULL;
+	CreateSafeArrayFromBSTRArray
+	(
+		&bstrArray[0],//vector<BSTR> to BSTR[]
+		namesCount,
+		ppSafeArrayOfStringsReceiver
+	);
+
+	for (int i = 0; i < namesCount; i++)
+		::SysFreeString(bstrArray[i]);
+	
+	return;
+}
+
 /*DLL_EXPORT_VOID ClearTroop3DPreview()
 {
 	if (CurWindowIsShown())
@@ -160,7 +240,7 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 			debugMode = !debugMode;//true
 	*/
 
-	glClearColor(127, 127, 127, 127);
+	glClearColor(127, 127, 127, 127);//shows that there must be a bug with shaders and or material color! - if still black in gl instead of this color
 
 	windowShown = false;
 

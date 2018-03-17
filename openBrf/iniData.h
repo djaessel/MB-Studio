@@ -90,7 +90,7 @@ public:
   QStringList errorList; // list all error strings when scanning module
   bool findErrors(int maxErr); // true if there's more
   
-  std::vector<std::vector<int>> searchOneName(const QString &s, int to, bool cr) const;
+  vector<vector<int>> searchOneName(const QString &s, int to, bool cr) const;
   QString searchAllNames(const QString &s, bool commonResToo, int token) const;
 
   QString errorStringOnScan; // string on scan
@@ -107,6 +107,9 @@ public:
   int totUsed(int fileIndex) const;
   int totFiles(bool commonRes) const;
 
+  template <class T> void getVecAllNames(const vector<T> &v, vector<wstring> &allNames) const;
+  void getTypeAllNames(int type, vector<wstring> &allNames) const;
+
 private:
   QString link(int i, int j, int kind) const; // given an object j of kind kind in file i, returns a strig link
   QString linkShort(int i, int j, int kind) const;
@@ -120,9 +123,9 @@ private:
 
   enum {MESH_NO_EXT = N_TOKEN };
   QStringList errorListOnLoad; // list all error strings on load
-  template<class T>  void searchAllNamesV(const QString &s, int t, const std::vector<T> &v, int i, QString &res) const;
 
-  template<class T>  void searchNameInV(const QString & s, int t, const std::vector<T>& v, int j, std::vector<std::vector<int>>& foundings) const;
+  template<class T>  void searchAllNamesV(const QString &s, int t, const vector<T> &v, int i, QString &res) const;
+  template<class T>  void searchNameInV(const QString & s, int t, const vector<T>& v, int j, vector<std::vector<int>>& foundings) const;
 
 
   class ModuleTxtNameList{

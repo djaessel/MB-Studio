@@ -39,8 +39,17 @@ namespace brfManager
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void ClearTempMeshesTroop3DPreview();
 
-        ///[DllImport(OPEN_BRF_DLL_PATH)]
-        ///public extern static void ClearTroop3DPreview();
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public static extern void GenerateStringsAndStoreInSafeArray(
+            [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)]
+            out string[] ManagedStringArray
+        );
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static int GetAllMeshNamesLength();
+
+        //[DllImport(OPEN_BRF_DLL_PATH)]
+        //public extern static void ClearTroop3DPreview();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static byte IsCurHWndShown();
@@ -203,6 +212,16 @@ namespace brfManager
             else
                 left = childX.Left;
             ImportantMethods.AddWindowHandleToControl(Handle, childX.Parent, childX.Height, left, childX.Top);
+        }
+
+        /// <summary>
+        /// Generates an array including all mesh-/resourcenames
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetAllMResourceNames()
+        {
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray);
+            return managedStringArray;
         }
     }
 }

@@ -294,7 +294,7 @@
             this.toolPanel.Controls.Add(this.showGroup_3_btn);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Size = new System.Drawing.Size(778, 342);
+            this.toolPanel.Size = new System.Drawing.Size(778, 226);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_3_btn, 0);
@@ -2241,7 +2241,7 @@
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
             this.groupBox_3_gb.Location = new System.Drawing.Point(39, 86);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
-            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 199);
+            this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_3_gb.TabIndex = 27;
             this.groupBox_3_gb.TabStop = false;
             this.groupBox_3_gb.Tag = "";
@@ -3014,7 +3014,7 @@
             // ItemManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(814, 532);
+            this.ClientSize = new System.Drawing.Size(814, 416);
             this.Name = "ItemManager";
             this.Opacity = 1D;
             this.Text = "ItemManager";
