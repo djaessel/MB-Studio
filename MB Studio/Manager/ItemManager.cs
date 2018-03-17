@@ -15,8 +15,6 @@ namespace MB_Studio.Manager
     {
         #region Attributes
 
-        private bool show3D_Override = true;
-
         private int meshTag;
         private const byte MESH_CONTROLS_COUNT = 6;//5 ohne Bild
         private const byte MESH_INFO_CONTROLS_COUNT = 6;
@@ -359,8 +357,6 @@ namespace MB_Studio.Manager
 
             if (openChange)
                 showGroup_3_btn.PerformClick();
-
-            show3D_Override = false;
         }
 
         private int AddMeshControls(Item item, int i, bool normal = true)
@@ -473,7 +469,8 @@ namespace MB_Studio.Manager
 
         private void Show_cb_CheckedChanged(object sender, EventArgs e)
         {
-            if (!show3D_Override)
+            CheckBox c = (CheckBox)sender;
+            if (c.Checked)
                 Change3DView();//change to second method or change original - need to show temp meshes aswell!!!
         }
 
@@ -1316,25 +1313,31 @@ namespace MB_Studio.Manager
         private bool ShowMesh(int i)
         {
             bool b = false;
-            CheckBox[] w = groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ToArray();
-            if (w.Length != 0)
-                b = w[0].Checked;
-            else
+            try
             {
-                for (int j = 0; j < groupBox_3_gb.Controls.Count; j++)
+                b = groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ElementAt(0).Checked;
+            }
+            catch (Exception) { }
+            return b;
+
+            //List<CheckBox> w = new List<CheckBox>(groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i));
+            //if (w.Count == 1)
+            //    return w[0].Checked;
+
+            /*bool b = false;
+            for (int j = 0; j < groupBox_3_gb.Controls.Count; j++)
+            {
+                string nameEnd = GetNameEndOfControl(groupBox_3_gb.Controls[j]);
+                if (nameEnd.Equals("cb"))
                 {
-                    string nameEnd = GetNameEndOfControl(groupBox_3_gb.Controls[j]);
-                    if (nameEnd.Equals("cb"))
+                    if ((int)groupBox_3_gb.Controls[j].Tag == i)
                     {
-                        if ((int)groupBox_3_gb.Controls[j].Tag == i)
-                        {
-                            b = ((CheckBox)groupBox_3_gb.Controls[j]).Checked;
-                            j = groupBox_3_gb.Controls.Count;
-                        }
+                        b = ((CheckBox)groupBox_3_gb.Controls[j]).Checked;
+                        j = groupBox_3_gb.Controls.Count;
                     }
                 }
             }
-            return b;
+            return b;*/
         }
 
         #endregion
