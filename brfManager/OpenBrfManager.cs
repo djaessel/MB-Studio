@@ -37,7 +37,10 @@ namespace brfManager
         public extern static void ShowTroop3DPreview();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        public extern static void ClearTroop3DPreview();
+        public extern static void ClearTempMeshesTroop3DPreview();
+
+        ///[DllImport(OPEN_BRF_DLL_PATH)]
+        ///public extern static void ClearTroop3DPreview();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static byte IsCurHWndShown();
@@ -115,10 +118,15 @@ namespace brfManager
             return RemoveMeshFromXViewModel(meshName);
         }
 
-        public void Troop3DPreviewClear()
+        public void Troop3DPreviewClearData()
+        {
+            ClearTempMeshesTroop3DPreview();
+        }
+
+        /*public void Troop3DPreviewClear()
         {
             ClearTroop3DPreview();
-        }
+        }*/
 
         public void Troop3DPreviewShow()
         {

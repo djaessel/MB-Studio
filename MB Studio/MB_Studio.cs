@@ -84,7 +84,7 @@ namespace MB_Studio
 
                 //Directory.Delete(startPath.Remove(startPath.LastIndexOf('\\')), true);
                 if (!File.Exists("version.dat"))
-                    File.WriteAllText("version.dat", "1.0.0.0");
+                    File.WriteAllText("version.dat", Application.ProductVersion);
 
             //    Application.Exit();//.Restart();
             //}
@@ -687,7 +687,7 @@ namespace MB_Studio
             int tabsCount = tabControl.TabPages.Count;
             for (int i = tabsCount - 1; i >= 0; i--)
                 if (i != consoleIndex)
-                    tabControl.TabPages.RemoveAt(i);
+                    tabControl.TabPages[i].Dispose();//RemoveAt(i);
         }
 
         private void LoadProjectExplorer(bool projectShown = true)
@@ -733,9 +733,11 @@ namespace MB_Studio
                 }
                 /*else if (item.Equals("Presentations"))
                     form = new PresentationManager();*/
-                
+
                 if (index >= 0)
+                {
                     tabControl.TabPages[index].Dispose();
+                }
             }
 
             if (form != null)

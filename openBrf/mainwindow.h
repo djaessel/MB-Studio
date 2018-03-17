@@ -59,7 +59,8 @@ public:
 	void removeLastSelectedFromXViewMesh();
 
 	void showTroop3DPreview();
-	void clearTroop3DPreview();
+	//void clearTroop3DPreview();
+	void clearTempTroop3DPreviewMeshes();
 
 	int GetBrfMeshIndexByName(char* name);
 

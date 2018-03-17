@@ -36,6 +36,7 @@
 typedef QPair<int, int> Pair;
 
 const QColor defaultBackgroundColor(178,178,178,255);
+vector<BrfMesh> tempMeshList = {};
 
 int MainWindow::getNumSelected() const{
 	return selector->selectedList().size();
@@ -3807,7 +3808,8 @@ bool MainWindow::hasDependencyProblems() {
 	if (hasProblems) {
 		MessageBoxA(
 			NULL,
-			"ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf file is not in the same folder as openBrf or path is invalid!\nAlso check for dependency problems if possible!",
+			QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf file is not in the same folder as openBrf or path is invalid!\nAlso check for dependency problems if possible!\n Path: %1")
+				.arg(referenceFilename(false)).toStdString().c_str(),
 			"ERROR",
 			MB_ICONERROR
 		);
@@ -3870,23 +3872,11 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
 
-	//editCopy();//probably useless - remove if proven
-
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
 	createFileIfNotExists(xViewMeshFile);//Warband only for now!
 	/*if (!curFile.compare(xViewMeshFile)) */loadFile(xViewMeshFile);
 
-	brfdata.mesh.push_back(newMesh);
-	save();//isNedded?
-
-	/*loadFile(xViewMeshFile);//deactivated for now
-	BrfMesh* loadedNewMesh = &brfdata.mesh[brfdata.mesh.size() - 1];
-	selector->selectAll();//maybe change later if needed/possible
-
-	//guiPanel->setRefAnimation(2);//alternative usage(?)
-	guiPanel->ui->cbRefani->setCurrentIndex(1);
-	//guiPanel->ui->cbHitboxes->setChecked(true);
-	guiPanel->ui->buPlay->click();*/
+	tempMeshList.push_back(newMesh);
 
 	//statusBar()->showMessage(tr("Added mesh %1 to Troop 3D Preview!").arg(/*loadedNewMesh->name*/newName), 5000);
 }
@@ -3921,12 +3911,23 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 	statusBar()->showMessage(tr("Removed mesh %1 from Troop 3D Preview!").arg(name), 5000);
 }
 
+/* method created by Johandros */
 void MainWindow::showTroop3DPreview() {
 
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
-	if (!curFile.compare(xViewMeshFile)) {
-		createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
-		loadFile(xViewMeshFile);
+	createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
+	loadFile(xViewMeshFile);
+	size_t tmpSize = tempMeshList.size();
+	size_t fMeshSize = brfdata.mesh.size();
+	bool newFile = (tmpSize == fMeshSize);
+	if (newFile && tmpSize != 0) {
+		newFile = (strcmp(tempMeshList[0].name, brfdata.mesh[0].name) == strcmp(tempMeshList[tmpSize - 1].name, brfdata.mesh[tmpSize - 1].name) == 0);
+	}
+	if (!newFile) {//for time saving
+		brfdata.mesh.clear();
+		for each (BrfMesh m in tempMeshList)
+			brfdata.mesh.push_back(m);
+		///save();
 	}
 
 	selector->selectAll();
@@ -3936,24 +3937,25 @@ void MainWindow::showTroop3DPreview() {
 	//guiPanel->ui->cbHitboxes->setChecked(true);//optional?
 	guiPanel->ui->buPlay->click();
 
-	statusBar()->showMessage(tr("Troop 3D Preview Shown!"), 5000);
+	//statusBar()->showMessage(tr("Troop 3D Preview"), 5000);
 }
 
 /* method created by Johandros */
-void MainWindow::clearTroop3DPreview() {
+void MainWindow::clearTempTroop3DPreviewMeshes() {
+	tempMeshList.clear();
+}
+
+/* method created by Johandros */
+/*void MainWindow::clearTroop3DPreview() {
 
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
 	createFileIfNotExists(xViewMeshFile);//Warband only for now!
 
 	loadFile(xViewMeshFile);
-
 	brfdata.Clear();
-	save();
-
-	loadFile(xViewMeshFile);/*is needed???*///maybe change filename later
 	
 	statusBar()->showMessage(tr("Cleared Troop 3D Preview!"), 5000);
-}
+}*/
 
 void MainWindow::addToRefMesh(int k){
 	int i=selector->firstSelected();

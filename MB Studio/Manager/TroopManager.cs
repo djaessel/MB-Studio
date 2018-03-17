@@ -211,10 +211,7 @@ namespace MB_Studio.Manager
             #region GROUP3 - Items
 
             if (Has3DView)
-            {
-                openBrfManager.Troop3DPreviewClear();
-                Console.WriteLine("Cleared Troop 3D Preview! (laut Codefluss)");
-            }
+                openBrfManager.Troop3DPreviewClearData();
 
             foreach (int itemID in troop.Items)
             {
@@ -230,10 +227,7 @@ namespace MB_Studio.Manager
             inventoryItemFlags = troop.ItemFlags;
 
             if (Has3DView)
-            {
                 openBrfManager.Troop3DPreviewShow();
-                Console.WriteLine("Show Troop 3D Preview! (laut Codefluss)");
-            }
 
             #endregion
 
@@ -877,7 +871,7 @@ namespace MB_Studio.Manager
                         {
                             for (int j = 0; j < itemsRList[i].Meshes.Count; j++)
                             {
-                                string sss = itemsRList[i].Meshes[j].Split()[0].Trim(); //0 was j
+                                string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("void LoadCurrentMeshWithOpenBrf(ListBox lb) : " + openBrfManager.SelectItemNameByKind(sss));
                             }

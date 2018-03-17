@@ -18,7 +18,8 @@ namespace MB_Studio.Manager
     public partial class ToolForm : SpecialForm
     {
         #region Attributes
-        protected FileSaver fileSaver;
+
+        private int curTypeIndex = -1;
 
         public const int GROUP_HEIGHT_MIN = 25;
         public const int GROUP_HEIGHT_DIF = 100;
@@ -30,6 +31,8 @@ namespace MB_Studio.Manager
 
         private Thread openBrfThread = null;
         protected OpenBrfManager openBrfManager = null;
+
+        protected FileSaver fileSaver;
 
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
@@ -380,10 +383,10 @@ namespace MB_Studio.Manager
         {
             if (typeSelect_lb.Items.Count > 0 && typeSelect_lb.SelectedItem != null)
             {
-                if (/*(*/typeSelect_lb.SelectedIndex > 0/* && save_btn.Text.Equals("SAVE"))*/ || !typeSelect_lb.SelectedItem.ToString().Equals("New"))
+                if (/*(*/typeSelect_lb.SelectedIndex > 0 && typeSelect_lb.SelectedIndex != curTypeIndex/* && save_btn.Text.Equals("SAVE"))*/ || !typeSelect_lb.SelectedItem.ToString().Equals("New"))
                 {
-                    int idx = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                    SetupType(types[idx]);
+                    curTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
+                    SetupType(types[curTypeIndex]);
                 }
                 else
                     ResetControls();
@@ -643,7 +646,6 @@ namespace MB_Studio.Manager
         {
             if (openBrfManager != null)
                 KillOpenBrfThread();
-
             base.OnHandleDestroyed(e);
         }
 
@@ -652,7 +654,10 @@ namespace MB_Studio.Manager
         {
             openBrfManager.Close();
             if (openBrfThread != null)
+            {
+                openBrfThread.Join(1);
                 Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+            }
         }
 
         private void AddOpenBrfAsChildThread()
@@ -661,14 +666,9 @@ namespace MB_Studio.Manager
                 Thread.Sleep(10);
             Invoke((MethodInvoker)delegate
             {
+                //Thread.Sleep(50);
                 openBrfManager.AddWindowHandleToControlsParent(this);
-
-                Thread.Sleep(50);
-
-                // Update UI
-                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
-
-                Console.WriteLine("Loaded 3D View successfully! - laut Programmablauf");
+                Console.WriteLine("Loaded 3D View successfully! (laut Programmablauf)");
             });
         }
 

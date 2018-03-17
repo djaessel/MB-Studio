@@ -138,11 +138,16 @@ DLL_EXPORT_VOID RemoveMeshFromXViewModel(char* meshName)
 		curWindow->removeMeshByNameFromXViewMesh(meshName);
 }
 
-DLL_EXPORT_VOID ClearTroop3DPreview()
+DLL_EXPORT_VOID ClearTempMeshesTroop3DPreview() {
+	if (CurWindowIsShown())
+		curWindow->clearTempTroop3DPreviewMeshes();
+}
+
+/*DLL_EXPORT_VOID ClearTroop3DPreview()
 {
 	if (CurWindowIsShown())
 		curWindow->clearTroop3DPreview();
-}
+}*/
 
 /**
 * Main Method - For External Usage
@@ -154,6 +159,8 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 		if (argv[0] == "--debug")
 			debugMode = !debugMode;//true
 	*/
+
+	glClearColor(127, 127, 127, 127);
 
 	windowShown = false;
 
