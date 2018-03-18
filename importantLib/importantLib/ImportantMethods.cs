@@ -131,7 +131,7 @@ namespace importantLib
 
         private IntPtr _childHandle = IntPtr.Zero;
 
-        public static void AddWindowHandleToControl(IntPtr hWnd, Control parent, int height, int left, int top)
+        public static void AddWindowHandleToControl(IntPtr hWnd, Control parent, int height, int left, int top, int addWidth = 0, bool resize = false)
         {
             Label l = new Label()
             {
@@ -147,7 +147,7 @@ namespace importantLib
             l.Parent = parent;
             l.BringToFront();
 
-            new ImportantMethods().AddNativeChildWindow(hWnd, parent.Handle, l);
+            new ImportantMethods().AddNativeChildWindow(hWnd, parent.Handle, l, resize, addWidth);
 
             parent.Refresh();
         }
@@ -158,7 +158,7 @@ namespace importantLib
             NativeMethods.MoveWindow(_childHandle, c.Location.X, c.Location.Y, c.Size.Width, c.Size.Height, true);
         }
 
-        public void AddNativeChildWindow(IntPtr hWndChild, IntPtr hWndParent, Control parentControl, bool resize = false)
+        public void AddNativeChildWindow(IntPtr hWndChild, IntPtr hWndParent, Control parentControl, bool resize = false, int addWidth = 0)
         {
             //uint style = NativeMethods.GetWindowLong(hWndChild, GWL_STYLE);
             //MessageBox.Show("BEFORE: " + skillhunter.SkillHunter.Dec2Hex(style));
@@ -179,8 +179,7 @@ namespace importantLib
                 parentControl.SizeChanged += Parent_SizeChanged;
             }
 
-            //NativeMethods.MoveWindow(hWndChild, parentControl.Location.X, parentControl.Location.Y, parentControl.Width, parentControl.Height, false);
-            NativeMethods.MoveWindow(hWndChild, parentControl.Location.X, parentControl.Location.Y, parentControl.Width, parentControl.Height, false);
+            NativeMethods.MoveWindow(hWndChild, parentControl.Location.X, parentControl.Location.Y, parentControl.Width + addWidth, parentControl.Height, false);
 
             parentControl.Width = parentControl.Width - 20;
             parentControl.Height = parentControl.Height - 32;

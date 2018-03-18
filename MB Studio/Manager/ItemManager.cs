@@ -412,7 +412,7 @@ namespace MB_Studio.Manager
             // ixmesh_cbb
             ComboBox ixmesh_cbb = new ComboBox
             {
-                BackColor = Color.FromArgb(56, 56, 56),
+                BackColor = BaseColor,
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.WhiteSmoke,
                 FormattingEnabled = true,

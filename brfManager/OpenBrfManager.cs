@@ -206,7 +206,7 @@ namespace brfManager
                 left = childX.Width;
             else
                 left = childX.Left;
-            ImportantMethods.AddWindowHandleToControl(Handle, childX.Parent, childX.Height, left, childX.Top);
+            ImportantMethods.AddWindowHandleToControl(Handle, childX.Parent, childX.Height, left, childX.Top, 32);
         }
 
         /// <summary>

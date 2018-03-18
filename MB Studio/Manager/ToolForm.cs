@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.ComponentModel;
-using WarbandTranslator;
-using importantLib;
-using skillhunter;
-using MB_Decompiler_Library.IO;
-using MB_Studio.Main;
-using static skillhunter.Skriptum;
-using importantLib.ToolTipsListBox;
+using System.Collections.Generic;
 using brfManager;
-using System.Drawing;
+using skillhunter;
+using importantLib;
+using MB_Studio.Main;
+using WarbandTranslator;
+using MB_Decompiler_Library.IO;
+using importantLib.ToolTipsListBox;
+using static skillhunter.Skriptum;
 
 namespace MB_Studio.Manager
 {
@@ -67,7 +67,7 @@ namespace MB_Studio.Manager
 
         #region Loading
 
-        public ToolForm()
+        public ToolForm() : base()
         {
             Init();
         }
@@ -79,14 +79,17 @@ namespace MB_Studio.Manager
 
         private void Init(ObjectType objectType = ObjectType.SCRIPT, bool uses3DView = false)
         {
+            InitializeComponent();
+
+            BackColor = BaseColor;
+
             Uses3DView = uses3DView;
             Has3DView = uses3DView && MB_Studio.Show3DView;
             ObjectType = objectType;
 
-            InitializeComponent();
-
             idINFO_lbl.Text = idINFO_lbl.Text.Replace("ID_", Prefix);
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
+
             Shown += ToolForm_Shown;
         }
 
@@ -148,8 +151,6 @@ namespace MB_Studio.Manager
                 translations.Add(new string[2]);
 
             typeSelect_lb.SelectedIndex = 0;
-
-            BackColor = BaseColor;
 
             //ResetControls();//removed because as well in FormShown Event(?)
         }
@@ -665,7 +666,7 @@ namespace MB_Studio.Manager
             if (openBrfThread != null)
             {
                 openBrfThread.Join(1);//is needed?
-                Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+                //Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
             }
         }
 
@@ -674,13 +675,8 @@ namespace MB_Studio.Manager
             while (!openBrfManager.IsShown) Thread.Sleep(10);
             Invoke((MethodInvoker)delegate
             {
-                //Thread.Sleep(50);
-
                 openBrfManager.AddWindowHandleToControlsParent(this);
-
                 LoadOpenBrfLists();
-
-                Console.WriteLine("Loaded 3D View successfully! (laut Programmablauf)");
             });
         }
 
@@ -709,7 +705,6 @@ namespace MB_Studio.Manager
                     Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
                     t.Start();
 
-                    //Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
                     int result = openBrfManager.Show(MB_Studio.DebugMode);
                     Console.WriteLine("OPENBRF_EXIT_CODE: " + result);
                 }

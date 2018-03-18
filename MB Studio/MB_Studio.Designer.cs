@@ -101,7 +101,7 @@
             this.toolbarAndHead_lbl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.toolbarAndHead_lbl.Location = new System.Drawing.Point(0, 0);
             this.toolbarAndHead_lbl.Name = "toolbarAndHead_lbl";
-            this.toolbarAndHead_lbl.Size = new System.Drawing.Size(958, 72);
+            this.toolbarAndHead_lbl.Size = new System.Drawing.Size(936, 72);
             this.toolbarAndHead_lbl.TabIndex = 8;
             // 
             // edit_btn
@@ -207,13 +207,15 @@
             // 
             // name_lbl
             // 
+            this.name_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.name_lbl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.name_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.name_lbl.ForeColor = System.Drawing.Color.DarkGray;
             this.name_lbl.Location = new System.Drawing.Point(40, -1);
             this.name_lbl.Name = "name_lbl";
-            this.name_lbl.Size = new System.Drawing.Size(724, 37);
-            this.name_lbl.TabIndex = 11;
+            this.name_lbl.Size = new System.Drawing.Size(794, 32);
+            this.name_lbl.TabIndex = 0;
             this.name_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // exit_btn
@@ -226,10 +228,11 @@
             this.exit_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exit_btn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exit_btn.ForeColor = System.Drawing.Color.White;
-            this.exit_btn.Location = new System.Drawing.Point(926, 0);
+            this.exit_btn.Location = new System.Drawing.Point(904, 0);
             this.exit_btn.Name = "exit_btn";
-            this.exit_btn.Size = new System.Drawing.Size(32, 26);
-            this.exit_btn.TabIndex = 12;
+            this.exit_btn.Size = new System.Drawing.Size(32, 32);
+            this.exit_btn.TabIndex = 0;
+            this.exit_btn.TabStop = false;
             this.exit_btn.Text = "X";
             this.exit_btn.UseVisualStyleBackColor = false;
             this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
@@ -244,12 +247,12 @@
             this.maxnorm_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.maxnorm_btn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxnorm_btn.ForeColor = System.Drawing.Color.White;
-            this.maxnorm_btn.Location = new System.Drawing.Point(894, 0);
+            this.maxnorm_btn.Location = new System.Drawing.Point(872, 0);
             this.maxnorm_btn.Name = "maxnorm_btn";
-            this.maxnorm_btn.Size = new System.Drawing.Size(32, 26);
-            this.maxnorm_btn.TabIndex = 13;
+            this.maxnorm_btn.Size = new System.Drawing.Size(32, 32);
+            this.maxnorm_btn.TabIndex = 0;
+            this.maxnorm_btn.TabStop = false;
             this.maxnorm_btn.Text = "◼";
-            this.maxnorm_btn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.maxnorm_btn.UseVisualStyleBackColor = false;
             this.maxnorm_btn.Click += new System.EventHandler(this.Maxnorm_btn_Click);
             // 
@@ -263,12 +266,12 @@
             this.min_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.min_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.min_btn.ForeColor = System.Drawing.Color.White;
-            this.min_btn.Location = new System.Drawing.Point(862, -1);
+            this.min_btn.Location = new System.Drawing.Point(840, -1);
             this.min_btn.Name = "min_btn";
-            this.min_btn.Size = new System.Drawing.Size(32, 28);
-            this.min_btn.TabIndex = 14;
+            this.min_btn.Size = new System.Drawing.Size(32, 33);
+            this.min_btn.TabIndex = 0;
+            this.min_btn.TabStop = false;
             this.min_btn.Text = "_";
-            this.min_btn.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.min_btn.UseVisualStyleBackColor = false;
             this.min_btn.Click += new System.EventHandler(this.Min_btn_Click);
             // 
@@ -280,7 +283,7 @@
             this.company_icon_pb.InitialImage = null;
             this.company_icon_pb.Location = new System.Drawing.Point(2, 2);
             this.company_icon_pb.Name = "company_icon_pb";
-            this.company_icon_pb.Size = new System.Drawing.Size(32, 32);
+            this.company_icon_pb.Size = new System.Drawing.Size(28, 28);
             this.company_icon_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.company_icon_pb.TabIndex = 15;
             this.company_icon_pb.TabStop = false;
@@ -297,7 +300,7 @@
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(10, 3);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(702, 442);
+            this.tabControl.Size = new System.Drawing.Size(684, 442);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 0;
             this.tabControl.TabStop = false;
@@ -312,7 +315,7 @@
             this.startPage_tab.Location = new System.Drawing.Point(4, 22);
             this.startPage_tab.Name = "startPage_tab";
             this.startPage_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.startPage_tab.Size = new System.Drawing.Size(694, 416);
+            this.startPage_tab.Size = new System.Drawing.Size(676, 416);
             this.startPage_tab.TabIndex = 1;
             this.startPage_tab.Text = "Startseite";
             // 
@@ -539,7 +542,7 @@
             this.console_tab.Location = new System.Drawing.Point(4, 22);
             this.console_tab.Name = "console_tab";
             this.console_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.console_tab.Size = new System.Drawing.Size(694, 416);
+            this.console_tab.Size = new System.Drawing.Size(676, 416);
             this.console_tab.TabIndex = 0;
             this.console_tab.Text = "Console";
             this.console_tab.UseVisualStyleBackColor = true;
@@ -553,7 +556,7 @@
             this.console_richTxt.ForeColor = System.Drawing.Color.LimeGreen;
             this.console_richTxt.Location = new System.Drawing.Point(3, 3);
             this.console_richTxt.Name = "console_richTxt";
-            this.console_richTxt.Size = new System.Drawing.Size(688, 410);
+            this.console_richTxt.Size = new System.Drawing.Size(670, 410);
             this.console_richTxt.TabIndex = 0;
             this.console_richTxt.Text = "";
             this.console_richTxt.TextChanged += new System.EventHandler(this.Console_richTxt_TextChanged);
@@ -682,9 +685,9 @@
             this.projectFiles_lb.ForeColor = System.Drawing.Color.White;
             this.projectFiles_lb.FormattingEnabled = true;
             this.projectFiles_lb.ItemHeight = 29;
-            this.projectFiles_lb.Location = new System.Drawing.Point(12, 24);
+            this.projectFiles_lb.Location = new System.Drawing.Point(12, 21);
             this.projectFiles_lb.Name = "projectFiles_lb";
-            this.projectFiles_lb.Size = new System.Drawing.Size(214, 377);
+            this.projectFiles_lb.Size = new System.Drawing.Size(214, 406);
             this.projectFiles_lb.TabIndex = 20;
             this.projectFiles_lb.SelectedIndexChanged += new System.EventHandler(this.ProjectFiles_lb_SelectedIndexChanged);
             // 
@@ -694,9 +697,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projectExplorer_group.Controls.Add(this.projectFiles_lb);
             this.projectExplorer_group.ForeColor = System.Drawing.Color.White;
-            this.projectExplorer_group.Location = new System.Drawing.Point(708, 98);
+            this.projectExplorer_group.Location = new System.Drawing.Point(691, 75);
             this.projectExplorer_group.Name = "projectExplorer_group";
-            this.projectExplorer_group.Size = new System.Drawing.Size(238, 414);
+            this.projectExplorer_group.Size = new System.Drawing.Size(238, 437);
             this.projectExplorer_group.TabIndex = 21;
             this.projectExplorer_group.TabStop = false;
             this.projectExplorer_group.Text = "Projektmappen-Explorer";
@@ -722,7 +725,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(958, 512);
+            this.ClientSize = new System.Drawing.Size(936, 512);
             this.Controls.Add(this.mbOptions_btn);
             this.Controls.Add(this.projectExplorer_group);
             this.Controls.Add(this.help_btn);

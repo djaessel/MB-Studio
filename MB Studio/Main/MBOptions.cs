@@ -13,6 +13,7 @@ namespace MB_Studio.Main
         public MBOptions()
         {
             InitializeComponent();
+            BackColor = Properties.Settings.Default.baseColor;
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
         }
 

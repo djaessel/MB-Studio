@@ -1,27 +1,33 @@
-﻿using MB_Decompiler_Library.IO;
+﻿using skillhunter;
+using importantLib;
+using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
-using MB_Studio.Main;
-using skillhunter;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
+using System.Drawing;
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace MB_Studio.Manager
 {
     public partial class MenuManager : ToolForm
     {
+        #region Attributes AND Constants
+
         private bool colorOverrideMode = false;
         private bool mnoOverride = false;
 
         private const string NEW_OPTION = " < new > ";
         private const byte LANGUAGE_EN_GZ = 2;
-        private List<GameMenuOption> currentGameMenuOptions = new List<GameMenuOption>();
+
         private MenuDesigner designer;
         private string[] mno_translations;
+
+        private List<GameMenuOption> currentGameMenuOptions = new List<GameMenuOption>();
+
+        #endregion
 
         public MenuManager() : base(Skriptum.ObjectType.GAME_MENU)
         {
@@ -33,8 +39,6 @@ namespace MB_Studio.Manager
 
         protected override void LoadSettingsAndLists()
         {
-            mno_translations = new string[sbyte.MaxValue + 1];
-
             base.LoadSettingsAndLists();
 
             designer = new MenuDesigner();
@@ -44,7 +48,8 @@ namespace MB_Studio.Manager
         {
             base.InitializeControls();
 
-            importantLib.ImportantMethods.AddWindowHandleToControl(designer.Handle, Parent, Height, Width, Top);
+            ImportantMethods.AddWindowHandleToControl(designer.Handle, Parent, Height, Width, Top);
+
             mno_choose_lb.Items.Add(NEW_OPTION);
             mno_ID_text.KeyUp += Mno_ID_text_KeyUp;
 
@@ -72,12 +77,7 @@ namespace MB_Studio.Manager
             base.SetupType(type);
 
             GameMenu menu = (GameMenu)type;
-            mno_translations = new string[menu.MenuOptions.Length];
             name_txt.Text = menu.Text;
-
-            //int idx = typeSelect_lb.SelectedIndex - 1;
-            //if (idx < types.Count && idx >= 0)
-            //    designer.UpdateGameMenu((GameMenu)types[idx], menu.TextColor);
 
             #region Group2 - Flags & Textcolor & Meshname
 
@@ -368,6 +368,7 @@ namespace MB_Studio.Manager
             {
                 string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(language_cbb.SelectedIndex));
                 GameMenuOption[] mnos = ((GameMenu)types[index]).MenuOptions;
+                mno_translations = new string[mnos.Length];
                 if (File.Exists(filePath))
                 {
                     for (int i = 0; i < mnos.Length; i++)

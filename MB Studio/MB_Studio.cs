@@ -117,8 +117,10 @@ namespace MB_Studio
             tabControl.MouseClick += TabControl_MouseClick;
             //file_cm.RenderMode = ToolStripRenderMode.Custom; // search for custom Renderer!!!
             name_lbl.Text = Text;
-            SetFullScreenByHandle();
             InitializeTabControl();
+
+            Shown += MB_Studio_Shown;//SetFullScreenByHandle(Handle);
+
             InitializeProject();
             LoadLastOpenedProjects();
 
@@ -127,14 +129,30 @@ namespace MB_Studio
             CloseLoadingForm();
         }
 
+        private void MB_Studio_Shown(object sender, EventArgs e)
+        {
+            SetFullScreenByHandle();
+        }
+
         //Not finished yet - just started
         private void LoadColorsAndView()
         {
             Color baseColor = Properties.Settings.Default.baseColor;
+            Color minorColor1 = Color.FromArgb(Math.Max(baseColor.R - 14, 0), Math.Max(baseColor.G - 14, 0), Math.Max(baseColor.B - 14, 0));
+
             ToolForm.BaseColor = baseColor;
+
             BackColor = baseColor;
+            projectFiles_lb.BackColor = baseColor;
+            toolbarAndHead_lbl.BackColor = baseColor;
+            name_lbl.BackColor = baseColor;
+            company_icon_pb.BackColor = baseColor;
+            min_btn.BackColor = baseColor;
+            exit_btn.BackColor = baseColor;
+            maxnorm_btn.BackColor = baseColor;
+            
             foreach (TabPage tab in tabControl.TabPages)
-                tab.BackColor = Color.FromArgb(Math.Max(baseColor.R - 14, 0), Math.Max(baseColor.G - 14, 0), Math.Max(baseColor.B - 14, 0));
+                tab.BackColor = minorColor1;
         }
 
         private void StartLoadingForm()
@@ -153,18 +171,18 @@ namespace MB_Studio
             // Show the splash form
             if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
             {
+                WindowState = FormWindowState.Minimized;
                 frmSplash = new Loader(this, false) {
                     StartPosition = FormStartPosition.CenterScreen
                 };
-                WindowState = FormWindowState.Minimized;
                 Application.Run(frmSplash);
             }
         }
 
         private void CloseLoadingForm()
         {
-            Invoke((MethodInvoker)delegate
-            {
+
+            Invoke((MethodInvoker)delegate {
                 UpdateUI(true);
             });
         }
@@ -315,9 +333,9 @@ namespace MB_Studio
         {
             Screen s = Screen.FromHandle(Handle);
             if (FullScreen)
-                SetNormalScreen(s); //WindowState = FormWindowState.Maximized;
+                SetNormalScreen(s);//WindowState = FormWindowState.Maximized;
             else
-                SetFullScreenByHandle();   //WindowState = FormWindowState.Normal;
+                SetFullScreenByHandle();//WindowState = FormWindowState.Normal;
             FullScreen = !FullScreen;
         }
 
@@ -354,10 +372,12 @@ namespace MB_Studio
 
         private void Build_btn_Click(object sender, EventArgs e)
         {
-            DialogResult dlr = MessageBox.Show("Do you really want to overwrite the files in " + ProgramConsole.DestinationMod + "!?",
-                                                Application.ProductName, 
-                                                MessageBoxButtons.YesNo, 
-                                                MessageBoxIcon.Warning);
+            DialogResult dlr = MessageBox.Show(
+                "Do you really want to overwrite the files in " + ProgramConsole.DestinationMod + "!?",
+                Application.ProductName,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
             if (dlr == DialogResult.Yes)
             {
                 tabControl.SelectedIndex = 0;
@@ -366,10 +386,7 @@ namespace MB_Studio
                 {
                     while (!CodeWriter.IsFinished) ;
                     AutoFixer.FixAll();
-                }))
-                {
-                    IsBackground = true
-                };
+                })) { IsBackground = true };
                 t.Start();*/
             }
         }
@@ -394,10 +411,12 @@ namespace MB_Studio
 
         private void ManageImports_ToolStrip_Click(object sender, EventArgs e)
         {
-            DialogResult dlr = MessageBox.Show("Do you know what you are doing?",
-                                                Application.ProductName,
-                                                MessageBoxButtons.YesNo,
-                                                MessageBoxIcon.Warning);
+            DialogResult dlr = MessageBox.Show(
+                "Do you know what you are doing?",                            
+                Application.ProductName,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
             if (dlr == DialogResult.Yes)
                 AddNewTab(new ImportsManagerGUI()); //new ImportsManagerGUI().Show();
         }
@@ -475,6 +494,7 @@ namespace MB_Studio
         protected override void SetFullScreenByHandle(IntPtr hWnd = default(IntPtr))
         {
             base.SetFullScreenByHandle(hWnd);
+            tabControl.Width = Width - projectExplorer_group.Width - 12;
             maxnorm_btn.Text = "◱";//"⬜"
         }
 
@@ -547,7 +567,7 @@ namespace MB_Studio
             tabControl.TabPages.Add(tab);
 
             tabControl.SelectedTab = tab;
-            tab.BackColor = frm.BackColor;
+            tab.BackColor = frm.BackColor;//check for problems with baseColor here
             tab.AutoScroll = true;
 
             if (!specialForm)
@@ -853,17 +873,16 @@ namespace MB_Studio
 
         public static void SavePseudoCodeByType(Skriptum type, string[] code)
         {
+            bool found = false;
+            string id = ":";
             List<List<string>> typesCodes;
-
+            bool isTroop = (type.ObjectTyp == Skriptum.ObjectType.TROOP);
             string pseudoCodeFile = CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[type.Typ].Split('.')[0] + ".mbpc";
             string directory = Path.GetDirectoryName(pseudoCodeFile);
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            bool found = false;
-            string id = ":";
-            bool isTroop = type.ObjectTyp == Skriptum.ObjectType.TROOP;
             if (!isTroop)
                 id += type.ID;
             else

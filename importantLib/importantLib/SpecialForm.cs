@@ -103,26 +103,16 @@ namespace importantLib
         protected bool ComboBoxContainsInLines(ComboBox comboBox, string searchText, char seperator = '\0', int idx = 0)
         {
             bool b = false;
-            if (seperator != '\0')
+            bool notDefaultSep = (seperator != '\0');
+            for (int i = 0; i < comboBox.Items.Count; i++)
             {
-                for (int i = 0; i < comboBox.Items.Count; i++)
+                string tmp = comboBox.Items[i].ToString();
+                if (notDefaultSep)
+                    tmp = tmp.Split(seperator)[idx].Trim();
+                if (tmp.Equals(searchText))
                 {
-                    if (comboBox.Items[i].ToString().Split(seperator)[idx].Trim().Equals(searchText))
-                    {
-                        b = true;
-                        i = comboBox.Items.Count;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < comboBox.Items.Count; i++)
-                {
-                    if (comboBox.Items[i].ToString().Equals(searchText))
-                    {
-                        b = true;
-                        i = comboBox.Items.Count;
-                    }
+                    b = !b;//true
+                    i = comboBox.Items.Count;
                 }
             }
             return b;
