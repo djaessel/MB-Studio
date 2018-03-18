@@ -162,5 +162,17 @@ namespace MB_Studio.Properties {
                 this["updateChannel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("56, 56, 56")]
+        public global::System.Drawing.Color baseColor {
+            get {
+                return ((global::System.Drawing.Color)(this["baseColor"]));
+            }
+            set {
+                this["baseColor"] = value;
+            }
+        }
     }
 }

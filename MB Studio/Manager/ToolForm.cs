@@ -12,6 +12,7 @@ using MB_Studio.Main;
 using static skillhunter.Skriptum;
 using importantLib.ToolTipsListBox;
 using brfManager;
+using System.Drawing;
 
 namespace MB_Studio.Manager
 {
@@ -29,6 +30,9 @@ namespace MB_Studio.Manager
         protected List<string> typesIDs = new List<string>();
         protected List<Skriptum> types = new List<Skriptum>();
 
+        protected List<string> modMeshResourceNames = new List<string>();
+        protected List<string> allMeshResourceNames = new List<string>();
+
         private Thread openBrfThread = null;
         protected OpenBrfManager openBrfManager = null;
 
@@ -38,6 +42,8 @@ namespace MB_Studio.Manager
         private SplashForm frmSplash;
         // delegate for the UI updater
         protected delegate void UpdateUIDelegate(bool IsDataLoaded);
+
+        public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
 
         #region Properties
 
@@ -73,7 +79,7 @@ namespace MB_Studio.Manager
 
         private void Init(ObjectType objectType = ObjectType.SCRIPT, bool uses3DView = false)
         {
-            this.Uses3DView = uses3DView;
+            Uses3DView = uses3DView;
             Has3DView = uses3DView && MB_Studio.Show3DView;
             ObjectType = objectType;
 
@@ -109,7 +115,7 @@ namespace MB_Studio.Manager
                 t.Start();
             }
             else
-                LoadControlsAndSettings();// USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING
+                LoadControlsAndSettings();// USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING!!! (IF BUG IN VISUAL STUDIO AGAIN)
         }
 
         /// <summary>
@@ -137,10 +143,13 @@ namespace MB_Studio.Manager
         {
             foreach (string typeID in typesIDs)
                 typeSelect_lb.Items.Add(new ToolTipListBoxItem(typeID, typeID));
+
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 translations.Add(new string[2]);
 
             typeSelect_lb.SelectedIndex = 0;
+
+            BackColor = BaseColor;
 
             //ResetControls();//removed because as well in FormShown Event(?)
         }
@@ -655,21 +664,30 @@ namespace MB_Studio.Manager
             openBrfManager.Close();
             if (openBrfThread != null)
             {
-                openBrfThread.Join(1);
+                openBrfThread.Join(1);//is needed?
                 Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
             }
         }
 
         private void AddOpenBrfAsChildThread()
         {
-            while (!openBrfManager.IsShown)
-                Thread.Sleep(10);
+            while (!openBrfManager.IsShown) Thread.Sleep(10);
             Invoke((MethodInvoker)delegate
             {
                 //Thread.Sleep(50);
+
                 openBrfManager.AddWindowHandleToControlsParent(this);
+
+                LoadOpenBrfLists();
+
                 Console.WriteLine("Loaded 3D View successfully! (laut Programmablauf)");
             });
+        }
+
+        private void LoadOpenBrfLists()
+        {
+            //allMeshResourceNames.AddRange(openBrfManager.GetAllMeshResourceNames());
+            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());
         }
 
         protected static string GetMABPath()
@@ -680,7 +698,7 @@ namespace MB_Studio.Manager
             return mabPath;
         }
 
-        private void StartOpenBrfManager()//openBrf Sache in Toolsform für andere verfügbar machen und verallgemeinern!!!
+        private void StartOpenBrfManager()
         {
             Invoke((MethodInvoker)delegate
             {
@@ -691,9 +709,9 @@ namespace MB_Studio.Manager
                     Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
                     t.Start();
 
-                    Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
+                    //Console.WriteLine("DEBUGMODE: " + MB_Studio.DebugMode);
                     int result = openBrfManager.Show(MB_Studio.DebugMode);
-                    Console.WriteLine("OPENBRF_EXIT_CODE:" + result);
+                    Console.WriteLine("OPENBRF_EXIT_CODE: " + result);
                 }
             });
         }

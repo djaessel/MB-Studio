@@ -2,6 +2,7 @@
 using MB_Decompiler;
 using MB_Studio.Support;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -23,6 +24,12 @@ namespace MB_Studio.Main
             loadSavedObjects_cb.Checked = Properties.Settings.Default.loadSavedObjects;
             options_tree.HideSelection = false;
             options_tree.SelectedNode = options_tree.Nodes[0];
+        }
+
+        private static void PropertiesSaveAndReload()
+        {
+            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Reload();
         }
 
         private void Exit_btn_Click(object sender, EventArgs e)
@@ -106,9 +113,9 @@ namespace MB_Studio.Main
                                 Directory.Delete(dir, true);
                     }
                 }
+
                 Properties.Settings.Default.projectsFolderPath = newPath;
-                Properties.Settings.Default.Save();
-                Properties.Settings.Default.Reload();
+                PropertiesSaveAndReload();
 
                 MessageBox.Show("Path successfully changed to:" + Environment.NewLine + Properties.Settings.Default.projectsFolderPath,
                     Application.ProductName,
@@ -180,15 +187,42 @@ namespace MB_Studio.Main
         private void LoadSavedObjects_cb_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.loadSavedObjects = loadSavedObjects_cb.Checked;
-            Properties.Settings.Default.Save();
-            Properties.Settings.Default.Reload();
+            PropertiesSaveAndReload();
         }
 
         private void Show3DView_cb_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.show3DView = show3DView_cb.Checked;
-            Properties.Settings.Default.Save();
-            Properties.Settings.Default.Reload();
+            PropertiesSaveAndReload();
+        }
+
+        private void BaseColor_lbl_Click(object sender, EventArgs e)
+        {
+            colorBase_cd.Color = baseColor_lbl.BackColor;
+
+            colorBase_cd.ShowDialog();
+
+            DialogResult result = MessageBox.Show(
+                "Is used after restart!" + Environment.NewLine + "Restart now?",
+                Application.ProductName,
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1
+            );
+
+            if (result == DialogResult.Yes || result == DialogResult.No)
+            {
+                baseColor_lbl.BackColor = colorBase_cd.Color;
+
+                Properties.Settings.Default.baseColor = colorBase_cd.Color;
+                PropertiesSaveAndReload();
+
+                if (result == DialogResult.Yes)
+                {
+                    Process.Start(Application.ExecutablePath);
+                    Application.Exit();
+                }
+            }
         }
     }
 }

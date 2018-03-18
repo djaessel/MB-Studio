@@ -3925,9 +3925,10 @@ void MainWindow::showTroop3DPreview() {
 	}
 	if (!newFile) {//for time saving
 		brfdata.mesh.clear();
+		save();//workaround?
 		for each (BrfMesh m in tempMeshList)
 			brfdata.mesh.push_back(m);
-		save();//workaround? - save not needed for function but otherwise bug saves random data anyways
+		///save();//workaround? - save not needed for function but otherwise bug saves random data anyways
 	}
 
 	selector->selectAll();
@@ -4195,8 +4196,12 @@ void MainWindow::saveOptions() const {
 
 }
 
-QString MainWindow::modPath() const{
-	return mabPath+"/Modules/"+modName;
+QString MainWindow::modulesPath() const {
+	return mabPath + "/Modules";
+}
+
+QString MainWindow::modPath() const {
+	return modulesPath() + "/" + modName;
 }
 
 void MainWindow::setUseOpenGL2(bool b){
@@ -4271,12 +4276,27 @@ void MainWindow::selectCurManyIndices(int sIdx, int end)
 }
 
 /* method created by Johandros */
-vector<wstring> MainWindow::getAllMessNames()
+/*vector<vector<wstring>>*/void MainWindow::getAllMeshNames(vector<vector<wstring>> &allNames)
 {
-	vector<wstring> allNames;
+	QString rootDir = modulesPath();
+	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
+	while (iter.hasNext())
+	{
+		//MessageBoxA(NULL, iter.next().toStdString().c_str(), "INFO", 0);
+		setModPathExternal(iter.next().toStdString());
+		vector<wstring> curAllNames;
+		getCurAllMeshNames(curAllNames);
+		allNames.push_back(curAllNames);
+	}
+	//return allNames;
+}
+
+/* method created by Johandros */
+/*vector<wstring>*/void MainWindow::getCurAllMeshNames(vector<wstring> &allNames)
+{
 	inidata.loadAll(4);
 	inidata.getTypeAllNames(MESH, allNames);
-	return allNames;
+	//return allNames;
 }
 
 /* method created by Johandros */
@@ -4441,7 +4461,7 @@ void MainWindow::loadOptions(){
 	modName = settings->value("modName").toString();
 	if (modName.isEmpty()) modName = "native";
 	mabPath = settings->value("mabPath").toString();
-	inidata.setPath(mabPath,mabPath+"/Modules/"+modName);
+	inidata.setPath(mabPath,modulesPath());//before code of modulesPath
 
 	lastSearchString = settings->value("lastSearchString").toString();
 }
@@ -5480,9 +5500,9 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 	return found;
 }
 
-void MainWindow::setModPathExternal(char * modPath)
+void MainWindow::setModPathExternal(string modPath)
 {
-	QString pathX = QString(((string)modPath + "/Resource").c_str()).replace("\\", "/");
+	QString pathX = QString((modPath + "/Resource").c_str()).replace('\\', '/');
 	guessPaths(pathX);
 }
 

@@ -28,13 +28,13 @@
         /// </summary>
         private new void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Projects Folder");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Projects", new System.Windows.Forms.TreeNode[] {
-            treeNode2});
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Generate Header");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
-            treeNode4});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Projects Folder");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Projects", new System.Windows.Forms.TreeNode[] {
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Generate Header");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
+            treeNode9});
             this.min_btn = new System.Windows.Forms.Button();
             this.maxnorm_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
@@ -46,9 +46,11 @@
             this.selectProjectsFolder_btn = new System.Windows.Forms.Button();
             this.projects_panel = new System.Windows.Forms.Panel();
             this.generalSettings_panel = new System.Windows.Forms.Panel();
+            this.baseColor_lbl = new System.Windows.Forms.Label();
             this.loadSavedObjects_cb = new System.Windows.Forms.CheckBox();
             this.show3DView_cb = new System.Windows.Forms.CheckBox();
             this.projectsPathBrowser_fbd = new System.Windows.Forms.FolderBrowserDialog();
+            this.colorBase_cd = new System.Windows.Forms.ColorDialog();
             this.projects_panel.SuspendLayout();
             this.generalSettings_panel.SuspendLayout();
             this.SuspendLayout();
@@ -133,24 +135,24 @@
             this.options_tree.LineColor = System.Drawing.Color.White;
             this.options_tree.Location = new System.Drawing.Point(8, 42);
             this.options_tree.Name = "options_tree";
-            treeNode1.Name = "generalSettings_node";
-            treeNode1.Text = "General";
-            treeNode1.ToolTipText = "General Settings";
-            treeNode2.Name = "projectsFolder_node";
-            treeNode2.Text = "Projects Folder";
-            treeNode2.ToolTipText = "Folder where all the mod projects are stored";
-            treeNode3.Name = "projectsSettings_node";
-            treeNode3.Text = "Projects";
-            treeNode3.ToolTipText = "Projects Settings";
-            treeNode4.Name = "generateHeader_node";
-            treeNode4.Text = "Generate Header";
-            treeNode5.Name = "Tools_node";
-            treeNode5.Text = "Tools";
-            treeNode5.ToolTipText = "Extra Tools";
+            treeNode6.Name = "generalSettings_node";
+            treeNode6.Text = "General";
+            treeNode6.ToolTipText = "General Settings";
+            treeNode7.Name = "projectsFolder_node";
+            treeNode7.Text = "Projects Folder";
+            treeNode7.ToolTipText = "Folder where all the mod projects are stored";
+            treeNode8.Name = "projectsSettings_node";
+            treeNode8.Text = "Projects";
+            treeNode8.ToolTipText = "Projects Settings";
+            treeNode9.Name = "generateHeader_node";
+            treeNode9.Text = "Generate Header";
+            treeNode10.Name = "Tools_node";
+            treeNode10.Text = "Tools";
+            treeNode10.ToolTipText = "Extra Tools";
             this.options_tree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode3,
-            treeNode5});
+            treeNode6,
+            treeNode8,
+            treeNode10});
             this.options_tree.Size = new System.Drawing.Size(192, 258);
             this.options_tree.TabIndex = 20;
             this.options_tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Options_tree_AfterSelect);
@@ -228,6 +230,7 @@
             // 
             // generalSettings_panel
             // 
+            this.generalSettings_panel.Controls.Add(this.baseColor_lbl);
             this.generalSettings_panel.Controls.Add(this.loadSavedObjects_cb);
             this.generalSettings_panel.Controls.Add(this.show3DView_cb);
             this.generalSettings_panel.Location = new System.Drawing.Point(206, 41);
@@ -235,6 +238,21 @@
             this.generalSettings_panel.Size = new System.Drawing.Size(978, 251);
             this.generalSettings_panel.TabIndex = 23;
             this.generalSettings_panel.Visible = false;
+            // 
+            // baseColor_lbl
+            // 
+            this.baseColor_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.baseColor_lbl.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.baseColor_lbl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.baseColor_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.baseColor_lbl.ForeColor = System.Drawing.Color.DarkGray;
+            this.baseColor_lbl.Location = new System.Drawing.Point(102, 118);
+            this.baseColor_lbl.Name = "baseColor_lbl";
+            this.baseColor_lbl.Size = new System.Drawing.Size(144, 23);
+            this.baseColor_lbl.TabIndex = 33;
+            this.baseColor_lbl.Text = "Color Base";
+            this.baseColor_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.baseColor_lbl.Click += new System.EventHandler(this.BaseColor_lbl_Click);
             // 
             // loadSavedObjects_cb
             // 
@@ -270,6 +288,12 @@
             // 
             this.projectsPathBrowser_fbd.Description = "Select the new directory for your MB Studio projects here";
             this.projectsPathBrowser_fbd.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // colorBase_cd
+            // 
+            this.colorBase_cd.AnyColor = true;
+            this.colorBase_cd.Color = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.colorBase_cd.FullOpen = true;
             // 
             // MBOptions
             // 
@@ -312,5 +336,7 @@
         private System.Windows.Forms.Panel generalSettings_panel;
         private System.Windows.Forms.CheckBox show3DView_cb;
         private System.Windows.Forms.CheckBox loadSavedObjects_cb;
+        private System.Windows.Forms.ColorDialog colorBase_cd;
+        private System.Windows.Forms.Label baseColor_lbl;
     }
 }

@@ -55,7 +55,8 @@ public:
 	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 
-	vector<wstring> getAllMessNames();
+	void getAllMeshNames(vector<vector<wstring>> &allNames);
+	void getCurAllMeshNames(vector<wstring> &allNames);
 
 	void removeMeshByNameFromXViewMesh(char* meshName);
 	void removeLastSelectedFromXViewMesh();
@@ -84,7 +85,7 @@ public:
 	void selectCurManyIndices(int sIdx, int end);
 	vector<char*> getMeshNames();
 	bool searchIniExplicit(QString name, int type, bool cr = true);
-	void setModPathExternal(char* modPath);
+	void setModPathExternal(string modPath);
 
 private:
 	BrfData brfdata;
@@ -373,6 +374,7 @@ private:
 	QString mabPath;
 	QString modName;
 	QString lastSkeletonBodiesXmlPath;
+	QString modulesPath() const;
 	QString modPath() const;
 	QString lastSearchString;
 	bool usingWarband;

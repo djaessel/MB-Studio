@@ -1,8 +1,9 @@
 ﻿using importantLib;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace brfManager
 {
@@ -41,15 +42,9 @@ namespace brfManager
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public static extern void GenerateStringsAndStoreInSafeArray(
-            [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)]
-            out string[] ManagedStringArray
+            [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] ManagedStringArray,
+            bool onlyCurrentModule = false
         );
-
-        [DllImport(OPEN_BRF_DLL_PATH)]
-        public extern static int GetAllMeshNamesLength();
-
-        //[DllImport(OPEN_BRF_DLL_PATH)]
-        //public extern static void ClearTroop3DPreview();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static byte IsCurHWndShown();
@@ -215,13 +210,40 @@ namespace brfManager
         }
 
         /// <summary>
+        /// Generates an array including all mesh-/resourcenames from current module
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetCurrentModuleAllMeshResourceNames()
+        {
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, true);
+            return GetRealNamesArray(ref managedStringArray);
+        }
+
+        /// <summary>
         /// Generates an array including all mesh-/resourcenames
         /// </summary>
         /// <returns></returns>
-        public string[] GetAllMResourceNames()
+        public string[] GetAllMeshResourceNames()
         {
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray);
-            return managedStringArray;
+            return GetRealNamesArray(ref managedStringArray);
+        }
+
+        private static string[] GetRealNamesArray(ref string[] managedStringArray, bool filterDots = true)
+        {
+            List<string> allNames = new List<string>();
+            foreach (string block in managedStringArray)
+            {
+                List<string> listX = new List<string>(block.TrimEnd(';').Split(';'));
+                for (int i = listX.Count - 1; i != 0; i--)
+                {
+                    string tmp = listX[i].Split('.')[0];
+                    if (listX.Contains(tmp)) listX.RemoveAt(i);
+                    else listX[i] = tmp;
+                }
+                allNames.AddRange(listX.ToArray());
+            }
+            return allNames.ToArray();
         }
     }
 }

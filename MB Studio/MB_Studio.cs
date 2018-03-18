@@ -122,7 +122,19 @@ namespace MB_Studio
             InitializeProject();
             LoadLastOpenedProjects();
 
+            LoadColorsAndView();
+
             CloseLoadingForm();
+        }
+
+        //Not finished yet - just started
+        private void LoadColorsAndView()
+        {
+            Color baseColor = Properties.Settings.Default.baseColor;
+            ToolForm.BaseColor = baseColor;
+            BackColor = baseColor;
+            foreach (TabPage tab in tabControl.TabPages)
+                tab.BackColor = Color.FromArgb(Math.Max(baseColor.R - 14, 0), Math.Max(baseColor.G - 14, 0), Math.Max(baseColor.B - 14, 0));
         }
 
         private void StartLoadingForm()

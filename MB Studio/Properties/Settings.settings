@@ -61,5 +61,8 @@
     <Setting Name="updateChannel" Type="System.String" Scope="User">
       <Value Profile="(Default)">stable</Value>
     </Setting>
+    <Setting Name="baseColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">56, 56, 56</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

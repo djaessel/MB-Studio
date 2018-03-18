@@ -338,7 +338,7 @@ namespace MB_Studio.Manager
 
             if (!normal)
                 //if (actualCount > ccc)
-                    ccc = actualCount;
+                ccc = actualCount;
 
             actualCount--;
 
@@ -392,9 +392,9 @@ namespace MB_Studio.Manager
             };*/
             ComboBox ixmesh_txt = new ComboBox //change name and code which uses it later
             {
-                BackColor = Color.FromArgb(56, 56, 56),
+                BackColor = BaseColor,
                 FlatStyle = FlatStyle.Flat,
-                ForeColor = Color.WhiteSmoke,
+                ForeColor = Color.WhiteSmoke,//check if change needed because of base-/backColor
                 FormattingEnabled = true,
                 AutoCompleteMode = AutoCompleteMode.SuggestAppend,
                 AutoCompleteSource = AutoCompleteSource.ListItems,
@@ -403,8 +403,11 @@ namespace MB_Studio.Manager
                 Name = "ixmesh_" + i + "_txt",
                 Size = new Size(resourceName_column_lbl.Width - 8, MESH_CONTROLS_TOP_HEIGHT - 4),
                 Text = tmp[0],
+                Sorted = true,
             };
-            ixmesh_txt.Items.AddRange(openBrfManager.GetAllMResourceNames());//should allow resources from all available modules in the same folder if needed
+            //optional all or just current --> add in settings!!!
+            ixmesh_txt.Items.AddRange(modMeshResourceNames.ToArray());
+            //ixmesh_txt.Items.AddRange(allMeshResourceNames.ToArray());//should allow resources from all available modules in the same folder if needed
 
             // ixmesh_cbb
             ComboBox ixmesh_cbb = new ComboBox
@@ -482,13 +485,6 @@ namespace MB_Studio.Manager
             return lastTopLocation;
         }
 
-        private void Show_cb_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox c = (CheckBox)sender;
-            if (c.Checked)
-                Change3DView();//change to second method or change original - need to show temp meshes aswell!!!
-        }
-
         private void Ixmesh_btn_Click(object sender, EventArgs e)
         {
             Control cx = (Control)sender;
@@ -545,7 +541,7 @@ namespace MB_Studio.Manager
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
             string tmp = values[0] + " "
-                + plural_name_txt.Text.Replace(' ','_') + " "
+                + plural_name_txt.Text.Replace(' ', '_') + " "
                 + GetMeshesCount() + GetMeshes() + " "
                 + GetItemProperties() + " "
                 + GetCFlags() + " "
@@ -752,7 +748,7 @@ namespace MB_Studio.Manager
         */
 
         #endregion
-        
+
         private ulong GetItemProperties()
         {
             #region Comment
@@ -801,7 +797,7 @@ namespace MB_Studio.Manager
                 itemProperties |= 0x0000000000400000;
             if (secondary_cb.Checked)
                 itemProperties |= 0x0000000000800000;
-            if (covers_legs_cb.Checked|| doesnt_cover_hair_cb.Checked|| can_penetrate_shield_cb.Checked)
+            if (covers_legs_cb.Checked || doesnt_cover_hair_cb.Checked || can_penetrate_shield_cb.Checked)
                 itemProperties |= 0x0000000001000000;
             if (consumable_cb.Checked)
                 itemProperties |= 0x0000000002000000;
@@ -1313,6 +1309,12 @@ namespace MB_Studio.Manager
                 Change3DView();
         }
 
+        private void Show_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).Checked)
+                Change3DView();//change - need to show temp meshes as well!!!
+        }
+
         private void Change3DView()
         {
             int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
@@ -1327,13 +1329,15 @@ namespace MB_Studio.Manager
 
         private bool ShowMesh(int i)
         {
-            bool b = false;
+            return groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ElementAt(0).Checked;
+
+            /*bool b = false;
             try
             {
                 b = groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ElementAt(0).Checked;
             }
             catch (Exception) { }
-            return b;
+            return b;*/
 
             //List<CheckBox> w = new List<CheckBox>(groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i));
             //if (w.Count == 1)

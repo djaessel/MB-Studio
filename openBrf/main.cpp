@@ -201,26 +201,46 @@ long CreateSafeArrayFromBSTRArray(
 	return lRet;
 }
 
-DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver)
+DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, bool onlyCurrentModule = false)
 {
-	vector<wstring> allNames = curWindow->getAllMessNames();
-	uint namesCount = allNames.size();
+	if (!CurWindowIsShown()) return;
+
+	vector<vector<wstring>> allNames;
+	if (!onlyCurrentModule) {
+		curWindow->getAllMeshNames(allNames);
+	}
+	else {
+		vector<wstring> curAllNames;
+		curWindow->getCurAllMeshNames(curAllNames);
+		allNames.push_back(curAllNames);
+	}
+
+	uint modCount = allNames.size();
 	vector<BSTR> bstrArray;//BSTR bstrArray[10] = { 0 };
-	for (int i = 0; i < namesCount; i++)
-		bstrArray.push_back(::SysAllocString((BSTR)allNames[i].c_str()));//bstrArray[i] = ::SysAllocString(allNames[i].c_str()));
+
+	for (uint i = 0; i < modCount; i++)
+	{
+		wstring nameList;
+		uint namesCount = allNames[i].size();
+		for (u_int j = 0; j < namesCount; j++) {
+			nameList.append(allNames[i][j]);
+			nameList.append(1, (wchar_t)';');
+		}
+		bstrArray.push_back(::SysAllocString((BSTR)nameList.c_str()));//bstrArray[i] = ::SysAllocString(allNames[i].c_str()));
+	}
 
 	SAFEARRAY* pSafeArrayOfBSTR = NULL;
 	CreateSafeArrayFromBSTRArray
 	(
 		&bstrArray[0],//vector<BSTR> to BSTR[]
-		namesCount,
+		modCount,
 		ppSafeArrayOfStringsReceiver
 	);
 
-	for (int i = 0; i < namesCount; i++)
+	for (int i = 0; i < modCount; i++)
 		::SysFreeString(bstrArray[i]);
 	
-	return;
+	return;//needed?
 }
 
 /*DLL_EXPORT_VOID ClearTroop3DPreview()
