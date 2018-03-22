@@ -838,10 +838,7 @@ bool MainWindow::refreshReference(){
 
 	loadedModReference = usingModReference();
 
-	QString fn;
-	if (loadedModReference) fn = referenceFilename(1);
-	else fn = referenceFilename(0);
-
+	QString fn = referenceFilename(loadedModReference);
 	if (reference.Load(fn.toStdWString().c_str())) {
 		quickHackFixName(reference);//moved here by Johandros
 		guiPanel->setReference(&reference);
@@ -849,8 +846,11 @@ bool MainWindow::refreshReference(){
 		return true;
 	}
 
+	qDebug << fn;
 	MessageBoxA(NULL, QString("Reference Path: " + fn).toStdString().c_str(), "ERROR: REFERENCE_PATH_NOT_FOUND", MB_ICONERROR);
+
 	loadedModReference = false;
+
 	return false;
 }
 
