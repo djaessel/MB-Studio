@@ -19,6 +19,7 @@ IF NOT EXIST "$(TargetDir)\imageformats\qicns.dll" COPY "F:\Qt\5.6.3\msvc2015\pl
 IF NOT EXIST "$(TargetDir)\imageformats\qico.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qico.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qsvg.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qsvg.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qwbmp.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qwbmp.dll" "$(TargetDir)\imageformats"
+IF NOT EXIST "$(TargetDir)\imageformats\qdds.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qdds.dll" "$(TargetDir)\imageformats"
 GOTO :eof
 
 :Release_x64
@@ -32,6 +33,7 @@ IF NOT EXIST "$(TargetDir)\imageformats\qicns.dll" COPY "F:\Qt\5.6.3\msvc2015_64
 IF NOT EXIST "$(TargetDir)\imageformats\qico.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qico.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qsvg.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qsvg.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qwbmp.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qwbmp.dll" "$(TargetDir)\imageformats"
+IF NOT EXIST "$(TargetDir)\imageformats\qdds.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qdds.dll" "$(TargetDir)\imageformats"
 GOTO :eof
 
 :Debug
@@ -48,6 +50,7 @@ IF NOT EXIST "$(TargetDir)\imageformats\qicnsd.dll" COPY "F:\Qt\5.6.3\msvc2015\p
 IF NOT EXIST "$(TargetDir)\imageformats\qicod.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qicod.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qsvgd.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qsvgd.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qwbmpd.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qwbmpd.dll" "$(TargetDir)\imageformats"
+IF NOT EXIST "$(TargetDir)\imageformats\qddsd.dll" COPY "F:\Qt\5.6.3\msvc2015\plugins\imageformats\qddsd.dll" "$(TargetDir)\imageformats"
 GOTO :eof
 
 :Debug_x64
@@ -61,3 +64,4 @@ IF NOT EXIST "$(TargetDir)\imageformats\qicnsd.dll" COPY "F:\Qt\5.6.3\msvc2015_6
 IF NOT EXIST "$(TargetDir)\imageformats\qicod.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qicod.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qsvgd.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qsvgd.dll" "$(TargetDir)\imageformats"
 IF NOT EXIST "$(TargetDir)\imageformats\qwbmpd.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qwbmpd.dll" "$(TargetDir)\imageformats"
+IF NOT EXIST "$(TargetDir)\imageformats\qddsd.dll" COPY "F:\Qt\5.6.3\msvc2015_64\plugins\imageformats\qddsd.dll" "$(TargetDir)\imageformats"
