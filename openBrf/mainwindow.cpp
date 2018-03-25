@@ -818,8 +818,11 @@ void MainWindow::openModuleIniFile(){
 
 QString MainWindow::referenceFilename(bool modSpecific) const
 {
-	if (!modSpecific) return QCoreApplication::applicationDirPath()+"/reference.brf";
-	else return  modPath()+"/reference.brf";
+	QString refFile;
+	if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
+	else refFile = modPath() + "/reference.brf";
+	MessageBoxA(NULL, refFile.toStdString().c_str(), "FOUND REFERENCE PATH", 0);
+	return refFile;
 }
 
 // just a replacement for reference data: from "skinA_(...)" to "skinA.(...)
@@ -846,7 +849,6 @@ bool MainWindow::refreshReference(){
 		return true;
 	}
 
-	qDebug << fn;
 	MessageBoxA(NULL, QString("Reference Path: " + fn).toStdString().c_str(), "ERROR: REFERENCE_PATH_NOT_FOUND", MB_ICONERROR);
 
 	loadedModReference = false;
@@ -3809,7 +3811,7 @@ bool MainWindow::hasDependencyProblems() {
 		MessageBoxA(
 			NULL,
 			QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf file is not in the same folder as openBrf or path is invalid!\nAlso check for dependency problems if possible!\n Path: %1")
-				.arg(referenceFilename(false)).toStdString().c_str(),
+				.arg(referenceFilename(0)).toStdString().c_str(),
 			"ERROR",
 			MB_ICONERROR
 		);
