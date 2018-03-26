@@ -62,24 +62,25 @@
   CreateDirectory "$INSTDIR\Python"
   
   StrCpy $2 ""
-  
 !macroend
 
 !define InstallPython32Bit "!insertmacro InstallPython32Bit"
 !macro InstallPython32Bit
-;  File "x86\python\python-2.7.13.msi"
-
   CreateDirectory "$PLUGINSDIR\python"
   inetc::get "https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi" "$PLUGINSDIR\python\python-2.7.13.msi"
   Pop $0 ;Return value from download - OK is good!
-  
 ; Executes MSI Installer for Python
   ExecWait '"$SYSDIR\msiexec" /i "$PLUGINSDIR\python\python-2.7.13.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
-  
-;  StrCpy $4 "Python 2.7.13" ; check if 32 Bit name is correct
-  StrCpy $4 "$INSTDIR\"
- 
-;  Delete "python-2.7.13.msi"
+  StrCpy $4 "$PLUGINSDIR\python\"
+!macroend
+
+!define InstallCpp2017_32Bit "!insertmacro InstallCpp2017_32Bit"
+!macro InstallCpp2017_32Bit
+  CreateDirectory "$PLUGINSDIR\vc_redist"
+  inetc::get "https://download.visualstudio.microsoft.com/download/pr/11687613/88b50ce70017bf10f2d56d60fcba6ab1/VC_redist.x86.exe" "$PLUGINSDIR\vc_redist\vc_redist.x86.exe"
+  Pop $0 ;Return value from download - OK is good!
+; Executes Installer for C++ Package
+  ExecWait '"$PLUGINSDIR\vc_redist\vc_redist.x86.exe" /q /norestart'
 !macroend
 
 ;--------------------------------

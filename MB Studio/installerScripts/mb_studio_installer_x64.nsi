@@ -25,12 +25,17 @@ Section "Install" installInfo
   SetRegView 32
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "EstimatedSize" "${SIZE_OF_FILE_64}"
   
+  ${InstallCpp2017_64Bit}
+  
   ${InstallPython64Bit}
+  
   ${WriteMBUninstaller}
   
 SectionEnd
 
-${UninstallAllUniversal}
+Section "Uninstall" uninstall
+  ${UninstallAll}
+SectionEnd
 
 ;--------------------------------    
 ;Functions

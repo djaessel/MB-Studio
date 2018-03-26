@@ -76,7 +76,7 @@ Function un.UninstallPython
     ExecWait '"$SYSDIR\msiexec" /x "$R0" /passive /norestart'
   ${ENDIF}
   
-  DetailPrint "$R0" ;MessageBox MB_OK "$R0"
+  DetailPrint "$R0"
   
   ClearErrors
 
@@ -234,34 +234,25 @@ StrCpy $0 0
 !macro WriteMBUninstaller
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
-  
+    
 ;write Python uninstall path
-
-;  DetailPrint "TEST: [$1] - [$2]"
-
   ClearErrors
   ${IF} $2 == "" ; if 32Bit System or not found in 64Bit registry part
     ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 32
   ${ENDIF}
-  
-;  DetailPrint "TEST: [$1] - [$2]"
   
 ;  ${IF} ${Errors}
 ;  ${ORIF} $1 == ""
   ${IF} $1 == 1
     StrCpy $1 "NOT_FOUND"
   ${ENDIF}
-  
-;  DetailPrint "TEST: [$1] - [$2]"
-  
+    
   SetRegView 32
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall" "$1"
 
   ClearErrors
   SetRegView 32
   ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall"
-  
-;  DetailPrint "TEST: $R0"
   
 !macroend
 
@@ -271,17 +262,8 @@ StrCpy $0 0
 ${UninstallPython}
 ${UninstallDefault}
 
-!macroend
-
-!define UninstallAllUniversal "!insertmacro UninstallAllUniversal"
-!macro UninstallAllUniversal
-
-;Uninstaller Section  
-Section "Uninstall" uninstall
-
-${UninstallAll}
- 
-SectionEnd
+;vc_redist.x86.exe /uninstall /q
+;vc_redist.x64.exe /uninstall /q
 
 !macroend
 

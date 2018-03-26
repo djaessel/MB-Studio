@@ -818,11 +818,10 @@ void MainWindow::openModuleIniFile(){
 
 QString MainWindow::referenceFilename(bool modSpecific) const
 {
-	QString refFile;
-	if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
-	else refFile = modPath() + "/reference.brf";
-	MessageBoxA(NULL, refFile.toStdString().c_str(), "FOUND REFERENCE PATH", 0);
-	return refFile;
+	QString refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
+	//if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
+	//else refFile = modPath() + "/reference.brf";
+	return refFile.replace("/","\\");
 }
 
 // just a replacement for reference data: from "skinA_(...)" to "skinA.(...)
