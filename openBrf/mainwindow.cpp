@@ -3834,8 +3834,7 @@ int MainWindow::GetBrfMeshIndexByName(char* name) {
 
 /* method created by Johandros */
 void MainWindow::createFileIfNotExists(const QString& filePath) {
-	struct stat buffer;
-	if (stat(filePath.toStdString().c_str(), &buffer) < 0) {
+	if (!QFile::exists(filePath)) {
 		saveAsSilent(filePath, true);//Warband only for now!
 	}
 }
@@ -3926,10 +3925,11 @@ void MainWindow::showTroop3DPreview() {
 	}
 	if (!newFile) {//for time saving
 		brfdata.mesh.clear();
-		save();//workaround?
+		//save();//workaround?
 		for each (BrfMesh m in tempMeshList)
 			brfdata.mesh.push_back(m);
-		///save();//workaround? - save not needed for function but otherwise bug saves random data anyways
+		save();//workaround? - save not needed for function but otherwise bug saves random data anyways
+		loadFile(xViewMeshFile);
 	}
 
 	selector->selectAll();
