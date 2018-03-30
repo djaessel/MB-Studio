@@ -19,7 +19,7 @@ namespace MB_Studio.Manager
         private bool colorOverrideMode = false;
         private bool mnoOverride = false;
 
-        private const string NEW_OPTION = " < new > ";
+        private const string NEW_OPTION = " < NEW > ";
         private const byte LANGUAGE_EN_GZ = 2;
 
         private MenuDesigner designer;
@@ -478,6 +478,7 @@ namespace MB_Studio.Manager
                     mno_choose_lb.SelectedIndex = 0;
                 }
             }
+            designer.UpdateGameMenuOptions(currentGameMenuOptions.ToArray());
         }
 
         private GameMenuOption CreateGameMenuOption(string id, string text, string[] conditionLines, string[] consequenceLines, string doorText)
