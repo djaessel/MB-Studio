@@ -21,7 +21,7 @@ namespace MB_Studio.Manager
         private List<string> items = new List<string>();
         private List<ulong> inventoryItemFlags = new List<ulong>();
 
-        private Item[] itemsRList = new Item[] { };
+        private List<Skriptum> itemsRList = new List<Skriptum>();
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace MB_Studio.Manager
             base.LoadSettingsAndLists();
 
             CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.ITEM]);
-            itemsRList = cr.ReadItem();
+            itemsRList.AddRange(cr.ReadItem());
 
             for (int i = 0; i < CodeReader.Items.Count; i++)
                 items.Add(i + " - " + CodeReader.Items[i]);
@@ -76,7 +76,25 @@ namespace MB_Studio.Manager
 
             CreateSkillGroupBox();
 
+            foreach (Control c in showItemsInOpenBrf_gb.Controls)
+                if (GetNameEndOfControl(c).Equals("cbb"))
+                    ((ComboBox)c).SelectedIndexChanged += TroopManager_OpenBrfItems_SelectedIndexChanged;
+
             ResetControls();
+        }
+
+        private void TroopManager_OpenBrfItems_SelectedIndexChanged(object sender = null, EventArgs e = null)
+        {
+            if (IsDataLoaded && Has3DView)
+            {//change later so only the specific bone will be updated!
+                openBrfManager.Troop3DPreviewClearData();//doesn't clear correct?
+                //openBrfManager.Troop3DPreviewShow();//workaround (it saves cleared state)
+                foreach (Control c in showItemsInOpenBrf_gb.Controls)
+                    if (GetNameEndOfControl(c).Equals("cbb"))
+                        if (((ComboBox)c).SelectedIndex >= 0)
+                            SetupTroopItemBone(((ComboBox)c).SelectedItem.ToString());
+                openBrfManager.Troop3DPreviewShow();//change later so only the specific bone will be updated!
+            }
         }
 
         private void CreateSkillGroupBox()
@@ -210,24 +228,26 @@ namespace MB_Studio.Manager
 
             #region GROUP3 - Items
 
-            if (Has3DView)
-                openBrfManager.Troop3DPreviewClearData();
+            //if (Has3DView)
+            //    openBrfManager.Troop3DPreviewClearData();
+
+            IsDataLoaded = false;
 
             foreach (int itemID in troop.Items)
             {
-                Item itemX = itemsRList[itemID];
+                Item itemX = (Item)itemsRList[itemID];
                 AddItemToInventarComboboxByKind(itemID, itemX.Prefix + itemX.ID);
-                if (Has3DView)
-                    SetupTroopItemBone(itemX);
+                //if (Has3DView)
+                //    SetupTroopItemBone(itemX);
                 usedItems_lb.Items.Add(itemID + " - " + itemX.Prefix + itemX.ID);
             }
 
-            SelectFirstInventarComboBoxItems();
-
             inventoryItemFlags = troop.ItemFlags;
 
-            if (Has3DView)
-                openBrfManager.Troop3DPreviewShow();
+            SelectFirstInventarComboBoxItems();
+
+            //if (Has3DView)
+            //    openBrfManager.Troop3DPreviewShow();
 
             #endregion
 
@@ -287,6 +307,27 @@ namespace MB_Studio.Manager
             shield_cbb.SelectedIndex = (shield_cbb.Items.Count != 0) ? 0 : -1;
             horse_cbb.SelectedIndex = (horse_cbb.Items.Count != 0) ? 0 : -1;
             calfR_cbb.SelectedIndex = (calfR_cbb.Items.Count != 0) ? 0 : -1;
+
+            IsDataLoaded = true;
+
+            TroopManager_OpenBrfItems_SelectedIndexChanged();
+        }
+
+        private void SetupTroopItemBone(string itemId)
+        {
+            Item itemX = null;
+            if (itemId.StartsWith("itm_"))
+                itemId = itemId.Substring(4);
+            for (int i = 0; i < itemsRList.Count; i++)
+            {
+                if (itemsRList[i].ID.Equals(itemId))
+                {
+                    itemX = (Item)itemsRList[i];
+                    i = itemsRList.Count;
+                }
+            }
+            if (itemX != null)
+                SetupTroopItemBone(itemX);
         }
 
         private void SetupTroopItemBone(Item item)
@@ -650,7 +691,7 @@ namespace MB_Studio.Manager
                 {
                     int itemID = int.Parse(item.Split('-')[0].TrimEnd());
                     AddItemToInventarComboboxByKind(itemID, item);
-                    SetupTroopItemBone(itemsRList[itemID]);
+                    //SetupTroopItemBone(itemsRList[itemID]);
                     usedItems_lb.Items.Add(item);
                 }
                 inventoryItemFlags.Add(0);//check
@@ -664,7 +705,7 @@ namespace MB_Studio.Manager
 
         private void AddItemToInventarComboboxByKind(int itemID, string itemName)
         {
-            switch (ItemManager.GetItemTypeIndex(itemsRList[itemID]))
+            switch (ItemManager.GetItemTypeIndex((Item)itemsRList[itemID]))
             {
                 case 1: //Horse
                     horse_cbb.Items.Add(itemName);
@@ -776,14 +817,14 @@ namespace MB_Studio.Manager
 
         private void SearchItems_TextChanged(object sender, EventArgs e)
         {
-            SearchForContaining(items_lb, itemsRList, searchItems_SearchTextBox.Text, null, true);
+            SearchForContaining(items_lb, itemsRList.ToArray(), searchItems_SearchTextBox.Text, null, true);
         }
 
         private void SearchUsedItems_txt_TextChanged(object sender, EventArgs e)
         {
             List<int> troopItems = ((Troop)types[typeSelect_lb.SelectedIndex]).Items;
             List<Skriptum> list = new List<Skriptum>();
-            for (int i = 0; i < itemsRList.Length; i++)
+            for (int i = 0; i < itemsRList.Count; i++)
                 if (troopItems.Contains(i))
                     list.Add(itemsRList[i]);
             SearchForContaining(usedItems_lb, itemsRList, searchUsedItems_SearchTextBox.Text, list, true);
@@ -865,17 +906,18 @@ namespace MB_Studio.Manager
                 {
                     string itemID = lb.SelectedItem.ToString().Split('-')[1].TrimStart();
                     itemID = itemID.Substring(itemID.IndexOf('_') + 1);
-                    for (int i = 0; i < itemsRList.Length; i++)
+                    for (int i = 0; i < itemsRList.Count; i++)
                     {
                         if (itemID.Equals(itemsRList[i].ID))
                         {
-                            for (int j = 0; j < itemsRList[i].Meshes.Count; j++)
+                            Item itemX = (Item)itemsRList[i];
+                            for (int j = 0; j < itemX.Meshes.Count; j++)
                             {
-                                string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
+                                string sss = itemX.Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("void LoadCurrentMeshWithOpenBrf(ListBox lb) : " + openBrfManager.SelectItemNameByKind(sss));
                             }
-                            i = itemsRList.Length;
+                            i = itemsRList.Count;
                         }
                     }
                 }
@@ -895,18 +937,19 @@ namespace MB_Studio.Manager
                 {
                     string itemID = lb.SelectedItem.ToString().Split('-')[1].TrimStart();
                     itemID = itemID.Substring(itemID.IndexOf('_') + 1);
-                    for (int i = 0; i < itemsRList.Length; i++)
+                    for (int i = 0; i < itemsRList.Count; i++)
                     {
                         if (itemID.Equals(itemsRList[i].ID))
                         {
-                            for (int j = 0; j < itemsRList[i].Meshes.Count; j++)
+                            Item itemX = (Item)itemsRList[i];
+                            for (int j = 0; j < itemX.Meshes.Count; j++)
                             {
-                                string sss = itemsRList[i].Meshes[j].Split()[0].Trim();
+                                string sss = itemX.Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("void Troop3DPreview(ListBox lb) : " + openBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
 
                             }
-                            i = itemsRList.Length;
+                            i = itemsRList.Count;
                         }
                     }
                 }

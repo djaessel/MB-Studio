@@ -41,7 +41,7 @@ namespace MB_Studio.Manager
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
         // delegate for the UI updater
-        protected delegate void UpdateUIDelegate(bool IsDataLoaded);
+        protected delegate void UpdateUIDelegate();
 
         public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
 
@@ -54,6 +54,8 @@ namespace MB_Studio.Manager
             get { return (int)ObjectType; }
             private set { ObjectType = (ObjectType)value; }
         }
+
+        public bool IsDataLoaded { get; protected set; } = false;
 
         public string Prefix { get { return Prefixes[ObjectTypeID] + '_'; } }
 
@@ -103,7 +105,7 @@ namespace MB_Studio.Manager
             title_lbl.Text = Text;
 
             // Update UI
-            UpdateUI(false);
+            UpdateUI();
 
             // Show the splash form
             if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
@@ -124,7 +126,7 @@ namespace MB_Studio.Manager
         /// <summary>
         /// Updates the UI
         /// </summary>
-        protected void UpdateUI(bool IsDataLoaded)
+        protected void UpdateUI()
         {
             if (IsDataLoaded)
                 if (frmSplash != null)
@@ -137,9 +139,11 @@ namespace MB_Studio.Manager
 
             Invoke((MethodInvoker)delegate { InitializeControls(); });
 
+            IsDataLoaded = !IsDataLoaded;//true
+
             // Update UI
             if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
-                Invoke(new UpdateUIDelegate(UpdateUI), new object[] { true });
+                Invoke(new UpdateUIDelegate(UpdateUI));
         }
 
         protected virtual void InitializeControls()
