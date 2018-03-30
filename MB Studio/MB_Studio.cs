@@ -744,14 +744,14 @@ namespace MB_Studio
 
             if (projectFiles_lb.SelectedIndex >= 0)
             {
-                int index = -1;
+                //int index = -1;
                 string item = projectFiles_lb.SelectedItem.ToString();
 
                 if (item.Equals("Troops"))
-                {
+                //{
                     form = new TroopManager();
-                    index = tabControl.TabPages.IndexOfKey("ItemManager");
-                }
+                //    index = tabControl.TabPages.IndexOfKey("ItemManager");
+                //}
                 else if (item.Equals("Party Templates"))
                     form = new PartyTemplateManager();
                 else if (item.Equals("Parties"))
@@ -759,17 +759,15 @@ namespace MB_Studio
                 else if (item.Equals("Menus"))
                     form = new MenuManager();
                 else if (item.Equals("Items"))
-                {
+                //{
                     form = new ItemManager();
-                    index = tabControl.TabPages.IndexOfKey("TroopManager");
-                }
+                //    index = tabControl.TabPages.IndexOfKey("TroopManager");
+                //}
                 /*else if (item.Equals("Presentations"))
                     form = new PresentationManager();*/
-
-                if (index >= 0)
-                {
-                    tabControl.TabPages[index].Dispose();
-                }
+                
+                //if (index >= 0)
+                //    tabControl.TabPages[index].Dispose();
             }
 
             if (form != null)

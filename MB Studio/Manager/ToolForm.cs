@@ -20,21 +20,22 @@ namespace MB_Studio.Manager
     {
         #region Attributes
 
-        private int curTypeIndex = -1;
+        private static int openBrfFormCount = 0;
+        private static Thread openBrfThread = null;
+        protected static OpenBrfManager openBrfManager = null;
 
         public const int GROUP_HEIGHT_MIN = 25;
         public const int GROUP_HEIGHT_DIF = 100;
         public const int GROUP_HEIGHT_MAX = GROUP_HEIGHT_DIF + GROUP_HEIGHT_MIN;
 
+        private int curTypeIndex = -1;
+
         protected List<string[]> translations = new List<string[]>();
         protected List<string> typesIDs = new List<string>();
         protected List<Skriptum> types = new List<Skriptum>();
 
-        protected List<string> modMeshResourceNames = new List<string>();
-        protected List<string> allMeshResourceNames = new List<string>();
-
-        private Thread openBrfThread = null;
-        protected OpenBrfManager openBrfManager = null;
+        protected static List<string> modMeshResourceNames = new List<string>();
+        protected static List<string> allMeshResourceNames = new List<string>();
 
         protected FileSaver fileSaver;
 
@@ -658,33 +659,41 @@ namespace MB_Studio.Manager
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            if (openBrfManager != null)
-                KillOpenBrfThread();
+            KillOpenBrfThread();//only if no other form is using it - or if mb studio is closing
+
             base.OnHandleDestroyed(e);
         }
 
         //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         private void KillOpenBrfThread()
         {
-            openBrfManager.Close();
-            if (openBrfThread != null)
+            openBrfFormCount--;
+
+            if (openBrfManager != null && openBrfFormCount <= 0)
             {
-                openBrfThread.Join(1);//is needed?
-                //Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+                if (openBrfManager.IsShown)
+                    openBrfManager.Close();
+                if (openBrfThread != null)
+                {
+                    openBrfThread.Join(1);//is needed?
+                    Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+                }
             }
         }
 
         private void AddOpenBrfAsChildThread()
         {
             while (!openBrfManager.IsShown) Thread.Sleep(10);
+            openBrfFormCount++;
             Invoke((MethodInvoker)delegate
             {
                 openBrfManager.AddWindowHandleToControlsParent(this);
-                LoadOpenBrfLists();
+                if (openBrfFormCount == 1)
+                    LoadOpenBrfLists();
             });
         }
 
-        private void LoadOpenBrfLists()
+        private static void LoadOpenBrfLists()
         {
             //allMeshResourceNames.AddRange(openBrfManager.GetAllMeshResourceNames());
             modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());
@@ -702,15 +711,20 @@ namespace MB_Studio.Manager
         {
             Invoke((MethodInvoker)delegate
             {
-                if (Has3DView && openBrfManager == null)
+                bool openBrfLoaded = (openBrfManager != null);
+                if (Has3DView && !openBrfLoaded)
                 {
-                    openBrfManager = new OpenBrfManager(GetMABPath(), MB_Decompiler.ProgramConsole.OriginalMod);
+                    if (!openBrfLoaded)
+                        openBrfManager = new OpenBrfManager(GetMABPath(), MB_Decompiler.ProgramConsole.OriginalMod);
 
                     Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
                     t.Start();
 
-                    int result = openBrfManager.Show(MB_Studio.DebugMode);
-                    Console.WriteLine("OPENBRF_EXIT_CODE: " + result);
+                    if (!openBrfLoaded)
+                    {
+                        int result = openBrfManager.Show(MB_Studio.DebugMode);
+                        Console.WriteLine("OPENBRF_EXIT_CODE: " + result);
+                    }
                 }
             });
         }
