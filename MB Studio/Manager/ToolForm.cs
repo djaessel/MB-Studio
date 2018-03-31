@@ -673,6 +673,7 @@ namespace MB_Studio.Manager
             {
                 if (openBrfManager.IsShown)
                     openBrfManager.Close();
+
                 if (openBrfThread != null)
                 {
                     openBrfThread.Join(1);//is needed?
@@ -684,7 +685,9 @@ namespace MB_Studio.Manager
         private void AddOpenBrfAsChildThread()
         {
             while (!openBrfManager.IsShown) Thread.Sleep(10);
+
             openBrfFormCount++;
+
             Invoke((MethodInvoker)delegate
             {
                 openBrfManager.AddWindowHandleToControlsParent(this);
@@ -712,10 +715,12 @@ namespace MB_Studio.Manager
             Invoke((MethodInvoker)delegate
             {
                 bool openBrfLoaded = (openBrfManager != null);
-                if (Has3DView && !openBrfLoaded)
+                if (Has3DView)
                 {
                     if (!openBrfLoaded)
                         openBrfManager = new OpenBrfManager(GetMABPath(), MB_Decompiler.ProgramConsole.OriginalMod);
+                    else
+                        openBrfManager.RemoveWindowHandleFromControlsParent();
 
                     Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
                     t.Start();

@@ -71,6 +71,8 @@ namespace importantLib
 
         internal class NativeMethods
         {
+            #region User32
+
             [DllImport("user32.dll")]
             public static extern uint GetWindowLong(IntPtr hwnd, Int32 test);
 
@@ -84,10 +86,17 @@ namespace importantLib
             public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
             [DllImport("user32.dll")]
+            public static extern IntPtr GetDesktopWindow();
+
+            [DllImport("user32.dll")]
             public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
             [DllImport("user32.dll")]
             public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+            #endregion
+
+            #region Kernel32
 
             [return: MarshalAs(UnmanagedType.LPWStr)]
             [DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
@@ -103,16 +112,15 @@ namespace importantLib
             public static bool DoesWin32MethodExist(string moduleName, string methodName)
             {
                 IntPtr moduleHandle = GetModuleHandle(moduleName);
-                if (moduleHandle == IntPtr.Zero)
-                {
-                    return false;
-                }
+                if (moduleHandle == IntPtr.Zero) return false;
                 return (GetProcAddress(moduleHandle, methodName) != IntPtr.Zero);
             }
 
             [return: MarshalAs(UnmanagedType.Bool)]
             [DllImport("kernel32.dll", SetLastError = true)]
             internal static extern bool IsWow64Process([In] IntPtr hSourceProcessHandle, [MarshalAs(UnmanagedType.Bool)] out bool isWow64);
+
+            #endregion
         }
 
         [SecuritySafeCritical]
@@ -150,6 +158,12 @@ namespace importantLib
             new ImportantMethods().AddNativeChildWindow(hWnd, parent.Handle, l, resize, addWidth);
 
             parent.Refresh();
+        }
+
+        public static void RemoveWindowHandleFromParent(IntPtr hWndChild)
+        {
+            IntPtr desktopHwnd = NativeMethods.GetDesktopWindow();
+            NativeMethods.SetParent(hWndChild, desktopHwnd);
         }
 
         private void Parent_SizeChanged(object sender, EventArgs e)
@@ -322,7 +336,6 @@ namespace importantLib
             return s.TrimEnd();
         }
 
-
         /// <summary>
         /// Executes a list of shell commands either synchronously or asynchronously
         /// </summary>
@@ -450,5 +463,6 @@ namespace importantLib
             if (errorMsg.Length != 0)
                 Console.WriteLine(errorMsg);
         }
+
     }
 }

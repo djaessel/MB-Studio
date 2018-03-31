@@ -127,11 +127,6 @@ namespace brfManager
             ClearTempMeshesTroop3DPreview();
         }
 
-        /*public void Troop3DPreviewClear()
-        {
-            ClearTroop3DPreview();
-        }*/
-
         public void Troop3DPreviewShow()
         {
             ShowTroop3DPreview();
@@ -187,15 +182,15 @@ namespace brfManager
 
         public bool SelectItemNameByKind(string name, int kind = 0)
         {
-            bool b = false;
-            if (IsShown)
-            {
-                Console.Write("TRY: OPEN_BRF_MANAGER SELECT " + name + " - (KIND[" + kind + "]) :");
-                b = SelectItemByNameAndKind(name, kind);
-                Console.WriteLine(" " + b);
-                if (!b)
-                    Console.WriteLine("OPEN_BRF_MANAGER: MESH_NOT_FOUND!");
-            }
+            if (!IsShown) return false;
+
+            Console.Write("TRY: OPEN_BRF_MANAGER SELECT " + name + " - (KIND[" + kind + "]) :");
+            bool b = SelectItemByNameAndKind(name, kind);
+            Console.WriteLine(" " + b);
+
+            if (!b)
+                Console.WriteLine("OPEN_BRF_MANAGER: MESH_NOT_FOUND!");
+
             return b;
         }
 
@@ -207,6 +202,11 @@ namespace brfManager
             else
                 left = childX.Left;
             ImportantMethods.AddWindowHandleToControl(Handle, childX.Parent, childX.Height, left, childX.Top, 32);
+        }
+
+        public void RemoveWindowHandleFromControlsParent()
+        {
+            ImportantMethods.RemoveWindowHandleFromParent(Handle);
         }
 
         /// <summary>
