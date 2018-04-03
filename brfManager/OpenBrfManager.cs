@@ -213,37 +213,44 @@ namespace brfManager
         /// Generates an array including all mesh-/resourcenames from current module
         /// </summary>
         /// <returns></returns>
-        public string[] GetCurrentModuleAllMeshResourceNames()
+        public List<string> GetCurrentModuleAllMeshResourceNames(out string curModName)
         {
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, true);
-            return GetRealNamesArray(ref managedStringArray);
+            List<string> list = GetRealNamesArray(ref managedStringArray, out List<string> moduleNames)[0];//only one possible
+            curModName = moduleNames[0];
+            return list;
         }
 
         /// <summary>
         /// Generates an array including all mesh-/resourcenames
         /// </summary>
         /// <returns></returns>
-        public string[] GetAllMeshResourceNames()
+        public List<List<string>> GetAllMeshResourceNames(out List<string> moduleNames)
         {
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray);
-            return GetRealNamesArray(ref managedStringArray);
+            return GetRealNamesArray(ref managedStringArray, out moduleNames);
         }
 
-        private static string[] GetRealNamesArray(ref string[] managedStringArray, bool filterDots = true)
+        private static List<List<string>> GetRealNamesArray(ref string[] managedStringArray, out List<string> modNames, bool filterDots = true)
         {
-            List<string> allNames = new List<string>();
+            List<List<string>> allNames = new List<List<string>>();
+            modNames = new List<string>();
             foreach (string block in managedStringArray)
             {
                 List<string> listX = new List<string>(block.TrimEnd(';').Split(';'));
-                for (int i = listX.Count - 1; i != 0; i--)
+                int lastIdx = listX.Count - 1;
+                modNames.Add(listX[lastIdx]);//last index is modName!
+                listX.RemoveAt(lastIdx);//last index is modName!
+                lastIdx--;
+                for (int i = lastIdx; i != 0; i--)
                 {
                     string tmp = listX[i].Split('.')[0];
                     if (listX.Contains(tmp)) listX.RemoveAt(i);
                     else listX[i] = tmp;
                 }
-                allNames.AddRange(listX.ToArray());
+                allNames.Add(listX);
             }
-            return allNames.ToArray();
+            return allNames;
         }
     }
 }

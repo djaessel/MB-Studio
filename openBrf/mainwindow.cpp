@@ -4277,27 +4277,25 @@ void MainWindow::selectCurManyIndices(int sIdx, int end)
 }
 
 /* method created by Johandros */
-/*vector<vector<wstring>>*/void MainWindow::getAllMeshNames(vector<vector<wstring>> &allNames)
+void MainWindow::getAllMeshNames(vector<vector<wstring>> &allNames)
 {
 	QString rootDir = modulesPath();
 	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
 	while (iter.hasNext())
 	{
-		//MessageBoxA(NULL, iter.next().toStdString().c_str(), "INFO", 0);
 		setModPathExternal(iter.next().toStdString());
 		vector<wstring> curAllNames;
 		getCurAllMeshNames(curAllNames);
 		allNames.push_back(curAllNames);
 	}
-	//return allNames;
 }
 
 /* method created by Johandros */
-/*vector<wstring>*/void MainWindow::getCurAllMeshNames(vector<wstring> &allNames)
+void MainWindow::getCurAllMeshNames(vector<wstring> &allNames)
 {
 	inidata.loadAll(4);
 	inidata.getTypeAllNames(MESH, allNames);
-	//return allNames;
+	allNames.push_back(modName.toStdWString());
 }
 
 /* method created by Johandros */

@@ -225,6 +225,7 @@
             this.consequence_lbl = new System.Windows.Forms.Label();
             this.consequence_rtb = new System.Windows.Forms.RichTextBox();
             this.condition_lbl = new System.Windows.Forms.Label();
+            this.addItemFromOtherMod_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_1_gb.SuspendLayout();
@@ -261,6 +262,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.price_num)).BeginInit();
             this.groupBox_7_gb.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // save_btn
+            // 
+            this.save_btn.Location = new System.Drawing.Point(691, 149);
+            this.save_btn.Size = new System.Drawing.Size(103, 23);
+            // 
+            // closeAll_btn
+            // 
+            this.closeAll_btn.Size = new System.Drawing.Size(87, 23);
             // 
             // typeSelect_lb
             // 
@@ -3011,13 +3021,44 @@
             this.condition_lbl.TabIndex = 45;
             this.condition_lbl.Text = "Condition:";
             // 
+            // addItemFromOtherMod_btn
+            // 
+            this.addItemFromOtherMod_btn.BackColor = System.Drawing.Color.DimGray;
+            this.addItemFromOtherMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addItemFromOtherMod_btn.Location = new System.Drawing.Point(503, 149);
+            this.addItemFromOtherMod_btn.Name = "addItemFromOtherMod_btn";
+            this.addItemFromOtherMod_btn.Size = new System.Drawing.Size(182, 23);
+            this.addItemFromOtherMod_btn.TabIndex = 38;
+            this.addItemFromOtherMod_btn.Tag = "-24";
+            this.addItemFromOtherMod_btn.Text = "ADD ITEM FROM OTHER MOD";
+            this.addItemFromOtherMod_btn.UseVisualStyleBackColor = false;
+            this.addItemFromOtherMod_btn.Click += new System.EventHandler(this.AddItemFromOtherMod_btn_Click);
+            // 
             // ItemManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(814, 416);
+            this.Controls.Add(this.addItemFromOtherMod_btn);
             this.Name = "ItemManager";
             this.Opacity = 1D;
             this.Text = "ItemManager";
+            this.Controls.SetChildIndex(this.id_txt, 0);
+            this.Controls.SetChildIndex(this.id_lbl, 0);
+            this.Controls.SetChildIndex(this.name_txt, 0);
+            this.Controls.SetChildIndex(this.name_lbl, 0);
+            this.Controls.SetChildIndex(this.plural_name_txt, 0);
+            this.Controls.SetChildIndex(this.plural_name_lbl, 0);
+            this.Controls.SetChildIndex(this.title_lbl, 0);
+            this.Controls.SetChildIndex(this.exit_btn, 0);
+            this.Controls.SetChildIndex(this.min_btn, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
+            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
+            this.Controls.SetChildIndex(this.closeAll_btn, 0);
+            this.Controls.SetChildIndex(this.save_btn, 0);
+            this.Controls.SetChildIndex(this.idINFO_lbl, 0);
+            this.Controls.SetChildIndex(this.searchType_SearchTextBox, 0);
+            this.Controls.SetChildIndex(this.toolPanel, 0);
+            this.Controls.SetChildIndex(this.addItemFromOtherMod_btn, 0);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
@@ -3275,5 +3316,6 @@
         private System.Windows.Forms.ComboBox thrust_damage_type_cbb;
         private System.Windows.Forms.ComboBox swing_damage_type_cbb;
         private System.Windows.Forms.Label show_column_lbl;
+        private System.Windows.Forms.Button addItemFromOtherMod_btn;
     }
 }

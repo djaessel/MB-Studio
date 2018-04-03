@@ -408,6 +408,7 @@ namespace MB_Studio.Manager
             //optional all or just current --> add in settings!!!
             ixmesh_txt.Items.AddRange(modMeshResourceNames.ToArray());
             //ixmesh_txt.Items.AddRange(allMeshResourceNames.ToArray());//should allow resources from all available modules in the same folder if needed
+            ixmesh_txt.SelectedIndexChanged += Ixmesh_txt_SelectedIndexChanged;
 
             // ixmesh_cbb
             ComboBox ixmesh_cbb = new ComboBox
@@ -483,6 +484,11 @@ namespace MB_Studio.Manager
             groupBox_3_gb.Controls.Add(ixmesh_btn);
 
             return lastTopLocation;
+        }
+
+        private void Ixmesh_txt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            /// change mesh in openBrf!!! - also check here or somewhere else whether mesh should be shown or not (example: flying_missile)
         }
 
         private void Ixmesh_btn_Click(object sender, EventArgs e)
@@ -1157,6 +1163,13 @@ namespace MB_Studio.Manager
             codeLines_b_lbl.Text = lines.Length.ToString();
         }
 
+        private void AddItemFromOtherMod_btn_Click(object sender, EventArgs e)
+        {
+            AddItemFromOtherMod f = new AddItemFromOtherMod();
+            f.ShowDialog();
+
+        }
+
         private void AddTrigger_btn_Click(object sender, EventArgs e)
         {
             TriggerSelector selector = new TriggerSelector(ObjectType);
@@ -1177,12 +1190,15 @@ namespace MB_Studio.Manager
                     condition_cbb.SelectedIndex = 0;
                 }
                 else
-                    MessageBox.Show("\"" + trigger + "\" is already in use! Please add code to the given trigger!",
-                                    Application.ProductName,
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information,
-                                    MessageBoxDefaultButton.Button1
-                                    );
+                {
+                    MessageBox.Show(
+                        "\"" + trigger + "\" is already in use! Please add code to the given trigger!",
+                        Application.ProductName,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1
+                    );
+                }
             }
         }
 

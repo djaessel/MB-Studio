@@ -206,6 +206,7 @@ DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeA
 	if (!CurWindowIsShown()) return;
 
 	vector<vector<wstring>> allNames;
+
 	if (!onlyCurrentModule) {
 		curWindow->getAllMeshNames(allNames);
 	}
@@ -218,8 +219,7 @@ DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeA
 	uint modCount = allNames.size();
 	vector<BSTR> bstrArray;//BSTR bstrArray[10] = { 0 };
 
-	for (uint i = 0; i < modCount; i++)
-	{
+	for (uint i = 0; i < modCount; i++) {
 		wstring nameList;
 		uint namesCount = allNames[i].size();
 		for (u_int j = 0; j < namesCount; j++) {
@@ -230,17 +230,15 @@ DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeA
 	}
 
 	SAFEARRAY* pSafeArrayOfBSTR = NULL;
-	CreateSafeArrayFromBSTRArray
-	(
+	CreateSafeArrayFromBSTRArray (
 		&bstrArray[0],//vector<BSTR> to BSTR[]
 		modCount,
 		ppSafeArrayOfStringsReceiver
 	);
 
-	for (int i = 0; i < modCount; i++)
+	for (int i = 0; i < modCount; i++) {
 		::SysFreeString(bstrArray[i]);
-	
-	return;//needed?
+	}
 }
 
 /*DLL_EXPORT_VOID ClearTroop3DPreview()
