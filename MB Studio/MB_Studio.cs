@@ -551,12 +551,15 @@ namespace MB_Studio
         {
             bool specialForm = false;
             TabPage tab = new TabPage(frm.Text) {
-                Name = frm.Name//is the same name good idea?
+                Name = frm.Name,//is the same name good idea?
+                //Parent = tabControl,
             };
             Control[] ccc = frm.Controls.Find("title_lbl", false);
 
             if (ccc.Length != 0)
                 specialForm = !specialForm; // true
+
+            tabControl.TabPages.Add(tab);
 
             frm.TopLevel = false;
             frm.Parent = tab;
@@ -564,9 +567,8 @@ namespace MB_Studio
             //frm.Anchor = AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top;
             //frm.Dock = DockStyle.Left;
 
-            tabControl.TabPages.Add(tab);
-
             tabControl.SelectedTab = tab;
+
             tab.BackColor = frm.BackColor;//check for problems with baseColor here
             tab.AutoScroll = true;
 

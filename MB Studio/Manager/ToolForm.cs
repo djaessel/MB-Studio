@@ -21,6 +21,7 @@ namespace MB_Studio.Manager
         #region Attributes
 
         private static int openBrfFormCount = 0;
+        private static List<string> tabNames = new List<string>();
         private static Thread openBrfThread = null;
         protected static OpenBrfManager openBrfManager = null;
 
@@ -91,9 +92,43 @@ namespace MB_Studio.Manager
             ObjectType = objectType;
 
             idINFO_lbl.Text = idINFO_lbl.Text.Replace("ID_", Prefix);
+
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
 
+            /// ADD HANDLER FOR FOCUS LOST
+            ParentChanged += ToolForm_ParentChanged;
+            /// ADD HANDLER FOR FOCUS LOST
+
             Shown += ToolForm_Shown;
+        }
+
+        private void ToolForm_ParentChanged(object sender, EventArgs e)
+        {
+            if (Parent != null && Has3DView)
+            {
+                TabPage tabPage = TabPage;
+                if (!tabNames.Contains(tabPage.Name))
+                    tabNames.Add(tabPage.Name);
+                GetTabControlByTabPage(tabPage).SelectedIndexChanged += Tc_SelectedIndexChanged;
+            }
+        }
+
+        private TabPage TabPage { get { return (TabPage)Parent; } }
+
+        private TabControl GetTabControlByTabPage(TabPage tabPage) { return (TabControl)tabPage.Parent; }
+
+        private void Tc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (openBrfManager == null) return;
+
+            TabControl tc = (TabControl)sender;
+            TabPage tabPage = (TabPage)Parent;
+            TabPage selectedTab = tc.SelectedTab;
+            if (selectedTab.Name.Equals(tabPage.Name))
+            {
+                openBrfManager.RemoveWindowHandleFromControlsParent();
+                openBrfManager.AddWindowHandleToControlsParent(this);
+            }
         }
 
         protected virtual void ToolForm_Shown(object sender, EventArgs e)
@@ -669,15 +704,37 @@ namespace MB_Studio.Manager
         {
             openBrfFormCount--;
 
-            if (openBrfManager != null && openBrfFormCount <= 0)
+            if (openBrfManager != null)
             {
-                if (openBrfManager.IsShown)
-                    openBrfManager.Close();
-
-                if (openBrfThread != null)
+                if (openBrfFormCount <= 0)
                 {
-                    openBrfThread.Join(1);//is needed?
-                    Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+                    if (openBrfManager.IsShown)
+                        openBrfManager.Close();
+
+                    if (openBrfThread != null)
+                    {
+                        if (openBrfThread.IsAlive)
+                            openBrfThread.Join(1);//is needed?
+                        Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
+                    }
+                }
+                else
+                    openBrfManager.RemoveWindowHandleFromControlsParent();
+            }
+
+            if (Parent != null && Has3DView)
+            {
+                TabPage tabPage = TabPage;
+                TabControl tc = GetTabControlByTabPage(tabPage);
+                tc.SelectedIndexChanged -= Tc_SelectedIndexChanged;
+                tabNames.Remove(Name);
+                if (tabNames.Count != 0)
+                {
+                    string tabX = tabNames[0];
+                    if (tc.SelectedTab.Name.Equals(tabPage.Name))
+                        tc.SelectTab(tabX);
+                    else
+                        openBrfManager.AddWindowHandleToControlsParent(tc.TabPages[tc.TabPages.IndexOfKey(tabX)].Controls.Find(tabX, true)[0]);
                 }
             }
         }
@@ -698,7 +755,7 @@ namespace MB_Studio.Manager
 
         private static void LoadOpenBrfLists()
         {
-            //allMeshResourceNames.AddRange(openBrfManager.GetAllMeshResourceNames());
+            //allMeshResourceNames.AddRange(openBrfManager.GetAllMeshResourceNames());// Add support for all module meshes (with extra form(?))
             modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());
         }
 
