@@ -4281,13 +4281,25 @@ void MainWindow::getAllMeshNames(vector<vector<wstring>> &allNames)
 {
 	QString rootDir = modulesPath();
 	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
-	while (iter.hasNext())
-	{
+	while (iter.hasNext()) {
 		setModPathExternal(iter.next().toStdString());
 		vector<wstring> curAllNames;
 		getCurAllMeshNames(curAllNames);
 		allNames.push_back(curAllNames);
 	}
+}
+
+/* method created by Johandros */
+void MainWindow::getAllModuleNames(vector<wstring> &allModuleNames)
+{
+	QString rootDir = modulesPath();
+	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
+	QString orgModPath = rootDir + "\\" + modName;//save original path
+	while (iter.hasNext()) {
+		setModPathExternal(iter.next().toStdString());
+		allModuleNames.push_back(modName.toStdWString());
+	}
+	setModPathExternal(orgModPath.toStdString());//reset to original path
 }
 
 /* method created by Johandros */

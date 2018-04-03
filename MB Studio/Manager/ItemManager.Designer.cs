@@ -3028,8 +3028,9 @@
             this.addItemFromOtherMod_btn.Location = new System.Drawing.Point(503, 149);
             this.addItemFromOtherMod_btn.Name = "addItemFromOtherMod_btn";
             this.addItemFromOtherMod_btn.Size = new System.Drawing.Size(182, 23);
-            this.addItemFromOtherMod_btn.TabIndex = 38;
-            this.addItemFromOtherMod_btn.Tag = "-24";
+            this.addItemFromOtherMod_btn.TabIndex = 0;
+            this.addItemFromOtherMod_btn.TabStop = false;
+            this.addItemFromOtherMod_btn.Tag = "";
             this.addItemFromOtherMod_btn.Text = "ADD ITEM FROM OTHER MOD";
             this.addItemFromOtherMod_btn.UseVisualStyleBackColor = false;
             this.addItemFromOtherMod_btn.Click += new System.EventHandler(this.AddItemFromOtherMod_btn_Click);

@@ -201,19 +201,25 @@ long CreateSafeArrayFromBSTRArray(
 	return lRet;
 }
 
-DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, bool onlyCurrentModule = false)
+// FIND BETTER SOLUTION OR OPTIMIZE CODE //
+DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, byte onlyCurrentModule)
 {
 	if (!CurWindowIsShown()) return;
 
+	vector<wstring> curAllNames;
 	vector<vector<wstring>> allNames;
 
-	if (!onlyCurrentModule) {
-		curWindow->getAllMeshNames(allNames);
-	}
-	else {
-		vector<wstring> curAllNames;
-		curWindow->getCurAllMeshNames(curAllNames);
-		allNames.push_back(curAllNames);
+	switch (onlyCurrentModule)
+	{
+		case 0: curWindow->getAllMeshNames(allNames); break;
+		case 1:
+			curWindow->getCurAllMeshNames(curAllNames);
+			allNames.push_back(curAllNames);
+			break;
+		case 2:
+			curWindow->getAllModuleNames(curAllNames);
+			allNames.push_back(curAllNames);
+		default: break;
 	}
 
 	uint modCount = allNames.size();

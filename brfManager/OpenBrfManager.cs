@@ -43,7 +43,7 @@ namespace brfManager
         [DllImport(OPEN_BRF_DLL_PATH)]
         public static extern void GenerateStringsAndStoreInSafeArray(
             [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] ManagedStringArray,
-            bool onlyCurrentModule = false
+            byte onlyCurrentModule
         );
 
         [DllImport(OPEN_BRF_DLL_PATH)]
@@ -59,13 +59,19 @@ namespace brfManager
 
         #region Attributes / Properties
 
-        private string[] SArray = new string[0];
-
-        private string modName, mabPath, modulesPath, modPath, resourcePath;
-
         public bool IsShown { get { return (IsCurHWndShown() != 0) ? true : false; } }
 
-        public string ModulesPath { get { return modulesPath; } }
+        private string[] SArray = new string[0];
+
+        public string MabPath { get; private set; }
+
+        public string ModName { get; private set; }
+
+        public string ModPath { get; private set; }
+
+        public string ResourcePath { get; private set; }
+
+        public string ModulesPath { get; private set; }
 
         public IntPtr Handle { get { return GetCurWindowPtr(); } }
 
@@ -73,10 +79,10 @@ namespace brfManager
 
         public OpenBrfManager(string mabPath, string modName = "Native", string[] args = null)
         {
-            this.mabPath = mabPath;
-            this.modName = modName;
+            MabPath = mabPath;
+            ModName = modName;
 
-            modulesPath = mabPath + "\\Modules";
+            ModulesPath = mabPath + "\\Modules";
 
             if (IsShown) Close();//is this even doing something?
 
@@ -134,27 +140,27 @@ namespace brfManager
 
         public void ChangeModule(string moduleName)
         {
-            string tempPath = modulesPath + "\\" + moduleName;
+            string tempPath = ModulesPath + "\\" + moduleName;
             if (Directory.Exists(tempPath))
             {
-                modName = moduleName;
-                modPath = tempPath;
-                SetResourcePath(modPath + "\\Resource");
+                ModName = moduleName;
+                ModPath = tempPath;
+                SetResourcePath(ModPath + "\\Resource");
 
-                if (IsShown && Directory.Exists(modPath))
-                    SetModPath(modPath);
+                if (IsShown && Directory.Exists(ModPath))
+                    SetModPath(ModPath);
             }
             else
-                Console.WriteLine(mabPath + " -> Path is invaild!");
+                Console.WriteLine(tempPath + " -> Path is invaild!");
         }
 
         private void SetResourcePath(string resourcePath, bool changeMod = true, bool useModFirst = false)
         {
             if (Directory.Exists(resourcePath))
             {
-                this.resourcePath = resourcePath;
+                ResourcePath = resourcePath;
                 if (changeMod)
-                    SArray = new string[] { string.Empty, string.Empty, "-mod", modPath };
+                    SArray = new string[] { string.Empty, string.Empty, "-mod", ModPath };
                 else
                     SArray = new string[] { string.Empty, string.Empty };
                 if (useModFirst)
@@ -171,7 +177,7 @@ namespace brfManager
                 }
             }
             if (SArray[1].Length == 0)
-                SArray[1] = mabPath + "\\CommonRes\\barrier_primitives.brf";
+                SArray[1] = MabPath + "\\CommonRes\\barrier_primitives.brf";
         }
 
         public void SelectItembyKindAndIndex(int kind, int index)
@@ -210,14 +216,23 @@ namespace brfManager
         }
 
         /// <summary>
+        /// Generates an array including all modulenames (only for Warband at the moment)
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllModuleNames()
+        {
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 2);
+            return new List<string>(managedStringArray[0].TrimEnd(';').Split(';'));
+        }
+
+        /// <summary>
         /// Generates an array including all mesh-/resourcenames from current module
         /// </summary>
         /// <returns></returns>
-        public List<string> GetCurrentModuleAllMeshResourceNames(out string curModName)
+        public List<string> GetCurrentModuleAllMeshResourceNames()
         {
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, true);
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 1);
             List<string> list = GetRealNamesArray(ref managedStringArray, out List<string> moduleNames)[0];//only one possible
-            curModName = moduleNames[0];
             return list;
         }
 
@@ -227,7 +242,7 @@ namespace brfManager
         /// <returns></returns>
         public List<List<string>> GetAllMeshResourceNames(out List<string> moduleNames)
         {
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray);
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0);
             return GetRealNamesArray(ref managedStringArray, out moduleNames);
         }
 
@@ -239,16 +254,19 @@ namespace brfManager
             {
                 List<string> listX = new List<string>(block.TrimEnd(';').Split(';'));
                 int lastIdx = listX.Count - 1;
-                modNames.Add(listX[lastIdx]);//last index is modName!
-                listX.RemoveAt(lastIdx);//last index is modName!
-                lastIdx--;
-                for (int i = lastIdx; i != 0; i--)
+                if (!modNames.Contains(listX[lastIdx]))
                 {
-                    string tmp = listX[i].Split('.')[0];
-                    if (listX.Contains(tmp)) listX.RemoveAt(i);
-                    else listX[i] = tmp;
+                    modNames.Add(listX[lastIdx]);//last index is modName!
+                    listX.RemoveAt(lastIdx);//last index is modName!
+                    lastIdx--;
+                    for (int i = lastIdx; i != 0; i--)
+                    {
+                        string tmp = listX[i].Split('.')[0];
+                        if (listX.Contains(tmp)) listX.RemoveAt(i);
+                        else listX[i] = tmp;
+                    }
+                    allNames.Add(listX);
                 }
-                allNames.Add(listX);
             }
             return allNames;
         }

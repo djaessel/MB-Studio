@@ -24,7 +24,10 @@ namespace MB_Studio.Manager
         private static readonly List<string> ItemTypes = new List<string>() {"none","horse","one_handed_wpn","two_handed_wpn","polearm","arrows","bolts","shield","bow","crossbow","thrown","goods",
                                                       "head_armor","body_armor","foot_armor","hand_armor","pistol","musket","bullets","animal","book"};
 
+        public static readonly List<string> InvisibleMeshes = new List<string>() { "invalid_item","flying_missile" };
+
         private List<int[]> memberValues = new List<int[]>();
+        private List<string> curMeshs = new List<string>();
         private List<SimpleTrigger> itemTrigger = new List<SimpleTrigger>();
 
         #endregion
@@ -227,6 +230,9 @@ namespace MB_Studio.Manager
 
             #region Meshes
 
+            curMeshs.Clear();
+            curMeshs.AddRange(item.Meshes);
+
             SetupMeshes(item);
 
             #endregion
@@ -330,7 +336,7 @@ namespace MB_Studio.Manager
 
         private void SetupMeshes(Item item, bool normal = true)
         {
-            int actualCount = GetMeshesCount() + 1;
+            int actualCount = GetMeshesCount() + 1;//change later to use curMeshs
             int meshCount = item.Meshes.Count;
             int ccc = meshCount;
             int lastTopLocation = 0;
@@ -488,7 +494,11 @@ namespace MB_Studio.Manager
 
         private void Ixmesh_txt_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /// change mesh in openBrf!!! - also check here or somewhere else whether mesh should be shown or not (example: flying_missile)
+            ComboBox c = (ComboBox)sender;
+            int idx = int.Parse(c.Name.Split('_')[1]);
+            ComboBox c2 = (ComboBox)c.Parent.Controls.Find("ixmesh_" + idx + "_cbb", true)[0];
+            curMeshs[idx] = c.Text + ' ' + c2.Text;
+            Change3DView();
         }
 
         private void Ixmesh_btn_Click(object sender, EventArgs e)
@@ -1165,9 +1175,16 @@ namespace MB_Studio.Manager
 
         private void AddItemFromOtherMod_btn_Click(object sender, EventArgs e)
         {
-            AddItemFromOtherMod f = new AddItemFromOtherMod();
+            AddItemFromOtherMod f = new AddItemFromOtherMod(ref openBrfManager);
+
             f.ShowDialog();
 
+            if (f.MODE == AddItemFromOtherMod.MODES.MESH)
+                MessageBox.Show(f.SelectedMeshName ?? "NULL", "SelectedMeshName");
+            else if (f.MODE == AddItemFromOtherMod.MODES.ITEM)
+                MessageBox.Show((f.SelectedItem == null) ? "NULL" : f.SelectedItem.ID, "SelectedItem.ID");
+            else
+                MessageBox.Show("NOTHING IS SHOWN", "ERROR - " + f.MODE);
         }
 
         private void AddTrigger_btn_Click(object sender, EventArgs e)
@@ -1321,58 +1338,36 @@ namespace MB_Studio.Manager
 
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Has3DView)
-                Change3DView();
+            Change3DView();
         }
 
         private void Show_cb_CheckedChanged(object sender, EventArgs e)
         {
             if (((CheckBox)sender).Checked)
-                Change3DView();//change - need to show temp meshes as well!!!
+                Change3DView();
         }
 
         private void Change3DView()
         {
+            if (!Has3DView) return;
+
             int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
-            if (idx >= 0 && openBrfManager != null)
+            if (idx < 0) return;
+
+            for (int i = 0; i < curMeshs.Count; i++)
             {
-                string[] meshes = ((Item)types[idx]).Meshes.ToArray();
-                for (int i = 0; i < meshes.Length; i++)
-                    if (ShowMesh(i))
-                        openBrfManager.SelectItemNameByKind(meshes[i].Split()[0]);
+                if (ShowMesh(i))
+                {
+                    string[] meshInfo = curMeshs[i].Split();
+                    //if (!InvisibleMeshes.Contains(meshInfo[0]))
+                        openBrfManager.SelectItemNameByKind(meshInfo[0]);//maybe use modifiers as well to set position/bone
+                }
             }
         }
 
-        private bool ShowMesh(int i)
+        private bool ShowMesh(int idx)
         {
-            return groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ElementAt(0).Checked;
-
-            /*bool b = false;
-            try
-            {
-                b = groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i).ElementAt(0).Checked;
-            }
-            catch (Exception) { }
-            return b;*/
-
-            //List<CheckBox> w = new List<CheckBox>(groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == i));
-            //if (w.Count == 1)
-            //    return w[0].Checked;
-
-            /*bool b = false;
-            for (int j = 0; j < groupBox_3_gb.Controls.Count; j++)
-            {
-                string nameEnd = GetNameEndOfControl(groupBox_3_gb.Controls[j]);
-                if (nameEnd.Equals("cb"))
-                {
-                    if ((int)groupBox_3_gb.Controls[j].Tag == i)
-                    {
-                        b = ((CheckBox)groupBox_3_gb.Controls[j]).Checked;
-                        j = groupBox_3_gb.Controls.Count;
-                    }
-                }
-            }
-            return b;*/
+            return groupBox_3_gb.Controls.OfType<CheckBox>().Where(c => (int)c.Tag == idx).ElementAt(0).Checked;
         }
 
         #endregion

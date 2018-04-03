@@ -36,8 +36,8 @@ namespace MB_Studio.Manager
         protected List<Skriptum> types = new List<Skriptum>();
 
         protected static string moduleName;
-        protected static List<string> moduleNames;
-        protected static List<List<string>> allMeshResourceNames = new List<List<string>>();
+        //protected static List<string> moduleNames;
+        //protected static List<List<string>> allMeshResourceNames = new List<List<string>>();
         protected static List<string> modMeshResourceNames = new List<string>();
 
         protected FileSaver fileSaver;
@@ -758,7 +758,7 @@ namespace MB_Studio.Manager
         private static void LoadOpenBrfLists()
         {
             //allMeshResourceNames.AddRange(openBrfManager.GetAllMeshResourceNames(out moduleNames));//Add support for all module meshes (with extra form(?))
-            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames(out moduleName));//dont load again - instead use from allMeshResourceNames
+            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());//dont load again - instead use from allMeshResourceNames
         }
 
         protected static string GetMABPath()
