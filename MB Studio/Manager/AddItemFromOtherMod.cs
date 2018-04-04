@@ -25,6 +25,7 @@ namespace MB_Studio.Manager
 
         private List<Item> items = new List<Item>();
         private List<string> curMeshNames = new List<string>();
+
         private static List<string> moduleNames = new List<string>();
         //private static List<List<string>> allMeshNames = new List<List<string>>();
 
@@ -37,8 +38,8 @@ namespace MB_Studio.Manager
             if (AddItemFromOtherMod.openBrfManager == null)
                 AddItemFromOtherMod.openBrfManager = openBrfManager;
 
-            //if (allMeshNames.Count == 0)
-            //    allMeshNames.AddRange(openBrfManager.GetAllMeshResourceNames(out moduleNames));//load all optional?
+            //if (allMeshNames.Count == 0)//load all optional - maybe later
+            //    allMeshNames.AddRange(openBrfManager.GetAllMeshResourceNames(out moduleNames));
 
             if (moduleNames.Count == 0)
                 moduleNames.AddRange(openBrfManager.GetAllModuleNames());
@@ -76,7 +77,6 @@ namespace MB_Studio.Manager
                 meshName_cbb.Items.Clear();
                 curMeshNames = openBrfManager.GetCurrentModuleAllMeshResourceNames();
                 meshName_cbb.Items.AddRange(curMeshNames.ToArray());
-                //meshName_cbb.Items.AddRange(allMeshNames[idx].ToArray());
 
                 b = (meshName_cbb.Items.Count != 0);
                 if (b)
@@ -88,9 +88,11 @@ namespace MB_Studio.Manager
 
         private void AddItemFromMod_btn_Click(object sender, EventArgs e)
         {
-            //additional code here if needed
-            openBrfManager.ChangeModule(originalModuleName);
-            //additional code here if needed
+            //if (MODE == MODES.MESH)
+            //    openBrfManager.AddSelectedMeshsToMod(originalModuleName);
+            //else
+                openBrfManager.ChangeModule(originalModuleName);
+
             Close();
         }
 

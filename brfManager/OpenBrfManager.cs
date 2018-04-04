@@ -29,6 +29,9 @@ namespace brfManager
         public extern static bool SelectItemByNameAndKindFromCurFile(string meshName, int kind = 0);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static void AddCurSelectedMeshsAllDataToMod(string modName);
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
@@ -200,6 +203,11 @@ namespace brfManager
             return b;
         }
 
+        public void AddSelectedMeshsToMod(string modName)
+        {
+            AddCurSelectedMeshsAllDataToMod(modName);
+        }
+
         public void AddWindowHandleToControlsParent(Control childX, bool addOnRightSide = true)
         {
             int left;
@@ -216,7 +224,7 @@ namespace brfManager
         }
 
         /// <summary>
-        /// Generates an array including all modulenames (only for Warband at the moment)
+        /// Generates an array including all modulenames
         /// </summary>
         /// <returns></returns>
         public List<string> GetAllModuleNames()

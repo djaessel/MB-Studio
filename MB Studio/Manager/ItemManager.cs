@@ -1178,12 +1178,12 @@ namespace MB_Studio.Manager
             AddItemFromOtherMod f = new AddItemFromOtherMod(ref openBrfManager);
 
             f.ShowDialog();
-            ///
-            /// Meshs arent added correctly + brf file must be added with all added meshs!!!
-            ///
+
             if (f.MODE == AddItemFromOtherMod.MODES.MESH)
             {
                 if (f.SelectedMeshName == null) return;
+
+                //AddBrfFileEntryToModuleIni("MB_Studio_Data.brf");
 
                 modMeshResourceNames.Add(f.SelectedMeshName);
                 modMeshResourceNames.Sort();
@@ -1209,8 +1209,6 @@ namespace MB_Studio.Manager
                 typeSelect_lb.SelectedIndex = 0;
                 SetupType(f.SelectedItem);
             }
-            //else
-            //    MessageBox.Show("NOTHING IS SHOWN", Name);
         }
 
         private void AddTrigger_btn_Click(object sender, EventArgs e)

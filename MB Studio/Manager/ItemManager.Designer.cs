@@ -3031,7 +3031,7 @@
             this.addItemFromOtherMod_btn.TabIndex = 0;
             this.addItemFromOtherMod_btn.TabStop = false;
             this.addItemFromOtherMod_btn.Tag = "";
-            this.addItemFromOtherMod_btn.Text = "ADD ITEM FROM OTHER MOD";
+            this.addItemFromOtherMod_btn.Text = "ADD EXTERNAL ITEM / MESH";
             this.addItemFromOtherMod_btn.UseVisualStyleBackColor = false;
             this.addItemFromOtherMod_btn.Click += new System.EventHandler(this.AddItemFromOtherMod_btn_Click);
             // 

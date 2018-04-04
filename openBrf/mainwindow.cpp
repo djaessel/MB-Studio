@@ -818,9 +818,9 @@ void MainWindow::openModuleIniFile(){
 
 QString MainWindow::referenceFilename(bool modSpecific) const
 {
-	QString refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
-	//if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
-	//else refFile = modPath() + "/reference.brf";
+	QString refFile;
+	if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
+	else refFile = modPath() + "/reference.brf";
 	return refFile.replace("/","\\");
 }
 
@@ -3872,10 +3872,6 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
 
-	/// QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
-	/// createFileIfNotExists(xViewMeshFile);//Warband only for now!
-	/// /*if (!curFile.compare(xViewMeshFile)) */loadFile(xViewMeshFile);
-
 	tempMeshList.push_back(newMesh);
 
 	//statusBar()->showMessage(tr("Added mesh %1 to Troop 3D Preview!").arg(/*loadedNewMesh->name*/newName), 5000);
@@ -3946,18 +3942,6 @@ void MainWindow::showTroop3DPreview() {
 void MainWindow::clearTempTroop3DPreviewMeshes() {
 	tempMeshList.clear();
 }
-
-/* method created by Johandros */
-/*void MainWindow::clearTroop3DPreview() {
-
-	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
-	createFileIfNotExists(xViewMeshFile);//Warband only for now!
-
-	loadFile(xViewMeshFile);
-	brfdata.Clear();
-	
-	statusBar()->showMessage(tr("Cleared Troop 3D Preview!"), 5000);
-}*/
 
 void MainWindow::addToRefMesh(int k){
 	int i=selector->firstSelected();
@@ -4268,6 +4252,95 @@ void MainWindow::selectCurManyIndicesByList(vector<int> idxs) {
 }
 
 /* method created by Johandros */
+void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures)
+{
+	if (navigateRight()) {
+		textures.push_back(brfdata.texture[selector->firstSelected()]);
+		//maybe work with texture here
+		navigateLeft();
+	}
+}
+
+/* method created by Johandros */
+void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
+{
+	vector<int> idxs = selector->allSelected();
+	for (size_t i = 0; i < idxs.size(); i++) {
+		meshs.push_back(brfdata.mesh[i]);
+		navigateRight();
+
+		materials.push_back(brfdata.material[selector->firstSelected()]);
+		navigateRight();
+		
+		guiPanel->ui->labelShader->setFocus();
+		navigateRight();
+		shaders.push_back(brfdata.shader[selector->firstSelected()]);
+		//work with shader fallback here later if needed
+		navigateLeft();
+
+		vector<BrfTexture> textures;
+
+		guiPanel->ui->labelDiffuseA->setFocus();
+		addCurFocusedTexture(textures);
+
+		guiPanel->ui->labelDiffuseB->setFocus();
+		addCurFocusedTexture(textures);
+
+		guiPanel->ui->labelBump->setFocus();
+		addCurFocusedTexture(textures);
+
+		guiPanel->ui->labelEnviro->setFocus();
+		addCurFocusedTexture(textures);
+
+		guiPanel->ui->labelSpecular->setFocus();
+		addCurFocusedTexture(textures);
+
+		allTextures.push_back(textures);
+	}
+}
+
+/* method created by Johandros */
+void MainWindow::addMeshsAllDataToMod(QString modName, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
+{
+	QString modPath = QString(modulesPath() + "\\" + modName);
+	QString resFile = QString(modPath + "\\Resources\\MB_Studio_Data.brf");
+
+	setModPathExternal(modPath.toStdString());
+	createFileIfNotExists(resFile);
+
+	loadFile(resFile);
+
+	for each (BrfMesh mesh in meshs){
+		brfdata.mesh.push_back(mesh);
+	}
+	for each (BrfMaterial material in materials) {
+		brfdata.material.push_back(material);
+	}
+	for each (BrfShader shader in shaders) {
+		brfdata.shader.push_back(shader);
+	}
+	for each (vector<BrfTexture> textures in allTextures) {
+		for each (BrfTexture texture in textures) {
+			brfdata.texture.push_back(texture);
+		}
+	}
+
+	save();
+}
+
+/* method created by Johandros */
+void MainWindow::copyCurMeshToMod(QString modName)
+{
+	vector<BrfMesh> meshs;
+	vector<BrfMaterial> materials;
+	vector<BrfShader> shaders;
+	vector<vector<BrfTexture>> allTextures;
+
+	getSelectedMeshsAllData(meshs, materials, shaders, allTextures);
+	addMeshsAllDataToMod(modName, meshs, materials, shaders, allTextures);
+}
+
+/* method created by Johandros */
 void MainWindow::selectCurManyIndices(int sIdx, int end)
 {
 	vector<int> idxs;
@@ -4294,12 +4367,12 @@ void MainWindow::getAllModuleNames(vector<wstring> &allModuleNames)
 {
 	QString rootDir = modulesPath();
 	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
-	QString orgModPath = rootDir + "\\" + modName;//save original path
+	string orgModPath = QString(rootDir + "\\" + modName).toStdString();//save original path
 	while (iter.hasNext()) {
 		setModPathExternal(iter.next().toStdString());
-		allModuleNames.push_back(modName.toStdWString());
+		allModuleNames.push_back(iter.fileName().toStdWString());
 	}
-	setModPathExternal(orgModPath.toStdString());//reset to original path
+	setModPathExternal(orgModPath);//reset to original path
 }
 
 /* method created by Johandros */
@@ -5273,26 +5346,26 @@ bool MainWindow::navigateLeft(){
 	return true;
 }
 
-
-
 bool MainWindow::navigateRight(){
 
 	int currTab = selector->currentTabName();
 
-	if ((currTab!=BODY) && (currTab!=MESH) &&  (currTab!=MATERIAL) && (currTab!=SHADER)) {
-		return false;
-	}
+	if ((currTab!=BODY) && (currTab!=MESH) && (currTab!=MATERIAL) && (currTab!=SHADER)) return false;
 
 	inidata.loadAll(2); // ini must be loaded, at least mat and textures
-
-	QPair<ObjCoord,QString> old(
-		  ObjCoord(curFileIndex,selector->firstSelected(), TokenEnum(selector->currentTabName())),
-	      curFile);
 
 	int nextTab = MATERIAL;
 	QString nextName;
 	int stackPos = -1;
 
+	QPair<ObjCoord,QString> old(
+		  ObjCoord(
+			  curFileIndex,
+			  selector->firstSelected(),
+			  TokenEnum(selector->currentTabName())
+		  ),
+	      curFile
+	);
 
 	if (currTab==BODY) {
 		nextTab = MESH;
@@ -5301,37 +5374,30 @@ bool MainWindow::navigateRight(){
 		nextName = QString(b.name);
 		if (nextName.startsWith("bo_",Qt::CaseInsensitive)) nextName = nextName.remove(0,3);
 		/* cheat: search only in current file */
-		int loc = brfdata.Find( nextName.toLatin1().data(), nextTab );
-		if ( loc!=-1 ) {
+		int loc = brfdata.Find(nextName.toLatin1().data(), nextTab);
+		if (loc!=-1) {
 			selectOne(nextTab,loc);
 			return true;
 		} else return false;
 	}
-	if (currTab==MESH) {
-
+	else if (currTab==MESH) {
 		if (!guiPanel->ui->boxMaterial->hasFrame()) return false;
 		stackPos = 0;
-		nextTab = MATERIAL;
+		//nextTab = MATERIAL;
 		nextName = guiPanel->ui->boxMaterial->text();
 	}
-	if (currTab==MATERIAL) {
+	else if (currTab==MATERIAL) {
 		QLineEdit *le = guiPanel->materialLeFocus();
 		if (!le) return false;
 		if (!le->hasFrame()) return false;
 		nextName = le->text();
 		if (nextName==QString("none")) return false;
 
-
-		if (guiPanel->curMaterialFocus==GuiPanel::SHADERNAME){
-			nextTab = SHADER;
-		} else {
-			nextTab = TEXTURE;
-		}
+		if (guiPanel->curMaterialFocus==GuiPanel::SHADERNAME) nextTab = SHADER;
+		else nextTab = TEXTURE;
 		stackPos = 1;
-
 	}
-
-	if (currTab==SHADER) {
+	else if (currTab==SHADER) {
 		nextName = guiPanel->ui->leShaderFallback->text();
 		ObjCoord p = inidata.indexOf(nextName,SHADER);
 		if (!p.isValid()) return false;
@@ -5348,7 +5414,7 @@ bool MainWindow::navigateRight(){
 
 	if (!goTo(p)) return false;
 	navigationStack[stackPos]=old;
-	guiPanel->setNavigationStackDepth( stackPos+1 );
+	guiPanel->setNavigationStackDepth(stackPos+1);
 
 	selector->currentWidget()->setFocus();
 
@@ -5359,8 +5425,8 @@ bool MainWindow::navigateRight(){
 void MainWindow::cancelNavStack(){
 	//navigationStackPos = 0;
 	guiPanel->setNavigationStackDepth( 0 );
-	for (int i=0; i<2; i++) navigationStack[i]=
-	    QPair<ObjCoord, QString>(ObjCoord::Invalid(),"");
+	for (int i=0; i<2; i++)
+		navigationStack[i]=QPair<ObjCoord, QString>(ObjCoord::Invalid(),"");
 }
 
 void  MainWindow::selectOne(int kind, int i){

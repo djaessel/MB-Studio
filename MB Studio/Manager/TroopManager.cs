@@ -1,9 +1,7 @@
 ﻿using importantLib;
 using skillhunter;
-using MB_Decompiler;
 using MB_Decompiler_Library.IO;
 using System;
-using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
@@ -51,7 +49,7 @@ namespace MB_Studio.Manager
                 items.Add(i + " - " + CodeReader.Items[i]);
 
             if (Has3DView)
-                AddTroop3DPreviewToModuleIni();
+                AddBrfFileEntryToModuleIni("Troop3DPreview");
 
             LoadSets();
         }
@@ -891,6 +889,14 @@ namespace MB_Studio.Manager
 
         #region OpenBrf
 
+        protected override void OnHandleDestroyed()
+        {
+            base.OnHandleDestroyed();
+
+            //if (Has3DView)
+            RemoveBrfFileEntryFromModuleIni("Troop3DPreview");
+        }
+
         private void Items_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (Has3DView && openBrfManager != null)
@@ -957,36 +963,6 @@ namespace MB_Studio.Manager
                 {
                     Console.WriteLine(ex.ToString());
                 }
-            }
-        }
-
-        private void AddTroop3DPreviewToModuleIni()
-        {
-            int lastModuleIndex = 0;
-            bool foundEntry = false;
-            string troop3dpreview = "load_mod_resource = Troop3DPreview";
-            string iniFile = GetMABPath() + "\\Modules\\" + ProgramConsole.OriginalMod + "\\module.ini";
-            List<string> iniLines = new List<string>(File.ReadLines(iniFile));
-
-            for (int i = 0; i < iniLines.Count; i++)
-            {
-                string tmp = iniLines[i].Split('#')[0].Split('=')[0].Trim();
-                if (tmp.Contains("load_") && tmp.Contains("_resource"))
-                {
-                    lastModuleIndex = i;
-                    if (iniLines[i].Trim().Equals(troop3dpreview))
-                    {
-                        foundEntry = !foundEntry;//true
-                        i = iniLines.Count;
-                    }
-                }
-            }
-
-            if (!foundEntry)
-            {
-                lastModuleIndex++;
-                iniLines.Insert(lastModuleIndex, troop3dpreview);
-                File.WriteAllLines(iniFile, iniLines);
             }
         }
 

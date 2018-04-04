@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using brfManager;
 using skillhunter;
 using importantLib;
+using MB_Decompiler;
 using MB_Studio.Main;
 using WarbandTranslator;
 using MB_Decompiler_Library.IO;
@@ -21,6 +22,7 @@ namespace MB_Studio.Manager
         #region Attributes
 
         private int curTypeIndex = -1;
+
         protected bool unsavedDataAvailable = false;
 
         public const int GROUP_HEIGHT_MIN = 25;
@@ -46,10 +48,9 @@ namespace MB_Studio.Manager
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
 
-        public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
-
         #region Properties
 
+        //OBJECT
         public ObjectType ObjectType { get; private set; }
 
         public int ObjectTypeID
@@ -62,9 +63,25 @@ namespace MB_Studio.Manager
 
         public string Prefix { get { return Prefixes[ObjectTypeID] + '_'; } }
 
-        public bool Uses3DView { get; private set; } = false; // maybe later needed to toggle 
+        public bool Uses3DView { get; private set; } = false;//maybe later needed to toggle 
 
         public bool Has3DView { get; private set; } = false;
+
+        public string IniFile { get { return MabPath + "\\Modules\\" + ProgramConsole.OriginalMod + "\\module.ini"; } }
+
+        //STATIC
+        protected static string MabPath
+        {
+            get
+            {
+                string mabPath = ProgramConsole.GetModuleInfoPath();
+                mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+                mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+                return mabPath;
+            }
+        }
+
+        public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
 
         #endregion
 
@@ -716,9 +733,14 @@ namespace MB_Studio.Manager
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            KillOpenBrfThread();
+            OnHandleDestroyed();
 
             base.OnHandleDestroyed(e);
+        }
+
+        protected virtual void OnHandleDestroyed()
+        {
+            KillOpenBrfThread();
         }
 
         //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
@@ -779,14 +801,6 @@ namespace MB_Studio.Manager
             modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());
         }
 
-        protected static string GetMABPath()
-        {
-            string mabPath = MB_Decompiler.ProgramConsole.GetModuleInfoPath();
-            mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-            mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-            return mabPath;
-        }
-
         private void StartOpenBrfManager()
         {
             Invoke((MethodInvoker)delegate
@@ -795,7 +809,7 @@ namespace MB_Studio.Manager
                 if (Has3DView)
                 {
                     if (!openBrfLoaded)
-                        openBrfManager = new OpenBrfManager(GetMABPath(), MB_Decompiler.ProgramConsole.OriginalMod);
+                        openBrfManager = new OpenBrfManager(MabPath, ProgramConsole.OriginalMod);
                     else
                         openBrfManager.RemoveWindowHandleFromControlsParent();
 
@@ -845,6 +859,52 @@ namespace MB_Studio.Manager
                 if (prop.Name.Equals(propertyName))
                     val = prop.GetValue(classObject).ToString();
             return val;
+        }
+
+        private bool CheckIniForBrfFileEntry(string iniFile, string brfFileName, out int lastBrfFileEntryIndex, out string brfFileEntry, out List<string> iniLines)
+        {
+            bool foundEntry = false;
+
+            lastBrfFileEntryIndex = 0;
+            brfFileEntry = "load_mod_resource = " + brfFileName;
+            iniLines = new List<string>(File.ReadLines(iniFile));
+
+            for (int i = 0; i < iniLines.Count; i++)
+            {
+                string tmp = iniLines[i].Split('#')[0].Split('=')[0].Trim();
+                if (tmp.Contains("load_") && tmp.Contains("_resource"))
+                {
+                    lastBrfFileEntryIndex = i;
+                    if (iniLines[i].Trim().Equals(brfFileEntry))
+                    {
+                        foundEntry = !foundEntry;//true
+                        i = iniLines.Count;
+                    }
+                }
+            }
+
+            return foundEntry;
+        }
+
+        protected void RemoveBrfFileEntryFromModuleIni(string brfFileName)
+        {
+            string iniFile = IniFile;
+            if (CheckIniForBrfFileEntry(iniFile, brfFileName, out int lastBrfFileEntryIndex, out string brfFileEntry, out List<string> iniLines))
+            {
+                iniLines.RemoveAt(lastBrfFileEntryIndex);
+                File.WriteAllLines(iniFile, iniLines);//search better solution if possible
+            }
+        }
+
+        protected void AddBrfFileEntryToModuleIni(string brfFileName)
+        {
+            string iniFile = IniFile;
+            if (!CheckIniForBrfFileEntry(iniFile, brfFileName, out int lastBrfFileEntryIndex, out string brfFileEntry, out List<string> iniLines))
+            {
+                lastBrfFileEntryIndex++;
+                iniLines.Insert(lastBrfFileEntryIndex, brfFileEntry);
+                File.WriteAllLines(iniFile, iniLines);//search better solution if possible
+            }
         }
 
         #endregion

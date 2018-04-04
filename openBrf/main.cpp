@@ -143,6 +143,12 @@ DLL_EXPORT_VOID ClearTempMeshesTroop3DPreview() {
 		curWindow->clearTempTroop3DPreviewMeshes();
 }
 
+DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(char* modName)
+{
+	if (CurWindowIsShown())
+		curWindow->copyCurMeshToMod(QString(modName));
+}
+
 // CreateSafeArrayFromBSTRArray()
 // This function will create a SafeArray of BSTRs using the BSTR elements found inside
 // the first parameter "pBSTRArray".
