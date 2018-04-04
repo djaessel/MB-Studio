@@ -1178,13 +1178,39 @@ namespace MB_Studio.Manager
             AddItemFromOtherMod f = new AddItemFromOtherMod(ref openBrfManager);
 
             f.ShowDialog();
-
+            ///
+            /// Meshs arent added correctly + brf file must be added with all added meshs!!!
+            ///
             if (f.MODE == AddItemFromOtherMod.MODES.MESH)
-                MessageBox.Show(f.SelectedMeshName ?? "NULL", "SelectedMeshName");
+            {
+                if (f.SelectedMeshName == null) return;
+
+                modMeshResourceNames.Add(f.SelectedMeshName);
+                modMeshResourceNames.Sort();
+            }
             else if (f.MODE == AddItemFromOtherMod.MODES.ITEM)
-                MessageBox.Show((f.SelectedItem == null) ? "NULL" : f.SelectedItem.ID, "SelectedItem.ID");
-            else
-                MessageBox.Show("NOTHING IS SHOWN", "ERROR - " + f.MODE);
+            {
+                if (f.SelectedItem == null) return;
+
+                if (unsavedDataAvailable)
+                {
+                    DialogResult result = MessageBox.Show(
+                        "Alle ungespeicherten Daten werden hiermit gelöscht!" + Environment.NewLine +
+                        "Möchten Sie trotzdem fortfahren?",
+                        Name,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button2
+                    );
+
+                    if (result != DialogResult.Yes) return;
+                }
+
+                typeSelect_lb.SelectedIndex = 0;
+                SetupType(f.SelectedItem);
+            }
+            //else
+            //    MessageBox.Show("NOTHING IS SHOWN", Name);
         }
 
         private void AddTrigger_btn_Click(object sender, EventArgs e)

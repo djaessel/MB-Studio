@@ -222,7 +222,12 @@ namespace brfManager
         public List<string> GetAllModuleNames()
         {
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 2);
-            return new List<string>(managedStringArray[0].TrimEnd(';').Split(';'));
+            managedStringArray = managedStringArray[0].TrimEnd(';').Split(';');
+            List<string> list = new List<string>();
+            foreach (string s in managedStringArray)
+                if (!list.Contains(s))
+                    list.Add(s);
+            return list;
         }
 
         /// <summary>

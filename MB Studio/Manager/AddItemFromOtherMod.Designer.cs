@@ -54,6 +54,7 @@
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.Location = new System.Drawing.Point(342, 1);
             this.exit_btn.TabIndex = 0;
+            this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
             // 
             // title_lbl
             // 

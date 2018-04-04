@@ -13,12 +13,13 @@ namespace MB_Studio.Manager
 
         public enum MODES
         {
+            NONE,
             MESH,
             ITEM,
             //...
         }
 
-        public MODES MODE { get; private set; } = MODES.MESH;
+        public MODES MODE { get; private set; } = MODES.NONE;
         public string SelectedMeshName { get; private set; } = null;
         public Item SelectedItem { get; private set; } = null;
 
@@ -132,6 +133,11 @@ namespace MB_Studio.Manager
                 }
             }
             return itemX;
+        }
+
+        private void Exit_btn_Click(object sender, EventArgs e)
+        {
+            MODE = MODES.NONE;
         }
     }
 }

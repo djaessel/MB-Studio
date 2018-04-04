@@ -20,32 +20,31 @@ namespace MB_Studio.Manager
     {
         #region Attributes
 
-        private static int openBrfFormCount = 0;
-        private static List<string> tabNames = new List<string>();
-        private static Thread openBrfThread = null;
-        protected static OpenBrfManager openBrfManager = null;
+        private int curTypeIndex = -1;
+        protected bool unsavedDataAvailable = false;
 
         public const int GROUP_HEIGHT_MIN = 25;
         public const int GROUP_HEIGHT_DIF = 100;
         public const int GROUP_HEIGHT_MAX = GROUP_HEIGHT_DIF + GROUP_HEIGHT_MIN;
 
-        private int curTypeIndex = -1;
+        private static int openBrfFormCount = 0;
+
+        private static List<string> tabNames = new List<string>();
+        private static Thread openBrfThread = null;
+
+        protected static OpenBrfManager openBrfManager = null;
 
         protected List<string[]> translations = new List<string[]>();
         protected List<string> typesIDs = new List<string>();
         protected List<Skriptum> types = new List<Skriptum>();
 
         protected static string moduleName;
-        //protected static List<string> moduleNames;
-        //protected static List<List<string>> allMeshResourceNames = new List<List<string>>();
         protected static List<string> modMeshResourceNames = new List<string>();
 
         protected FileSaver fileSaver;
 
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
-        // delegate for the UI updater
-        protected delegate void UpdateUIDelegate();
 
         public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
 
@@ -96,11 +95,7 @@ namespace MB_Studio.Manager
             idINFO_lbl.Text = idINFO_lbl.Text.Replace("ID_", Prefix);
 
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
-
-            /// ADD HANDLER FOR FOCUS LOST
             ParentChanged += ToolForm_ParentChanged;
-            /// ADD HANDLER FOR FOCUS LOST
-
             Shown += ToolForm_Shown;
         }
 
@@ -136,14 +131,42 @@ namespace MB_Studio.Manager
         protected virtual void ToolForm_Shown(object sender, EventArgs e)
         {
             ResetControls();
+
+            foreach (Control c in toolPanel.Controls)
+                if (GetNameEndOfControl(c).Equals("gb"))
+                    AddUnsavedDataHandler((GroupBox)c);
+        }
+
+        private void AddUnsavedDataHandler(GroupBox gb)
+        {
+            foreach (Control c in gb.Controls)
+            {
+                string end = GetNameEndOfControl(c);
+                if (end.Equals("gb"))
+                    AddUnsavedDataHandler((GroupBox)c);
+                else if (end.Equals("txt") || end.Equals("rtb"))
+                    c.TextChanged += Control_DataChanged;
+                else if (end.Equals("num") || end.Equals("numeric"))
+                    ((NumericUpDown)c).ValueChanged += Control_DataChanged;
+                else if (end.Equals("cbb"))
+                    ((ComboBox)c).SelectedIndexChanged += Control_DataChanged;
+                else if (end.Equals("lb"))
+                    ((ListBox)c).SelectedIndexChanged += Control_DataChanged;
+                else if (end.Equals("cb"))
+                    ((CheckBox)c).CheckStateChanged += Control_DataChanged;
+                else if (end.Equals("rb"))
+                    ((RadioButton)c).CheckedChanged += Control_DataChanged;
+            }
+        }
+
+        private void Control_DataChanged(object sender, EventArgs e)
+        {
+            unsavedDataAvailable = true;
         }
 
         private void ToolForm_Load(object sender, EventArgs e)
         {
             title_lbl.Text = Text;
-
-            // Update UI
-            UpdateUI();
 
             // Show the splash form
             if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
@@ -158,17 +181,7 @@ namespace MB_Studio.Manager
                 t.Start();
             }
             else
-                LoadControlsAndSettings();// USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING!!! (IF BUG IN VISUAL STUDIO AGAIN)
-        }
-
-        /// <summary>
-        /// Updates the UI
-        /// </summary>
-        protected void UpdateUI()
-        {
-            if (IsDataLoaded)
-                if (frmSplash != null)
-                    frmSplash.Close();
+                LoadControlsAndSettings();// USE THIS ONE HERE WHEN THREAD IS DEACTIVATED FOR EDITING!!! (IF BUG IN VISUAL STUDIO AGAIN - DONT DELETE COMMENT!!!)
         }
 
         private void LoadControlsAndSettings()
@@ -181,7 +194,14 @@ namespace MB_Studio.Manager
 
             // Update UI
             if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)
-                Invoke(new UpdateUIDelegate(UpdateUI));
+            {
+                Invoke((MethodInvoker)delegate
+                {
+                    if (!IsDataLoaded) return;
+                    if (frmSplash == null) return;
+                    frmSplash.Close();
+                });
+            }
         }
 
         protected virtual void InitializeControls()
@@ -193,8 +213,6 @@ namespace MB_Studio.Manager
                 translations.Add(new string[2]);
 
             typeSelect_lb.SelectedIndex = 0;
-
-            //ResetControls();//removed because as well in FormShown Event(?)
         }
 
         protected virtual void LoadSettingsAndLists()
@@ -368,6 +386,8 @@ namespace MB_Studio.Manager
                 index = typeSelect_lb.Items.Count;
 
             SaveTypeByIndex(list, index);
+
+            unsavedDataAvailable = false;//not all is checked yet - just for now
         }
 
         #endregion
@@ -696,7 +716,7 @@ namespace MB_Studio.Manager
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            KillOpenBrfThread();//only if no other form is using it - or if mb studio is closing
+            KillOpenBrfThread();
 
             base.OnHandleDestroyed(e);
         }
@@ -715,8 +735,7 @@ namespace MB_Studio.Manager
 
                     if (openBrfThread != null)
                     {
-                        if (openBrfThread.IsAlive)
-                            openBrfThread.Join(1);//is needed?
+                        if (openBrfThread.IsAlive) openBrfThread.Join(1);//is needed?
                         Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
                     }
                 }
@@ -757,8 +776,7 @@ namespace MB_Studio.Manager
 
         private static void LoadOpenBrfLists()
         {
-            //allMeshResourceNames.AddRange(openBrfManager.GetAllMeshResourceNames(out moduleNames));//Add support for all module meshes (with extra form(?))
-            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());//dont load again - instead use from allMeshResourceNames
+            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());
         }
 
         protected static string GetMABPath()
