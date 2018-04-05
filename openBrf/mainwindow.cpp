@@ -848,7 +848,7 @@ bool MainWindow::refreshReference(){
 		return true;
 	}
 
-	MessageBoxA(NULL, QString("Reference Path: " + fn).toStdString().c_str(), "ERROR: REFERENCE_PATH_NOT_FOUND", MB_ICONERROR);
+	MessageBoxA(NULL, QString("ERROR: REFERENCE_PATH_NOT_FOUND\nReference Path: " + fn).toStdString().c_str(), "ERROR", MB_ICONERROR);
 
 	loadedModReference = false;
 
@@ -3808,7 +3808,8 @@ bool MainWindow::hasDependencyProblems() {
 	if (hasProblems) {
 		MessageBoxA(
 			NULL,
-			QString("ERROR: REFERENCE_NOT_LOADED_EXCEPTION - Probably reference.brf file is not in the same folder as openBrf or path is invalid!\nAlso check for dependency problems if possible!\n Path: %1")
+			QString(QString("ERROR:") + " REFERENCE_NOT_LOADED_EXCEPTION\nProbably 'reference.brf' isn't in the same folder as openBrf or path is invalid!\n" + 
+				"Also check for possible problems with dependencies!\nPath: %1")
 				.arg(referenceFilename(0)).toStdString().c_str(),
 			"ERROR",
 			MB_ICONERROR
@@ -4250,77 +4251,115 @@ void MainWindow::selectCurManyIndicesByList(vector<int> idxs) {
 }
 
 /* method created by Johandros */
-void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures)
+void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures, vector<vector<BrfTexture>> &allTextures)
 {
-	textures.push_back(brfdata.texture[selector->firstSelected()]);
-	//maybe work with texture here
+	bool found = false;
+	BrfTexture t = brfdata.texture[selector->firstSelected()];
+
+	for each (vector<BrfTexture> vec in allTextures)
+		for each (BrfTexture tx in vec)
+			if (strcmp(tx.name, t.name) == 0)
+				found = true;
+
+	if (!found) {
+
+		for each (BrfTexture texture in textures)
+			if (strcmp(texture.name, t.name) == 0)
+				found = true;
+
+		if (!found) {
+			//maybe work with texture here
+			textures.push_back(t);
+		}
+	}
+
 	navigateLeft();
 }
 
 /* method created by Johandros */
 void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
 {
-	int curIdx;
 	vector<int> idxs = selector->allSelected();
-
-	//MessageBoxA(NULL, ("Modname: " + modName.toStdString() + " - SelectedCount: " + to_string(idxs.size()) + " - MeshCount: " + to_string(brfdata.mesh.size())).c_str(), "INFO", 0);
-
 	for (size_t i = 0; i < idxs.size(); i++) {
+		
+		bool found = false;
+		int curIdx = idxs[i];
+		BrfMesh mesh = brfdata.mesh[curIdx];
 
-		curIdx = idxs[i];
-		meshs.push_back(brfdata.mesh[curIdx]);
-		selector->selectOne(MESH, curIdx);
+		for each (BrfMesh m in meshs)
+			if (strcmp(m.name, mesh.name) == 0)
+				found = true;
 
-		if (navigateRight()) {
+		if (!found) {
 
-			vector<BrfTexture> textures;
+			meshs.push_back(mesh);
 
-			materials.push_back(brfdata.material[selector->firstSelected()]);
+			selector->selectOne(MESH, curIdx);
 
-			if (guiPanel->ui->leMatShader->hasFrame()) {
-				if (hasTextQLineEdit(guiPanel->ui->leMatShader)) {
+			if (navigateRight()) {
 
-					guiPanel->showMaterialShader();
+				BrfMaterial material = brfdata.material[selector->firstSelected()];
 
-					shaders.push_back(brfdata.shader[selector->firstSelected()]);
+				found = false;
+				for each (BrfMaterial m in materials)
+					if (strcmp(m.name, material.name) == 0)
+						found = true;
 
-					//if (navigateRight()) {
-						//work with shader fallback here if needed
-						//navigateLeft();
-					//}
+				if (!found)
+					materials.push_back(material);
 
-					navigateLeft();
+				if (guiPanel->ui->leMatShader->hasFrame()) {
+					if (hasTextQLineEdit(guiPanel->ui->leMatShader)) {
+
+						guiPanel->showMaterialShader();
+
+						BrfShader shader = brfdata.shader[selector->firstSelected()];
+
+						found = false;
+						for each (BrfShader s in shaders)
+							if (strcmp(s.name, shader.name) == 0)
+								found = true;
+
+						if (!found) {
+							shaders.push_back(shader);
+							//work with shader fallback here if needed
+						}
+
+						navigateLeft();
+					}
 				}
+
+				vector<BrfTexture> textures;
+
+				if (hasTextQLineEdit(guiPanel->ui->leMatDifA)) {
+					guiPanel->showMaterialDiffuseA();
+					addCurFocusedTexture(textures, allTextures);
+				}
+
+				if (hasTextQLineEdit(guiPanel->ui->leMatDifB)) {
+					guiPanel->showMaterialDiffuseB();
+					addCurFocusedTexture(textures, allTextures);
+				}
+
+				if (hasTextQLineEdit(guiPanel->ui->leMatBump)) {
+					guiPanel->showMaterialBump();
+					addCurFocusedTexture(textures, allTextures);
+				}
+
+				if (hasTextQLineEdit(guiPanel->ui->leMatEnv)) {
+					guiPanel->showMaterialEnviro();
+					addCurFocusedTexture(textures, allTextures);
+				}
+
+				if (hasTextQLineEdit(guiPanel->ui->leMatSpec)) {
+					guiPanel->showMaterialSpecular();
+					addCurFocusedTexture(textures, allTextures);
+				}
+
+				allTextures.push_back(textures);
+
+				navigateLeft();
 			}
-
-			if (hasTextQLineEdit(guiPanel->ui->leMatDifA)) {
-				guiPanel->showMaterialDiffuseA();
-				addCurFocusedTexture(textures);
-			}
-
-			if (hasTextQLineEdit(guiPanel->ui->leMatDifB)) {
-				guiPanel->showMaterialDiffuseB();
-				addCurFocusedTexture(textures);
-			}
-
-			if (hasTextQLineEdit(guiPanel->ui->leMatBump)) {
-				guiPanel->showMaterialBump();
-				addCurFocusedTexture(textures);
-			}
-
-			if (hasTextQLineEdit(guiPanel->ui->leMatEnv)) {
-				guiPanel->showMaterialEnviro();
-				addCurFocusedTexture(textures);
-			}
-
-			if (hasTextQLineEdit(guiPanel->ui->leMatSpec)) {
-				guiPanel->showMaterialSpecular();
-				addCurFocusedTexture(textures);
-			}
-
-			allTextures.push_back(textures);
-
-			navigateLeft();
 		}
 	}
 }
@@ -4335,6 +4374,7 @@ bool MainWindow::hasTextQLineEdit(QLineEdit* le)
 void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
 {
 	QString pathX = QString(modulesPath() + "/" + modNameX);
+	QString orgModName = modName;
 
 	setModPathExternal(pathX.toStdString());
 
@@ -4350,12 +4390,18 @@ void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, 
 	for each (BrfMaterial material in materials) { brfdata.material.push_back(material); }
 	for each (BrfShader shader in shaders) { brfdata.shader.push_back(shader); }
 	for each (vector<BrfTexture> textures in allTextures) {
-		for each (BrfTexture texture in textures) { brfdata.texture.push_back(texture); }
+		for each (BrfTexture texture in textures) {
+			brfdata.texture.push_back(texture);
+			QString texturesPath = "/Textures/" + QString(texture.name);
+			/*bool success = */QFile::copy(modulesPath() + "/" + orgModName + texturesPath, modPath() + texturesPath);
+			/*if (!success)
+				//MessageBoxA(NULL, QString("Copy of " + texturesPath + " failed!").toStdString().c_str(), "ERROR", 0);*/
+		}
 	}
 
 	save();
 
-	loadFile(resFile);
+	loadFile(resFile);//is needed?
 }
 
 /* method created by Johandros */
@@ -5410,12 +5456,10 @@ bool MainWindow::navigateRight(){
 		} else return false;
 	}
 	else if (currTab==MESH) {
-		MessageBoxA(NULL, guiPanel->ui->boxMaterial->text().toStdString().c_str(), "navigateRight()", 0);
 		if (!guiPanel->ui->boxMaterial->hasFrame()) return false;
 		stackPos = 0;
-		nextTab = MATERIAL;
+		nextTab = MATERIAL;//not needed
 		nextName = guiPanel->ui->boxMaterial->text();
-		MessageBoxA(NULL, nextName.toStdString().c_str(), "navigateRight() : nextName", 0);
 	}
 	else if (currTab==MATERIAL) {
 		QLineEdit *le = guiPanel->materialLeFocus();
@@ -5447,8 +5491,6 @@ bool MainWindow::navigateRight(){
 
 	navigationStack[stackPos]=old;
 	guiPanel->setNavigationStackDepth(stackPos+1);
-
-	MessageBoxA(NULL, "FOUND SOMETHING!", "navigateRight() : preEnd", 0);
 
 	selector->currentWidget()->setFocus();
 
@@ -5572,8 +5614,6 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 	NameItems nameItems = inidata.searchOneName(name, type, cr);
 	const size_t size = nameItems.size();
 	bool sizeIsOne = (size == 1);
-
-	//MessageBoxA(NULL, to_string(size).c_str(), "search Ini", 0);
 
 	if (size > 0)
 	{

@@ -89,7 +89,7 @@ namespace MB_Studio.Manager
         private void AddItemFromMod_btn_Click(object sender, EventArgs e)
         {
             if (MODE == MODES.MESH)
-                openBrfManager.AddSelectedMeshsToMod(originalModuleName);//SOME DATA IS MISSING AND SOME IS DUPLICATED - TEXTURE FILES (.dds) MISSING - try to copy them
+                openBrfManager.AddSelectedMeshsToMod(originalModuleName);// CHECK DATA IN CREATED BRF FILE - ONLY DIFFUSEA IS WORKING RIGHT NOW!
             else
                 openBrfManager.ChangeModule(originalModuleName);
 

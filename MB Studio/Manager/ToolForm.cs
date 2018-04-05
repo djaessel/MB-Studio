@@ -133,12 +133,12 @@ namespace MB_Studio.Manager
 
         private void Tc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (openBrfManager == null) return;
+            if (openBrfManager == null || !Has3DView) return;
 
             TabControl tc = (TabControl)sender;
             TabPage tabPage = (TabPage)Parent;
             TabPage selectedTab = tc.SelectedTab;
-            if (selectedTab.Name.Equals(tabPage.Name))
+            if (selectedTab.Name.Equals(tabPage.Name))//test this again with non 3D ToolForms!
             {
                 openBrfManager.RemoveWindowHandleFromControlsParent();
                 openBrfManager.AddWindowHandleToControlsParent(this);

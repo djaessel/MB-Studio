@@ -58,7 +58,7 @@ public:
 	bool hasTextQLineEdit(QLineEdit* le);
 
 	void copyCurMeshToMod(QString modName);
-	void addCurFocusedTexture(vector<BrfTexture> &textures);
+	void addCurFocusedTexture(vector<BrfTexture> &textures, vector<vector<BrfTexture>> &allTextures);
 	void getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures);
 	void addMeshsAllDataToMod(QString modName, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures);
 
