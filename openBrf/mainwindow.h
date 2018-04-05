@@ -55,6 +55,8 @@ public:
 	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
 
+	bool hasTextQLineEdit(QLineEdit* le);
+
 	void copyCurMeshToMod(QString modName);
 	void addCurFocusedTexture(vector<BrfTexture> &textures);
 	void getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures);

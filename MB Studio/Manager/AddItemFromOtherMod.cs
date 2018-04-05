@@ -89,7 +89,7 @@ namespace MB_Studio.Manager
         private void AddItemFromMod_btn_Click(object sender, EventArgs e)
         {
             if (MODE == MODES.MESH)
-                openBrfManager.AddSelectedMeshsToMod(originalModuleName);// BUG IN C++ CODE - FOUND CAUSE - WRONG DATA IS SAVED - TEXTURE FILES (.dds) MISSING
+                openBrfManager.AddSelectedMeshsToMod(originalModuleName);//SOME DATA IS MISSING AND SOME IS DUPLICATED - TEXTURE FILES (.dds) MISSING - try to copy them
             else
                 openBrfManager.ChangeModule(originalModuleName);
 

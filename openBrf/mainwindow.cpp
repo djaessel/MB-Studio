@@ -4252,72 +4252,83 @@ void MainWindow::selectCurManyIndicesByList(vector<int> idxs) {
 /* method created by Johandros */
 void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures)
 {
-	try
-	{
-		MessageBoxA(NULL, brfdata.texture[selector->firstSelected()].name, "INFO", 0);
-		textures.push_back(brfdata.texture[selector->firstSelected()]);
-		//maybe work with texture here
-		navigateLeft();
-	}
-	catch (const std::exception&)
-	{
-
-	}
+	textures.push_back(brfdata.texture[selector->firstSelected()]);
+	//maybe work with texture here
+	navigateLeft();
 }
 
 /* method created by Johandros */
 void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
 {
+	int curIdx;
 	vector<int> idxs = selector->allSelected();
+
 	//MessageBoxA(NULL, ("Modname: " + modName.toStdString() + " - SelectedCount: " + to_string(idxs.size()) + " - MeshCount: " + to_string(brfdata.mesh.size())).c_str(), "INFO", 0);
+
 	for (size_t i = 0; i < idxs.size(); i++) {
 
-		//MessageBoxA(NULL, brfdata.mesh[idxs[i]].name, "INFO", 0);
+		curIdx = idxs[i];
+		meshs.push_back(brfdata.mesh[curIdx]);
+		selector->selectOne(MESH, curIdx);
 
-		meshs.push_back(brfdata.mesh[idxs[i]]);
+		if (navigateRight()) {
 
-		if (navigateRight()) {// fails because of hasFrame() == false (dont know why!)
+			vector<BrfTexture> textures;
 
-			MessageBoxA(NULL, brfdata.material[selector->firstSelected()].name, "INFO", 0);
 			materials.push_back(brfdata.material[selector->firstSelected()]);
 
-			try
-			{
-				guiPanel->showMaterialShader();
-				MessageBoxA(NULL, brfdata.shader[selector->firstSelected()].name, "INFO", 0);
-				shaders.push_back(brfdata.shader[selector->firstSelected()]);
-				//navigateRight();
-				//work with shader fallback here if needed
-				//navigateLeft();
-				navigateLeft();
+			if (guiPanel->ui->leMatShader->hasFrame()) {
+				if (hasTextQLineEdit(guiPanel->ui->leMatShader)) {
+
+					guiPanel->showMaterialShader();
+
+					shaders.push_back(brfdata.shader[selector->firstSelected()]);
+
+					//if (navigateRight()) {
+						//work with shader fallback here if needed
+						//navigateLeft();
+					//}
+
+					navigateLeft();
+				}
 			}
-			catch (const std::exception&)
-			{
-				MessageBoxA(NULL, "HAS NO SHADER I GUESS", "INFO", 0);
+
+			if (hasTextQLineEdit(guiPanel->ui->leMatDifA)) {
+				guiPanel->showMaterialDiffuseA();
+				addCurFocusedTexture(textures);
 			}
 
-			/*vector<BrfTexture> textures;
+			if (hasTextQLineEdit(guiPanel->ui->leMatDifB)) {
+				guiPanel->showMaterialDiffuseB();
+				addCurFocusedTexture(textures);
+			}
 
-			guiPanel->showMaterialDiffuseA();
-			addCurFocusedTexture(textures);
+			if (hasTextQLineEdit(guiPanel->ui->leMatBump)) {
+				guiPanel->showMaterialBump();
+				addCurFocusedTexture(textures);
+			}
 
-			guiPanel->showMaterialDiffuseB();
-			addCurFocusedTexture(textures);
+			if (hasTextQLineEdit(guiPanel->ui->leMatEnv)) {
+				guiPanel->showMaterialEnviro();
+				addCurFocusedTexture(textures);
+			}
 
-			guiPanel->showMaterialBump();
-			addCurFocusedTexture(textures);
+			if (hasTextQLineEdit(guiPanel->ui->leMatSpec)) {
+				guiPanel->showMaterialSpecular();
+				addCurFocusedTexture(textures);
+			}
 
-			guiPanel->showMaterialEnviro();
-			addCurFocusedTexture(textures);
-
-			guiPanel->showMaterialSpecular();
-			addCurFocusedTexture(textures);
-
-			allTextures.push_back(textures);*/
+			allTextures.push_back(textures);
 
 			navigateLeft();
 		}
 	}
+}
+
+/* method created by Johandros */
+bool MainWindow::hasTextQLineEdit(QLineEdit* le)
+{
+	return (le->text().trimmed().length() != 0);
 }
 
 /* method created by Johandros */
