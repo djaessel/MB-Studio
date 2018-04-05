@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MB_Studio.Manager
 {
@@ -51,7 +52,7 @@ namespace MB_Studio.Manager
         {
             base.LoadSettingsAndLists();
 
-
+            AddBrfFileEntryToModuleIni("MB_Studio_Data");
         }
 
         protected override void InitializeControls()
@@ -498,6 +499,7 @@ namespace MB_Studio.Manager
             int idx = int.Parse(c.Name.Split('_')[1]);
             ComboBox c2 = (ComboBox)c.Parent.Controls.Find("ixmesh_" + idx + "_cbb", true)[0];
             curMeshs[idx] = c.Text + ' ' + c2.Text;
+
             Change3DView();
         }
 
@@ -1183,8 +1185,6 @@ namespace MB_Studio.Manager
             {
                 if (f.SelectedMeshName == null) return;
 
-                //AddBrfFileEntryToModuleIni("MB_Studio_Data.brf");
-
                 modMeshResourceNames.Add(f.SelectedMeshName);
                 modMeshResourceNames.Sort();
             }
@@ -1359,6 +1359,14 @@ namespace MB_Studio.Manager
         #endregion
 
         #region OpenBrf
+
+        protected override void OnHandleDestroyed()
+        {
+            if (!File.Exists(openBrfManager.ModPath + "\\Resource\\MB_Studio_Data.brf"))
+                RemoveBrfFileEntryFromModuleIni("MB_Studio_Data");
+
+            base.OnHandleDestroyed();
+        }
 
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {

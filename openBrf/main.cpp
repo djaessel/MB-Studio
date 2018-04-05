@@ -63,7 +63,7 @@ DLL_EXPORT INT_PTR DLL_EXPORT_DEF_CALLCONV GetCurWindowPtr()
 DLL_EXPORT_VOID SetModPath(char* modPath)
 {
 	if (IsCurHWndShown())
-		curWindow->setModPathExternal(modPath);
+		curWindow->setModPathExternal(string(modPath));
 }
 
 DLL_EXPORT_VOID SelectIndexOfKind(int kind, int i)
@@ -143,8 +143,7 @@ DLL_EXPORT_VOID ClearTempMeshesTroop3DPreview() {
 		curWindow->clearTempTroop3DPreviewMeshes();
 }
 
-DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(char* modName)
-{
+DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(char* modName) {
 	if (CurWindowIsShown())
 		curWindow->copyCurMeshToMod(QString(modName));
 }

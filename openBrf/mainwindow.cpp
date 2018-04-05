@@ -3607,7 +3607,6 @@ void MainWindow::addToRef(){
 	//bool wasModified = isModified;
 	saveReference();
 	//isModified = wasModified;	updateTitle();
-
 }
 
 void MainWindow::meshToVertexAni(){
@@ -3822,8 +3821,7 @@ bool MainWindow::hasDependencyProblems() {
 int MainWindow::GetBrfMeshIndexByName(char* name) {
 	int idx = -1;
 	size_t bsize = brfdata.mesh.size();
-	for (size_t i = 0; i < bsize; i++)
-	{
+	for (size_t i = 0; i < bsize; i++) {
 		if (brfdata.mesh[i].name == name) {
 			idx = i;
 			i = bsize;
@@ -4254,10 +4252,15 @@ void MainWindow::selectCurManyIndicesByList(vector<int> idxs) {
 /* method created by Johandros */
 void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures)
 {
-	if (navigateRight()) {
+	try
+	{
 		textures.push_back(brfdata.texture[selector->firstSelected()]);
 		//maybe work with texture here
 		navigateLeft();
+	}
+	catch (const std::exception&)
+	{
+
 	}
 }
 
@@ -4267,77 +4270,83 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 	vector<int> idxs = selector->allSelected();
 	for (size_t i = 0; i < idxs.size(); i++) {
 		meshs.push_back(brfdata.mesh[i]);
-		navigateRight();
-
-		materials.push_back(brfdata.material[selector->firstSelected()]);
-		navigateRight();
 		
-		guiPanel->ui->labelShader->setFocus();
 		navigateRight();
-		shaders.push_back(brfdata.shader[selector->firstSelected()]);
-		//work with shader fallback here later if needed
-		navigateLeft();
+		materials.push_back(brfdata.material[selector->firstSelected()]);
+		
+		try
+		{
+			guiPanel->showMaterialShader();
+			shaders.push_back(brfdata.shader[selector->firstSelected()]);
+			//navigateRight();
+			//work with shader fallback here if needed
+			//navigateLeft();
+			navigateLeft();
+		}
+		catch (const std::exception&)
+		{
+
+		}
 
 		vector<BrfTexture> textures;
 
-		guiPanel->ui->labelDiffuseA->setFocus();
+		guiPanel->showMaterialDiffuseA();
 		addCurFocusedTexture(textures);
 
-		guiPanel->ui->labelDiffuseB->setFocus();
+		guiPanel->showMaterialDiffuseB();
 		addCurFocusedTexture(textures);
 
-		guiPanel->ui->labelBump->setFocus();
+		guiPanel->showMaterialBump();
 		addCurFocusedTexture(textures);
 
-		guiPanel->ui->labelEnviro->setFocus();
+		guiPanel->showMaterialEnviro();
 		addCurFocusedTexture(textures);
 
-		guiPanel->ui->labelSpecular->setFocus();
+		guiPanel->showMaterialSpecular();
 		addCurFocusedTexture(textures);
 
 		allTextures.push_back(textures);
+
+		navigateLeft();
 	}
 }
 
 /* method created by Johandros */
-void MainWindow::addMeshsAllDataToMod(QString modName, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
+void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
 {
-	QString modPath = QString(modulesPath() + "\\" + modName);
-	QString resFile = QString(modPath + "\\Resources\\MB_Studio_Data.brf");
+	QString pathX = QString(modulesPath() + "/" + modNameX);
 
-	setModPathExternal(modPath.toStdString());
+	setModPathExternal(pathX.toStdString());
+
+	brfdata.Clear();
+
+	QString resFile = QString(modPath() + "/Resource/MB_Studio_Data.brf");
+
 	createFileIfNotExists(resFile);
 
 	loadFile(resFile);
 
-	for each (BrfMesh mesh in meshs){
-		brfdata.mesh.push_back(mesh);
-	}
-	for each (BrfMaterial material in materials) {
-		brfdata.material.push_back(material);
-	}
-	for each (BrfShader shader in shaders) {
-		brfdata.shader.push_back(shader);
-	}
+	for each (BrfMesh mesh in meshs){ brfdata.mesh.push_back(mesh); }
+	for each (BrfMaterial material in materials) { brfdata.material.push_back(material); }
+	for each (BrfShader shader in shaders) { brfdata.shader.push_back(shader); }
 	for each (vector<BrfTexture> textures in allTextures) {
-		for each (BrfTexture texture in textures) {
-			brfdata.texture.push_back(texture);
-		}
+		for each (BrfTexture texture in textures) { brfdata.texture.push_back(texture); }
 	}
 
 	save();
+
+	loadFile(resFile);
 }
 
 /* method created by Johandros */
-void MainWindow::copyCurMeshToMod(QString modName)
+void MainWindow::copyCurMeshToMod(QString modNameX)
 {
 	vector<BrfMesh> meshs;
 	vector<BrfMaterial> materials;
 	vector<BrfShader> shaders;
 	vector<vector<BrfTexture>> allTextures;
-
 	getSelectedMeshsAllData(meshs, materials, shaders, allTextures);
-	addMeshsAllDataToMod(modName, meshs, materials, shaders, allTextures);
+	addMeshsAllDataToMod(modNameX, meshs, materials, shaders, allTextures);
 }
 
 /* method created by Johandros */
@@ -4369,7 +4378,7 @@ void MainWindow::getAllModuleNames(vector<wstring> &allModuleNames)
 	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
 	string orgModPath = QString(rootDir + "\\" + modName).toStdString();//save original path
 	while (iter.hasNext()) {
-		setModPathExternal(iter.next().toStdString());
+		iter.next();
 		allModuleNames.push_back(iter.fileName().toStdWString());
 	}
 	setModPathExternal(orgModPath);//reset to original path
@@ -5419,7 +5428,6 @@ bool MainWindow::navigateRight(){
 	selector->currentWidget()->setFocus();
 
 	return true;
-
 }
 
 void MainWindow::cancelNavStack(){
