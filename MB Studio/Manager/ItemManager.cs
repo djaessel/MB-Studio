@@ -1186,7 +1186,7 @@ namespace MB_Studio.Manager
                 if (f.SelectedMeshName == null) return;
 
                 modMeshResourceNames.Add(f.SelectedMeshName);
-                modMeshResourceNames.Sort();
+                //modMeshResourceNames.Sort();
             }
             else if (f.MODE == AddItemFromOtherMod.MODES.ITEM)
             {

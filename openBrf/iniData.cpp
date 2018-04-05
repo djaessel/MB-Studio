@@ -753,6 +753,7 @@ void IniData::searchNameInV(const QString &s, int type, const vector<T> &v, int 
 	{
 		if (QString(v[i].name).split('.')[0] == s)
 		{
+			//MessageBoxA(NULL, QString(QString(v[i].name) + " : " + s).toStdString().c_str(), "searchNameInV", 0);
 			vector<int> found;
 			found.push_back(j);
 			found.push_back(i);

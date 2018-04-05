@@ -4254,6 +4254,7 @@ void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures)
 {
 	try
 	{
+		MessageBoxA(NULL, brfdata.texture[selector->firstSelected()].name, "INFO", 0);
 		textures.push_back(brfdata.texture[selector->firstSelected()]);
 		//maybe work with texture here
 		navigateLeft();
@@ -4268,46 +4269,54 @@ void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures)
 void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
 {
 	vector<int> idxs = selector->allSelected();
+	//MessageBoxA(NULL, ("Modname: " + modName.toStdString() + " - SelectedCount: " + to_string(idxs.size()) + " - MeshCount: " + to_string(brfdata.mesh.size())).c_str(), "INFO", 0);
 	for (size_t i = 0; i < idxs.size(); i++) {
-		meshs.push_back(brfdata.mesh[i]);
-		
-		navigateRight();
-		materials.push_back(brfdata.material[selector->firstSelected()]);
-		
-		try
-		{
-			guiPanel->showMaterialShader();
-			shaders.push_back(brfdata.shader[selector->firstSelected()]);
-			//navigateRight();
-			//work with shader fallback here if needed
-			//navigateLeft();
+
+		//MessageBoxA(NULL, brfdata.mesh[idxs[i]].name, "INFO", 0);
+
+		meshs.push_back(brfdata.mesh[idxs[i]]);
+
+		if (navigateRight()) {// fails because of hasFrame() == false (dont know why!)
+
+			MessageBoxA(NULL, brfdata.material[selector->firstSelected()].name, "INFO", 0);
+			materials.push_back(brfdata.material[selector->firstSelected()]);
+
+			try
+			{
+				guiPanel->showMaterialShader();
+				MessageBoxA(NULL, brfdata.shader[selector->firstSelected()].name, "INFO", 0);
+				shaders.push_back(brfdata.shader[selector->firstSelected()]);
+				//navigateRight();
+				//work with shader fallback here if needed
+				//navigateLeft();
+				navigateLeft();
+			}
+			catch (const std::exception&)
+			{
+				MessageBoxA(NULL, "HAS NO SHADER I GUESS", "INFO", 0);
+			}
+
+			/*vector<BrfTexture> textures;
+
+			guiPanel->showMaterialDiffuseA();
+			addCurFocusedTexture(textures);
+
+			guiPanel->showMaterialDiffuseB();
+			addCurFocusedTexture(textures);
+
+			guiPanel->showMaterialBump();
+			addCurFocusedTexture(textures);
+
+			guiPanel->showMaterialEnviro();
+			addCurFocusedTexture(textures);
+
+			guiPanel->showMaterialSpecular();
+			addCurFocusedTexture(textures);
+
+			allTextures.push_back(textures);*/
+
 			navigateLeft();
 		}
-		catch (const std::exception&)
-		{
-
-		}
-
-		vector<BrfTexture> textures;
-
-		guiPanel->showMaterialDiffuseA();
-		addCurFocusedTexture(textures);
-
-		guiPanel->showMaterialDiffuseB();
-		addCurFocusedTexture(textures);
-
-		guiPanel->showMaterialBump();
-		addCurFocusedTexture(textures);
-
-		guiPanel->showMaterialEnviro();
-		addCurFocusedTexture(textures);
-
-		guiPanel->showMaterialSpecular();
-		addCurFocusedTexture(textures);
-
-		allTextures.push_back(textures);
-
-		navigateLeft();
 	}
 }
 
@@ -5390,10 +5399,12 @@ bool MainWindow::navigateRight(){
 		} else return false;
 	}
 	else if (currTab==MESH) {
+		MessageBoxA(NULL, guiPanel->ui->boxMaterial->text().toStdString().c_str(), "navigateRight()", 0);
 		if (!guiPanel->ui->boxMaterial->hasFrame()) return false;
 		stackPos = 0;
-		//nextTab = MATERIAL;
+		nextTab = MATERIAL;
 		nextName = guiPanel->ui->boxMaterial->text();
+		MessageBoxA(NULL, nextName.toStdString().c_str(), "navigateRight() : nextName", 0);
 	}
 	else if (currTab==MATERIAL) {
 		QLineEdit *le = guiPanel->materialLeFocus();
@@ -5422,8 +5433,11 @@ bool MainWindow::navigateRight(){
 	}
 
 	if (!goTo(p)) return false;
+
 	navigationStack[stackPos]=old;
 	guiPanel->setNavigationStackDepth(stackPos+1);
+
+	MessageBoxA(NULL, "FOUND SOMETHING!", "navigateRight() : preEnd", 0);
 
 	selector->currentWidget()->setFocus();
 
@@ -5547,6 +5561,8 @@ bool MainWindow::searchIniExplicit(QString name, int type, bool cr)
 	NameItems nameItems = inidata.searchOneName(name, type, cr);
 	const size_t size = nameItems.size();
 	bool sizeIsOne = (size == 1);
+
+	//MessageBoxA(NULL, to_string(size).c_str(), "search Ini", 0);
 
 	if (size > 0)
 	{
