@@ -894,7 +894,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 	setEditingVertexData( false);
 
 	//main->addWidget(selector); // removed by Johandros
-	//main->addWidget(guiPanel); // removed by Johandros
+	main->addWidget(guiPanel); // removed by Johandros
 	main->addWidget(glWidget);
 
 	resize(380, 350); // added by Johandros
@@ -916,7 +916,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 	refreshReference();
 
 	guiPanel->hitBoxes = &hitboxSet;
-	guiPanel->setVisible(false); // added by Johandros
+	//guiPanel->setVisible(false); // added by Johandros
 
 	selector->setVisible(false); // added by Johandros
 
@@ -4251,6 +4251,12 @@ void MainWindow::selectCurManyIndicesByList(vector<int> idxs) {
 }
 
 /* method created by Johandros */
+bool MainWindow::hasTextQLineEdit(QLineEdit* le)
+{
+	return (le->text().replace("none","").trimmed().length() != 0);
+}
+
+/* method created by Johandros */
 void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures, vector<vector<BrfTexture>> &allTextures)
 {
 	bool found = false;
@@ -4274,6 +4280,7 @@ void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures, vector<vecto
 	}
 
 	navigateLeft();
+	navigateLeft();//workaround
 }
 
 /* method created by Johandros */
@@ -4326,48 +4333,48 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 						}
 
 						navigateLeft();
+						navigateLeft();//workaround
 					}
 				}
 
 				vector<BrfTexture> textures;
 
 				if (hasTextQLineEdit(guiPanel->ui->leMatDifA)) {
+					navigateRight();//workaround
 					guiPanel->showMaterialDiffuseA();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
 				if (hasTextQLineEdit(guiPanel->ui->leMatDifB)) {
+					navigateRight();//workaround
 					guiPanel->showMaterialDiffuseB();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
 				if (hasTextQLineEdit(guiPanel->ui->leMatBump)) {
+					navigateRight();//workaround
 					guiPanel->showMaterialBump();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
 				if (hasTextQLineEdit(guiPanel->ui->leMatEnv)) {
+					navigateRight();//workaround
 					guiPanel->showMaterialEnviro();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
 				if (hasTextQLineEdit(guiPanel->ui->leMatSpec)) {
+					navigateRight();//workaround
 					guiPanel->showMaterialSpecular();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
 				allTextures.push_back(textures);
 
-				navigateLeft();
+				//navigateLeft();//workaround
 			}
 		}
 	}
-}
-
-/* method created by Johandros */
-bool MainWindow::hasTextQLineEdit(QLineEdit* le)
-{
-	return (le->text().trimmed().length() != 0);
 }
 
 /* method created by Johandros */

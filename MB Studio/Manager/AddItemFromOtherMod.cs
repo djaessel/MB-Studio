@@ -50,7 +50,7 @@ namespace MB_Studio.Manager
         private void AddItemFromOtherMod_Load(object sender, EventArgs e)
         {
             module_cbb.Items.AddRange(moduleNames.ToArray());
-            module_cbb.SelectedIndex = 0;
+            //module_cbb.SelectedIndex = 0;
         }
 
         private void Module_cbb_SelectedIndexChanged(object sender, EventArgs e)
@@ -68,7 +68,14 @@ namespace MB_Studio.Manager
                 foreach (Item item in items)
                     item_cbb.Items.Add(item.ID);
 
-                bool b = (item_cbb.Items.Count != 0);
+                bool b = (item_cbb.Items.Count != 0 || meshName_cbb.Items.Count != 0);
+
+                addKind_gb.Enabled = b;
+                addItemFromMod_btn.Enabled = b;
+
+                if (!b) return;
+
+                b = (item_cbb.Items.Count != 0);
                 if (b)
                     item_cbb.SelectedIndex = 0;
                 item_rb.Checked = b;
@@ -78,18 +85,35 @@ namespace MB_Studio.Manager
                 curMeshNames = openBrfManager.GetCurrentModuleAllMeshResourceNames();
                 meshName_cbb.Items.AddRange(curMeshNames.ToArray());
 
-                b = (meshName_cbb.Items.Count != 0);
-                if (b)
-                    meshName_cbb.SelectedIndex = 0;
-                meshName_rb.Checked = b;
-                meshName_rb.Enabled = b;
+                if (!b)
+                {
+                    b = (meshName_cbb.Items.Count != 0);
+                    if (b)
+                        meshName_cbb.SelectedIndex = 0;
+                    meshName_rb.Checked = b;
+                }
+                meshName_rb.Enabled = (meshName_cbb.Items.Count != 0);
             }
         }
 
         private void AddItemFromMod_btn_Click(object sender, EventArgs e)
         {
+            string curModName = openBrfManager.ModName;
             if (MODE == MODES.MESH)
-                openBrfManager.AddSelectedMeshsToMod(originalModuleName);// CHECK DATA IN CREATED BRF FILE - ONLY DIFFUSEA IS WORKING RIGHT NOW!
+            {
+                openBrfManager.AddSelectedMeshsToMod(originalModuleName);
+            }
+            else if (MODE == MODES.ITEM)
+            {
+                foreach (string mesh in SelectedItem.Meshes)
+                {
+                    string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
+                    if (!openBrfManager.ModName.Equals(curModName))
+                        openBrfManager.ChangeModule(curModName);
+                    openBrfManager.SelectItemNameByKind(meshData[0]);
+                    openBrfManager.AddSelectedMeshsToMod(originalModuleName);
+                }
+            }
             else
                 openBrfManager.ChangeModule(originalModuleName);
 

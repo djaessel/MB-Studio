@@ -389,14 +389,7 @@ namespace MB_Studio.Manager
                 TextAlign = ContentAlignment.MiddleCenter,
             };
 
-            // ixmesh_txt
-            /*TextBox ixmesh_txt = new TextBox
-            {
-                Location = new Point(ixmesh_lbl.Left + ixmesh_lbl.Width + 8, lastTopLocation + 1),
-                Name = "ixmesh_" + i + "_txt",
-                Size = new Size(resourceName_column_lbl.Width - 8, MESH_CONTROLS_TOP_HEIGHT - 7),
-                Text = tmp[0],
-            };*/
+            // ixmesh_txt / ixmesh_cbb
             ComboBox ixmesh_txt = new ComboBox //change name and code which uses it later
             {
                 BackColor = BaseColor,
@@ -417,14 +410,17 @@ namespace MB_Studio.Manager
             //ixmesh_txt.Items.AddRange(allMeshResourceNames.ToArray());//should allow resources from all available modules in the same folder if needed
             ixmesh_txt.SelectedIndexChanged += Ixmesh_txt_SelectedIndexChanged;
 
-            // ixmesh_cbb
+            // ixmesh_cbb(2)
             ComboBox ixmesh_cbb = new ComboBox
             {
                 BackColor = BaseColor,
                 FlatStyle = FlatStyle.Flat,
+                AutoCompleteMode = AutoCompleteMode.SuggestAppend,
+                AutoCompleteSource = AutoCompleteSource.ListItems,
                 ForeColor = Color.WhiteSmoke,
                 FormattingEnabled = true,
                 ItemHeight = 20,
+                Sorted = true,
                 Location = new Point(ixmesh_txt.Left + ixmesh_txt.Width + 8, lastTopLocation),
                 Name = "ixmesh_" + i + "_cbb",
                 Size = new Size(meshKind_column_lbl.Width - 12, MESH_CONTROLS_TOP_HEIGHT - 4),
@@ -1184,9 +1180,7 @@ namespace MB_Studio.Manager
             if (f.MODE == AddItemFromOtherMod.MODES.MESH)
             {
                 if (f.SelectedMeshName == null) return;
-
                 modMeshResourceNames.Add(f.SelectedMeshName);
-                //modMeshResourceNames.Sort();
             }
             else if (f.MODE == AddItemFromOtherMod.MODES.ITEM)
             {

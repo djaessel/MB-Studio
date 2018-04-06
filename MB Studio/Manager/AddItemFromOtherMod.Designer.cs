@@ -76,8 +76,10 @@
             this.module_cbb.Location = new System.Drawing.Point(137, 38);
             this.module_cbb.Name = "module_cbb";
             this.module_cbb.Size = new System.Drawing.Size(226, 28);
+            this.module_cbb.Sorted = true;
             this.module_cbb.TabIndex = 0;
             this.module_cbb.TabStop = false;
+            this.module_cbb.Text = " < SELECT MODULE >";
             this.module_cbb.SelectedIndexChanged += new System.EventHandler(this.Module_cbb_SelectedIndexChanged);
             // 
             // module_lbl
@@ -95,6 +97,7 @@
             this.addItemFromMod_btn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addItemFromMod_btn.BackColor = System.Drawing.Color.DimGray;
+            this.addItemFromMod_btn.Enabled = false;
             this.addItemFromMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 170);
             this.addItemFromMod_btn.Name = "addItemFromMod_btn";
@@ -113,6 +116,8 @@
             this.addKind_gb.Controls.Add(this.meshName_rb);
             this.addKind_gb.Controls.Add(this.item_cbb);
             this.addKind_gb.Controls.Add(this.meshName_cbb);
+            this.addKind_gb.Enabled = false;
+            this.addKind_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addKind_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addKind_gb.ForeColor = System.Drawing.Color.White;
             this.addKind_gb.Location = new System.Drawing.Point(4, 70);
@@ -168,6 +173,7 @@
             this.item_cbb.Location = new System.Drawing.Point(133, 52);
             this.item_cbb.Name = "item_cbb";
             this.item_cbb.Size = new System.Drawing.Size(226, 28);
+            this.item_cbb.Sorted = true;
             this.item_cbb.TabIndex = 0;
             this.item_cbb.TabStop = false;
             this.item_cbb.SelectedIndexChanged += new System.EventHandler(this.Item_cbb_SelectedIndexChanged);
@@ -187,6 +193,7 @@
             this.meshName_cbb.Location = new System.Drawing.Point(133, 18);
             this.meshName_cbb.Name = "meshName_cbb";
             this.meshName_cbb.Size = new System.Drawing.Size(226, 28);
+            this.meshName_cbb.Sorted = true;
             this.meshName_cbb.TabIndex = 0;
             this.meshName_cbb.TabStop = false;
             this.meshName_cbb.SelectedIndexChanged += new System.EventHandler(this.MeshName_cbb_SelectedIndexChanged);
