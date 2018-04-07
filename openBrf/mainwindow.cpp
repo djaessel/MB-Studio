@@ -894,7 +894,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 	setEditingVertexData( false);
 
 	//main->addWidget(selector); // removed by Johandros
-	main->addWidget(guiPanel); // removed by Johandros
+	//main->addWidget(guiPanel); // removed by Johandros
 	main->addWidget(glWidget);
 
 	resize(380, 350); // added by Johandros
@@ -916,7 +916,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),inidata(brfdata)
 	refreshReference();
 
 	guiPanel->hitBoxes = &hitboxSet;
-	//guiPanel->setVisible(false); // added by Johandros
+	guiPanel->setVisible(false); // added by Johandros
 
 	selector->setVisible(false); // added by Johandros
 
@@ -4393,16 +4393,44 @@ void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, 
 
 	loadFile(resFile);
 
-	for each (BrfMesh mesh in meshs){ brfdata.mesh.push_back(mesh); }
-	for each (BrfMaterial material in materials) { brfdata.material.push_back(material); }
-	for each (BrfShader shader in shaders) { brfdata.shader.push_back(shader); }
+	//CHECK DATA - SOME TEXTURES ARE WRONG OR MISSING!!!
+
+	bool found;
+	for each (BrfMesh mesh in meshs) {
+		found = false;
+		for each (BrfMesh m in brfdata.mesh)
+			if (strcmp(m.name, mesh.name) == 0)
+				found = true;
+		if (!found)
+			brfdata.mesh.push_back(mesh);
+	}
+	for each (BrfMaterial material in materials) {
+		found = false;
+		for each (BrfMaterial m in brfdata.material)
+			if (strcmp(m.name, material.name) == 0)
+				found = true;
+		if (!found)
+			brfdata.material.push_back(material);
+	}
+	for each (BrfShader shader in shaders) {
+		found = false;
+		for each (BrfShader s in brfdata.shader)
+			if (strcmp(s.name, shader.name) == 0)
+				found = true;
+		if (!found)
+			brfdata.shader.push_back(shader);
+	}
 	for each (vector<BrfTexture> textures in allTextures) {
 		for each (BrfTexture texture in textures) {
-			brfdata.texture.push_back(texture);
-			QString texturesPath = "/Textures/" + QString(texture.name);
-			/*bool success = */QFile::copy(modulesPath() + "/" + orgModName + texturesPath, modPath() + texturesPath);
-			/*if (!success)
-				//MessageBoxA(NULL, QString("Copy of " + texturesPath + " failed!").toStdString().c_str(), "ERROR", 0);*/
+			found = false;
+			for each (BrfTexture t in brfdata.texture)
+				if (strcmp(t.name, texture.name) == 0)
+					found = true;
+			if (!found) {
+				brfdata.texture.push_back(texture);
+				QString texturesPath = "/Textures/" + QString(texture.name);
+				/*bool success = */QFile::copy(modulesPath() + "/" + orgModName + texturesPath, modPath() + texturesPath);
+			}
 		}
 	}
 

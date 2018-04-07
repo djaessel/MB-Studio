@@ -50,7 +50,6 @@ namespace MB_Studio.Manager
         private void AddItemFromOtherMod_Load(object sender, EventArgs e)
         {
             module_cbb.Items.AddRange(moduleNames.ToArray());
-            //module_cbb.SelectedIndex = 0;
         }
 
         private void Module_cbb_SelectedIndexChanged(object sender, EventArgs e)
@@ -76,8 +75,6 @@ namespace MB_Studio.Manager
                 if (!b) return;
 
                 b = (item_cbb.Items.Count != 0);
-                if (b)
-                    item_cbb.SelectedIndex = 0;
                 item_rb.Checked = b;
                 item_rb.Enabled = b;
 
@@ -87,11 +84,10 @@ namespace MB_Studio.Manager
 
                 if (!b)
                 {
-                    b = (meshName_cbb.Items.Count != 0);
-                    if (b)
-                        meshName_cbb.SelectedIndex = 0;
+                    b = (meshName_cbb.Items.Count != 0);//maybe change mesh and item position in code or just activate only one
                     meshName_rb.Checked = b;
                 }
+
                 meshName_rb.Enabled = (meshName_cbb.Items.Count != 0);
             }
         }
@@ -99,6 +95,7 @@ namespace MB_Studio.Manager
         private void AddItemFromMod_btn_Click(object sender, EventArgs e)
         {
             string curModName = openBrfManager.ModName;
+
             if (MODE == MODES.MESH)
             {
                 openBrfManager.AddSelectedMeshsToMod(originalModuleName);
@@ -107,15 +104,16 @@ namespace MB_Studio.Manager
             {
                 foreach (string mesh in SelectedItem.Meshes)
                 {
-                    string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
                     if (!openBrfManager.ModName.Equals(curModName))
                         openBrfManager.ChangeModule(curModName);
+
+                    string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
                     openBrfManager.SelectItemNameByKind(meshData[0]);
                     openBrfManager.AddSelectedMeshsToMod(originalModuleName);
                 }
             }
-            else
-                openBrfManager.ChangeModule(originalModuleName);
+
+            openBrfManager.ChangeModule(originalModuleName);
 
             Close();
         }
@@ -129,6 +127,7 @@ namespace MB_Studio.Manager
         private void Item_cbb_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedItem = GetItemByID(item_cbb.SelectedItem.ToString());
+            SelectedItem.SetFactions(new List<int>() { 0 });//prevent Faction Problems
             List<string> meshes = SelectedItem.Meshes;
             openBrfManager.SelectItemNameByKind(meshes[meshes.Count - 1].Split()[0]);
         }

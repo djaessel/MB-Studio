@@ -99,9 +99,10 @@
             this.addItemFromMod_btn.BackColor = System.Drawing.Color.DimGray;
             this.addItemFromMod_btn.Enabled = false;
             this.addItemFromMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 170);
+            this.addItemFromMod_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 168);
             this.addItemFromMod_btn.Name = "addItemFromMod_btn";
-            this.addItemFromMod_btn.Size = new System.Drawing.Size(226, 23);
+            this.addItemFromMod_btn.Size = new System.Drawing.Size(226, 27);
             this.addItemFromMod_btn.TabIndex = 1;
             this.addItemFromMod_btn.Tag = "";
             this.addItemFromMod_btn.Text = "ADD ITEM";
@@ -176,6 +177,7 @@
             this.item_cbb.Sorted = true;
             this.item_cbb.TabIndex = 0;
             this.item_cbb.TabStop = false;
+            this.item_cbb.Text = " < SELECT ITEM >";
             this.item_cbb.SelectedIndexChanged += new System.EventHandler(this.Item_cbb_SelectedIndexChanged);
             // 
             // meshName_cbb
@@ -196,6 +198,7 @@
             this.meshName_cbb.Sorted = true;
             this.meshName_cbb.TabIndex = 0;
             this.meshName_cbb.TabStop = false;
+            this.meshName_cbb.Text = " < SELECT MESH >";
             this.meshName_cbb.SelectedIndexChanged += new System.EventHandler(this.MeshName_cbb_SelectedIndexChanged);
             // 
             // AddItemFromOtherMod
