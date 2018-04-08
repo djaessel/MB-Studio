@@ -100,7 +100,7 @@ namespace MB_Studio
                 //  process.StartInfo.UseShellExecute = false;
                 //}
                 process.StartInfo.FileName = startPath;
-                ///process.Start();///activate later!!!
+                process.Start();///activate later!!!
             //}
         }
 
