@@ -104,7 +104,7 @@ namespace MB_Studio
                 //  process.StartInfo.UseShellExecute = false;
                 //}
                 process.StartInfo.FileName = startPath;
-                process.Start();///activate for release
+                ///process.Start();///activate for release
             //}
         }
 
@@ -254,7 +254,9 @@ namespace MB_Studio
                 LoadProject(path);
             else
             {
-                var result = MessageBox.Show("Dieses Projekt konnte nicht gefunden werden! Soll der Eintrag entfernt werden?",
+                DialogResult result = MessageBox.Show(
+                    "Dieses Projekt konnte nicht gefunden werden!" + Environment.NewLine +
+                    "Soll der Eintrag entfernt werden?",
                     Application.ProductName,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information,

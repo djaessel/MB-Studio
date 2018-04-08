@@ -50,10 +50,10 @@
             this.min_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.min_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.min_btn.ForeColor = System.Drawing.Color.White;
-            this.min_btn.Location = new System.Drawing.Point(434, -2);
+            this.min_btn.Location = new System.Drawing.Point(435, -2);
             this.min_btn.Name = "min_btn";
             this.min_btn.Size = new System.Drawing.Size(32, 26);
-            this.min_btn.TabIndex = 14;
+            this.min_btn.TabIndex = 0;
             this.min_btn.TabStop = false;
             this.min_btn.Text = "_";
             this.min_btn.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -67,12 +67,12 @@
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exit_btn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exit_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exit_btn.ForeColor = System.Drawing.Color.White;
-            this.exit_btn.Location = new System.Drawing.Point(466, 1);
+            this.exit_btn.Location = new System.Drawing.Point(467, 0);
             this.exit_btn.Name = "exit_btn";
-            this.exit_btn.Size = new System.Drawing.Size(32, 23);
-            this.exit_btn.TabIndex = 15;
+            this.exit_btn.Size = new System.Drawing.Size(32, 24);
+            this.exit_btn.TabIndex = 0;
             this.exit_btn.TabStop = false;
             this.exit_btn.Text = "X";
             this.exit_btn.UseVisualStyleBackColor = false;
@@ -86,8 +86,8 @@
             this.title_lbl.ForeColor = System.Drawing.Color.Silver;
             this.title_lbl.Location = new System.Drawing.Point(0, 0);
             this.title_lbl.Name = "title_lbl";
-            this.title_lbl.Size = new System.Drawing.Size(434, 24);
-            this.title_lbl.TabIndex = 16;
+            this.title_lbl.Size = new System.Drawing.Size(435, 24);
+            this.title_lbl.TabIndex = 0;
             this.title_lbl.Text = "Form";
             this.title_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 

@@ -5,7 +5,7 @@ using MB_Decompiler_Library.IO;
 using System;
 using System.Collections.Generic;
 
-namespace MB_Studio.Manager
+namespace MB_Studio
 {
     public partial class AddItemFromOtherMod : SpecialFormBlack
     {

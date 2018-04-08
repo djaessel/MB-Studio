@@ -103,6 +103,8 @@
             this.toolbarAndHead_lbl.Name = "toolbarAndHead_lbl";
             this.toolbarAndHead_lbl.Size = new System.Drawing.Size(936, 72);
             this.toolbarAndHead_lbl.TabIndex = 8;
+            this.toolbarAndHead_lbl.UseCompatibleTextRendering = true;
+            this.toolbarAndHead_lbl.UseMnemonic = false;
             // 
             // edit_btn
             // 
@@ -226,7 +228,7 @@
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exit_btn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exit_btn.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exit_btn.ForeColor = System.Drawing.Color.White;
             this.exit_btn.Location = new System.Drawing.Point(904, 0);
             this.exit_btn.Name = "exit_btn";
@@ -245,14 +247,16 @@
             this.maxnorm_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.maxnorm_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.maxnorm_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.maxnorm_btn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxnorm_btn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxnorm_btn.ForeColor = System.Drawing.Color.White;
             this.maxnorm_btn.Location = new System.Drawing.Point(872, 0);
             this.maxnorm_btn.Name = "maxnorm_btn";
             this.maxnorm_btn.Size = new System.Drawing.Size(32, 32);
             this.maxnorm_btn.TabIndex = 0;
             this.maxnorm_btn.TabStop = false;
-            this.maxnorm_btn.Text = "◼";
+            this.maxnorm_btn.Text = "◱";
+            this.maxnorm_btn.UseCompatibleTextRendering = true;
+            this.maxnorm_btn.UseMnemonic = false;
             this.maxnorm_btn.UseVisualStyleBackColor = false;
             this.maxnorm_btn.Click += new System.EventHandler(this.Maxnorm_btn_Click);
             // 
@@ -264,7 +268,7 @@
             this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.min_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.min_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.min_btn.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.min_btn.ForeColor = System.Drawing.Color.White;
             this.min_btn.Location = new System.Drawing.Point(840, -1);
             this.min_btn.Name = "min_btn";

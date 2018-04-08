@@ -1,4 +1,4 @@
-﻿namespace MB_Studio.Manager
+﻿namespace MB_Studio
 {
     partial class AddItemFromOtherMod
     {
@@ -45,21 +45,19 @@
             this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.min_btn.Location = new System.Drawing.Point(310, -2);
-            this.min_btn.TabIndex = 0;
             // 
             // exit_btn
             // 
             this.exit_btn.FlatAppearance.BorderSize = 0;
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.exit_btn.Location = new System.Drawing.Point(342, 1);
-            this.exit_btn.TabIndex = 0;
+            this.exit_btn.Location = new System.Drawing.Point(342, 0);
             this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
             // 
             // title_lbl
             // 
             this.title_lbl.Size = new System.Drawing.Size(310, 24);
-            this.title_lbl.TabIndex = 0;
+            this.title_lbl.Text = "TEXT";
             // 
             // module_cbb
             // 
@@ -73,9 +71,9 @@
             this.module_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.module_cbb.FormattingEnabled = true;
             this.module_cbb.ItemHeight = 20;
-            this.module_cbb.Location = new System.Drawing.Point(137, 38);
+            this.module_cbb.Location = new System.Drawing.Point(137, 34);
             this.module_cbb.Name = "module_cbb";
-            this.module_cbb.Size = new System.Drawing.Size(226, 28);
+            this.module_cbb.Size = new System.Drawing.Size(225, 28);
             this.module_cbb.Sorted = true;
             this.module_cbb.TabIndex = 0;
             this.module_cbb.TabStop = false;
@@ -86,7 +84,7 @@
             // 
             this.module_lbl.AutoSize = true;
             this.module_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.module_lbl.Location = new System.Drawing.Point(27, 41);
+            this.module_lbl.Location = new System.Drawing.Point(27, 37);
             this.module_lbl.Name = "module_lbl";
             this.module_lbl.Size = new System.Drawing.Size(72, 20);
             this.module_lbl.TabIndex = 0;
@@ -100,9 +98,9 @@
             this.addItemFromMod_btn.Enabled = false;
             this.addItemFromMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addItemFromMod_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 168);
+            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 165);
             this.addItemFromMod_btn.Name = "addItemFromMod_btn";
-            this.addItemFromMod_btn.Size = new System.Drawing.Size(226, 27);
+            this.addItemFromMod_btn.Size = new System.Drawing.Size(225, 27);
             this.addItemFromMod_btn.TabIndex = 1;
             this.addItemFromMod_btn.Tag = "";
             this.addItemFromMod_btn.Text = "ADD ITEM";
@@ -121,9 +119,9 @@
             this.addKind_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addKind_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addKind_gb.ForeColor = System.Drawing.Color.White;
-            this.addKind_gb.Location = new System.Drawing.Point(4, 70);
+            this.addKind_gb.Location = new System.Drawing.Point(4, 66);
             this.addKind_gb.Name = "addKind_gb";
-            this.addKind_gb.Size = new System.Drawing.Size(366, 90);
+            this.addKind_gb.Size = new System.Drawing.Size(365, 90);
             this.addKind_gb.TabIndex = 0;
             this.addKind_gb.TabStop = false;
             this.addKind_gb.Text = "Add Kind";
@@ -173,7 +171,7 @@
             this.item_cbb.ItemHeight = 20;
             this.item_cbb.Location = new System.Drawing.Point(133, 52);
             this.item_cbb.Name = "item_cbb";
-            this.item_cbb.Size = new System.Drawing.Size(226, 28);
+            this.item_cbb.Size = new System.Drawing.Size(225, 28);
             this.item_cbb.Sorted = true;
             this.item_cbb.TabIndex = 0;
             this.item_cbb.TabStop = false;
@@ -194,7 +192,7 @@
             this.meshName_cbb.ItemHeight = 20;
             this.meshName_cbb.Location = new System.Drawing.Point(133, 18);
             this.meshName_cbb.Name = "meshName_cbb";
-            this.meshName_cbb.Size = new System.Drawing.Size(226, 28);
+            this.meshName_cbb.Size = new System.Drawing.Size(225, 28);
             this.meshName_cbb.Sorted = true;
             this.meshName_cbb.TabIndex = 0;
             this.meshName_cbb.TabStop = false;
@@ -203,12 +201,13 @@
             // 
             // AddItemFromOtherMod
             // 
-            this.ClientSize = new System.Drawing.Size(375, 203);
+            this.ClientSize = new System.Drawing.Size(374, 200);
             this.Controls.Add(this.addKind_gb);
             this.Controls.Add(this.addItemFromMod_btn);
             this.Controls.Add(this.module_lbl);
             this.Controls.Add(this.module_cbb);
             this.Name = "AddItemFromOtherMod";
+            this.Text = "Add Item To Mod";
             this.Load += new System.EventHandler(this.AddItemFromOtherMod_Load);
             this.Controls.SetChildIndex(this.module_cbb, 0);
             this.Controls.SetChildIndex(this.module_lbl, 0);
