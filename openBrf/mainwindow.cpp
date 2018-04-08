@@ -816,11 +816,10 @@ void MainWindow::openModuleIniFile(){
 	QDesktopServices::openUrl(QUrl::fromLocalFile(modPath()+"/module.ini"));
 }
 
-QString MainWindow::referenceFilename(bool modSpecific) const
-{
-	QString refFile;
-	if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
-	else refFile = modPath() + "/reference.brf";
+QString MainWindow::referenceFilename(/*bool modSpecific*/) const{
+	QString refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
+	//if (!modSpecific) refFile = QCoreApplication::applicationDirPath() + "/reference.brf";
+	//else refFile = modPath() + "/reference.brf";
 	return refFile.replace("/","\\");
 }
 
@@ -840,7 +839,7 @@ bool MainWindow::refreshReference(){
 
 	loadedModReference = usingModReference();
 
-	QString fn = referenceFilename(loadedModReference);
+	QString fn = referenceFilename(/*loadedModReference*/);
 	if (reference.Load(fn.toStdWString().c_str())) {
 		quickHackFixName(reference);//moved here by Johandros
 		guiPanel->setReference(&reference);
@@ -3810,7 +3809,7 @@ bool MainWindow::hasDependencyProblems() {
 			NULL,
 			QString(QString("ERROR:") + " REFERENCE_NOT_LOADED_EXCEPTION\nProbably 'reference.brf' isn't in the same folder as openBrf or path is invalid!\n" + 
 				"Also check for possible problems with dependencies!\nPath: %1")
-				.arg(referenceFilename(0)).toStdString().c_str(),
+				.arg(referenceFilename(/*0*/)).toStdString().c_str(),
 			"ERROR",
 			MB_ICONERROR
 		);
@@ -4708,12 +4707,12 @@ bool MainWindow::saveReference(){
 		int ans = QMessageBox::question(this,"OpenBRF",tr(
 		                                  "<p>You are saving into the generic OpenBRF reference file <br>\"%1\"</p>"
 		                                  "<p>Would you rather save in the reference file <i>specific</i> for Module %3<br>\"%2\"<br>?</p>"
-		                                  ).arg(referenceFilename(0)).arg(referenceFilename(1)).arg(modName), QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+		                                  ).arg(referenceFilename(/*0*/)).arg(referenceFilename(/*1*/)).arg(modName), QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
 
 		if (ans==QMessageBox::Cancel) return false;
 		if (ans==QMessageBox::Yes) loadedModReference = true;
 	}
-	QString fn = referenceFilename(loadedModReference);
+	QString fn = referenceFilename(/*loadedModReference*/);
 	//QMessageBox::information(this, "OpenBRF",QString("Saving ref: %1").arg(fn));
 
 	if (!reference.Save(fn.toStdWString().c_str()))
@@ -4748,7 +4747,7 @@ bool MainWindow::editRef()
 		selector->setIniData(NULL,-1);
 		curFileBackup = curFile;
 		brfdataBackup = brfdata;
-		curFile = referenceFilename(loadedModReference);
+		curFile = referenceFilename(/*loadedModReference*/);
 		brfdata = reference;
 		updateSel();
 		setEditingRef(true);

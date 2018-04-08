@@ -1,19 +1,19 @@
-﻿using importantLib;
+﻿using skillhunter;
+using importantLib;
 using MB_Decompiler;
-using MB_Decompiler_Library.IO;
 using MB_Studio.Main;
 using MB_Studio.Manager;
 using MB_Studio_Updater;
-using skillhunter;
+using MB_Decompiler_Library.IO;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Drawing;
 using System.Threading;
+using System.Diagnostics;
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace MB_Studio
 {
@@ -54,10 +54,14 @@ namespace MB_Studio
         public MB_Studio()
         {
             StartLoadingForm();
+
+            //if (AutoUpdateActive)
             CheckForUpdates();
 
             InitializeComponent();
+
             SetStyle(ControlStyles.ResizeRedraw, true);
+
             ResizeEnd += MB_Studio_ResizeEnd;
             name_lbl.MouseDown += Control_MoveForm_MouseDown;
             file_btn.Click += Button_Open_ContextMenuStrip_Click;
@@ -100,7 +104,7 @@ namespace MB_Studio
                 //  process.StartInfo.UseShellExecute = false;
                 //}
                 process.StartInfo.FileName = startPath;
-                process.Start();///activate later!!!
+                process.Start();///activate for release
             //}
         }
 

@@ -662,7 +662,7 @@ private:
 	QString senderText() const; // just a hack: returns the text of command being exectued:
 
 	bool loadedModReference;
-	QString referenceFilename(bool modSpecific) const;
+	QString referenceFilename(/*bool modSpecific*/) const;
 
 	// generic importers
 	bool _importCollisionBody(bool reimportExisting);
