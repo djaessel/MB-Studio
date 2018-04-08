@@ -104,7 +104,7 @@ namespace MB_Studio
                 //  process.StartInfo.UseShellExecute = false;
                 //}
                 process.StartInfo.FileName = startPath;
-                process.Start();///activate for release
+                ///process.Start();///activate for release
             //}
         }
 
@@ -501,12 +501,12 @@ namespace MB_Studio
         {
             base.SetFullScreenByHandle(hWnd);
             tabControl.Width = Width - projectExplorer_group.Width - 12;
-            maxnorm_btn.Text = "◱";//"⬜"
+            maxnorm_btn.Text = "\u25F1";// = "◱" //"⬜"
         }
 
         private void SetNormalScreen(Screen s)
         {
-            maxnorm_btn.Text = "◼";
+            maxnorm_btn.Text = "\u25A0";//"◼";
             Size = new Size(816, 512);
             DesktopLocation = new Point(s.WorkingArea.Width / 2 - Width / 2, s.WorkingArea.Height / 2 - Height / 2);
         }

@@ -254,7 +254,6 @@
             this.maxnorm_btn.Size = new System.Drawing.Size(32, 32);
             this.maxnorm_btn.TabIndex = 0;
             this.maxnorm_btn.TabStop = false;
-            this.maxnorm_btn.Text = "◱";
             this.maxnorm_btn.UseCompatibleTextRendering = true;
             this.maxnorm_btn.UseMnemonic = false;
             this.maxnorm_btn.UseVisualStyleBackColor = false;
