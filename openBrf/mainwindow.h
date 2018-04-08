@@ -62,9 +62,9 @@ public:
 	void getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures);
 	void addMeshsAllDataToMod(QString modName, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures);
 
-	void getAllMeshNames(vector<vector<wstring>> &allNames);
 	void getAllModuleNames(vector<wstring> &allNames);
-	void getCurAllMeshNames(vector<wstring> &allNames);
+	void getAllMeshNames(vector<vector<wstring>> &allNames, bool commonRes = false);
+	void getCurAllMeshNames(vector<wstring> &allNames, bool commonRes = false);
 
 	void removeMeshByNameFromXViewMesh(char* meshName);
 	void removeLastSelectedFromXViewMesh();

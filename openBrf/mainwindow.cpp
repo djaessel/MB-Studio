@@ -4280,7 +4280,7 @@ void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures, vector<vecto
 	}
 
 	navigateLeft();
-	navigateLeft();//workaround
+	//navigateLeft();//workaround
 }
 
 /* method created by Johandros */
@@ -4328,50 +4328,64 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 								found = true;
 
 						if (!found) {
-							shaders.push_back(shader);
 							//work with shader fallback here if needed
+							shaders.push_back(shader);
 						}
 
 						navigateLeft();
-						navigateLeft();//workaround
 					}
 				}
 
 				vector<BrfTexture> textures;
 
+				//string ssss = guiPanel->ui->leMatDifA->text().toStdString() + " - " + guiPanel->ui->leMatDifA->displayText().toStdString();
+				//MessageBoxA(NULL, ssss.c_str(), "INFO", 0);
+
 				if (hasTextQLineEdit(guiPanel->ui->leMatDifA)) {
-					navigateRight();//workaround
+					//navigateRight();//workaround
 					guiPanel->showMaterialDiffuseA();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
+				//ssss = guiPanel->ui->leMatDifB->text().toStdString() + " - " + guiPanel->ui->leMatDifB->displayText().toStdString();
+				//MessageBoxA(NULL, ssss.c_str(), "showMaterialDiffuseB", 0);
+
 				if (hasTextQLineEdit(guiPanel->ui->leMatDifB)) {
-					navigateRight();//workaround
+					//navigateRight();//workaround
 					guiPanel->showMaterialDiffuseB();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
+				//ssss = guiPanel->ui->leMatBump->text().toStdString() + " - " + guiPanel->ui->leMatBump->displayText().toStdString();
+				//MessageBoxA(NULL, ssss.c_str(), "showMaterialBump", 0);
+
 				if (hasTextQLineEdit(guiPanel->ui->leMatBump)) {
-					navigateRight();//workaround
+					//navigateRight();//workaround
 					guiPanel->showMaterialBump();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
+				//ssss = guiPanel->ui->leMatEnv->text().toStdString() + " - " + guiPanel->ui->leMatEnv->displayText().toStdString();
+				//MessageBoxA(NULL, ssss.c_str(), "showMaterialEnviro", 0);
+
 				if (hasTextQLineEdit(guiPanel->ui->leMatEnv)) {
-					navigateRight();//workaround
+					//navigateRight();//workaround
 					guiPanel->showMaterialEnviro();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
+				//ssss = guiPanel->ui->leMatSpec->text().toStdString() + " - " + guiPanel->ui->leMatSpec->displayText().toStdString();
+				//MessageBoxA(NULL, ssss.c_str(), "showMaterialSpecular", 0);
+
 				if (hasTextQLineEdit(guiPanel->ui->leMatSpec)) {
-					navigateRight();//workaround
+					//navigateRight();//workaround
 					guiPanel->showMaterialSpecular();
 					addCurFocusedTexture(textures, allTextures);
 				}
 
 				allTextures.push_back(textures);
 
-				//navigateLeft();//workaround
+				navigateLeft();//workaround
 			}
 		}
 	}
@@ -4380,14 +4394,16 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 /* method created by Johandros */
 void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, vector<BrfMaterial> &materials, vector<BrfShader> &shaders, vector<vector<BrfTexture>> &allTextures)
 {
+	bool found;
 	QString pathX = QString(modulesPath() + "/" + modNameX);
 	QString orgModName = modName;
+	QString resFile;
 
 	setModPathExternal(pathX.toStdString());
 
 	brfdata.Clear();
 
-	QString resFile = QString(modPath() + "/Resource/MB_Studio_Data.brf");
+	resFile = QString(modPath() + "/Resource/MB_Studio_Data.brf");
 
 	createFileIfNotExists(resFile);
 
@@ -4395,37 +4411,47 @@ void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, 
 
 	//CHECK DATA - SOME TEXTURES ARE WRONG OR MISSING!!!
 
-	bool found;
 	for each (BrfMesh mesh in meshs) {
 		found = false;
+
 		for each (BrfMesh m in brfdata.mesh)
 			if (strcmp(m.name, mesh.name) == 0)
 				found = true;
+
 		if (!found)
 			brfdata.mesh.push_back(mesh);
 	}
+
 	for each (BrfMaterial material in materials) {
 		found = false;
+
 		for each (BrfMaterial m in brfdata.material)
 			if (strcmp(m.name, material.name) == 0)
 				found = true;
+
 		if (!found)
 			brfdata.material.push_back(material);
 	}
+
 	for each (BrfShader shader in shaders) {
 		found = false;
+
 		for each (BrfShader s in brfdata.shader)
 			if (strcmp(s.name, shader.name) == 0)
 				found = true;
+
 		if (!found)
 			brfdata.shader.push_back(shader);
 	}
+
 	for each (vector<BrfTexture> textures in allTextures) {
 		for each (BrfTexture texture in textures) {
 			found = false;
+
 			for each (BrfTexture t in brfdata.texture)
 				if (strcmp(t.name, texture.name) == 0)
 					found = true;
+
 			if (!found) {
 				brfdata.texture.push_back(texture);
 				QString texturesPath = "/Textures/" + QString(texture.name);
@@ -4460,14 +4486,14 @@ void MainWindow::selectCurManyIndices(int sIdx, int end)
 }
 
 /* method created by Johandros */
-void MainWindow::getAllMeshNames(vector<vector<wstring>> &allNames)
+void MainWindow::getAllMeshNames(vector<vector<wstring>> &allNames, bool commonRes)
 {
 	QString rootDir = modulesPath();
 	QDirIterator iter(rootDir, QDir::Dirs | QDir::NoDotAndDotDot);
 	while (iter.hasNext()) {
 		setModPathExternal(iter.next().toStdString());
 		vector<wstring> curAllNames;
-		getCurAllMeshNames(curAllNames);
+		getCurAllMeshNames(curAllNames, commonRes);
 		allNames.push_back(curAllNames);
 	}
 }
@@ -4486,10 +4512,10 @@ void MainWindow::getAllModuleNames(vector<wstring> &allModuleNames)
 }
 
 /* method created by Johandros */
-void MainWindow::getCurAllMeshNames(vector<wstring> &allNames)
+void MainWindow::getCurAllMeshNames(vector<wstring> &allNames, bool commonRes)
 {
 	inidata.loadAll(4);
-	inidata.getTypeAllNames(MESH, allNames);
+	inidata.getTypeAllNames(MESH, allNames, commonRes);
 	allNames.push_back(modName.toStdWString());
 }
 

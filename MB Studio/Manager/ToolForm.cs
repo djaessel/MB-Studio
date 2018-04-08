@@ -140,7 +140,7 @@ namespace MB_Studio.Manager
             TabPage selectedTab = tc.SelectedTab;
             if (selectedTab.Name.Equals(tabPage.Name))//test this again with non 3D ToolForms!
             {
-                openBrfManager.RemoveWindowHandleFromControlsParent();
+                openBrfManager.RemoveWindowHandleFromControlsParent();//could be a problem
                 openBrfManager.AddWindowHandleToControlsParent(this);
             }
         }
@@ -746,7 +746,8 @@ namespace MB_Studio.Manager
         //[SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         private void KillOpenBrfThread()
         {
-            openBrfFormCount--;
+            if (Has3DView)//correct?
+                openBrfFormCount--;
 
             if (openBrfManager != null)
             {
@@ -760,6 +761,15 @@ namespace MB_Studio.Manager
                         if (openBrfThread.IsAlive) openBrfThread.Join(1);//is needed?
                         Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
                     }
+
+                    Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
+                    {
+                        while (openBrfManager.IsShown)
+                            Thread.Sleep(10);
+                        openBrfManager = null;
+                    }))
+                    { IsBackground = true };
+                    t.Start();
                 }
                 else
                     openBrfManager.RemoveWindowHandleFromControlsParent();
@@ -798,7 +808,7 @@ namespace MB_Studio.Manager
 
         private static void LoadOpenBrfLists()
         {
-            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames());
+            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames(true));
         }
 
         private void StartOpenBrfManager()

@@ -108,7 +108,7 @@ public:
   int totFiles(bool commonRes) const;
 
   template <class T> void getVecAllNames(const vector<T> &v, vector<wstring> &allNames) const;
-  void getTypeAllNames(int type, vector<wstring> &allNames) const;
+  void getTypeAllNames(int type, vector<wstring> &allNames, bool commonRes = false) const;
 
 private:
   QString link(int i, int j, int kind) const; // given an object j of kind kind in file i, returns a strig link

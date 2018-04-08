@@ -46,7 +46,8 @@ namespace brfManager
         [DllImport(OPEN_BRF_DLL_PATH)]
         public static extern void GenerateStringsAndStoreInSafeArray(
             [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] ManagedStringArray,
-            byte onlyCurrentModule
+            byte onlyCurrentModule,
+            byte commonRes = 0
         );
 
         [DllImport(OPEN_BRF_DLL_PATH)]
@@ -242,9 +243,10 @@ namespace brfManager
         /// Generates an array including all mesh-/resourcenames from current module
         /// </summary>
         /// <returns></returns>
-        public List<string> GetCurrentModuleAllMeshResourceNames()
+        public List<string> GetCurrentModuleAllMeshResourceNames(bool commonRes = false)
         {
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 1);
+            byte comRes = (byte)((commonRes) ? 1 : 0);
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 1, comRes);
             List<string> list = GetRealNamesArray(ref managedStringArray, out List<string> moduleNames)[0];//only one possible
             return list;
         }
@@ -253,9 +255,10 @@ namespace brfManager
         /// Generates an array including all mesh-/resourcenames
         /// </summary>
         /// <returns></returns>
-        public List<List<string>> GetAllMeshResourceNames(out List<string> moduleNames)
+        public List<List<string>> GetAllMeshResourceNames(out List<string> moduleNames, bool commonRes = false)
         {
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0);
+            byte comRes = (byte)((commonRes) ? 1 : 0);
+            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0, comRes);
             return GetRealNamesArray(ref managedStringArray, out moduleNames);
         }
 

@@ -74,17 +74,20 @@ namespace MB_Studio.Manager
 
                 if (!b) return;
 
+                item_cbb.Text = " < SELECT ITEM >";
+
                 b = (item_cbb.Items.Count != 0);
                 item_rb.Checked = b;
                 item_rb.Enabled = b;
 
                 meshName_cbb.Items.Clear();
-                curMeshNames = openBrfManager.GetCurrentModuleAllMeshResourceNames();
+                curMeshNames = openBrfManager.GetCurrentModuleAllMeshResourceNames();//false
                 meshName_cbb.Items.AddRange(curMeshNames.ToArray());
 
                 if (!b)
                 {
-                    b = (meshName_cbb.Items.Count != 0);//maybe change mesh and item position in code or just activate only one
+                    meshName_cbb.Text = " < SELECT MESH >";
+                    b = (meshName_cbb.Items.Count != 0);//maybe change mesh and item position in code or just activate only one later
                     meshName_rb.Checked = b;
                 }
 

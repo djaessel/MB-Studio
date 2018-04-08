@@ -636,16 +636,12 @@ bool IniData::readModuleTxts(const QString &pathMod, const QString& pathData){
       tf.close();
     }
 
-
   } catch (int) {
     errorStringOnScan = QString(tf.errorString);
     return false;
   }
 
-
   return true;
-
-
 }
 
 
@@ -764,24 +760,26 @@ void IniData::searchNameInV(const QString &s, int type, const vector<T> &v, int 
 }
 
 template <class T>
-void IniData::getVecAllNames(const vector<T> &v, vector<wstring> &allNames) const {
+void IniData::getVecAllNames(const vector<T> &v, vector<wstring> &allNames) const{
 	for (size_t j = 0; j < v.size(); j++) {
 		allNames.push_back(QString(v[j].name).toStdWString());
 	}
 }
 
-void IniData::getTypeAllNames(int type, vector<wstring> &allNames) const {
+void IniData::getTypeAllNames(int type, vector<wstring> &allNames, bool commonRes) const{
 	for (size_t i = 0; i < file.size(); i++) {
-		switch (type)
-		{
-			case TEXTURE: getVecAllNames(file[i].texture, allNames); break;
-			case SHADER: getVecAllNames(file[i].shader, allNames); break;
-			case MATERIAL: getVecAllNames(file[i].material, allNames); break;
-			case SKELETON: getVecAllNames(file[i].skeleton, allNames); break;
-			case ANIMATION: getVecAllNames(file[i].animation, allNames); break;
-			case BODY: getVecAllNames(file[i].body, allNames); break;
-			case MESH: getVecAllNames(file[i].mesh, allNames);//break;
-			default: break;
+		if ((origin[i] == COMMON_RES && commonRes) || (origin[i] != COMMON_RES)) {
+			switch (type)
+			{
+				case TEXTURE: getVecAllNames(file[i].texture, allNames); break;
+				case SHADER: getVecAllNames(file[i].shader, allNames); break;
+				case MATERIAL: getVecAllNames(file[i].material, allNames); break;
+				case SKELETON: getVecAllNames(file[i].skeleton, allNames); break;
+				case ANIMATION: getVecAllNames(file[i].animation, allNames); break;
+				case BODY: getVecAllNames(file[i].body, allNames); break;
+				case MESH: getVecAllNames(file[i].mesh, allNames);//break;
+				default: break;
+			}
 		}
 	}
 }

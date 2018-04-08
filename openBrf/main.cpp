@@ -207,18 +207,20 @@ long CreateSafeArrayFromBSTRArray(
 }
 
 // FIND BETTER SOLUTION OR OPTIMIZE CODE //
-DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, byte onlyCurrentModule)
+DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, byte onlyCurrentModule, byte commonRes)
 {
 	if (!CurWindowIsShown()) return;
+
+	bool comRes = (commonRes > 0);
 
 	vector<wstring> curAllNames;
 	vector<vector<wstring>> allNames;
 
 	switch (onlyCurrentModule)
 	{
-		case 0: curWindow->getAllMeshNames(allNames); break;
+		case 0: curWindow->getAllMeshNames(allNames, comRes); break;
 		case 1:
-			curWindow->getCurAllMeshNames(curAllNames);
+			curWindow->getCurAllMeshNames(curAllNames, comRes);
 			allNames.push_back(curAllNames);
 			break;
 		case 2:
