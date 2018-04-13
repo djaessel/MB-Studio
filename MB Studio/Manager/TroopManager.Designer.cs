@@ -210,10 +210,6 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
             // 
-            // groupBox_0_gb
-            // 
-            this.groupBox_0_gb.Location = new System.Drawing.Point(39, 3);
-            // 
             // min_btn
             // 
             this.min_btn.FlatAppearance.BorderSize = 0;
@@ -247,7 +243,7 @@ namespace MB_Studio.Manager
             this.groupBox_3_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_3_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_3_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 87);
+            this.groupBox_3_gb.Location = new System.Drawing.Point(39, 86);
             this.groupBox_3_gb.Name = "groupBox_3_gb";
             this.groupBox_3_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_3_gb.TabIndex = 6;
@@ -761,7 +757,7 @@ namespace MB_Studio.Manager
             this.groupBox_7_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_7_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_7_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_7_gb.Location = new System.Drawing.Point(39, 199);
+            this.groupBox_7_gb.Location = new System.Drawing.Point(39, 198);
             this.groupBox_7_gb.Name = "groupBox_7_gb";
             this.groupBox_7_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_7_gb.TabIndex = 14;
@@ -905,7 +901,7 @@ namespace MB_Studio.Manager
             this.groupBox_5_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_5_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_5_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_5_gb.Location = new System.Drawing.Point(39, 143);
+            this.groupBox_5_gb.Location = new System.Drawing.Point(39, 142);
             this.groupBox_5_gb.Name = "groupBox_5_gb";
             this.groupBox_5_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_5_gb.TabIndex = 10;
@@ -1079,7 +1075,7 @@ namespace MB_Studio.Manager
             this.groupBox_4_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_4_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_4_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_4_gb.Location = new System.Drawing.Point(39, 115);
+            this.groupBox_4_gb.Location = new System.Drawing.Point(39, 114);
             this.groupBox_4_gb.Name = "groupBox_4_gb";
             this.groupBox_4_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_4_gb.TabIndex = 8;
@@ -1238,7 +1234,7 @@ namespace MB_Studio.Manager
             this.groupBox_2_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_2_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_2_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_2_gb.Location = new System.Drawing.Point(39, 59);
+            this.groupBox_2_gb.Location = new System.Drawing.Point(39, 58);
             this.groupBox_2_gb.Name = "groupBox_2_gb";
             this.groupBox_2_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_2_gb.TabIndex = 4;
@@ -1388,7 +1384,7 @@ namespace MB_Studio.Manager
             this.groupBox_1_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_1_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_1_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_1_gb.Location = new System.Drawing.Point(39, 31);
+            this.groupBox_1_gb.Location = new System.Drawing.Point(39, 30);
             this.groupBox_1_gb.Name = "groupBox_1_gb";
             this.groupBox_1_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_1_gb.TabIndex = 2;
@@ -1666,7 +1662,7 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_6_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_6_gb.ForeColor = System.Drawing.Color.White;
-            this.groupBox_6_gb.Location = new System.Drawing.Point(39, 171);
+            this.groupBox_6_gb.Location = new System.Drawing.Point(39, 170);
             this.groupBox_6_gb.Name = "groupBox_6_gb";
             this.groupBox_6_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_6_gb.TabIndex = 12;

@@ -32,7 +32,7 @@
             this.module_lbl = new System.Windows.Forms.Label();
             this.addItemFromMod_btn = new System.Windows.Forms.Button();
             this.addKind_gb = new System.Windows.Forms.GroupBox();
-            this.item_rb = new System.Windows.Forms.RadioButton();
+            this.type_rb = new System.Windows.Forms.RadioButton();
             this.meshName_rb = new System.Windows.Forms.RadioButton();
             this.item_cbb = new System.Windows.Forms.ComboBox();
             this.meshName_cbb = new System.Windows.Forms.ComboBox();
@@ -98,20 +98,21 @@
             this.addItemFromMod_btn.Enabled = false;
             this.addItemFromMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addItemFromMod_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 165);
+            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 137);
             this.addItemFromMod_btn.Name = "addItemFromMod_btn";
             this.addItemFromMod_btn.Size = new System.Drawing.Size(225, 27);
             this.addItemFromMod_btn.TabIndex = 1;
             this.addItemFromMod_btn.Tag = "";
-            this.addItemFromMod_btn.Text = "ADD ITEM";
+            this.addItemFromMod_btn.Text = "ADD TYPE";
             this.addItemFromMod_btn.UseVisualStyleBackColor = false;
             this.addItemFromMod_btn.Click += new System.EventHandler(this.AddItemFromMod_btn_Click);
             // 
             // addKind_gb
             // 
-            this.addKind_gb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.addKind_gb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addKind_gb.Controls.Add(this.item_rb);
+            this.addKind_gb.Controls.Add(this.type_rb);
             this.addKind_gb.Controls.Add(this.meshName_rb);
             this.addKind_gb.Controls.Add(this.item_cbb);
             this.addKind_gb.Controls.Add(this.meshName_cbb);
@@ -121,24 +122,24 @@
             this.addKind_gb.ForeColor = System.Drawing.Color.White;
             this.addKind_gb.Location = new System.Drawing.Point(4, 66);
             this.addKind_gb.Name = "addKind_gb";
-            this.addKind_gb.Size = new System.Drawing.Size(365, 90);
+            this.addKind_gb.Size = new System.Drawing.Size(365, 58);
             this.addKind_gb.TabIndex = 0;
             this.addKind_gb.TabStop = false;
             this.addKind_gb.Text = "Add Kind";
             // 
-            // item_rb
+            // type_rb
             // 
-            this.item_rb.AutoSize = true;
-            this.item_rb.FlatAppearance.BorderSize = 0;
-            this.item_rb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.item_rb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.item_rb.Location = new System.Drawing.Point(8, 53);
-            this.item_rb.Name = "item_rb";
-            this.item_rb.Size = new System.Drawing.Size(67, 24);
-            this.item_rb.TabIndex = 0;
-            this.item_rb.Text = "Item:";
-            this.item_rb.UseVisualStyleBackColor = true;
-            this.item_rb.CheckedChanged += new System.EventHandler(this.Item_rb_CheckedChanged);
+            this.type_rb.AutoSize = true;
+            this.type_rb.FlatAppearance.BorderSize = 0;
+            this.type_rb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.type_rb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.type_rb.Location = new System.Drawing.Point(8, 19);
+            this.type_rb.Name = "type_rb";
+            this.type_rb.Size = new System.Drawing.Size(69, 24);
+            this.type_rb.TabIndex = 0;
+            this.type_rb.Text = "Type:";
+            this.type_rb.UseVisualStyleBackColor = true;
+            this.type_rb.CheckedChanged += new System.EventHandler(this.Type_rb_CheckedChanged);
             // 
             // meshName_rb
             // 
@@ -147,13 +148,14 @@
             this.meshName_rb.FlatAppearance.BorderSize = 0;
             this.meshName_rb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.meshName_rb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.meshName_rb.Location = new System.Drawing.Point(8, 19);
+            this.meshName_rb.Location = new System.Drawing.Point(8, 54);
             this.meshName_rb.Name = "meshName_rb";
             this.meshName_rb.Size = new System.Drawing.Size(118, 24);
             this.meshName_rb.TabIndex = 0;
             this.meshName_rb.TabStop = true;
             this.meshName_rb.Text = "Meshname:";
             this.meshName_rb.UseVisualStyleBackColor = true;
+            this.meshName_rb.Visible = false;
             this.meshName_rb.CheckedChanged += new System.EventHandler(this.MeshName_rb_CheckedChanged);
             // 
             // item_cbb
@@ -169,14 +171,14 @@
             this.item_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.item_cbb.FormattingEnabled = true;
             this.item_cbb.ItemHeight = 20;
-            this.item_cbb.Location = new System.Drawing.Point(133, 52);
+            this.item_cbb.Location = new System.Drawing.Point(133, 18);
             this.item_cbb.Name = "item_cbb";
             this.item_cbb.Size = new System.Drawing.Size(225, 28);
             this.item_cbb.Sorted = true;
             this.item_cbb.TabIndex = 0;
             this.item_cbb.TabStop = false;
-            this.item_cbb.Text = " < SELECT ITEM >";
-            this.item_cbb.SelectedIndexChanged += new System.EventHandler(this.Item_cbb_SelectedIndexChanged);
+            this.item_cbb.Text = " < SELECT TYPE >";
+            this.item_cbb.SelectedIndexChanged += new System.EventHandler(this.Type_cbb_SelectedIndexChanged);
             // 
             // meshName_cbb
             // 
@@ -190,18 +192,19 @@
             this.meshName_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.meshName_cbb.FormattingEnabled = true;
             this.meshName_cbb.ItemHeight = 20;
-            this.meshName_cbb.Location = new System.Drawing.Point(133, 18);
+            this.meshName_cbb.Location = new System.Drawing.Point(133, 53);
             this.meshName_cbb.Name = "meshName_cbb";
             this.meshName_cbb.Size = new System.Drawing.Size(225, 28);
             this.meshName_cbb.Sorted = true;
             this.meshName_cbb.TabIndex = 0;
             this.meshName_cbb.TabStop = false;
             this.meshName_cbb.Text = " < SELECT MESH >";
+            this.meshName_cbb.Visible = false;
             this.meshName_cbb.SelectedIndexChanged += new System.EventHandler(this.MeshName_cbb_SelectedIndexChanged);
             // 
             // AddItemFromOtherMod
             // 
-            this.ClientSize = new System.Drawing.Size(374, 200);
+            this.ClientSize = new System.Drawing.Size(374, 172);
             this.Controls.Add(this.addKind_gb);
             this.Controls.Add(this.addItemFromMod_btn);
             this.Controls.Add(this.module_lbl);
@@ -229,7 +232,7 @@
         private System.Windows.Forms.Label module_lbl;
         private System.Windows.Forms.Button addItemFromMod_btn;
         private System.Windows.Forms.GroupBox addKind_gb;
-        private System.Windows.Forms.RadioButton item_rb;
+        private System.Windows.Forms.RadioButton type_rb;
         private System.Windows.Forms.RadioButton meshName_rb;
         private System.Windows.Forms.ComboBox item_cbb;
         private System.Windows.Forms.ComboBox meshName_cbb;

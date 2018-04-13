@@ -135,11 +135,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manager\Support\AddItemFromOtherMod.cs">
+    <Compile Include="Manager\Support\AddTypeFromOtherMod.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Manager\Support\AddItemFromOtherMod.Designer.cs">
-      <DependentUpon>AddItemFromOtherMod.cs</DependentUpon>
+    <Compile Include="Manager\Support\AddTypeFromOtherMod.Designer.cs">
+      <DependentUpon>AddTypeFromOtherMod.cs</DependentUpon>
     </Compile>
     <Compile Include="Support\AutoFixer.cs" />
     <Compile Include="Main\CreateProject.cs">
@@ -243,8 +243,8 @@
     <EmbeddedResource Include="Main\MBOptions.resx">
       <DependentUpon>MBOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Manager\Support\AddItemFromOtherMod.resx">
-      <DependentUpon>AddItemFromOtherMod.cs</DependentUpon>
+    <EmbeddedResource Include="Manager\Support\AddTypeFromOtherMod.resx">
+      <DependentUpon>AddTypeFromOtherMod.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\Support\MenuDesigner.resx">
       <DependentUpon>MenuDesigner.cs</DependentUpon>

@@ -17,6 +17,7 @@ namespace MB_Studio.Manager
         #region Attributes
 
         private int meshTag;
+
         private const byte MESH_CONTROLS_COUNT = 6;//5 ohne Bild
         private const byte MESH_INFO_CONTROLS_COUNT = 6;
         private const byte MESH_CONTROLS_TOP_HEIGHT = 32;
@@ -1171,38 +1172,14 @@ namespace MB_Studio.Manager
             codeLines_b_lbl.Text = lines.Length.ToString();
         }
 
-        private void AddItemFromOtherMod_btn_Click(object sender, EventArgs e)
+        protected override void AddFromOtherMod(out AddItemFromOtherMod f, bool useMesh = true)
         {
-            AddItemFromOtherMod f = new AddItemFromOtherMod(ref openBrfManager);
+            base.AddFromOtherMod(out f, useMesh);
 
-            f.ShowDialog();
+            if (f.MODE != AddItemFromOtherMod.MODES.MESH) return;
+            if (f.SelectedMeshName == null) return;
 
-            if (f.MODE == AddItemFromOtherMod.MODES.MESH)
-            {
-                if (f.SelectedMeshName == null) return;
-                modMeshResourceNames.Add(f.SelectedMeshName);
-            }
-            else if (f.MODE == AddItemFromOtherMod.MODES.ITEM)
-            {
-                if (f.SelectedItem == null) return;
-
-                if (unsavedDataAvailable)
-                {
-                    DialogResult result = MessageBox.Show(
-                        "Alle ungespeicherten Daten werden hiermit gelöscht!" + Environment.NewLine +
-                        "Möchten Sie trotzdem fortfahren?",
-                        Name,
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning,
-                        MessageBoxDefaultButton.Button2
-                    );
-
-                    if (result != DialogResult.Yes) return;
-                }
-
-                typeSelect_lb.SelectedIndex = 0;
-                SetupType(f.SelectedItem);
-            }
+            modMeshResourceNames.Add(f.SelectedMeshName);
         }
 
         private void AddTrigger_btn_Click(object sender, EventArgs e)

@@ -29,7 +29,7 @@ namespace MB_Studio.Manager
             this.idINFO_lbl = new System.Windows.Forms.Label();
             this.save_btn = new System.Windows.Forms.Button();
             this.closeAll_btn = new System.Windows.Forms.Button();
-            this.typeSelect_lb = new ToolTipListBox();
+            this.typeSelect_lb = new importantLib.ToolTipsListBox.ToolTipListBox();
             this.typeSelect_lbl = new System.Windows.Forms.Label();
             this.min_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
@@ -50,6 +50,7 @@ namespace MB_Studio.Manager
             this.singleNameTranslation_txt = new System.Windows.Forms.TextBox();
             this.language_cbb = new System.Windows.Forms.ComboBox();
             this.save_translation_btn = new System.Windows.Forms.Button();
+            this.addFromOtherMod_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.SuspendLayout();
@@ -81,9 +82,10 @@ namespace MB_Studio.Manager
             // 
             this.save_btn.BackColor = System.Drawing.Color.DimGray;
             this.save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.save_btn.Location = new System.Drawing.Point(592, 149);
+            this.save_btn.Location = new System.Drawing.Point(699, 149);
             this.save_btn.Name = "save_btn";
-            this.save_btn.Size = new System.Drawing.Size(202, 23);
+            this.save_btn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.save_btn.Size = new System.Drawing.Size(95, 23);
             this.save_btn.TabIndex = 34;
             this.save_btn.Text = "SAVE";
             this.save_btn.UseVisualStyleBackColor = false;
@@ -95,7 +97,7 @@ namespace MB_Studio.Manager
             this.closeAll_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeAll_btn.Location = new System.Drawing.Point(410, 149);
             this.closeAll_btn.Name = "closeAll_btn";
-            this.closeAll_btn.Size = new System.Drawing.Size(177, 23);
+            this.closeAll_btn.Size = new System.Drawing.Size(95, 23);
             this.closeAll_btn.TabIndex = 33;
             this.closeAll_btn.Text = "CLOSE ALL";
             this.closeAll_btn.UseVisualStyleBackColor = false;
@@ -109,7 +111,8 @@ namespace MB_Studio.Manager
             this.typeSelect_lb.ForeColor = System.Drawing.Color.White;
             this.typeSelect_lb.FormattingEnabled = true;
             this.typeSelect_lb.ItemHeight = 16;
-            this.typeSelect_lb.Items.AddRange(new object[] {"New"});
+            this.typeSelect_lb.Items.AddRange(new object[] {
+            "New"});
             this.typeSelect_lb.Location = new System.Drawing.Point(87, 58);
             this.typeSelect_lb.Name = "typeSelect_lb";
             this.typeSelect_lb.Size = new System.Drawing.Size(317, 114);
@@ -364,12 +367,27 @@ namespace MB_Studio.Manager
             this.save_translation_btn.UseVisualStyleBackColor = false;
             this.save_translation_btn.Click += new System.EventHandler(this.Save_translation_btn_Click);
             // 
+            // addFromOtherMod_btn
+            // 
+            this.addFromOtherMod_btn.BackColor = System.Drawing.Color.DimGray;
+            this.addFromOtherMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addFromOtherMod_btn.Location = new System.Drawing.Point(511, 149);
+            this.addFromOtherMod_btn.Name = "addFromOtherMod_btn";
+            this.addFromOtherMod_btn.Size = new System.Drawing.Size(182, 23);
+            this.addFromOtherMod_btn.TabIndex = 39;
+            this.addFromOtherMod_btn.TabStop = false;
+            this.addFromOtherMod_btn.Tag = "";
+            this.addFromOtherMod_btn.Text = "ADD EXTERNAL ";
+            this.addFromOtherMod_btn.UseVisualStyleBackColor = false;
+            this.addFromOtherMod_btn.Click += new System.EventHandler(this.AddFromOtherMod_btn_Click);
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.ClientSize = new System.Drawing.Size(814, 220);
+            this.Controls.Add(this.addFromOtherMod_btn);
             this.Controls.Add(this.toolPanel);
             this.Controls.Add(this.searchType_SearchTextBox);
             this.Controls.Add(this.idINFO_lbl);
@@ -428,5 +446,6 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Button save_translation_btn;
         protected System.Windows.Forms.Button min_btn;
         protected System.Windows.Forms.Button exit_btn;
+        private System.Windows.Forms.Button addFromOtherMod_btn;
     }
 }

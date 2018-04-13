@@ -772,7 +772,7 @@ namespace MB_Studio.Manager
                     t.Start();
                 }
                 else
-                    openBrfManager.RemoveWindowHandleFromControlsParent();
+                    openBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
             }
 
             if (Parent != null && Has3DView)
@@ -918,5 +918,36 @@ namespace MB_Studio.Manager
         }
 
         #endregion
+
+        private void AddFromOtherMod_btn_Click(object sender, EventArgs e)
+        {
+            AddFromOtherMod(out AddItemFromOtherMod f);
+        }
+
+        protected virtual void AddFromOtherMod(out AddItemFromOtherMod f, bool useMesh = false)
+        {
+            f = new AddItemFromOtherMod(ref openBrfManager, useMesh);
+            f.ShowDialog();
+
+            if (f.MODE != AddItemFromOtherMod.MODES.TYPE) return;
+            if (f.SelectedType == null) return;
+
+            if (unsavedDataAvailable)
+            {
+                DialogResult result = MessageBox.Show(
+                    "Alle ungespeicherten Daten werden hiermit gelöscht!" + Environment.NewLine +
+                    "Möchten Sie trotzdem fortfahren?",
+                    Name,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2
+                );
+
+                if (result != DialogResult.Yes) return;
+            }
+
+            typeSelect_lb.SelectedIndex = 0;
+            SetupType(f.SelectedType);
+        }
     }
 }
