@@ -767,8 +767,7 @@ namespace MB_Studio.Manager
                         while (openBrfManager.IsShown)
                             Thread.Sleep(10);
                         openBrfManager = null;
-                    }))
-                    { IsBackground = true };
+                    })) { IsBackground = true };
                     t.Start();
                 }
                 else
@@ -921,15 +920,14 @@ namespace MB_Studio.Manager
 
         private void AddFromOtherMod_btn_Click(object sender, EventArgs e)
         {
-            AddFromOtherMod(out AddItemFromOtherMod f);
+            AddFromOtherMod(out AddTypeFromOtherMod f);
         }
 
-        protected virtual void AddFromOtherMod(out AddItemFromOtherMod f, bool useMesh = false)
+        protected virtual void AddFromOtherMod(out AddTypeFromOtherMod f)
         {
-            f = new AddItemFromOtherMod(ref openBrfManager, useMesh);
+            f = new AddTypeFromOtherMod(ref openBrfManager, ObjectTypeID);
             f.ShowDialog();
 
-            if (f.MODE != AddItemFromOtherMod.MODES.TYPE) return;
             if (f.SelectedType == null) return;
 
             if (unsavedDataAvailable)

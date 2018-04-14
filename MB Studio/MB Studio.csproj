@@ -135,6 +135,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\Support\AddItemFromOtherMod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\Support\AddItemFromOtherMod.Designer.cs">
+      <DependentUpon>AddItemFromOtherMod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\Support\AddTypeFromOtherMod.cs">
       <SubType>Form</SubType>
     </Compile>

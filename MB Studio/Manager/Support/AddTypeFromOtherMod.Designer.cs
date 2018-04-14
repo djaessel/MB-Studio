@@ -1,6 +1,6 @@
 ﻿namespace MB_Studio
 {
-    partial class AddItemFromOtherMod
+    partial class AddTypeFromOtherMod
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -30,13 +30,9 @@
         {
             this.module_cbb = new System.Windows.Forms.ComboBox();
             this.module_lbl = new System.Windows.Forms.Label();
-            this.addItemFromMod_btn = new System.Windows.Forms.Button();
-            this.addKind_gb = new System.Windows.Forms.GroupBox();
-            this.type_rb = new System.Windows.Forms.RadioButton();
-            this.meshName_rb = new System.Windows.Forms.RadioButton();
-            this.item_cbb = new System.Windows.Forms.ComboBox();
-            this.meshName_cbb = new System.Windows.Forms.ComboBox();
-            this.addKind_gb.SuspendLayout();
+            this.addTypeFromMod_btn = new System.Windows.Forms.Button();
+            this.type_lbl = new System.Windows.Forms.Label();
+            this.types_cbb = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // min_btn
@@ -44,19 +40,18 @@
             this.min_btn.FlatAppearance.BorderSize = 0;
             this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.min_btn.Location = new System.Drawing.Point(310, -2);
+            this.min_btn.Location = new System.Drawing.Point(276, -2);
             // 
             // exit_btn
             // 
             this.exit_btn.FlatAppearance.BorderSize = 0;
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.exit_btn.Location = new System.Drawing.Point(342, 0);
-            this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
+            this.exit_btn.Location = new System.Drawing.Point(308, 0);
             // 
             // title_lbl
             // 
-            this.title_lbl.Size = new System.Drawing.Size(310, 24);
+            this.title_lbl.Size = new System.Drawing.Size(276, 24);
             this.title_lbl.Text = "TEXT";
             // 
             // module_cbb
@@ -71,156 +66,90 @@
             this.module_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.module_cbb.FormattingEnabled = true;
             this.module_cbb.ItemHeight = 20;
-            this.module_cbb.Location = new System.Drawing.Point(137, 34);
+            this.module_cbb.Location = new System.Drawing.Point(90, 34);
             this.module_cbb.Name = "module_cbb";
-            this.module_cbb.Size = new System.Drawing.Size(225, 28);
+            this.module_cbb.Size = new System.Drawing.Size(238, 28);
             this.module_cbb.Sorted = true;
             this.module_cbb.TabIndex = 0;
             this.module_cbb.TabStop = false;
-            this.module_cbb.Text = " < SELECT MODULE >";
             this.module_cbb.SelectedIndexChanged += new System.EventHandler(this.Module_cbb_SelectedIndexChanged);
             // 
             // module_lbl
             // 
             this.module_lbl.AutoSize = true;
             this.module_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.module_lbl.Location = new System.Drawing.Point(27, 37);
+            this.module_lbl.Location = new System.Drawing.Point(12, 37);
             this.module_lbl.Name = "module_lbl";
             this.module_lbl.Size = new System.Drawing.Size(72, 20);
             this.module_lbl.TabIndex = 0;
             this.module_lbl.Text = "Module:";
             // 
-            // addItemFromMod_btn
+            // addTypeFromMod_btn
             // 
-            this.addItemFromMod_btn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.addTypeFromMod_btn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addItemFromMod_btn.BackColor = System.Drawing.Color.DimGray;
-            this.addItemFromMod_btn.Enabled = false;
-            this.addItemFromMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addItemFromMod_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addItemFromMod_btn.Location = new System.Drawing.Point(137, 137);
-            this.addItemFromMod_btn.Name = "addItemFromMod_btn";
-            this.addItemFromMod_btn.Size = new System.Drawing.Size(225, 27);
-            this.addItemFromMod_btn.TabIndex = 1;
-            this.addItemFromMod_btn.Tag = "";
-            this.addItemFromMod_btn.Text = "ADD TYPE";
-            this.addItemFromMod_btn.UseVisualStyleBackColor = false;
-            this.addItemFromMod_btn.Click += new System.EventHandler(this.AddItemFromMod_btn_Click);
+            this.addTypeFromMod_btn.BackColor = System.Drawing.Color.DimGray;
+            this.addTypeFromMod_btn.Enabled = false;
+            this.addTypeFromMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addTypeFromMod_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addTypeFromMod_btn.Location = new System.Drawing.Point(90, 102);
+            this.addTypeFromMod_btn.Name = "addTypeFromMod_btn";
+            this.addTypeFromMod_btn.Size = new System.Drawing.Size(238, 27);
+            this.addTypeFromMod_btn.TabIndex = 1;
+            this.addTypeFromMod_btn.Tag = "";
+            this.addTypeFromMod_btn.Text = "ADD TYPE";
+            this.addTypeFromMod_btn.UseVisualStyleBackColor = false;
+            this.addTypeFromMod_btn.Click += new System.EventHandler(this.AddTypeFromMod_btn_Click);
             // 
-            // addKind_gb
+            // type_lbl
             // 
-            this.addKind_gb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.type_lbl.AutoSize = true;
+            this.type_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.type_lbl.Location = new System.Drawing.Point(32, 71);
+            this.type_lbl.Name = "type_lbl";
+            this.type_lbl.Size = new System.Drawing.Size(52, 20);
+            this.type_lbl.TabIndex = 2;
+            this.type_lbl.Text = "Type:";
+            // 
+            // types_cbb
+            // 
+            this.types_cbb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addKind_gb.Controls.Add(this.type_rb);
-            this.addKind_gb.Controls.Add(this.meshName_rb);
-            this.addKind_gb.Controls.Add(this.item_cbb);
-            this.addKind_gb.Controls.Add(this.meshName_cbb);
-            this.addKind_gb.Enabled = false;
-            this.addKind_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addKind_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addKind_gb.ForeColor = System.Drawing.Color.White;
-            this.addKind_gb.Location = new System.Drawing.Point(4, 66);
-            this.addKind_gb.Name = "addKind_gb";
-            this.addKind_gb.Size = new System.Drawing.Size(365, 58);
-            this.addKind_gb.TabIndex = 0;
-            this.addKind_gb.TabStop = false;
-            this.addKind_gb.Text = "Add Kind";
+            this.types_cbb.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.types_cbb.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.types_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.types_cbb.Enabled = false;
+            this.types_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.types_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.types_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.types_cbb.FormattingEnabled = true;
+            this.types_cbb.ItemHeight = 20;
+            this.types_cbb.Location = new System.Drawing.Point(90, 68);
+            this.types_cbb.Name = "types_cbb";
+            this.types_cbb.Size = new System.Drawing.Size(238, 28);
+            this.types_cbb.Sorted = true;
+            this.types_cbb.TabIndex = 0;
+            this.types_cbb.TabStop = false;
             // 
-            // type_rb
+            // AddTypeFromOtherMod
             // 
-            this.type_rb.AutoSize = true;
-            this.type_rb.FlatAppearance.BorderSize = 0;
-            this.type_rb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.type_rb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.type_rb.Location = new System.Drawing.Point(8, 19);
-            this.type_rb.Name = "type_rb";
-            this.type_rb.Size = new System.Drawing.Size(69, 24);
-            this.type_rb.TabIndex = 0;
-            this.type_rb.Text = "Type:";
-            this.type_rb.UseVisualStyleBackColor = true;
-            this.type_rb.CheckedChanged += new System.EventHandler(this.Type_rb_CheckedChanged);
-            // 
-            // meshName_rb
-            // 
-            this.meshName_rb.AutoSize = true;
-            this.meshName_rb.Checked = true;
-            this.meshName_rb.FlatAppearance.BorderSize = 0;
-            this.meshName_rb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.meshName_rb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.meshName_rb.Location = new System.Drawing.Point(8, 54);
-            this.meshName_rb.Name = "meshName_rb";
-            this.meshName_rb.Size = new System.Drawing.Size(118, 24);
-            this.meshName_rb.TabIndex = 0;
-            this.meshName_rb.TabStop = true;
-            this.meshName_rb.Text = "Meshname:";
-            this.meshName_rb.UseVisualStyleBackColor = true;
-            this.meshName_rb.Visible = false;
-            this.meshName_rb.CheckedChanged += new System.EventHandler(this.MeshName_rb_CheckedChanged);
-            // 
-            // item_cbb
-            // 
-            this.item_cbb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.item_cbb.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.item_cbb.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.item_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.item_cbb.Enabled = false;
-            this.item_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.item_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.item_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.item_cbb.FormattingEnabled = true;
-            this.item_cbb.ItemHeight = 20;
-            this.item_cbb.Location = new System.Drawing.Point(133, 18);
-            this.item_cbb.Name = "item_cbb";
-            this.item_cbb.Size = new System.Drawing.Size(225, 28);
-            this.item_cbb.Sorted = true;
-            this.item_cbb.TabIndex = 0;
-            this.item_cbb.TabStop = false;
-            this.item_cbb.Text = " < SELECT TYPE >";
-            this.item_cbb.SelectedIndexChanged += new System.EventHandler(this.Type_cbb_SelectedIndexChanged);
-            // 
-            // meshName_cbb
-            // 
-            this.meshName_cbb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.meshName_cbb.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.meshName_cbb.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.meshName_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.meshName_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.meshName_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.meshName_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.meshName_cbb.FormattingEnabled = true;
-            this.meshName_cbb.ItemHeight = 20;
-            this.meshName_cbb.Location = new System.Drawing.Point(133, 53);
-            this.meshName_cbb.Name = "meshName_cbb";
-            this.meshName_cbb.Size = new System.Drawing.Size(225, 28);
-            this.meshName_cbb.Sorted = true;
-            this.meshName_cbb.TabIndex = 0;
-            this.meshName_cbb.TabStop = false;
-            this.meshName_cbb.Text = " < SELECT MESH >";
-            this.meshName_cbb.Visible = false;
-            this.meshName_cbb.SelectedIndexChanged += new System.EventHandler(this.MeshName_cbb_SelectedIndexChanged);
-            // 
-            // AddItemFromOtherMod
-            // 
-            this.ClientSize = new System.Drawing.Size(374, 172);
-            this.Controls.Add(this.addKind_gb);
-            this.Controls.Add(this.addItemFromMod_btn);
+            this.ClientSize = new System.Drawing.Size(340, 136);
+            this.Controls.Add(this.types_cbb);
+            this.Controls.Add(this.type_lbl);
+            this.Controls.Add(this.addTypeFromMod_btn);
             this.Controls.Add(this.module_lbl);
             this.Controls.Add(this.module_cbb);
-            this.Name = "AddItemFromOtherMod";
-            this.Text = "Add Item To Mod";
-            this.Load += new System.EventHandler(this.AddItemFromOtherMod_Load);
+            this.Name = "AddTypeFromOtherMod";
+            this.Text = "Add Type To Mod";
+            this.Load += new System.EventHandler(this.AddTypeFromOtherMod_Load);
             this.Controls.SetChildIndex(this.module_cbb, 0);
             this.Controls.SetChildIndex(this.module_lbl, 0);
-            this.Controls.SetChildIndex(this.addItemFromMod_btn, 0);
-            this.Controls.SetChildIndex(this.addKind_gb, 0);
+            this.Controls.SetChildIndex(this.addTypeFromMod_btn, 0);
+            this.Controls.SetChildIndex(this.type_lbl, 0);
             this.Controls.SetChildIndex(this.title_lbl, 0);
             this.Controls.SetChildIndex(this.exit_btn, 0);
             this.Controls.SetChildIndex(this.min_btn, 0);
-            this.addKind_gb.ResumeLayout(false);
-            this.addKind_gb.PerformLayout();
+            this.Controls.SetChildIndex(this.types_cbb, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,11 +159,8 @@
 
         private System.Windows.Forms.ComboBox module_cbb;
         private System.Windows.Forms.Label module_lbl;
-        private System.Windows.Forms.Button addItemFromMod_btn;
-        private System.Windows.Forms.GroupBox addKind_gb;
-        private System.Windows.Forms.RadioButton type_rb;
-        private System.Windows.Forms.RadioButton meshName_rb;
-        private System.Windows.Forms.ComboBox item_cbb;
-        private System.Windows.Forms.ComboBox meshName_cbb;
+        private System.Windows.Forms.Button addTypeFromMod_btn;
+        private System.Windows.Forms.Label type_lbl;
+        private System.Windows.Forms.ComboBox types_cbb;
     }
 }

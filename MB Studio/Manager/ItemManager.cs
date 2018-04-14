@@ -1172,14 +1172,14 @@ namespace MB_Studio.Manager
             codeLines_b_lbl.Text = lines.Length.ToString();
         }
 
-        protected override void AddFromOtherMod(out AddItemFromOtherMod f, bool useMesh = true)
+        protected override void AddFromOtherMod(out AddTypeFromOtherMod f)
         {
-            base.AddFromOtherMod(out f, useMesh);
+            base.AddFromOtherMod(out f);
 
-            if (f.MODE != AddItemFromOtherMod.MODES.MESH) return;
-            if (f.SelectedMeshName == null) return;
+            //if (f.MODE != AddTypeFromOtherMod.MODES.MESH) return;
+            /*if (f.SelectedMeshName == null) return;
 
-            modMeshResourceNames.Add(f.SelectedMeshName);
+            modMeshResourceNames.Add(f.SelectedMeshName);*/
         }
 
         private void AddTrigger_btn_Click(object sender, EventArgs e)
