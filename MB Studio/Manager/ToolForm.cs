@@ -749,45 +749,42 @@ namespace MB_Studio.Manager
             if (Has3DView)//correct?
                 openBrfFormCount--;
 
-            if (OpenBrfManager != null)
+            if (openBrfFormCount <= 0)
             {
-                if (openBrfFormCount <= 0)
+                if (OpenBrfManager.IsShown)
+                    OpenBrfManager.Close();
+
+                if (openBrfThread != null)
                 {
-                    if (OpenBrfManager.IsShown)
-                        OpenBrfManager.Close();
-
-                    if (openBrfThread != null)
-                    {
-                        if (openBrfThread.IsAlive) openBrfThread.Join(1);//is needed?
-                        Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
-                    }
-
-                    Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
-                    {
-                        while (OpenBrfManager.IsShown)
-                            Thread.Sleep(10);
-                        OpenBrfManager = null;
-                    })) { IsBackground = true };
-                    t.Start();
+                    if (openBrfThread.IsAlive) openBrfThread.Join(1);//is needed?
+                    Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
                 }
-                else
-                    OpenBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
+
+                Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
+                {
+                    while (OpenBrfManager.IsShown)
+                        Thread.Sleep(10);
+                    OpenBrfManager = null;
+                }))
+                { IsBackground = true };
+                t.Start();
             }
+            else if (OpenBrfManager != null/* && Has3DView*/)
+                OpenBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
 
-            if (Parent != null && Has3DView)
+            if (Parent == null || !Has3DView) return;
+
+            TabPage tabPage = TabPage;
+            TabControl tc = GetTabControlByTabPage(tabPage);
+            tc.SelectedIndexChanged -= Tc_SelectedIndexChanged;
+            tabNames.Remove(Name);
+            if (tabNames.Count != 0)
             {
-                TabPage tabPage = TabPage;
-                TabControl tc = GetTabControlByTabPage(tabPage);
-                tc.SelectedIndexChanged -= Tc_SelectedIndexChanged;
-                tabNames.Remove(Name);
-                if (tabNames.Count != 0)
-                {
-                    string tabX = tabNames[0];
-                    if (tc.SelectedTab.Name.Equals(tabPage.Name))
-                        tc.SelectTab(tabX);
-                    else
-                        OpenBrfManager.AddWindowHandleToControlsParent(tc.TabPages[tc.TabPages.IndexOfKey(tabX)].Controls.Find(tabX, true)[0]);
-                }
+                string tabX = tabNames[0];
+                if (tc.SelectedTab.Name.Equals(tabPage.Name))
+                    tc.SelectTab(tabX);
+                else
+                    OpenBrfManager.AddWindowHandleToControlsParent(tc.TabPages[tc.TabPages.IndexOfKey(tabX)].Controls.Find(tabX, true)[0]);
             }
         }
 

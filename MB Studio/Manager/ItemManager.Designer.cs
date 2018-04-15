@@ -262,15 +262,6 @@
             this.groupBox_7_gb.SuspendLayout();
             this.SuspendLayout();
             // 
-            // save_btn
-            // 
-            this.save_btn.Location = new System.Drawing.Point(699, 149);
-            this.save_btn.Size = new System.Drawing.Size(95, 23);
-            // 
-            // closeAll_btn
-            // 
-            this.closeAll_btn.Size = new System.Drawing.Size(95, 23);
-            // 
             // typeSelect_lb
             // 
             this.typeSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TypeSelect_lb_SelectedIndexChanged);
@@ -340,6 +331,10 @@
             this.exit_btn.FlatAppearance.BorderSize = 0;
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            // 
+            // addFromOtherMod_btn
+            // 
+            this.addFromOtherMod_btn.Enabled = true;
             // 
             // showGroup_1_btn
             // 

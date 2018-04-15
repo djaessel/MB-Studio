@@ -35,7 +35,7 @@ namespace MB_Studio.Main
             ProjectCreated = false;
             InitializeComponent();
         }
-        
+
         private new void InitializeComponent()
         {
             this.destinationModul_txt = new System.Windows.Forms.TextBox();
@@ -130,7 +130,7 @@ namespace MB_Studio.Main
             // 
             // destinationModul_lbl
             // 
-            this.destinationModul_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.destinationModul_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.destinationModul_lbl.AutoSize = true;
             this.destinationModul_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -144,7 +144,7 @@ namespace MB_Studio.Main
             // 
             // name_lbl
             // 
-            this.name_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.name_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.name_lbl.AutoSize = true;
             this.name_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -181,7 +181,7 @@ namespace MB_Studio.Main
             // 
             // path_lbl
             // 
-            this.path_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.path_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.path_lbl.AutoSize = true;
             this.path_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -195,7 +195,7 @@ namespace MB_Studio.Main
             // 
             // originalModule_lbl
             // 
-            this.originalModule_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.originalModule_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.originalModule_lbl.AutoSize = true;
             this.originalModule_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -295,7 +295,7 @@ namespace MB_Studio.Main
 
             if (!Directory.Exists(modulesDir + s))
             {
-                
+
                 if (modules.Length > 0)
                 {
                     s = modules[0];
@@ -332,6 +332,7 @@ namespace MB_Studio.Main
         private void Create_btn_Click(object sender, EventArgs e)
         {
             bool newDir = false;
+            bool isOK = false;
             if (!useOriginalMod_cb.Checked)
             {
                 // !!! HAS TO BE HERE FOR NOW !!! //
@@ -341,52 +342,58 @@ namespace MB_Studio.Main
                     Directory.CreateDirectory(destModPath);
                 // !!! HAS TO BE HERE FOR NOW !!! //
             }
-            CreateProjectFolder();
-            if (!useOriginalMod_cb.Checked)
-                CreateModuleFolder(newDir);
-            ProgramConsole.LoadProject(CodeReader.ProjectPath);
-            ProjectCreated = true;
+
+            isOK = CreateProjectFolder();
+            if (!useOriginalMod_cb.Checked && isOK)
+                isOK = CreateModuleFolder(newDir);
+
+            if (isOK)
+            {
+                ProgramConsole.LoadProject(CodeReader.ProjectPath);
+                ProjectCreated = true;
+            }
+
             Close();
         }
 
-        private void CreateProjectFolder()
+        private bool CreateProjectFolder()
         {
+            if (!copyTextFiles_cb.Checked) return true;
+
             string destPath = path_txt.Text;
-            if (copyTextFiles_cb.CheckState != CheckState.Unchecked)
+            bool directoryNew = !Directory.Exists(destPath);
+            DialogResult forceOverride = DialogResult.Yes;
+
+            if (!directoryNew)
+                forceOverride = ShowErrorPathAlreadyExists(destPath);
+
+            if (!directoryNew && forceOverride != DialogResult.Yes) return false;
+
+            string headerFiles = "headerFiles";
+            string moduleFiles = "moduleFiles";
+            string moduleSystem = "moduleSystem";
+
+            //if (!directoryNew)
+            Directory.CreateDirectory(destPath);
+
+            destPath += '\\';
+
+            //if (!Directory.Exists(destPath + headerFiles))
+            Directory.CreateDirectory(destPath + headerFiles);
+            //if (!Directory.Exists(destPath + moduleFiles))
+            Directory.CreateDirectory(destPath + moduleFiles);
+            //if (!Directory.Exists(destPath + moduleSystem))
+            Directory.CreateDirectory(destPath + moduleSystem);
+
+            //ProgramConsole.SaveNewSelectedMod(modules_cbb.SelectedItem.ToString(), destPath);
+
+            //CodeReader.ProjectPath = destPath; // Initialize??? because this needs to have a own mod and destinion for each project!!! so why not change the extraoption SetMod to this location
+
+            //File.WriteAllText(destPath + "module_info.py", "export_dir = \"" + CodeReader.ModPath.Replace('\\', '/') + '\"');
+
+            string module_info__path = File.ReadAllText(CodeReader.FILES_PATH + "module_info.path");
+            string[] info = new string[]
             {
-                DialogResult forceOverride = DialogResult.Yes;
-                bool directoryNew = !Directory.Exists(destPath);
-
-                if (!directoryNew)
-                    forceOverride = ShowErrorPathAlreadyExists(destPath);
-
-                if (directoryNew || forceOverride == DialogResult.Yes)
-                {
-                    string headerFiles = "headerFiles";
-                    string moduleFiles = "moduleFiles";
-                    string moduleSystem = "moduleSystem";
-
-                    //if (!directoryNew)
-                    Directory.CreateDirectory(destPath);
-
-                    destPath += '\\';
-
-                    //if (!Directory.Exists(destPath + headerFiles))
-                    Directory.CreateDirectory(destPath + headerFiles);
-                    //if (!Directory.Exists(destPath + moduleFiles))
-                    Directory.CreateDirectory(destPath + moduleFiles);
-                    //if (!Directory.Exists(destPath + moduleSystem))
-                    Directory.CreateDirectory(destPath + moduleSystem);
-
-                    //ProgramConsole.SaveNewSelectedMod(modules_cbb.SelectedItem.ToString(), destPath);
-
-                    //CodeReader.ProjectPath = destPath; // Initialize??? because this needs to have a own mod and destinion for each project!!! so why not change the extraoption SetMod to this location
-
-                    //File.WriteAllText(destPath + "module_info.py", "export_dir = \"" + CodeReader.ModPath.Replace('\\', '/') + '\"');
-
-                    string module_info__path = File.ReadAllText(CodeReader.FILES_PATH + "module_info.path");
-                    string[] info = new string[]
-                    {
                         name_txt.Text,
                         destPath,
                         modules_cbb.SelectedItem.ToString(),
@@ -395,23 +402,67 @@ namespace MB_Studio.Main
                         module_info__path.Replace("%MOD_NAME%", destinationModul_txt.Text),
                      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                         useDefaultVariables_cb.Checked.ToString(),
-                    };
+            };
 
-                    CodeReader.ProjectPath = destPath.Trim('\\');
+            CodeReader.ProjectPath = destPath.Trim('\\');
 
-                    ProgramConsole.SaveProjectFileInfo(CodeReader.ProjectPath, info); //File.WriteAllLines(destPath + Path.GetFileName(destPath.TrimEnd('\\') + ".mbsp"), info);
-                    ProgramConsole.SetMods(CodeReader.ProjectPath);
+            ProgramConsole.SaveProjectFileInfo(CodeReader.ProjectPath, info); //File.WriteAllLines(destPath + Path.GetFileName(destPath.TrimEnd('\\') + ".mbsp"), info);
+            ProgramConsole.SetMods(CodeReader.ProjectPath);
 
-                    moduleSystem += '\\';
+            moduleSystem += '\\';
 
-                    CodeWriter.CheckPaths();
-                    foreach (string file in Directory.GetFiles(CodeWriter.DefaultModuleSystemPath))
-                        File.Copy(file, destPath + moduleSystem + Path.GetFileName(file), !directoryNew);
+            CodeWriter.CheckPaths();
+            foreach (string file in Directory.GetFiles(CodeWriter.DefaultModuleSystemPath))
+                File.Copy(file, destPath + moduleSystem + Path.GetFileName(file), !directoryNew);
 
-                    if (useDefaultVariables_cb.Checked)
-                        CopyVariables(destPath, moduleSystem);
+            if (useDefaultVariables_cb.Checked)
+                CopyVariables(destPath, moduleSystem);
+
+            return true;
+        }
+
+        private bool CreateModuleFolder(bool directoryNew = true)
+        {
+            string modPath = ProgramConsole.OriginalModPath;
+            string destPath = ProgramConsole.DestinationModPath;
+            List<string> textFileEndings = new List<string>() { "TXT", "INI", "H", "FX", "CSV" };
+            DialogResult forceOverride = DialogResult.Yes;
+
+            if (!directoryNew)
+                directoryNew = !Directory.Exists(destPath);
+
+            if (!directoryNew)
+                forceOverride = ShowErrorPathAlreadyExists(destPath);
+
+            if (!directoryNew && forceOverride != DialogResult.Yes) return false;
+
+            //if (!directoryNew)
+            Directory.CreateDirectory(destPath);
+
+            if (!copyTextFiles_cb.Checked) return true;
+
+            List<string> paths = GetAllPaths(modPath.TrimEnd('\\'));
+            foreach (string path in paths)
+            {
+                string px = path.Replace(modPath, string.Empty);
+                string fileEnding = string.Empty;
+
+                if (px.Contains("."))
+                    fileEnding += path.Substring(path.LastIndexOf('.') + 1).ToUpper();
+
+                if (CodeReader.CountCharInString(px, '\\') > 0)
+                {
+                    string dir = destPath + Path.GetDirectoryName(px);
+                    //if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+                    if (textFileEndings.Contains(fileEnding) || copyNonTextFiles_cb.CheckState != CheckState.Unchecked)
+                        File.Copy(path, dir + '\\' + Path.GetFileName(px), !directoryNew);
                 }
+                else if (textFileEndings.Contains(fileEnding) || copyNonTextFiles_cb.CheckState != CheckState.Unchecked)
+                    File.Copy(path, destPath + Path.GetFileName(path), !directoryNew);
             }
+
+            return true;
         }
 
         private void CopyVariables(string destPath, string moduleSystem)
@@ -434,48 +485,6 @@ namespace MB_Studio.Main
                             File.Delete(destPath + vars);
                 }
             } while (dlr == DialogResult.Retry);
-        }
-
-        private void CreateModuleFolder(bool directoryNew = true)
-        {
-            string modPath = ProgramConsole.OriginalModPath;
-            string destPath = ProgramConsole.DestinationModPath;
-            DialogResult forceOverride = DialogResult.Yes;
-            if (!directoryNew)
-                directoryNew = !Directory.Exists(destPath);
-
-            List<string> textFileEndings = new List<string>() { "TXT", "INI", "H", "FX", "CSV" };
-
-            if (!directoryNew)
-                forceOverride = ShowErrorPathAlreadyExists(destPath);
-
-            if (directoryNew || forceOverride == DialogResult.Yes)
-            {
-                //if (!directoryNew)
-                    Directory.CreateDirectory(destPath);
-                if (copyTextFiles_cb.CheckState != CheckState.Unchecked)
-                {
-                    List<string> paths = GetAllPaths(modPath.TrimEnd('\\'));
-                    foreach (string path in paths)
-                    {
-                        string px = path.Replace(modPath, string.Empty);
-                        string fileEnding = string.Empty;
-
-                        if (px.Contains("."))
-                            fileEnding += path.Substring(path.LastIndexOf('.') + 1).ToUpper();
-                        if (CodeReader.CountCharInString(px, '\\') > 0)
-                        {
-                            string dir = destPath + Path.GetDirectoryName(px);
-                            //if (!Directory.Exists(dir))
-                            Directory.CreateDirectory(dir);
-                            if (textFileEndings.Contains(fileEnding) || copyNonTextFiles_cb.CheckState != CheckState.Unchecked)
-                                File.Copy(path, dir + '\\' + Path.GetFileName(px), !directoryNew);
-                        }
-                        else if (textFileEndings.Contains(fileEnding) || copyNonTextFiles_cb.CheckState != CheckState.Unchecked)
-                            File.Copy(path, destPath + Path.GetFileName(path), !directoryNew);
-                    }
-                }
-            }
         }
 
         private List<string> GetAllPaths(string directory, List<string> paths = null)

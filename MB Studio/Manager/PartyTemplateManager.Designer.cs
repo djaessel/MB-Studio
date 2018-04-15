@@ -137,6 +137,10 @@
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             // 
+            // addFromOtherMod_btn
+            // 
+            this.addFromOtherMod_btn.Enabled = false;
+            // 
             // groupBox_2_gb
             // 
             this.groupBox_2_gb.Controls.Add(this.faction_cbb);

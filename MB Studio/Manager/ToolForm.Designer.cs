@@ -370,6 +370,7 @@ namespace MB_Studio.Manager
             // addFromOtherMod_btn
             // 
             this.addFromOtherMod_btn.BackColor = System.Drawing.Color.DimGray;
+            this.addFromOtherMod_btn.Enabled = false;
             this.addFromOtherMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addFromOtherMod_btn.Location = new System.Drawing.Point(511, 149);
             this.addFromOtherMod_btn.Name = "addFromOtherMod_btn";
@@ -446,6 +447,6 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Button save_translation_btn;
         protected System.Windows.Forms.Button min_btn;
         protected System.Windows.Forms.Button exit_btn;
-        private System.Windows.Forms.Button addFromOtherMod_btn;
+        protected System.Windows.Forms.Button addFromOtherMod_btn;
     }
 }
