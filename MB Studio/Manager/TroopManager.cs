@@ -85,13 +85,13 @@ namespace MB_Studio.Manager
         {
             if (IsDataLoaded && Has3DView)
             {//change later so only the specific bone will be updated!
-                openBrfManager.Troop3DPreviewClearData();//doesn't clear correct?
+                OpenBrfManager.Troop3DPreviewClearData();//doesn't clear correct?
                 //openBrfManager.Troop3DPreviewShow();//workaround (it saves cleared state)
                 foreach (Control c in showItemsInOpenBrf_gb.Controls)
                     if (GetNameEndOfControl(c).Equals("cbb"))
                         if (((ComboBox)c).SelectedIndex >= 0)
                             SetupTroopItemBone(((ComboBox)c).SelectedItem.ToString());
-                openBrfManager.Troop3DPreviewShow();//change later so only the specific bone will be updated!
+                OpenBrfManager.Troop3DPreviewShow();//change later so only the specific bone will be updated!
             }
         }
 
@@ -158,8 +158,8 @@ namespace MB_Studio.Manager
                 if (c.Name.Substring(c.Name.LastIndexOf('_') + 1).Equals("cbb"))
                     ((ComboBox)c).Items.Clear();
 
-            if (items_lb.Items.Count != 0 && openBrfManager != null)
-                if (openBrfManager.IsShown && items_lb.SelectedIndex != 0)
+            if (items_lb.Items.Count != 0 && OpenBrfManager != null)
+                if (OpenBrfManager.IsShown && items_lb.SelectedIndex != 0)
                     items_lb.SelectedIndex = 0;
 
             face1_txt.Text = FACE_CODE_ZERO;
@@ -441,7 +441,7 @@ namespace MB_Studio.Manager
                     foreach (string meshName in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
                     {
                         string mName = meshName.Split()[0].Trim();
-                        if (openBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
+                        if (OpenBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
                             Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
                         else
                             Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
@@ -899,7 +899,7 @@ namespace MB_Studio.Manager
 
         private void Items_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Has3DView && openBrfManager != null)
+            if (Has3DView && OpenBrfManager != null)
                 LoadCurrentMeshWithOpenBrf((ListBox)sender);
         }
 
@@ -921,7 +921,7 @@ namespace MB_Studio.Manager
                             {
                                 string sss = itemX.Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
-                                Console.WriteLine("void LoadCurrentMeshWithOpenBrf(ListBox lb) : " + openBrfManager.SelectItemNameByKind(sss));
+                                Console.WriteLine("void LoadCurrentMeshWithOpenBrf(ListBox lb) : " + OpenBrfManager.SelectItemNameByKind(sss));
                             }
                             i = itemsRList.Count;
                         }
@@ -952,7 +952,7 @@ namespace MB_Studio.Manager
                             {
                                 string sss = itemX.Meshes[j].Split()[0].Trim();
                                 Console.WriteLine("|" + sss + "|");
-                                Console.WriteLine("void Troop3DPreview(ListBox lb) : " + openBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
+                                Console.WriteLine("void Troop3DPreview(ListBox lb) : " + OpenBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
 
                             }
                             i = itemsRList.Count;

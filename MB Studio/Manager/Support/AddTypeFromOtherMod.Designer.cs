@@ -31,8 +31,8 @@
             this.module_cbb = new System.Windows.Forms.ComboBox();
             this.module_lbl = new System.Windows.Forms.Label();
             this.addTypeFromMod_btn = new System.Windows.Forms.Button();
-            this.type_lbl = new System.Windows.Forms.Label();
-            this.types_cbb = new System.Windows.Forms.ComboBox();
+            this.type_cbb = new System.Windows.Forms.ComboBox();
+            this.type_rb = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // min_btn
@@ -48,6 +48,7 @@
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.Location = new System.Drawing.Point(308, 0);
+            this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
             // 
             // title_lbl
             // 
@@ -101,55 +102,61 @@
             this.addTypeFromMod_btn.UseVisualStyleBackColor = false;
             this.addTypeFromMod_btn.Click += new System.EventHandler(this.AddTypeFromMod_btn_Click);
             // 
-            // type_lbl
+            // type_cbb
             // 
-            this.type_lbl.AutoSize = true;
-            this.type_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.type_lbl.Location = new System.Drawing.Point(32, 71);
-            this.type_lbl.Name = "type_lbl";
-            this.type_lbl.Size = new System.Drawing.Size(52, 20);
-            this.type_lbl.TabIndex = 2;
-            this.type_lbl.Text = "Type:";
-            // 
-            // types_cbb
-            // 
-            this.types_cbb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.type_cbb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.types_cbb.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.types_cbb.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.types_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.types_cbb.Enabled = false;
-            this.types_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.types_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.types_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.types_cbb.FormattingEnabled = true;
-            this.types_cbb.ItemHeight = 20;
-            this.types_cbb.Location = new System.Drawing.Point(90, 68);
-            this.types_cbb.Name = "types_cbb";
-            this.types_cbb.Size = new System.Drawing.Size(238, 28);
-            this.types_cbb.Sorted = true;
-            this.types_cbb.TabIndex = 0;
-            this.types_cbb.TabStop = false;
+            this.type_cbb.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.type_cbb.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.type_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.type_cbb.Enabled = false;
+            this.type_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.type_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.type_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.type_cbb.FormattingEnabled = true;
+            this.type_cbb.ItemHeight = 20;
+            this.type_cbb.Location = new System.Drawing.Point(90, 68);
+            this.type_cbb.Name = "type_cbb";
+            this.type_cbb.Size = new System.Drawing.Size(238, 28);
+            this.type_cbb.Sorted = true;
+            this.type_cbb.TabIndex = 0;
+            this.type_cbb.TabStop = false;
+            this.type_cbb.SelectedIndexChanged += new System.EventHandler(this.Types_cbb_SelectedIndexChanged);
+            // 
+            // type_rb
+            // 
+            this.type_rb.AutoSize = true;
+            this.type_rb.Checked = true;
+            this.type_rb.Enabled = false;
+            this.type_rb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.type_rb.Location = new System.Drawing.Point(14, 69);
+            this.type_rb.Name = "type_rb";
+            this.type_rb.Size = new System.Drawing.Size(70, 24);
+            this.type_rb.TabIndex = 2;
+            this.type_rb.TabStop = true;
+            this.type_rb.Text = "Type:";
+            this.type_rb.UseVisualStyleBackColor = true;
+            this.type_rb.CheckedChanged += new System.EventHandler(this.Type_rb_CheckedChanged);
             // 
             // AddTypeFromOtherMod
             // 
             this.ClientSize = new System.Drawing.Size(340, 136);
-            this.Controls.Add(this.types_cbb);
-            this.Controls.Add(this.type_lbl);
+            this.Controls.Add(this.type_rb);
+            this.Controls.Add(this.type_cbb);
             this.Controls.Add(this.addTypeFromMod_btn);
             this.Controls.Add(this.module_lbl);
             this.Controls.Add(this.module_cbb);
             this.Name = "AddTypeFromOtherMod";
-            this.Text = "Add Type To Mod";
+            this.Text = "ADD TYPE TO MOD";
             this.Load += new System.EventHandler(this.AddTypeFromOtherMod_Load);
             this.Controls.SetChildIndex(this.module_cbb, 0);
             this.Controls.SetChildIndex(this.module_lbl, 0);
             this.Controls.SetChildIndex(this.addTypeFromMod_btn, 0);
-            this.Controls.SetChildIndex(this.type_lbl, 0);
             this.Controls.SetChildIndex(this.title_lbl, 0);
             this.Controls.SetChildIndex(this.exit_btn, 0);
             this.Controls.SetChildIndex(this.min_btn, 0);
-            this.Controls.SetChildIndex(this.types_cbb, 0);
+            this.Controls.SetChildIndex(this.type_cbb, 0);
+            this.Controls.SetChildIndex(this.type_rb, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,10 +164,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox module_cbb;
-        private System.Windows.Forms.Label module_lbl;
-        private System.Windows.Forms.Button addTypeFromMod_btn;
-        private System.Windows.Forms.Label type_lbl;
-        private System.Windows.Forms.ComboBox types_cbb;
+        protected System.Windows.Forms.ComboBox module_cbb;
+        protected System.Windows.Forms.Label module_lbl;
+        protected System.Windows.Forms.Button addTypeFromMod_btn;
+        protected System.Windows.Forms.ComboBox type_cbb;
+        protected System.Windows.Forms.RadioButton type_rb;
     }
 }

@@ -1,85 +1,131 @@
-﻿using brfManager;
-using skillhunter;
+﻿using skillhunter;
 using importantLib;
+using MB_Studio.Manager;
 using MB_Decompiler_Library.IO;
 using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 
 namespace MB_Studio
 {
     public partial class AddTypeFromOtherMod : SpecialFormBlack
     {
-        private int objectTypeID;
-        private string originalModuleName;
+        #region Attributes / Consts
 
-        //public string SelectedMeshName { get; private set; } = null;
+        private int objectTypeID;//protected?
+        protected string originalModuleName;
+        public bool TypeMode { get; protected set; } = true;
         public Skriptum SelectedType { get; private set; } = null;
+        protected List<Skriptum> types = new List<Skriptum>();
+        protected const string DEFAULT_SELECTION_TEXT = " < SELECT >";
+        protected static List<string> moduleNames = new List<string>();
 
-        private List<Skriptum> types = new List<Skriptum>();
-        private List<string> curMeshNames = new List<string>();
+        #endregion
 
-        private const string DEFAULT_SELECTION_TEXT = " < SELECT >";
+        #region Loading
 
-        private static List<string> moduleNames = new List<string>();
-        //private static List<List<string>> allMeshNames = new List<List<string>>();
+        public AddTypeFromOtherMod() : base()
+        {
+            Construktor(0);
+        }
 
-        private static OpenBrfManager openBrfManager = null;
+        public AddTypeFromOtherMod(int objectTypeID) : base()
+        {
+            Construktor(objectTypeID);
+        }
 
-        public AddTypeFromOtherMod(ref OpenBrfManager openBrfManager, int objectTypeID) : base()
+        private void Construktor(int objectTypeID)
         {
             this.objectTypeID = objectTypeID;
 
-            originalModuleName = openBrfManager.ModName;
+            InitializeComponent();
 
-            if (AddTypeFromOtherMod.openBrfManager == null)
-                AddTypeFromOtherMod.openBrfManager = openBrfManager;
+            if (ToolForm.OpenBrfManager == null) return;
+            if (!ToolForm.OpenBrfManager.IsShown) return;
 
-            //if (allMeshNames.Count == 0)//load all optional - maybe later
-            //    allMeshNames.AddRange(openBrfManager.GetAllMeshResourceNames(out moduleNames));
+            originalModuleName = ToolForm.OpenBrfManager.ModName;
 
             if (moduleNames.Count == 0)
-                moduleNames.AddRange(openBrfManager.GetAllModuleNames());
-
-            InitializeComponent();
+                moduleNames.AddRange(ToolForm.OpenBrfManager.GetAllModuleNames());
         }
 
-        private void AddTypeFromOtherMod_Load(object sender, EventArgs e)
+        protected virtual void AddTypeFromOtherMod_Load(object sender, EventArgs e)
         {
             module_cbb.Items.AddRange(moduleNames.ToArray());
-            module_cbb.Text = DEFAULT_SELECTION_TEXT;
-            types_cbb.Text = DEFAULT_SELECTION_TEXT;
+            foreach (Control c in Controls)
+                if (GetNameEndOfControl(c).Equals("cbb"))
+                    c.Text = DEFAULT_SELECTION_TEXT;
         }
 
-        private void Module_cbb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int idx = module_cbb.SelectedIndex;
-            if (openBrfManager == null) return;
+        #endregion
 
-            openBrfManager.ChangeModule(module_cbb.SelectedItem.ToString());
+        #region Events
+
+        protected virtual void Module_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ToolForm.OpenBrfManager == null) return;
+
+            ToolForm.OpenBrfManager.ChangeModule(module_cbb.SelectedItem.ToString());
 
             types.Clear();
-            types_cbb.Items.Clear();
+            type_cbb.Items.Clear();
 
-            CodeReader cr = new CodeReader(openBrfManager.ModPath + '\\' + CodeReader.Files[objectTypeID]);
+            CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModPath + '\\' + CodeReader.Files[objectTypeID]);
             types.AddRange(cr.ReadItem());
             foreach (Skriptum type in types)
-                types_cbb.Items.Add(type.ID);
+                type_cbb.Items.Add(type.ID);
 
-            types_cbb.Text = DEFAULT_SELECTION_TEXT;
+            type_cbb.Text = DEFAULT_SELECTION_TEXT;
+
+            bool b = (types.Count != 0);
+
+            if (!b) return;
+
+            type_cbb.Enabled = b;
+            type_rb.Enabled = b;
+        }
+
+        private void Type_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            DeactivateAllOtherModes(type_cbb.Name, type_cbb.Text);
+        }
+
+        protected virtual void Types_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedType = GetTypeByID(type_cbb.SelectedItem.ToString());
+
+            addTypeFromMod_btn.Enabled = true;
         }
 
         private void AddTypeFromMod_btn_Click(object sender, EventArgs e)
         {
-            string curModName = openBrfManager.ModName;
+            AddTypeFromModFinish();
+        }
 
-            /* CODE AUSGELAGERT */
-
-            openBrfManager.ChangeModule(originalModuleName);
-
+        protected virtual void AddTypeFromModFinish()
+        {
+            ResetToOriginalModule();
             Close();
         }
 
-        private Skriptum GetTypeByID(string typeID)
+        protected virtual void Exit_btn_Click(object sender, EventArgs e)
+        {
+            ResetToOriginalModule();
+
+            SelectedType = null;
+        }
+
+        #endregion
+
+        #region Useful Methods
+
+        private void ResetToOriginalModule()
+        {
+            ToolForm.OpenBrfManager.ChangeModule(originalModuleName);
+            //maybe load default or empty screen here
+        }
+
+        protected Skriptum GetTypeByID(string typeID)
         {
             Skriptum typeX = null;
             for (int i = 0; i < types.Count; i++)
@@ -92,5 +138,16 @@ namespace MB_Studio
             }
             return typeX;
         }
+
+        protected void DeactivateAllOtherModes(string curName, string curSelText)
+        {
+            foreach (Control c in Controls)
+                if (GetNameEndOfControl(c).Equals("cbb"))
+                    c.Enabled = (c.Name.Equals(module_cbb.Name) || c.Name.Equals(curName));
+
+            addTypeFromMod_btn.Enabled = !curSelText.Equals(DEFAULT_SELECTION_TEXT);
+        }
+
+        #endregion
     }
 }

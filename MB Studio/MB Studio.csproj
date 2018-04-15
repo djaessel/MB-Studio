@@ -249,6 +249,9 @@
     <EmbeddedResource Include="Main\MBOptions.resx">
       <DependentUpon>MBOptions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Manager\Support\AddItemFromOtherMod.resx">
+      <DependentUpon>AddItemFromOtherMod.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Manager\Support\AddTypeFromOtherMod.resx">
       <DependentUpon>AddTypeFromOtherMod.cs</DependentUpon>
     </EmbeddedResource>

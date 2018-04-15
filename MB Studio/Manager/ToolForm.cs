@@ -34,7 +34,7 @@ namespace MB_Studio.Manager
         private static List<string> tabNames = new List<string>();
         private static Thread openBrfThread = null;
 
-        protected static OpenBrfManager openBrfManager = null;
+        public static OpenBrfManager OpenBrfManager = null;
 
         protected List<string[]> translations = new List<string[]>();
         protected List<string> typesIDs = new List<string>();
@@ -133,15 +133,15 @@ namespace MB_Studio.Manager
 
         private void Tc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (openBrfManager == null || !Has3DView) return;
+            if (OpenBrfManager == null || !Has3DView) return;
 
             TabControl tc = (TabControl)sender;
             TabPage tabPage = (TabPage)Parent;
             TabPage selectedTab = tc.SelectedTab;
             if (selectedTab.Name.Equals(tabPage.Name))//test this again with non 3D ToolForms!
             {
-                openBrfManager.RemoveWindowHandleFromControlsParent();//could be a problem
-                openBrfManager.AddWindowHandleToControlsParent(this);
+                OpenBrfManager.RemoveWindowHandleFromControlsParent();//could be a problem
+                OpenBrfManager.AddWindowHandleToControlsParent(this);
             }
         }
 
@@ -749,12 +749,12 @@ namespace MB_Studio.Manager
             if (Has3DView)//correct?
                 openBrfFormCount--;
 
-            if (openBrfManager != null)
+            if (OpenBrfManager != null)
             {
                 if (openBrfFormCount <= 0)
                 {
-                    if (openBrfManager.IsShown)
-                        openBrfManager.Close();
+                    if (OpenBrfManager.IsShown)
+                        OpenBrfManager.Close();
 
                     if (openBrfThread != null)
                     {
@@ -764,14 +764,14 @@ namespace MB_Studio.Manager
 
                     Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
                     {
-                        while (openBrfManager.IsShown)
+                        while (OpenBrfManager.IsShown)
                             Thread.Sleep(10);
-                        openBrfManager = null;
+                        OpenBrfManager = null;
                     })) { IsBackground = true };
                     t.Start();
                 }
                 else
-                    openBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
+                    OpenBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
             }
 
             if (Parent != null && Has3DView)
@@ -786,20 +786,20 @@ namespace MB_Studio.Manager
                     if (tc.SelectedTab.Name.Equals(tabPage.Name))
                         tc.SelectTab(tabX);
                     else
-                        openBrfManager.AddWindowHandleToControlsParent(tc.TabPages[tc.TabPages.IndexOfKey(tabX)].Controls.Find(tabX, true)[0]);
+                        OpenBrfManager.AddWindowHandleToControlsParent(tc.TabPages[tc.TabPages.IndexOfKey(tabX)].Controls.Find(tabX, true)[0]);
                 }
             }
         }
 
         private void AddOpenBrfAsChildThread()
         {
-            while (!openBrfManager.IsShown) Thread.Sleep(10);
+            while (!OpenBrfManager.IsShown) Thread.Sleep(10);
 
             openBrfFormCount++;
 
             Invoke((MethodInvoker)delegate
             {
-                openBrfManager.AddWindowHandleToControlsParent(this);
+                OpenBrfManager.AddWindowHandleToControlsParent(this);
                 if (openBrfFormCount == 1)
                     LoadOpenBrfLists();
             });
@@ -807,27 +807,27 @@ namespace MB_Studio.Manager
 
         private static void LoadOpenBrfLists()
         {
-            modMeshResourceNames.AddRange(openBrfManager.GetCurrentModuleAllMeshResourceNames(true));
+            modMeshResourceNames.AddRange(OpenBrfManager.GetCurrentModuleAllMeshResourceNames(true));
         }
 
         private void StartOpenBrfManager()
         {
             Invoke((MethodInvoker)delegate
             {
-                bool openBrfLoaded = (openBrfManager != null);
+                bool openBrfLoaded = (OpenBrfManager != null);
                 if (Has3DView)
                 {
                     if (!openBrfLoaded)
-                        openBrfManager = new OpenBrfManager(MabPath, ProgramConsole.OriginalMod);
+                        OpenBrfManager = new OpenBrfManager(MabPath, ProgramConsole.OriginalMod);
                     else
-                        openBrfManager.RemoveWindowHandleFromControlsParent();
+                        OpenBrfManager.RemoveWindowHandleFromControlsParent();
 
                     Thread t = new Thread(new ThreadStart(AddOpenBrfAsChildThread)) { IsBackground = true };
                     t.Start();
 
                     if (!openBrfLoaded)
                     {
-                        int result = openBrfManager.Show(MB_Studio.DebugMode);
+                        int result = OpenBrfManager.Show(MB_Studio.DebugMode);
                         Console.WriteLine("OPENBRF_EXIT_CODE: " + result);
                     }
                 }
@@ -920,12 +920,19 @@ namespace MB_Studio.Manager
 
         private void AddFromOtherMod_btn_Click(object sender, EventArgs e)
         {
-            AddFromOtherMod(out AddTypeFromOtherMod f);
+            AddFromOtherMod();
         }
 
-        protected virtual void AddFromOtherMod(out AddTypeFromOtherMod f)
+        protected virtual void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
-            f = new AddTypeFromOtherMod(ref openBrfManager, ObjectTypeID);
+            if (f == null)
+                f = new AddTypeFromOtherMod(ObjectTypeID);
+
+            AddFromOtherModDefault(f);
+        }
+
+        protected void AddFromOtherModDefault(AddTypeFromOtherMod f)
+        {
             f.ShowDialog();
 
             if (f.SelectedType == null) return;

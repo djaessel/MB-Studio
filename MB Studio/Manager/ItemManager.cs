@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
+using MB_Studio.Manager.Support;
 
 namespace MB_Studio.Manager
 {
@@ -1172,14 +1173,16 @@ namespace MB_Studio.Manager
             codeLines_b_lbl.Text = lines.Length.ToString();
         }
 
-        protected override void AddFromOtherMod(out AddTypeFromOtherMod f)
+        protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
-            base.AddFromOtherMod(out f);
+            f = new AddItemFromOtherMod();
 
-            //if (f.MODE != AddTypeFromOtherMod.MODES.MESH) return;
-            /*if (f.SelectedMeshName == null) return;
+            base.AddFromOtherMod(f);
 
-            modMeshResourceNames.Add(f.SelectedMeshName);*/
+            if (f.TypeMode) return;
+            if (((AddItemFromOtherMod)f).SelectedMeshName == null) return;
+
+            modMeshResourceNames.Add(((AddItemFromOtherMod)f).SelectedMeshName);
         }
 
         private void AddTrigger_btn_Click(object sender, EventArgs e)
@@ -1333,7 +1336,7 @@ namespace MB_Studio.Manager
 
         protected override void OnHandleDestroyed()
         {
-            if (!File.Exists(openBrfManager.ModPath + "\\Resource\\MB_Studio_Data.brf"))
+            if (!File.Exists(OpenBrfManager.ModPath + "\\Resource\\MB_Studio_Data.brf"))
                 RemoveBrfFileEntryFromModuleIni("MB_Studio_Data");
 
             base.OnHandleDestroyed();
@@ -1363,7 +1366,7 @@ namespace MB_Studio.Manager
                 {
                     string[] meshInfo = curMeshs[i].Split();
                     //if (!InvisibleMeshes.Contains(meshInfo[0]))
-                        openBrfManager.SelectItemNameByKind(meshInfo[0]);//maybe use modifiers as well to set position/bone
+                        OpenBrfManager.SelectItemNameByKind(meshInfo[0]);//maybe use modifiers as well to set position/bone
                 }
             }
         }
