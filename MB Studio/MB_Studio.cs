@@ -19,6 +19,8 @@ namespace MB_Studio
 {
     public partial class MB_Studio : SpecialForm
     {
+        public static bool RunAutoUpdate { get; private set; } = false;
+
         #region Attributes
 
         private const int LEADING_SPACE = 12;
@@ -104,7 +106,8 @@ namespace MB_Studio
                 //  process.StartInfo.UseShellExecute = false;
                 //}
                 process.StartInfo.FileName = startPath;
-                ///process.Start();///activate for release - deactivate for development
+                if (RunAutoUpdate)
+                    process.Start();///activate for release - deactivate for development
             //}
         }
 
