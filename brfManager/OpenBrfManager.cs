@@ -65,6 +65,10 @@ namespace brfManager
 
         public bool IsShown { get { return (IsCurHWndShown() != 0) ? true : false; } }
 
+        public static bool KillModeActive { get; private set; } = false;
+
+        public bool HasParent { get; private set; } = false;
+
         private string[] SArray = new string[0];
 
         public string MabPath { get; private set; }
@@ -98,17 +102,19 @@ namespace brfManager
 
         public int Show(bool debugMode = false, string[] args = null)
         {
+            string useDebug = "--debug";
+
             if (args == null)
             {
                 if (!debugMode)
                     args = SArray;
                 else
-                    args = new string[] { "--debug" };
+                    args = new string[] { useDebug };
             }
             else if (debugMode)
             {
                 string[] tmp = new string[args.Length + 1];
-                tmp[0] = "--debug";
+                tmp[0] = useDebug;
                 for (int i = 0; i < args.Length; i++)
                     tmp[i + 1] = args[i];
                 args = tmp;
@@ -209,19 +215,29 @@ namespace brfManager
             AddCurSelectedMeshsAllDataToMod(modName);
         }
 
+        public static void ActivateKillMode()
+        {
+            KillModeActive = true;
+        }
+
         public void AddWindowHandleToControlsParent(Control childX, bool addOnRightSide = true)
         {
+            if (KillModeActive) return;
+
             int left;
             if (addOnRightSide)
                 left = childX.Width;
             else
                 left = childX.Left;
             ImportantMethods.AddWindowHandleToControl(Handle, childX.Parent, childX.Height, left, childX.Top, 32);
+            HasParent = true;
         }
 
         public void RemoveWindowHandleFromControlsParent()
         {
+            if (!HasParent || KillModeActive) return;
             ImportantMethods.RemoveWindowHandleFromParent(Handle);
+            HasParent = false;
         }
 
         /// <summary>

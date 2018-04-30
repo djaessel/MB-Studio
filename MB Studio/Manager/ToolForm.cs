@@ -740,6 +740,7 @@ namespace MB_Studio.Manager
 
         protected virtual void OnHandleDestroyed()
         {
+            OpenBrfManager.ActivateKillMode();
             KillOpenBrfThread();
         }
 
@@ -751,8 +752,9 @@ namespace MB_Studio.Manager
 
             if (openBrfFormCount <= 0)
             {
-                if (OpenBrfManager.IsShown)
-                    OpenBrfManager.Close();
+                if (OpenBrfManager != null)
+                    if (OpenBrfManager.IsShown)
+                        OpenBrfManager.Close();
 
                 if (openBrfThread != null)
                 {
@@ -760,17 +762,20 @@ namespace MB_Studio.Manager
                     Console.WriteLine("openBrfThread.IsAlive: " + openBrfThread.IsAlive);
                 }
 
-                Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
+                if (OpenBrfManager != null)
                 {
-                    while (OpenBrfManager.IsShown)
+                    Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
+                    {
+                        while (OpenBrfManager.IsShown)
                         Thread.Sleep(10);
-                    OpenBrfManager = null;
-                }))
-                { IsBackground = true };
-                t.Start();
+                        OpenBrfManager = null;
+                    }))
+                    { IsBackground = true };
+                    t.Start();
+                }
+                //else if (OpenBrfManager != null/* && Has3DView*/)
+                //    OpenBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
             }
-            else if (OpenBrfManager != null/* && Has3DView*/)
-                OpenBrfManager.RemoveWindowHandleFromControlsParent();//this sometimes crashs - check for problem source
 
             if (Parent == null || !Has3DView) return;
 

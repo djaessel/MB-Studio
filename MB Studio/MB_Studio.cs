@@ -72,6 +72,7 @@ namespace MB_Studio
 
         private void CheckForUpdates()
         {
+            string versionFile = "version.dat";
             string startPath = MBStudioUpdater.MB_STUDIO_UPDATER;
             //if (!File.Exists("version.dat") || Directory.Exists(startPath + MBStudioUpdater.MB_STUDIO_UPDATER_TEMP))
             //{
@@ -88,9 +89,13 @@ namespace MB_Studio
                 using (WebClient client = new WebClient())
                     client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", MBStudioUpdater.MB_STUDIO_UPDATER);
 
-                //Directory.Delete(startPath.Remove(startPath.LastIndexOf('\\')), true);
-                if (!File.Exists("version.dat"))
-                    File.WriteAllText("version.dat", Application.ProductVersion);
+            //Directory.Delete(startPath.Remove(startPath.LastIndexOf('\\')), true);
+
+            bool fileExists = File.Exists(versionFile);
+            if (fileExists) fileExists = File.ReadAllText(versionFile).Equals(ProductVersion);
+
+            if (!fileExists)
+                File.WriteAllText(versionFile, Application.ProductVersion);
 
             //    Application.Exit();//.Restart();
             //}
