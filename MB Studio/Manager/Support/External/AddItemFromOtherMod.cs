@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MB_Studio.Manager.Support
+namespace MB_Studio.Manager.Support.External
 {
     public partial class AddItemFromOtherMod : AddTypeFromOtherMod
     {
@@ -11,23 +11,20 @@ namespace MB_Studio.Manager.Support
         public string SelectedMeshName { get; private set; } = null;
         private List<string> curMeshNames = new List<string>();
 
-        //private static List<List<string>> allMeshNames = new List<List<string>>();
-
         #endregion
         
         #region Loading
 
-        public AddItemFromOtherMod(int objectTypeID = 5) : base(objectTypeID)//5 = ITEM
+        public AddItemFromOtherMod() : base(5)//5 = ITEM
         {
             InitializeComponent();
-
-            //if (allMeshNames.Count == 0)//load all optional - maybe later
-            //    allMeshNames.AddRange(ToolForm.OpenBrfManager.GetAllMeshResourceNames(out moduleNames));
         }
 
         #endregion
 
         #region Events
+
+        #region Overrides
 
         protected override void Module_cbb_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -51,11 +48,6 @@ namespace MB_Studio.Manager.Support
             if (!b) return;//prevent event trigger
 
             meshName_rb.Checked = b;
-        }
-
-        private void MeshName_rb_CheckedChanged(object sender, EventArgs e)
-        {
-            DeactivateAllOtherModes(meshName_cbb.Name, meshName_cbb.Text);
         }
 
         protected override void AddTypeFromModFinish()
@@ -86,8 +78,6 @@ namespace MB_Studio.Manager.Support
         {
             base.Types_cbb_SelectedIndexChanged(sender, e);
 
-            TypeMode = true;
-
             Item item = (Item)SelectedType;
             item.SetFactions(new List<int>() { 0 });//prevent Faction Problems
 
@@ -95,20 +85,26 @@ namespace MB_Studio.Manager.Support
             ToolForm.OpenBrfManager.SelectItemNameByKind(meshes[meshes.Count - 1].Split()[0]);
         }
 
-        private void MeshName_cbb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            TypeMode = false;
-            SelectedMeshName = meshName_cbb.SelectedItem.ToString();
-            ToolForm.OpenBrfManager.SelectItemNameByKind(SelectedMeshName);
-
-            addTypeFromMod_btn.Enabled = true;
-        }
-
         protected override void Exit_btn_Click(object sender, EventArgs e)
         {
             base.Exit_btn_Click(sender, e);
 
             SelectedMeshName = null;
+        }
+
+        #endregion
+
+        private void MeshName_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            DeactivateAllOtherModes(meshName_cbb.Name, meshName_cbb.Text);
+        }
+
+        private void MeshName_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TypeMode = false;
+            SelectedMeshName = meshName_cbb.SelectedItem.ToString();
+            ToolForm.OpenBrfManager.SelectItemNameByKind(SelectedMeshName);
+            addTypeFromMod_btn.Enabled = true;
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿namespace MB_Studio.Manager.Support
+﻿namespace MB_Studio.Manager.Support.External
 {
     partial class AddItemFromOtherMod
     {

@@ -13,6 +13,7 @@ using MB_Studio.Main;
 using WarbandTranslator;
 using MB_Decompiler_Library.IO;
 using importantLib.ToolTipsListBox;
+using MB_Studio.Manager.Support.External;
 using static skillhunter.Skriptum;
 
 namespace MB_Studio.Manager

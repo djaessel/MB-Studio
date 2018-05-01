@@ -1,18 +1,17 @@
 ﻿using skillhunter;
 using importantLib;
-using MB_Studio.Manager;
 using MB_Decompiler_Library.IO;
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
-namespace MB_Studio
+namespace MB_Studio.Manager.Support.External
 {
     public partial class AddTypeFromOtherMod : SpecialFormBlack
     {
         #region Attributes / Consts
 
-        private int objectTypeID;//protected?
+        public int ObjectTypeID { get; private set; } = 0;
         protected string originalModuleName;
         public bool TypeMode { get; protected set; } = true;
         public Skriptum SelectedType { get; private set; } = null;
@@ -36,7 +35,7 @@ namespace MB_Studio
 
         private void Construktor(int objectTypeID)
         {
-            this.objectTypeID = objectTypeID;
+            ObjectTypeID = objectTypeID;
 
             InitializeComponent();
 
@@ -70,8 +69,8 @@ namespace MB_Studio
             types.Clear();
             type_cbb.Items.Clear();
 
-            CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModPath + '\\' + CodeReader.Files[objectTypeID]);
-            types.AddRange(cr.ReadObjectType(objectTypeID));//remove mod inrelevant info in Read Method of type or add other needed types
+            CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModPath + '\\' + CodeReader.Files[ObjectTypeID]);
+            types.AddRange(cr.ReadObjectType(ObjectTypeID));//remove mod inrelevant info in Read Method of type or add other needed types
             foreach (Skriptum type in types)
                 type_cbb.Items.Add(type.ID);
 
@@ -93,8 +92,8 @@ namespace MB_Studio
         protected virtual void Types_cbb_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedType = GetTypeByID(type_cbb.SelectedItem.ToString());
-
             addTypeFromMod_btn.Enabled = true;
+            TypeMode = true;
         }
 
         private void AddTypeFromMod_btn_Click(object sender, EventArgs e)
@@ -111,7 +110,6 @@ namespace MB_Studio
         protected virtual void Exit_btn_Click(object sender, EventArgs e)
         {
             ResetToOriginalModule();
-
             SelectedType = null;
         }
 
@@ -119,7 +117,7 @@ namespace MB_Studio
 
         #region Useful Methods
 
-        private void ResetToOriginalModule()
+        protected void ResetToOriginalModule()
         {
             ToolForm.OpenBrfManager.ChangeModule(originalModuleName);
             //maybe load default or empty screen here

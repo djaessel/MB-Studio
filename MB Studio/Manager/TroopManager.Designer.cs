@@ -224,6 +224,10 @@ namespace MB_Studio.Manager
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.Location = new System.Drawing.Point(780, 1);
             // 
+            // addFromOtherMod_btn
+            // 
+            this.addFromOtherMod_btn.Enabled = true;
+            // 
             // groupBox_3_gb
             // 
             this.groupBox_3_gb.Controls.Add(this.showItemsInOpenBrf_gb);
