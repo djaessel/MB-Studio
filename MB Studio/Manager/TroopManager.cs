@@ -196,9 +196,7 @@ namespace MB_Studio.Manager
                 {
                     Control[] cc = groupBox_1_gb.Controls.Find(flag.Substring(3) + "_cb", false);
                     if (cc.Length == 1 && !flag.Contains("tf_guarantee_"))
-                    {
                         ((CheckBox)cc[0]).CheckState = CheckState.Checked;
-                    }
                     //else if (cc.Length > 1 && !flag.Contains("tf_guarantee_"))
                     //    MessageBox.Show("ERROR: Double Flags found! --> " + cc.Length); // enable if needed again
                     else

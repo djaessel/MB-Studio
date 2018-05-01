@@ -12,9 +12,9 @@ namespace MB_Studio.Manager.Support.External
         #region Attributes / Consts
 
         public int ObjectTypeID { get; private set; } = 0;
-        protected string originalModuleName;
+        protected string originalModuleName = string.Empty;
         public bool TypeMode { get; protected set; } = true;
-        public Skriptum SelectedType { get; private set; } = null;
+        public Skriptum SelectedType { get; protected set; } = null;
         protected List<Skriptum> types = new List<Skriptum>();
         protected const string DEFAULT_SELECTION_TEXT = " < SELECT >";
         protected static List<string> moduleNames = new List<string>();

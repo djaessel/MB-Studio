@@ -148,6 +148,8 @@ Public Class Troop
         For i = 0 To items.Length - 1
             itemFlags(i) = tmpArray(i * 2 + 1)
         Next
+        my_items.Clear()
+        my_itemFlags.Clear()
         For index = 0 To items.Length - 1
             items(index) = items(index).Trim()
             If Not items(index).Equals("-1") And Not items(index).Equals(String.Empty) Then

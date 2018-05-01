@@ -1701,6 +1701,7 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl.TabIndex = 41;
             this.reserved_XVIII_lbl.Tag = "41";
             this.reserved_XVIII_lbl.Text = "Reserved 18:";
+            this.reserved_XVIII_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // reserved_XVII_num
             // 
