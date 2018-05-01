@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using MB_Studio.Manager.Support.External;
 
 namespace MB_Studio.Manager
 {
@@ -165,6 +166,13 @@ namespace MB_Studio.Manager
             face1_txt.Text = FACE_CODE_ZERO;
             face2_txt.Text = face1_txt.Text;
             reserved_txt.Text = "reserved";
+        }
+
+        protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
+        {
+            f = new AddTroopFromOtherMod();
+
+            base.AddFromOtherMod(f);
         }
 
         #endregion

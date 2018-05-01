@@ -2,6 +2,7 @@
 using skillhunter;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace MB_Studio.Manager.Support.External
 {
@@ -32,22 +33,53 @@ namespace MB_Studio.Manager.Support.External
 
         protected override void AddTypeFromModFinish()
         {
-            //string curModName = ToolForm.OpenBrfManager.ModName;
+            if (!type_rb.Checked || type_cbb.Text.Equals(DEFAULT_SELECTION_TEXT)) return;
 
-            //if (type_rb.Checked && !type_cbb.Text.Equals(DEFAULT_SELECTION_TEXT))
-            //{
-                /*foreach (string mesh in ((Item)SelectedType).Meshes)
-                {
-                    if (!ToolForm.OpenBrfManager.ModName.Equals(curModName))
-                        ToolForm.OpenBrfManager.ChangeModule(curModName);
+            DialogResult result = MessageBox.Show(
+                "Items des Troops ebenfalls importieren?",
+                Application.ProductName,
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1
+            );
 
-                    string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
-                    ToolForm.OpenBrfManager.SelectItemNameByKind(meshData[0]);
-                    ToolForm.OpenBrfManager.AddSelectedMeshsToMod(originalModuleName);
-                }*/
-            //}
+            if (result != DialogResult.Yes && result != DialogResult.No) return;
 
-            base.AddTypeFromModFinish();
+            Troop troop = (Troop)SelectedType;
+
+            if (result == DialogResult.Yes)
+            {
+                CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModulesPath.TrimEnd('\\') + "\\" + ToolForm.OpenBrfManager.ModName + "\\item_kinds1.txt");
+                Item[] itemsR = cr.ReadItem();
+                foreach (int itemIdx in troop.Items)
+                    AddItemFromOtherMod.AddItemMeshesToMod(itemsR[itemIdx], originalModuleName);
+            }
+            else
+            {
+                string itmx = string.Empty;
+                for (int i = 0; i < 64; i++)
+                    itmx += "-1 0 ";
+                troop.SetItems(itmx);
+            }
+
+            /// ASK FOR ADDING OR DELETE FOR EACH OF THEM !!!
+
+            troop.SetSkills("0 0 0 0 0 0");
+
+            troop.SetSceneCode(0);
+
+            troop.UpgradeTroop1 = -1;
+            troop.UpgradeTroop2 = -1;
+
+            troop.FactionID = 0;
+
+            //troop.DialogImage = "0";//not possible - or try adding image if not 0 / none
+
+            /// ASK FOR ADDING OR DELETE FOR EACH OF THEM !!!
+
+            /// ERROR IN BASE!!! CHECK SetupType(Skriptum s) Method in TroopManager!!!
+
+            //base.AddTypeFromModFinish();
         }
 
         protected override void Types_cbb_SelectedIndexChanged(object sender, EventArgs e)
@@ -55,14 +87,14 @@ namespace MB_Studio.Manager.Support.External
             base.Types_cbb_SelectedIndexChanged(sender, e);
 
             Troop troop = (Troop)SelectedType;
-            //prevent factions and other Problems
 
             List<Item> items = new List<Item>();
             //foreach (int item in troop.Items)
-            //    items.Add(CodeReader.Items[item]);
+            //{
+            //items.Add(CodeReader.Items[item]);
+            //}
 
             ToolForm.OpenBrfManager.Troop3DPreviewClearData();
-
             foreach (Item item in items)
             {
                 foreach (string mesh in item.Meshes)
@@ -71,8 +103,7 @@ namespace MB_Studio.Manager.Support.External
                     ToolForm.OpenBrfManager.AddMeshToTroop3DPreview(mesh);
                 }
             }
-
-            ToolForm.OpenBrfManager.Troop3DPreviewShow();
+            //ToolForm.OpenBrfManager.Troop3DPreviewShow();
         }
 
         #endregion

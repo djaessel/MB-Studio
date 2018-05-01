@@ -34,10 +34,6 @@
             // 
             this.module_cbb.Text = " < SELECT >";
             // 
-            // addTypeFromMod_btn
-            // 
-            this.addTypeFromMod_btn.Location = new System.Drawing.Point(90, 138);
-            // 
             // type_cbb
             // 
             this.type_cbb.Text = " < SELECT >";
@@ -59,18 +55,10 @@
             // 
             this.title_lbl.Text = "Add Type To Mod";
             // 
-            // AddItemFromOtherMod
+            // AddTroopFromOtherMod
             // 
-            this.ClientSize = new System.Drawing.Size(340, 174);
-            this.Name = "AddItemFromOtherMod";
-            this.Controls.SetChildIndex(this.module_cbb, 0);
-            this.Controls.SetChildIndex(this.module_lbl, 0);
-            this.Controls.SetChildIndex(this.addTypeFromMod_btn, 0);
-            this.Controls.SetChildIndex(this.type_rb, 0);
-            this.Controls.SetChildIndex(this.title_lbl, 0);
-            this.Controls.SetChildIndex(this.exit_btn, 0);
-            this.Controls.SetChildIndex(this.min_btn, 0);
-            this.Controls.SetChildIndex(this.type_cbb, 0);
+            this.ClientSize = new System.Drawing.Size(340, 138);
+            this.Name = "AddTroopFromOtherMod";
             this.ResumeLayout(false);
             this.PerformLayout();
 

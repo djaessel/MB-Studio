@@ -52,24 +52,10 @@ namespace MB_Studio.Manager.Support.External
 
         protected override void AddTypeFromModFinish()
         {
-            string curModName = ToolForm.OpenBrfManager.ModName;
-
             if (type_rb.Checked && !type_cbb.Text.Equals(DEFAULT_SELECTION_TEXT))
-            {
-                foreach (string mesh in ((Item)SelectedType).Meshes)
-                {
-                    if (!ToolForm.OpenBrfManager.ModName.Equals(curModName))
-                        ToolForm.OpenBrfManager.ChangeModule(curModName);
-
-                    string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
-                    ToolForm.OpenBrfManager.SelectItemNameByKind(meshData[0]);
-                    ToolForm.OpenBrfManager.AddSelectedMeshsToMod(originalModuleName);
-                }
-            }
+                AddItemMeshesToMod((Item)SelectedType, originalModuleName);
             else if (meshName_rb.Checked && !meshName_cbb.Text.Equals(DEFAULT_SELECTION_TEXT))
-            {
                 ToolForm.OpenBrfManager.AddSelectedMeshsToMod(originalModuleName);
-            }
 
             base.AddTypeFromModFinish();
         }
@@ -94,6 +80,8 @@ namespace MB_Studio.Manager.Support.External
 
         #endregion
 
+        #region Extra
+
         private void MeshName_rb_CheckedChanged(object sender, EventArgs e)
         {
             DeactivateAllOtherModes(meshName_cbb.Name, meshName_cbb.Text);
@@ -106,6 +94,22 @@ namespace MB_Studio.Manager.Support.External
             ToolForm.OpenBrfManager.SelectItemNameByKind(SelectedMeshName);
             addTypeFromMod_btn.Enabled = true;
         }
+
+        public static void AddItemMeshesToMod(Item item, string originalModuleName)
+        {
+            string curModName = ToolForm.OpenBrfManager.ModName;
+            foreach (string mesh in item.Meshes)
+            {
+                if (!ToolForm.OpenBrfManager.ModName.Equals(curModName))
+                    ToolForm.OpenBrfManager.ChangeModule(curModName);
+
+                string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
+                ToolForm.OpenBrfManager.SelectItemNameByKind(meshData[0]);
+                ToolForm.OpenBrfManager.AddSelectedMeshsToMod(originalModuleName);
+            }
+        }
+
+        #endregion
 
         #endregion
     }
