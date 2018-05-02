@@ -51,29 +51,16 @@ namespace MB_Studio.Manager.Support.External
             {
                 CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModulesPath.TrimEnd('\\') + "\\" + ToolForm.OpenBrfManager.ModName + "\\item_kinds1.txt");
                 Item[] itemsR = cr.ReadItem();
-
-                /// !!! JUST UNTIL IMPLEMENTED !!! ///
-                MessageBox.Show("An dieser Stelle würden nun die Items hinzugefügt werden, jedoch ist dieser Teil noch nicht implementiert!",
-                    ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-
-                string itmx = string.Empty;
-                for (int i = 0; i < 64; i++)
-                    itmx += "-1 0 ";
-                troop.SetItems(itmx);
-                /// !!! JUST UNTIL IMPLEMENTED !!! ///
-
                 //foreach (int itemIdx in troop.Items)
                 //    AddItemFromOtherMod.AddItemMeshesToMod(itemsR[itemIdx], originalModuleName);
             }
-            else
-            {
-                string itmx = string.Empty;
-                for (int i = 0; i < 64; i++)
-                    itmx += "-1 0 ";
-                troop.SetItems(itmx);
-            }
 
             /// ASK FOR ADDING OR DELETE FOR EACH OF THEM !!!
+            
+            string itmx = string.Empty;
+            for (int i = 0; i < 64; i++)
+                itmx += "-1 0 ";
+            troop.SetItems(itmx);
 
             troop.SetSkills("0 0 0 0 0 0");
 
