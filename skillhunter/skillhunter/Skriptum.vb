@@ -32,39 +32,29 @@
     Public Shared ReadOnly Prefixes As String() = {"script", "mt", "prsnt", "menu", "trp", "itm", "str", "simple_trigger", "trigger", "ip", "mesh", "track", "qst", "snd", "spr", "tableau", "icon",
                                                     "dialog", "fac", "anim", "pt", "p", "skl", "pfx", "skin", "psys", "scn"}
 
-    Private s_id_name As String
-    Private type As ObjectType
-
-    Public Sub New(s_id_name As String, type As ObjectType)
-        Me.type = type
-        s_id_name = s_id_name.Trim()
-        If s_id_name.StartsWith(Prefix) Then
-            s_id_name = s_id_name.Substring(Prefix.Length)
-        End If
-        Me.s_id_name = s_id_name
-    End Sub
-
     Public ReadOnly Property ID As String
-        Get
-            Return s_id_name
-        End Get
-    End Property
+    Public ReadOnly Property ObjectTyp As ObjectType
+
+    Public Sub New(sIdName As String, type As ObjectType)
+
+        sIdName = sIdName.Trim()
+        If sIdName.StartsWith(Prefix) Then
+            sIdName = sIdName.Substring(Prefix.Length)
+        End If
+
+        ObjectTyp = type
+        ID = sIdName
+    End Sub
 
     Public ReadOnly Property Typ As Integer
         Get
-            Return type
-        End Get
-    End Property
-
-    Public ReadOnly Property ObjectTyp As ObjectType
-        Get
-            Return type
+            Return ObjectTyp
         End Get
     End Property
 
     Public ReadOnly Property Prefix As String
         Get
-            Return Prefixes(type) + "_"c
+            Return Prefixes(ObjectTyp) + "_"c
         End Get
     End Property
 
