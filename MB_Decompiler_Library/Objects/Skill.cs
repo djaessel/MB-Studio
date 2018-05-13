@@ -5,31 +5,27 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Skill : Skriptum
     {
-        private int maxLevel;
-        private ulong flagsGZ;
-        private string name, flags, description;
-
         public Skill(string[] raw_data) : base(raw_data[0], ObjectType.SKILL)
         {
-            name = raw_data[1].Replace('_', ' ');
+            Name = raw_data[1].Replace('_', ' ');
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
-                flagsGZ = ulong.Parse(raw_data[2]);
+                FlagsGZ = ulong.Parse(raw_data[2]);
                 SetFlags();
             }
             else
             {
-                flags = raw_data[2];
+                Flags = raw_data[2];
                 SetFlagsGZ();
             }
-            maxLevel = int.Parse(raw_data[3]);
-            description = raw_data[4].Replace('_', ' ');
+            MaxLevel = int.Parse(raw_data[3]);
+            Description = raw_data[4].Replace('_', ' ');
         }
 
         private void SetFlagsGZ()
         {
             ulong flagsGZ = 0;
-            string[] sp = flags.Split('|');
+            string[] sp = Flags.Split('|');
 
             foreach (string flag in sp)
             {
@@ -39,19 +35,19 @@ namespace MB_Decompiler_Library.Objects
                     flagsGZ |= 0x002;
                 else if (flag.Equals("sf_base_att_cha"))
                     flagsGZ |= 0x003;
-                else if (flags.Equals("sf_effects_party"))
+                else if (Flags.Equals("sf_effects_party"))
                     flagsGZ |= 0x010;
-                else if (flags.Equals("sf_inactive"))
+                else if (Flags.Equals("sf_inactive"))
                     flagsGZ |= 0x100;
             }
 
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
         {
             string flags;
-            byte base_att = (byte)(flagsGZ & 0x3);
+            byte base_att = (byte)(FlagsGZ & 0x3);
 
             switch (base_att)
             {
@@ -69,24 +65,24 @@ namespace MB_Decompiler_Library.Objects
                     break;
             }
 
-            if ((flagsGZ & 0x010) == 0x010)
+            if ((FlagsGZ & 0x010) == 0x010)
                 flags += "|sf_effects_party";
 
-            if ((flagsGZ & 0x100) == 0x100)
+            if ((FlagsGZ & 0x100) == 0x100)
                 flags += "|sf_inactive";
 
-            this.flags = flags.TrimStart('|');
+            this.Flags = flags.TrimStart('|');
         }
 
-        public string Name { get { return name; } }
+        public string Name { get; }
 
-        public string Description { get { return description; } }
+        public string Description { get; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public int MaxLevel { get { return maxLevel; } }
+        public int MaxLevel { get; }
 
     }
 }

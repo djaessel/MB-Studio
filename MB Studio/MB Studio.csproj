@@ -89,6 +89,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>MB_Studio.Program</StartupObject>
@@ -135,6 +136,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\InfoPageManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\InfoPageManager.Designer.cs">
+      <DependentUpon>InfoPageManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\SkillManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\SkillManager.Designer.cs">
+      <DependentUpon>SkillManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\Support\External\AddTroopFromOtherMod.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -254,6 +267,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main\MBOptions.resx">
       <DependentUpon>MBOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\InfoPageManager.resx">
+      <DependentUpon>InfoPageManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\SkillManager.resx">
+      <DependentUpon>SkillManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\Support\External\AddTroopFromOtherMod.resx">
       <DependentUpon>AddTroopFromOtherMod.cs</DependentUpon>

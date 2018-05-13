@@ -765,13 +765,7 @@ namespace MB_Studio.Manager
 
                 if (OpenBrfManager != null)
                 {
-                    Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
-                    {
-                        while (OpenBrfManager.IsShown)
-                        Thread.Sleep(10);
-                        OpenBrfManager = null;
-                    }))
-                    { IsBackground = true };
+                    Thread t = new Thread(new ThreadStart(WaitForOpenBrfManagerClosed)) { IsBackground = true };
                     t.Start();
                 }
                 //else if (OpenBrfManager != null/* && Has3DView*/)
@@ -792,6 +786,13 @@ namespace MB_Studio.Manager
                 else
                     OpenBrfManager.AddWindowHandleToControlsParent(tc.TabPages[tc.TabPages.IndexOfKey(tabX)].Controls.Find(tabX, true)[0]);
             }
+        }
+
+        private void WaitForOpenBrfManagerClosed()
+        {
+            while (OpenBrfManager.IsShown)
+                Thread.Sleep(10);
+            OpenBrfManager = null;
         }
 
         private void AddOpenBrfAsChildThread()

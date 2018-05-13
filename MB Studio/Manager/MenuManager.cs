@@ -382,7 +382,7 @@ namespace MB_Studio.Manager
                                 tmp = sr.ReadLine().Split('|');
                                 if (!found)
                                 {
-                                    if (tmp[0].Equals(mnos[i].Name) && tmp.Length > 1)
+                                    if (tmp[0].Equals(mnos[i].Name) && tmp.Length > 1)//second condition wrong? --> key exists with empty text = empty text for language?
                                     {
                                         mno_translations[i] = tmp[1].Replace('_', ' ');
                                         found = true;
@@ -416,16 +416,14 @@ namespace MB_Studio.Manager
                     designer.UpdateGameMenuText(singleNameTranslation_txt.Text);
                     PrepareOptionsLanguage();
                     string[] a;
-                    if (mno_translations[0] != null)
-                    {
-                        a = CodeReader.GetStringArrayStartFromIndex(mno_translations, 0, mno_translations.Length - menu.MenuOptions.Length);
-                    }
-                    else
+                    if (mno_translations[0] == null)
                     {
                         a = new string[menu.MenuOptions.Length];
                         for (int i = 0; i < a.Length; i++)
                             a[i] = menu.MenuOptions[i].Text.Replace('_', ' ');
                     }
+                    else
+                        a = CodeReader.GetStringArrayStartFromIndex(mno_translations, 0, mno_translations.Length - menu.MenuOptions.Length);
                     designer.UpdateGameMenuOptionsTexts(a);
                 }
             }
@@ -434,16 +432,9 @@ namespace MB_Studio.Manager
         protected override void Save_translation_btn_Click(object sender, EventArgs e)
         {
             if (language_cbb.SelectedIndex != LANGUAGE_EN_GZ)
-            {
                 base.Save_translation_btn_Click(sender, e);
-            }
             else
-            {
                 name_txt.Text = singleNameTranslation_txt.Text.Replace('_', ' ');
-                //int idx = typeSelect_lb.SelectedIndex - 1;
-                //if (idx >= 0)
-                //  ((GameMenu)types[idx]).SetText(singleNameTranslation_txt.Text.Replace(' ', '_'));
-            }
         }
 
         private void AddAndRemoveMenuOption_btn_Click(object sender, EventArgs e)

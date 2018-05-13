@@ -8,33 +8,26 @@ namespace MB_Decompiler_Library.Objects
 {
     public class GameMenu : Skriptum
     {
-        private GameMenuOption[] menuOptions;
-        private string text, flags, meshName;
-        private ulong flagsGZ;
-        private string[] operationBlock = new string[0];
-        private static ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);
-        private Color textColor = Color.Black;
+        private static readonly ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);
 
         public GameMenu(string[] raw_data) : base(raw_data[0].Substring(raw_data[0].IndexOf('_') + 1).Split()[0], ObjectType.GAME_MENU)
         {
             string[] tmpS = raw_data[0].Split();
             InitializeGameMeu(tmpS);
-            menuOptions = DecompileGameMenuOptions(raw_data[1].Split(), int.Parse(tmpS[tmpS.Length - 1]));
+            MenuOptions = DecompileGameMenuOptions(raw_data[1].Split(), int.Parse(tmpS[tmpS.Length - 1]));
         }
 
-        public string Text { get { return text; } }//change to Name?
+        public string Text { get; private set; }//change to Name?
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public string MeshName { get { return meshName; } }
+        public string MeshName { get; private set; }
 
-        public Color TextColor { get { return textColor; } }
-
-        public string[] OperationBlock { get { return operationBlock; } }
-
-        public GameMenuOption[] MenuOptions { get { return menuOptions; } }
+        public Color TextColor { get; private set; } = Color.Black;
+        public string[] OperationBlock { get; private set; } = new string[0];
+        public GameMenuOption[] MenuOptions { get; }
 
         private void InitializeGameMeu(string[] raw_data)
         {
@@ -42,30 +35,30 @@ namespace MB_Decompiler_Library.Objects
             int tmp = 1, tmp2;
             if (ImportantMethods.IsNumericGZ(raw_data[tmp]))
             {
-                flagsGZ = ulong.Parse(raw_data[tmp]);
+                FlagsGZ = ulong.Parse(raw_data[tmp]);
                 SetFlags();
             }
             else
             {
-                flags = raw_data[tmp].Trim();
+                Flags = raw_data[tmp].Trim();
                 SetFlagsGZ();
             }
             tmp++;
-            text = raw_data[tmp];
+            Text = raw_data[tmp];
             tmp++;
-            meshName = raw_data[tmp];
+            MeshName = raw_data[tmp];
             tmp++;
             tmp2 = int.Parse(raw_data[tmp]);
             if (tmp2 != 0)
             {
-                operationBlock = new string[tmp2 + 1];
+                OperationBlock = new string[tmp2 + 1];
                 tmpSX = new string[raw_data.Length - tmp - 1];
                 tmp++;
                 for (int i = tmp - 1; i < raw_data.Length - 1; i++)
                     tmpSX[i - (tmp - 1)] = raw_data[i];
-                operationBlock[0] = ID + 1;
-                tmpSX = CodeReader.DecompileScriptCode(operationBlock, tmpSX);
-                operationBlock = CodeReader.GetStringArrayStartFromIndex(tmpSX, 1);
+                OperationBlock[0] = ID + 1;
+                tmpSX = CodeReader.DecompileScriptCode(OperationBlock, tmpSX);
+                OperationBlock = CodeReader.GetStringArrayStartFromIndex(tmpSX, 1);
             }
         }
 
@@ -73,7 +66,7 @@ namespace MB_Decompiler_Library.Objects
         {
             ulong flagsGZ = 0ul;
             string tmp;
-            string[] sp = flags.Split('|');
+            string[] sp = Flags.Split('|');
 
             foreach (string s in sp)
             {
@@ -100,15 +93,15 @@ namespace MB_Decompiler_Library.Objects
                 }
             }
 
-            this.flagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
         {
             string flags = string.Empty;
-            ulong tmpU = flagsGZ;
+            ulong tmpU = FlagsGZ;
 
-            char[] cc = SkillHunter.Dec2Hex_16CHARS(flagsGZ).ToCharArray();
+            char[] cc = SkillHunter.Dec2Hex_16CHARS(FlagsGZ).ToCharArray();
 
             if (cc.Length > 7)
             {
@@ -150,7 +143,7 @@ namespace MB_Decompiler_Library.Objects
             if (tmpU > 0)
             {
                 string tmp = SkillHunter.Dec2Hex(tmpU >> 32);
-                textColor = Color.FromArgb(byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(0, 2)).ToString()),
+                TextColor = Color.FromArgb(byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(0, 2)).ToString()),
                                            byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(2, 2)).ToString()),
                                            byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(4, 2)).ToString()),
                                            byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(6, 2)).ToString()));
@@ -158,14 +151,14 @@ namespace MB_Decompiler_Library.Objects
             }
 
             if (flags.Equals(string.Empty))
-                flags = flagsGZ.ToString();
+                flags = FlagsGZ.ToString();
             else
                 flags = flags.TrimStart('|');
 
-            this.flags = flags;
+            Flags = flags;
         }
 
-        public void SetText(string text) { this.text = text; }
+        public void SetText(string text) { Text = text; }
 
         public static GameMenuOption[] DecompileGameMenuOptions(string[] optionsCode, int count)
         {

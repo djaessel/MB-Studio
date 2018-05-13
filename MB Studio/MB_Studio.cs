@@ -749,6 +749,8 @@ namespace MB_Studio
             projectFiles_lb.Items.Add("Parties");
             projectFiles_lb.Items.Add("Menus");
             projectFiles_lb.Items.Add("Items");
+            projectFiles_lb.Items.Add("Info Pages");
+            projectFiles_lb.Items.Add("Skills");
             //projectFiles_lb.Items.Add("Presentations");
             //projectFiles_lb.Items.Add("...");
             // VORERST //
@@ -760,14 +762,10 @@ namespace MB_Studio
 
             if (projectFiles_lb.SelectedIndex >= 0)
             {
-                //int index = -1;
                 string item = projectFiles_lb.SelectedItem.ToString();
 
                 if (item.Equals("Troops"))
-                //{
                     form = new TroopManager();
-                //    index = tabControl.TabPages.IndexOfKey("ItemManager");
-                //}
                 else if (item.Equals("Party Templates"))
                     form = new PartyTemplateManager();
                 else if (item.Equals("Parties"))
@@ -775,15 +773,11 @@ namespace MB_Studio
                 else if (item.Equals("Menus"))
                     form = new MenuManager();
                 else if (item.Equals("Items"))
-                //{
                     form = new ItemManager();
-                //    index = tabControl.TabPages.IndexOfKey("TroopManager");
-                //}
-                /*else if (item.Equals("Presentations"))
-                    form = new PresentationManager();*/
-                
-                //if (index >= 0)
-                //    tabControl.TabPages[index].Dispose();
+                else if (item.Equals("Info Pages"))
+                    form = new InfoPageManager();
+                else if (item.Equals("Skills"))
+                    form = new SkillManager();
             }
 
             if (form != null)
@@ -890,17 +884,17 @@ namespace MB_Studio
             bool found = false;
             string id = ":";
             List<List<string>> typesCodes;
-            bool isTroop = (type.ObjectTyp == Skriptum.ObjectType.TROOP);
+            //bool isTroop = (type.ObjectTyp == Skriptum.ObjectType.TROOP);
             string pseudoCodeFile = CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[type.Typ].Split('.')[0] + ".mbpc";
             string directory = Path.GetDirectoryName(pseudoCodeFile);
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            if (!isTroop)
+            //if (!isTroop)
                 id += type.ID;
-            else
-                id += ((Troop)type).ID;
+            //else
+            //    id += ((Troop)type).ID;
 
             List<string> typeCode = new List<string> { id };
             for (int i = 0; i < code.Length; i++)
@@ -913,10 +907,10 @@ namespace MB_Studio
                 {
                     string tmp = typesCodes[i][0].Substring(1);
                     bool b;
-                    if (!isTroop)
+                    //if (!isTroop)
                         b = tmp.Equals(type.ID);
-                    else
-                        b = tmp.Equals(((Troop)type).ID);
+                    //else
+                    //    b = tmp.Equals(((Troop)type).ID);
                     if (b)
                         typesCodes[i] = typeCode;
                     found = b;
