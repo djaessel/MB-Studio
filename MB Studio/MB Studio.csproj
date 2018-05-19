@@ -142,11 +142,23 @@
     <Compile Include="Manager\InfoPageManager.Designer.cs">
       <DependentUpon>InfoPageManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manager\QuestManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\QuestManager.Designer.cs">
+      <DependentUpon>QuestManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\SkillManager.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Manager\SkillManager.Designer.cs">
       <DependentUpon>SkillManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\StringManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\StringManager.Designer.cs">
+      <DependentUpon>StringManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\Support\External\AddTroopFromOtherMod.cs">
       <SubType>Form</SubType>

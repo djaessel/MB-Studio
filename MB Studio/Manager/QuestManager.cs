@@ -1,23 +1,21 @@
 ﻿using skillhunter;
-using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Studio.Manager.Support.External;
 using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace MB_Studio.Manager
 {
-    public partial class SkillManager : ToolForm
+    public partial class QuestManager : ToolForm
     {
-        public SkillManager() : base(Skriptum.ObjectType.SKILL)
+        public QuestManager() : base(Skriptum.ObjectType.QUEST)
         {
             InitializeComponent();
         }
 
         protected override Skriptum GetNewTypeFromClass(string[] raw_data)
         {
-            return new Skill(raw_data);
+            return new Quest(raw_data);
         }
 
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
@@ -29,7 +27,7 @@ namespace MB_Studio.Manager
         {
             base.Language_cbb_SelectedIndexChanged(sender, e);
 
-            InteractWithTextLanguage();
+            //InteractWithTextLanguage();
         }
 
         protected override void LoadSettingsAndLists()
@@ -41,11 +39,11 @@ namespace MB_Studio.Manager
         {
             base.SetupType(type);
 
-            Skill skill = (Skill)type;
+            Quest quest = (Quest)type;
 
             #region Translation / Description
 
-            description_txt.Text = skill.Description;
+            //description_txt.Text = skill.Description;
 
             Language_cbb_SelectedIndexChanged();
 
@@ -53,34 +51,7 @@ namespace MB_Studio.Manager
 
             #region Flags & MaxLevel
 
-            ulong flags = skill.FlagsGZ;
-            int baseAttribute = (int)(flags & 0xF);
-            switch (baseAttribute)
-            {
-                //case 0:
-                //    str_rb.Checked = true;
-                //    break;
-                case 1:
-                    agi_rb.Checked = true;
-                    break;
-                case 2:
-                    int_rb.Checked = true;
-                    break;
-                case 3:
-                    cha_rb.Checked = true;
-                    break;
-                default:
-                    str_rb.Checked = true;
-                    break;
-            }
 
-            if ((flags & 0x10) == 0x10)
-                effects_party_cb.Checked = true;
-
-            if ((flags & 0x100) == 0x100)
-                inactive_cb.Checked = true;
-
-            maxLevel_num.Value = skill.MaxLevel;
 
             #endregion
         }
@@ -89,7 +60,7 @@ namespace MB_Studio.Manager
         {
             base.Save_translation_btn_Click(sender, e);
 
-            InteractWithTextLanguage(true);
+            //InteractWithTextLanguage(true);
         }
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
@@ -97,16 +68,14 @@ namespace MB_Studio.Manager
             string tmp = values[0].Split()[0] + ';';
             tmp += name_txt.Text.Replace(' ', '_') + ';';
             tmp += GetFlags() + ";";
-            tmp += maxLevel_num.Value + ';';
-            tmp += description_txt.Text.Replace(' ', '_');
 
             values.Clear();
             values = new List<string>(tmp.Split(';'));
 
             string[] valuesX = values.ToArray();
-            Skill s = new Skill(valuesX);
+            Quest q = new Quest(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(s, valuesX);
+            MB_Studio.SavePseudoCodeByType(q, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }
@@ -115,20 +84,7 @@ namespace MB_Studio.Manager
         {
             int flags = 0;
 
-            /*if (str_rb.Checked)
-                flags |= 0x000;
-            else */if (agi_rb.Checked)
-                flags |= 0x001;
-            else if (int_rb.Checked)
-                flags |= 0x002;
-            else if (cha_rb.Checked)
-                flags |= 0x003;
 
-            if (effects_party_cb.Checked)
-                flags |= 0x010;
-
-            if (inactive_cb.Checked)
-                flags |= 0x100;
 
             return flags;
         }
@@ -137,12 +93,10 @@ namespace MB_Studio.Manager
         {
             base.ResetControls();
 
-            description_txt.ResetText();
 
-            str_rb.Checked = true;
         }
 
-        private void InteractWithTextLanguage(bool setValue = false)
+        /*private void InteractWithTextLanguage(bool setValue = false)
         {
             int index = typeSelect_lb.SelectedIndex - 1;
             if (index >= 0)
@@ -176,6 +130,6 @@ namespace MB_Studio.Manager
                 //else
                 //    System.Windows.Forms.MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
             }
-        }
+        }*/
     }
 }
