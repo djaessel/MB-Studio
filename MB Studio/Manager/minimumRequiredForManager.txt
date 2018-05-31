@@ -2,7 +2,13 @@ namespace MB_Studio.Manager
 {
     public partial class MyClass : ToolForm
     {
-        #region Attributes
+        #region Properties
+
+        #region Static
+
+        public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
+
+        #endregion
 
         #endregion
 
@@ -53,8 +59,6 @@ namespace MB_Studio.Manager
         #endregion
 
         #region OpenBrf
-
-        protected override void OnHandleDestroyed(EventArgs e)
 
         protected virtual void OnHandleDestroyed()
 

@@ -148,6 +148,14 @@
     <Compile Include="Manager\QuestManager.Designer.cs">
       <DependentUpon>QuestManager.cs</DependentUpon>
     </Compile>
+    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.AddFromOtherMod.cs" />
+    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.ClickEvents.cs" />
+    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.GUI.cs" />
+    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.OpenBrf.cs" />
+    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Loading.cs" />
+    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Save.cs" />
+    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Setup.cs" />
+    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Translation.cs" />
     <Compile Include="Manager\SkillManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -354,6 +362,7 @@
     <None Include="installerScripts\mb_studio_installer_universal.nsi" />
     <None Include="installerScripts\mb_studio_installer_x64.nsi" />
     <None Include="installerScripts\mb_studio_installer_x86.nsi" />
+    <None Include="Manager\Scripts\README.MD" />
     <None Include="qt.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -428,6 +437,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
+    <None Include="Manager\Scripts\CustomManager\CustomManager.xml" />
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

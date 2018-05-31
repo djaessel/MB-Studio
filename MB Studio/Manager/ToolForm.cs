@@ -22,36 +22,87 @@ namespace MB_Studio.Manager
     {
         #region Attributes
 
-        private int curTypeIndex = -1;
+        #region Static
 
-        protected bool unsavedDataAvailable = false;
+        #region Private
+
+        private static Thread openBrfThread = null;
+
+        private static int openBrfFormCount = 0;
+
+        private static List<string> tabNames = new List<string>();
+
+        #endregion
+
+        #region Protected
+
+        protected static string moduleName;
+        protected static List<string> modMeshResourceNames = new List<string>();
+
+        #endregion
+
+        #region Public
 
         public const int GROUP_HEIGHT_MIN = 25;
         public const int GROUP_HEIGHT_DIF = 100;
         public const int GROUP_HEIGHT_MAX = GROUP_HEIGHT_DIF + GROUP_HEIGHT_MIN;
 
-        private static int openBrfFormCount = 0;
-
-        private static List<string> tabNames = new List<string>();
-        private static Thread openBrfThread = null;
-
         public static OpenBrfManager OpenBrfManager = null;
+
+        #endregion
+
+        #endregion
+
+        #region NonStatic
+
+        #region Private
+
+        private int curTypeIndex = -1;
+
+        // instance member to keep reference to splash form
+        private SplashForm frmSplash;
+
+        #endregion
+
+        #region Protected
 
         protected List<string[]> translations = new List<string[]>();
         protected List<string> typesIDs = new List<string>();
         protected List<Skriptum> types = new List<Skriptum>();
 
-        protected static string moduleName;
-        protected static List<string> modMeshResourceNames = new List<string>();
-
         protected FileSaver fileSaver;
 
-        // instance member to keep reference to splash form
-        private SplashForm frmSplash;
+        #endregion
+
+        #region Public
+
+        #endregion
+
+        #endregion
+
+        #endregion
 
         #region Properties
 
-        //OBJECT
+        #region Static
+
+        protected static string MabPath
+        {
+            get
+            {
+                string mabPath = ProgramConsole.GetModuleInfoPath();
+                mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
+                mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
+                return mabPath;
+            }
+        }
+
+        public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
+
+        #endregion
+
+        #region Object
+
         public ObjectType ObjectType { get; private set; }
 
         public int ObjectTypeID
@@ -70,19 +121,7 @@ namespace MB_Studio.Manager
 
         public string IniFile { get { return MabPath + "\\Modules\\" + ProgramConsole.OriginalMod + "\\module.ini"; } }
 
-        //STATIC
-        protected static string MabPath
-        {
-            get
-            {
-                string mabPath = ProgramConsole.GetModuleInfoPath();
-                mabPath = mabPath.Remove(mabPath.IndexOf('%')).TrimEnd('\\');
-                mabPath = mabPath.Remove(mabPath.LastIndexOf('\\'));
-                return mabPath;
-            }
-        }
-
-        public static Color BaseColor { get; set; } = Color.FromArgb(56, 56, 56);
+        public bool UnsavedDataAvailable { get; protected set; } = false;
 
         #endregion
 
@@ -179,7 +218,7 @@ namespace MB_Studio.Manager
 
         private void Control_DataChanged(object sender, EventArgs e)
         {
-            unsavedDataAvailable = true;
+            UnsavedDataAvailable = true;
         }
 
         private void ToolForm_Load(object sender, EventArgs e)
@@ -405,7 +444,7 @@ namespace MB_Studio.Manager
 
             SaveTypeByIndex(list, index);
 
-            unsavedDataAvailable = false;//not all is checked yet - just for now
+            UnsavedDataAvailable = false;//not all is checked yet - just for now
         }
 
         #endregion
@@ -943,7 +982,7 @@ namespace MB_Studio.Manager
 
             if (f.SelectedType == null) return;
 
-            if (unsavedDataAvailable)
+            if (UnsavedDataAvailable)
             {
                 DialogResult result = MessageBox.Show(
                     "Alle ungespeicherten Daten werden hiermit gelöscht!" + Environment.NewLine +

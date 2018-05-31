@@ -1,0 +1,19 @@
+<CustomManager>
+	<Name>CustomManager</Name>
+	<Attributes uses3DView=false objectType="Skriptum.ObjectType.Script" />
+	<Properties baseColor="a=255;r=56;g=56;b=56" />
+	<Scripts>
+		<Required>
+			<Loading src=".\Scripts\Required\CustomManager.Loading.cs" />
+			<Setup src=".\Scripts\Required\CustomManager.Setup.cs" />
+			<Save src=".\Scripts\Required\CustomManager.Save.cs" />
+			<Translation src=".\Scripts\Required\CustomManager.Translation.cs" />
+		</Required>
+		<Optional>
+			<GUI src=".\Scripts\Required\CustomManager.GUI.cs" />
+			<ClickEvents src=".\Scripts\Required\CustomManager.ClickEvents.cs" />
+			<OpenBrf src=".\Scripts\Optional\CustomManager.OpenBrf.cs" />
+			<AddFromOtherMod src=".\Scripts\Optional\CustomManager.AddFromOtherMod.cs" />
+		</Optional>
+	</Scripts>
+</CustomManager>

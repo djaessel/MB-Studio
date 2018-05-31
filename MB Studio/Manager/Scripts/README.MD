@@ -1,0 +1,1 @@
+Just copy the CustomManager Example and rename everything so it fits your classes and needs

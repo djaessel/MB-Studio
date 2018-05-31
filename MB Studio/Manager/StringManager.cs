@@ -13,6 +13,11 @@ namespace MB_Studio.Manager
             InitializeComponent();
         }
 
+        protected override void LoadSettingsAndLists()
+        {
+            base.LoadSettingsAndLists();
+        }
+
         protected override Skriptum GetNewTypeFromClass(string[] raw_data)
         {
             return new GameString(raw_data);
@@ -28,11 +33,6 @@ namespace MB_Studio.Manager
             base.Language_cbb_SelectedIndexChanged(sender, e);
 
 
-        }
-
-        protected override void LoadSettingsAndLists()
-        {
-            base.LoadSettingsAndLists();
         }
 
         protected override void SetupType(Skriptum type)
