@@ -922,6 +922,8 @@ namespace MB_Studio.Manager
 
         #endregion
 
+        #region AddFromOtherMod
+
         private void AddFromOtherMod_btn_Click(object sender, EventArgs e)
         {
             AddFromOtherMod();
@@ -958,5 +960,7 @@ namespace MB_Studio.Manager
             typeSelect_lb.SelectedIndex = 0;
             SetupType(f.SelectedType);
         }
+
+        #endregion
     }
 }

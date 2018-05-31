@@ -1,0 +1,69 @@
+namespace MB_Studio.Manager
+{
+    public partial class MyClass : ToolForm
+    {
+        #region Attributes
+
+        #endregion
+
+        #region Loading
+
+        public MyClass(ObjectType objectType = ObjectType.Script, bool uses3DView = false) : base(objectType, uses3DView)
+
+        protected virtual void ToolForm_Shown(object sender, EventArgs e)
+
+        protected virtual void InitializeControls()
+
+        protected virtual void LoadSettingsAndLists()
+
+        protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
+
+        #endregion
+
+        #region Click Events
+
+        #endregion
+
+        #region GUI
+
+        #endregion
+
+        #region Setups
+
+        protected virtual void ResetControls()
+
+        protected virtual void ResetGroupBox(GroupBox groupBox, List<string> exclude = null)
+
+        protected virtual void SetupType(Skriptum type)
+
+        #endregion
+
+        #region Save
+
+        protected virtual void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
+
+        #endregion
+
+        #region Translation
+
+        protected virtual void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
+
+        protected virtual void Save_translation_btn_Click(object sender, EventArgs e)
+
+        #endregion
+
+        #region OpenBrf
+
+        protected override void OnHandleDestroyed(EventArgs e)
+
+        protected virtual void OnHandleDestroyed()
+
+        #endregion
+		
+        #region AddFromOtherMod
+		
+        protected virtual void AddFromOtherMod(AddTypeFromOtherMod f = null)
+		
+		#endregion
+    }
+}

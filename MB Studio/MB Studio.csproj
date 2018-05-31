@@ -427,6 +427,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Manager\minimumRequiredForManager.txt" />
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
