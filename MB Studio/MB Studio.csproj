@@ -156,6 +156,7 @@
     <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Save.cs" />
     <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Setup.cs" />
     <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Translation.cs" />
+    <Compile Include="Manager\ScriptCommander.cs" />
     <Compile Include="Manager\SkillManager.cs">
       <SubType>Form</SubType>
     </Compile>
