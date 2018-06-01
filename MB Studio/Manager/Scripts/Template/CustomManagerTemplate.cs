@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MB_Studio.Manager.Support.External;
+//using MB_Studio.Manager.Support.External;
 using MB_Decompiler_Library.Objects;
 using skillhunter;
 
@@ -27,14 +27,14 @@ namespace MB_Studio.Manager
         {
             InitializeComponent();
 			
-			/SCRIPT MyClassManager
+			// @SCRIPT MyClassManager
         }
 
         protected override void LoadSettingsAndLists()
         {
             base.LoadSettingsAndLists();
 			
-			/SCRIPT LoadSettingsAndLists
+			// @SCRIPT LoadSettingsAndLists
         }
 
         protected override Skriptum GetNewTypeFromClass(string[] raw_data)
@@ -43,18 +43,18 @@ namespace MB_Studio.Manager
 			return new Skriptum(raw_data);
         }
 		
-        protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
+        /*protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
-			/SCRIPT AddFromOtherMod
+			// @SCRIPT AddFromOtherMod
 			
             //base.AddFromOtherMod(f);
-        }
+        }*/
 
         protected override void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
         {
             base.Language_cbb_SelectedIndexChanged(sender, e);
 			
-			/SCRIPT Language_cbb_SelectedIndexChanged
+			// @SCRIPT Language_cbb_SelectedIndexChanged
         }
 
         protected override void SetupType(Skriptum type)
@@ -63,14 +63,14 @@ namespace MB_Studio.Manager
 
             MyClass skriptum = (MyClass)type;
 
-			/SCRIPT SetupType
+			// @SCRIPT SetupType
         }
 
         protected override void Save_translation_btn_Click(object sender, EventArgs e)
         {
             base.Save_translation_btn_Click(sender, e);
 			
-			/SCRIPT Save_translation_btn_Click
+			// @SCRIPT Save_translation_btn_Click
         }
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
@@ -79,7 +79,7 @@ namespace MB_Studio.Manager
 			tmp += values[0].Split()[0] + ';';
             tmp += name_txt.Text.Replace(' ', '_') + ';';
 
-			/SCRIPT SaveTypeByIndex
+			// @SCRIPT SaveTypeByIndex
 			
             values.Clear();
             values = new List<string>(tmp.Split(';'));

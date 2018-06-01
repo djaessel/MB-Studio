@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
+using System.Text;
 
 namespace MB_Studio.Manager
 {
@@ -203,7 +204,8 @@ namespace MB_Studio.Manager
 
         private static ToolForm CreateCustomManager(string className, List<List<string>> functions)
         {
-            string newClassName = className + "Manager";
+            const string scriptMarker = "// @SCRIPT ";
+            string newClassName = "MB_Studio.Manager." + className + "Manager";
             string scriptsFolder = Path.GetFullPath(@".\Scripts");
             string managerTemplate = scriptsFolder + @"\Template\CustomManagerTemplate.cs";
             string managerTemplateCode = File.ReadAllText(managerTemplate).Replace("MyClass", className);
@@ -218,20 +220,41 @@ namespace MB_Studio.Manager
 
                 functionCode = functionCode.TrimStart('{').TrimEnd('}').Trim();
 
-                managerTemplateCode = managerTemplateCode.Replace("/SCRIPT " + name, functionCode);
+                managerTemplateCode = managerTemplateCode.Replace(scriptMarker + name, functionCode);
             }
 
             File.WriteAllText(scriptsFolder + '\\' + newClassName + ".cs", managerTemplateCode);
 
             CSharpCodeProvider provider = new CSharpCodeProvider();
-            CompilerResults results = provider.CompileAssemblyFromSource(new CompilerParameters(), managerTemplateCode);
+            CompilerParameters parameters = new CompilerParameters {
+                GenerateExecutable = false,
+                GenerateInMemory = true,
+            };
 
-            // Needs random dll from appdata folder!!!
-            //objects classInstance = results.CompiledAssembly.CreateInstance(newClassName);
-            //Toolform customManager = (ToolForm)classInstance;
-            //return customManager;
+            //parameters.CompilerOptions += "-reference:MB_Studio.exe";
+            parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("importantLib.dll");
+            parameters.ReferencedAssemblies.Add("skillhunter.dll");
+            parameters.ReferencedAssemblies.Add("MB_Decompiler_Library.dll");
 
-            return null;
+            //ToolForm is not found in MB_Studio.Manager!!!
+
+            CompilerResults results = provider.CompileAssemblyFromSource(parameters, managerTemplateCode);
+
+            if (results.Errors.HasErrors)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (CompilerError error in results.Errors)
+                    sb.AppendLine(String.Format("Error ({0}): {1}", error.ErrorNumber, error.ErrorText));
+
+                throw new InvalidOperationException(sb.ToString());
+            }
+
+            Assembly assembly = results.CompiledAssembly;
+            object classInstance = assembly.CreateInstance(newClassName, true);
+
+            return (ToolForm)classInstance;
         }
     }
 }
