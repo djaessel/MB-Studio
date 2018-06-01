@@ -4,6 +4,6 @@
 
 protected override void OnHandleDestroyed()
 {
-	base.OnHandleDestroyed();
+	
 }
 

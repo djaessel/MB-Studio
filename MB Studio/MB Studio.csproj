@@ -148,15 +148,18 @@
     <Compile Include="Manager\QuestManager.Designer.cs">
       <DependentUpon>QuestManager.cs</DependentUpon>
     </Compile>
-    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.AddFromOtherMod.cs" />
-    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.ClickEvents.cs" />
-    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.GUI.cs" />
-    <None Include="Manager\Scripts\CustomManager\Optional\CustomManager.OpenBrf.cs" />
-    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Loading.cs" />
-    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Save.cs" />
-    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Setup.cs" />
-    <None Include="Manager\Scripts\CustomManager\Required\CustomManager.Translation.cs" />
     <Compile Include="Manager\ScriptCommander.cs" />
+    <None Include="Manager\Scripts\Example\Optional\Example.AddFromOtherMod.cs" />
+    <None Include="Manager\Scripts\Example\Optional\Example.ClickEvents.cs" />
+    <None Include="Manager\Scripts\Example\Optional\Example.GUI.cs" />
+    <None Include="Manager\Scripts\Example\Optional\Example.OpenBrf.cs" />
+    <None Include="Manager\Scripts\Example\Required\Example.Loading.cs" />
+    <None Include="Manager\Scripts\Example\Required\Example.Save.cs" />
+    <None Include="Manager\Scripts\Example\Required\Example.Setup.cs" />
+    <None Include="Manager\Scripts\Example\Required\Example.Translation.cs" />
+    <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">
+      <SubType>Form</SubType>
+    </None>
     <Compile Include="Manager\SkillManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -438,7 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
-    <None Include="Manager\Scripts\CustomManager\CustomManager.xml" />
+    <Content Include="Manager\Scripts\Example\Example.xml" />
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
