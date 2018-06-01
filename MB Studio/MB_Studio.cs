@@ -754,6 +754,9 @@ namespace MB_Studio
             //projectFiles_lb.Items.Add("Presentations");
             //projectFiles_lb.Items.Add("...");
             // VORERST //
+
+            ScriptCommander commander = new ScriptCommander();
+            commander.LoadManagers();
         }
 
         private void ProjectFiles_lb_SelectedIndexChanged(object sender, EventArgs e)
