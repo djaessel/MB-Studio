@@ -149,16 +149,33 @@
       <DependentUpon>QuestManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\ScriptCommander.cs" />
-    <None Include="Manager\Scripts\Example\Optional\Example.AddFromOtherMod.cs" />
-    <None Include="Manager\Scripts\Example\Optional\Example.ClickEvents.cs" />
-    <None Include="Manager\Scripts\Example\Optional\Example.GUI.cs" />
-    <None Include="Manager\Scripts\Example\Optional\Example.OpenBrf.cs" />
-    <None Include="Manager\Scripts\Example\Required\Example.Loading.cs" />
-    <None Include="Manager\Scripts\Example\Required\Example.Save.cs" />
-    <None Include="Manager\Scripts\Example\Required\Example.Setup.cs" />
-    <None Include="Manager\Scripts\Example\Required\Example.Translation.cs" />
+    <None Include="Manager\Scripts\Example\Optional\Example.AddFromOtherMod.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Optional\Example.ClickEvents.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Optional\Example.GUI.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Optional\Example.OpenBrf.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Required\Example.Loading.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Required\Example.Save.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Required\Example.Setup.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Example\Required\Example.Translation.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">
       <SubType>Form</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Manager\SkillManager.cs">
       <SubType>Form</SubType>
@@ -366,7 +383,9 @@
     <None Include="installerScripts\mb_studio_installer_universal.nsi" />
     <None Include="installerScripts\mb_studio_installer_x64.nsi" />
     <None Include="installerScripts\mb_studio_installer_x86.nsi" />
-    <None Include="Manager\Scripts\README.MD" />
+    <None Include="Manager\Scripts\README.MD">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="qt.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -441,7 +460,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
-    <Content Include="Manager\Scripts\Example\Example.xml" />
+    <Content Include="Manager\Scripts\Example\Example.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -11,8 +11,10 @@ namespace MB_Studio.Manager
 {
     internal class ScriptCommander
     {
-        private const string methodIdentifier = "protected override ";
-        private const string scriptMarker = "// @SCRIPT ";
+        private const string METHOD_IDENTIFIER = "protected override ";
+        private const string SCRIPT_MARKER = "// @SCRIPT ";
+
+        private static string ScriptsFolder { get; } = Path.GetFullPath(@".\Manager\Scripts");
 
         private readonly List<ToolForm> customManagers = new List<ToolForm>();
 
@@ -25,11 +27,9 @@ namespace MB_Studio.Manager
 
         public void LoadManagers()
         {
-            string scriptPath = Path.GetFullPath(".\\Scripts");
+            if (!Directory.Exists(ScriptsFolder)) return;
 
-            if (!Directory.Exists(scriptPath)) return;
-
-            foreach (string dir in Directory.GetDirectories(scriptPath))
+            foreach (string dir in Directory.GetDirectories(ScriptsFolder))
             {
                 string configFile = dir + "\\" + dir.Substring(dir.LastIndexOf('\\') + 1) + ".xml";
                 if (File.Exists(configFile))
@@ -155,7 +155,7 @@ namespace MB_Studio.Manager
         private static ToolForm CreateCustomManagerFromScripts(string className, List<string> regionsRaw)
         {
             string constructorIdentifier = "public " + className + "Manager()";
-            string basePath = Path.GetFullPath(@".\Scripts") + '\\' + className;
+            string basePath = ScriptsFolder + '\\' + className;
 
             List<List<string>> functions = new List<List<string>>();
 
@@ -168,7 +168,7 @@ namespace MB_Studio.Manager
                 bool addToFunction = false;
                 for (int i = 0; i < codeLines.Length; i++)
                 {
-                    bool isMethod = codeLines[i].StartsWith(methodIdentifier);
+                    bool isMethod = codeLines[i].StartsWith(METHOD_IDENTIFIER);
                     if (isMethod || codeLines[i].StartsWith(constructorIdentifier))
                     {
                         curList = new List<string>
@@ -201,10 +201,9 @@ namespace MB_Studio.Manager
         {
             string exeName = Assembly.GetEntryAssembly().Location;
             string newClassName = "MB_Studio.Manager." + className + "Manager";
-            string scriptsFolder = Path.GetFullPath(@".\Scripts");
-            string managerTemplate = scriptsFolder + @"\Template\CustomManagerTemplate.cs";
+            string managerTemplate = ScriptsFolder + @"\Template\CustomManagerTemplate.cs";
             string managerTemplateCode = File.ReadAllText(managerTemplate).Replace("MyClass", className);
-            string genSourceFile = scriptsFolder + '\\' + newClassName + ".cs";
+            string genSourceFile = ScriptsFolder + '\\' + newClassName + ".cs";
 
             foreach (List<string> function in functions)
             {
@@ -216,7 +215,7 @@ namespace MB_Studio.Manager
 
                 functionCode = functionCode.TrimStart('{').TrimEnd('}').Trim();
 
-                managerTemplateCode = managerTemplateCode.Replace(scriptMarker + name, functionCode);
+                managerTemplateCode = managerTemplateCode.Replace(SCRIPT_MARKER + name, functionCode);
             }
 
             File.WriteAllText(genSourceFile, managerTemplateCode);
