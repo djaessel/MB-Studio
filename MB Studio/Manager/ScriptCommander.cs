@@ -11,7 +11,7 @@ namespace MB_Studio.Manager
 {
     internal class ScriptCommander
     {
-        //private const string METHOD_IDENTIFIER = @"/(public|protected|private) (static |)(override |)(\w[a-z]*\w )(\w*[A-Z]*\w)([(])(\w[a-z, 0-9\[\]]*\w|)([)])/g";
+        //private const string METHOD_IDENTIFIER = @"/(public|protected|private) (static |)(override |)(\w[A-z]*\w )(\w*[A-Z]*\w)([(])([A-z, 0-9_=<>\[\]]*|)([)])/g";
         private const string METHOD_IDENTIFIER = "protected override ";
         private const string SCRIPT_MARKER = "// @SCRIPT ";
 
