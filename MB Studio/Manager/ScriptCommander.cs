@@ -1,23 +1,26 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
-using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.CSharp;
-using System.CodeDom.Compiler;
 using System.Text;
+using Microsoft.CSharp;
+using System.Reflection;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 
 namespace MB_Studio.Manager
 {
-    internal class ScriptCommander // Is used for Custom Managers (Scripting)
+    internal class ScriptCommander
     {
+        private const string methodIdentifier = "protected override ";
+        private const string scriptMarker = "// @SCRIPT ";
+
         private readonly List<ToolForm> customManagers = new List<ToolForm>();
 
         public ScriptCommander()
         {
-            Console.Write(Environment.NewLine + "Initializing ScriptCommander...");
-
-            Console.WriteLine("done.");
+            //Console.Write(Environment.NewLine + "Initializing ScriptCommander...");
+            //
+            //Console.WriteLine("done.");
         }
 
         public void LoadManagers()
@@ -33,9 +36,6 @@ namespace MB_Studio.Manager
                 {
                     string managerName = Path.GetFileName(configFile);
                     //managerName = managerName.Remove(managerName.IndexOf('.'));
-
-                    Console.WriteLine(Environment.NewLine + "- - - - - - - - ");
-                    Console.WriteLine(managerName);
 
                     XmlReaderSettings settings = new XmlReaderSettings
                     {
@@ -139,27 +139,24 @@ namespace MB_Studio.Manager
 
                             } while (xmlReader.MoveToElement() && !correctElement);
 
-                            Console.WriteLine("Name: " + name);
-                            Console.WriteLine("Attributes: " + attributes);
-                            Console.WriteLine("Properties: " + properties);
-                            Console.WriteLine("Scripts: " + scripts);
-                            Console.WriteLine("- - - - - - - - ");
+                            Console.WriteLine("Attributes: " + attributes);// TODO: add to CustomManager creation process
+                            Console.WriteLine("Properties: " + properties);// TODO: add to CustomManager creation process
 
-                            TestCoder(name, new List<string>(scripts.Trim('\t', ' ', ';').Split(';')));
+                            scripts = scripts.Trim('\t', ' ', ';');
+
+                            ToolForm newManager = CreateCustomManagerFromScripts(name, new List<string>(scripts.Split(';')));
+                            customManagers.Add(newManager);
                         }
                     }
                 }
             }
         }
 
-        private static void TestCoder(string className, List<string> regionsRaw)
+        private static ToolForm CreateCustomManagerFromScripts(string className, List<string> regionsRaw)
         {
-            //MethodInfo function = CreateFunction("x + 2 * y");
-            //var betterFunction = (Func<double, double, double>)Delegate.CreateDelegate(typeof(Func<double, double, double>), function);
-
-            string methodIdentifier = "protected override ";
             string constructorIdentifier = "public " + className + "Manager()";
             string basePath = Path.GetFullPath(@".\Scripts") + '\\' + className;
+
             List<List<string>> functions = new List<List<string>>();
 
             foreach (string regionRaw in regionsRaw)
@@ -197,18 +194,17 @@ namespace MB_Studio.Manager
                 }
             }
 
-            ToolForm customManager = CreateCustomManager(className, functions);
-            foreach (System.Windows.Forms.Control c in customManager.Controls)
-                Console.WriteLine(c.Name + " : " + c.GetType().Name);
+            return CreateCustomManagerByCode(className, functions);
         }
 
-        private static ToolForm CreateCustomManager(string className, List<List<string>> functions)
+        private static ToolForm CreateCustomManagerByCode(string className, List<List<string>> functions)
         {
-            const string scriptMarker = "// @SCRIPT ";
+            string exeName = Assembly.GetEntryAssembly().Location;
             string newClassName = "MB_Studio.Manager." + className + "Manager";
             string scriptsFolder = Path.GetFullPath(@".\Scripts");
             string managerTemplate = scriptsFolder + @"\Template\CustomManagerTemplate.cs";
             string managerTemplateCode = File.ReadAllText(managerTemplate).Replace("MyClass", className);
+            string genSourceFile = scriptsFolder + '\\' + newClassName + ".cs";
 
             foreach (List<string> function in functions)
             {
@@ -223,7 +219,7 @@ namespace MB_Studio.Manager
                 managerTemplateCode = managerTemplateCode.Replace(scriptMarker + name, functionCode);
             }
 
-            File.WriteAllText(scriptsFolder + '\\' + newClassName + ".cs", managerTemplateCode);
+            File.WriteAllText(genSourceFile, managerTemplateCode);
 
             CSharpCodeProvider provider = new CSharpCodeProvider();
             CompilerParameters parameters = new CompilerParameters {
@@ -231,16 +227,15 @@ namespace MB_Studio.Manager
                 GenerateInMemory = true,
             };
 
-            //parameters.CompilerOptions += "-reference:MB_Studio.exe";
+            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             parameters.ReferencedAssemblies.Add("System.dll");
             parameters.ReferencedAssemblies.Add("importantLib.dll");
             parameters.ReferencedAssemblies.Add("skillhunter.dll");
             parameters.ReferencedAssemblies.Add("MB_Decompiler_Library.dll");
+            parameters.ReferencedAssemblies.Add(exeName);
+            //parameters.ReferencedAssemblies.Add(typeof(ToolForm).Assembly.CodeBase);
 
-            //ToolForm is not found in MB_Studio.Manager!!!
-
-            CompilerResults results = provider.CompileAssemblyFromSource(parameters, managerTemplateCode);
-
+            CompilerResults results = provider.CompileAssemblyFromFile(parameters, new string[] { genSourceFile });
             if (results.Errors.HasErrors)
             {
                 StringBuilder sb = new StringBuilder();
@@ -252,9 +247,7 @@ namespace MB_Studio.Manager
             }
 
             Assembly assembly = results.CompiledAssembly;
-            object classInstance = assembly.CreateInstance(newClassName, true);
-
-            return (ToolForm)classInstance;
+            return (ToolForm)assembly.CreateInstance(newClassName, true);
         }
     }
 }

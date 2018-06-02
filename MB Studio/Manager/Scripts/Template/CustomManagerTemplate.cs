@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-//using MB_Studio.Manager.Support.External;
+using MB_Studio.Manager.Support.External;
 using MB_Decompiler_Library.Objects;
 using skillhunter;
 
@@ -23,7 +23,7 @@ namespace MB_Studio.Manager
             this.components = new System.ComponentModel.Container();
         }
 		
-        public MyClassManager() : base(Skriptum.ObjectType.MyClass)
+        public MyClassManager() : base(/*Skriptum.ObjectType.MyClass*/)
         {
             InitializeComponent();
 			
@@ -40,15 +40,15 @@ namespace MB_Studio.Manager
         protected override Skriptum GetNewTypeFromClass(string[] raw_data)
         {
 			//return new MyClass(raw_data);
-			return new Skriptum(raw_data);
+			return null;
         }
 		
-        /*protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
+        protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
 			// @SCRIPT AddFromOtherMod
 			
             //base.AddFromOtherMod(f);
-        }*/
+        }
 
         protected override void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
         {
@@ -61,7 +61,7 @@ namespace MB_Studio.Manager
         {
             base.SetupType(type);
 
-            MyClass skriptum = (MyClass)type;
+            //MyClass skriptum = (MyClass)type;
 
 			// @SCRIPT SetupType
         }
@@ -85,9 +85,8 @@ namespace MB_Studio.Manager
             values = new List<string>(tmp.Split(';'));
 
             string[] valuesX = values.ToArray();
-            MyClass c = new MyClass(valuesX);
-
-            MB_Studio.SavePseudoCodeByType(c, valuesX);
+            //MyClass c = new MyClass(valuesX);
+            //MB_Studio.SavePseudoCodeByType(c, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }
