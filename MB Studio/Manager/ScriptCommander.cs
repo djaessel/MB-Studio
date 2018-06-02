@@ -11,6 +11,7 @@ namespace MB_Studio.Manager
 {
     internal class ScriptCommander
     {
+        //private const string METHOD_IDENTIFIER = @"/(public|protected|private) (static |)(override |)(\w[a-z]*\w )(\w*[A-Z]*\w)([(])(\w[a-z, 0-9\[\]]*\w|)([)])/g";
         private const string METHOD_IDENTIFIER = "protected override ";
         private const string SCRIPT_MARKER = "// @SCRIPT ";
 
@@ -23,6 +24,11 @@ namespace MB_Studio.Manager
             //Console.Write(Environment.NewLine + "Initializing ScriptCommander...");
             //
             //Console.WriteLine("done.");
+        }
+
+        public List<ToolForm> GetCustomManagers()
+        {
+            return customManagers;
         }
 
         public void LoadManagers()
@@ -168,6 +174,8 @@ namespace MB_Studio.Manager
                 bool addToFunction = false;
                 for (int i = 0; i < codeLines.Length; i++)
                 {
+                    //Match match = Regex.Match(codeLines[i], METHOD_IDENTIFIER, RegexOptions.Singleline);
+                    //bool isMethod = match.Success;
                     bool isMethod = codeLines[i].StartsWith(METHOD_IDENTIFIER);
                     if (isMethod || codeLines[i].StartsWith(constructorIdentifier))
                     {

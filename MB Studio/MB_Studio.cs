@@ -34,6 +34,8 @@ namespace MB_Studio
 
         private bool FullScreen = true;
 
+        private ScriptCommander scriptCommander = new ScriptCommander();
+
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
         // delegate for the UI updater
@@ -755,8 +757,9 @@ namespace MB_Studio
             //projectFiles_lb.Items.Add("...");
             // VORERST //
 
-            ScriptCommander commander = new ScriptCommander();
-            commander.LoadManagers();
+            scriptCommander.LoadManagers();
+            foreach (ToolForm cm in scriptCommander.GetCustomManagers())
+                projectFiles_lb.Items.Add(cm.GetType().Name.Replace("Manager", string.Empty));
         }
 
         private void ProjectFiles_lb_SelectedIndexChanged(object sender, EventArgs e)
@@ -766,6 +769,7 @@ namespace MB_Studio
             if (projectFiles_lb.SelectedIndex >= 0)
             {
                 string item = projectFiles_lb.SelectedItem.ToString();
+                string itemManagerName = item + "Manager";
 
                 if (item.Equals("Troops"))
                     form = new TroopManager();
@@ -781,6 +785,10 @@ namespace MB_Studio
                     form = new InfoPageManager();
                 else if (item.Equals("Skills"))
                     form = new SkillManager();
+                else
+                    foreach (ToolForm cm in scriptCommander.GetCustomManagers())
+                        if (cm.GetType().Name.Equals(itemManagerName))
+                            form = cm;
             }
 
             if (form != null)
