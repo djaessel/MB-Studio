@@ -151,20 +151,19 @@ namespace MB_Studio.Manager
         private static List<string> GenerateInitializeGUIMethod(string className, out List<string> classAttributes)
         {
             string groupBox = "GroupBox";
+
             string guiFile = ScriptsFolder + "\\" + className + "\\" + className + ".Designer.xml";
 
             classAttributes = new List<string>();
 
-            List<string> func = new List<string>();
-
             List<string> alwaysStart = new List<string>()
             {
-                "InitializeComponent",//"private new void InitializeComponent()"
+                "InitializeComponent",
                 "{",
                 "this.toolPanel.SuspendLayout();" + Environment.NewLine + "\t\t\t",
                 "this.groupBox_0_gb.SuspendLayout();" + Environment.NewLine + "\t\t\t",
                 "this.SuspendLayout();" + Environment.NewLine + Environment.NewLine + "\t\t\t",
-        };
+            };
 
             List<string> alreadyHere = new List<string>()
             {
@@ -184,6 +183,8 @@ namespace MB_Studio.Manager
                 "lines",
             };
 
+            List<string> func = new List<string>();
+
             func.AddRange(alwaysStart);
 
             using (XmlReader reader = XmlReader.Create(File.OpenRead(guiFile), xmlSettings))
@@ -193,8 +194,47 @@ namespace MB_Studio.Manager
                     if (reader.IsStartElement(groupBox))
                     {
                         int id = int.Parse(reader.GetAttribute("id"));
+                        int lastId = id - 1;
                         int height = int.Parse(reader.GetAttribute("height"));
-                        
+                        string text = reader.GetAttribute("text");
+
+                        if (id > 0)
+                        {
+                            classAttributes.Add("Button|showGroup_" + id + "_btn");
+                            classAttributes.Add("GroupBox|groupBox_" + id + "_gb");
+
+                            /// CODE AUSLAGERN IN DATEI UND LEDIGLICH ID UND LASTID AUSTAUSCHE !!!
+
+                            func.Add("this.Height = this.Height + this.groupBox_" + lastId + "_gb.Height + 8;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.toolPanel.Height = this.toolPanel.Height + this.groupBox_" + lastId + "_gb.Height + 8;" + Environment.NewLine + "\t\t\t");
+
+                            func.Add("this.showGroup_" + id + "_btn = new Button();" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.Height = this.showGroup_" + lastId + "_btn.Height;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.Width = this.showGroup_" + lastId + "_btn.Width;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.Left = this.showGroup_" + lastId + "_btn.Left;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.Top = this.showGroup_" + lastId + "_btn.Top + this.showGroup_" + lastId + "_btn.Height + 4;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.Text = this.showGroup_" + lastId + "_btn.Text;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.Name = \"showGroup_" + id + "_btn\";" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.FlatStyle = FlatStyle.Flat;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.showGroup_" + id + "_btn.BackColor = Color.DimGray;" + Environment.NewLine + "\t\t\t");
+
+                            func.Add("this.toolPanel.Controls.Add(this.showGroup_" + id + "_btn);" + Environment.NewLine + "\t\t\t");
+
+                            func.Add("this.groupBox_" + id + "_gb = new GroupBox();" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Height = this.groupBox_" + lastId + "_gb.Height;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Width = this.groupBox_" + lastId + "_gb.Width;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Left = this.groupBox_" + lastId + "_gb.Left;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Top = this.groupBox_" + lastId + "_gb.Top + this.groupBox_" + lastId + "_gb.Height + 4;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Text = \"" + text + "\";" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Name = \"groupBox_" + id + "_gb\";" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.ForeColor = Color.White;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.FlatStyle = FlatStyle.Flat;" + Environment.NewLine + "\t\t\t");
+                            func.Add("this.groupBox_" + id + "_gb.Font = new Font(\"Microsoft Sans Serif\", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);");
+                            func.Add("this.toolPanel.Controls.Add(this.groupBox_" + id + "_gb);" + Environment.NewLine + "\t\t\t");
+
+                            /// CODE AUSLAGERN IN DATEI UND LEDIGLICH ID UND LASTID AUSTAUSCHE !!!
+                        }
+
                         func.Add("this.showGroup_" + id + "_btn.Tag = \"" + (height - ToolForm.GROUP_HEIGHT_MAX) + "\";" + Environment.NewLine + Environment.NewLine + "\t\t\t");
 
                         bool read, isEndElement;
@@ -246,6 +286,8 @@ namespace MB_Studio.Manager
                             }
 
                         } while (read && !isEndElement);
+
+                        //reader.ReadEndElement();
                     }
                 }
             }
@@ -354,6 +396,7 @@ namespace MB_Studio.Manager
             };
 
             parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("System.Drawing.dll");
             parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             parameters.ReferencedAssemblies.Add("skillhunter.dll");
             parameters.ReferencedAssemblies.Add("importantLib.dll");

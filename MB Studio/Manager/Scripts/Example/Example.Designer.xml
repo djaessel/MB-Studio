@@ -1,5 +1,7 @@
+<!--
+	Only use height, width, positions etc. if you want to hardcode or you know what you are doing!
+-->
 
-<!-- Only use height, width, positions etc. if you want to hardcode or you know what you are doing! -->
 <GroupBox id="0" text="Translation" height="245">
 
 	<Button name="save_translation_btn" text="Save Translation" childIndex="0" />
@@ -16,4 +18,22 @@
 	<TextBox name="text_txt" width="491" height="153" left="233" top="86" label="text_lbl" text="" childIndex="7" multiline="true" />
 	<Label name="text_lbl" autoSize="true" text="Text:" left="190" top="92" width="42" height="16" childIndex="8" />
 	
+</GroupBox>
+
+<GroupBox id="1" text="Test123" height="128">
+
+	<TextBox name="test1_txt" height="24" width="120" top="25" left="10" label="" childIndex="0" />
+
+</GroupBox>
+
+<GroupBox id="2" text="Test456" height="156">
+
+	<TextBox name="test2_txt" height="24" width="120" top="25" left="10" label="" childIndex="0" />
+
+</GroupBox>
+
+<GroupBox id="3" text="Test789" height="192">
+
+	<TextBox name="test3_txt" height="24" width="120" top="25" left="10" label="" childIndex="0" />
+
 </GroupBox>
