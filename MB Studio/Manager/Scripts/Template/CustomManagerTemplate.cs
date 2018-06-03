@@ -1,8 +1,9 @@
 using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
-using MB_Studio.Manager.Support.External;
-using MB_Decompiler_Library.Objects;
 using skillhunter;
+using MB_Decompiler_Library.Objects;
+using MB_Studio.Manager.Support.External;
 
 namespace MB_Studio.Manager
 {
@@ -10,30 +11,24 @@ namespace MB_Studio.Manager
     {
         private System.ComponentModel.IContainer components = null;
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-				components.Dispose();
+		// @ATTRIBUTES
 
-            base.Dispose(disposing);
+        public MyClassManager() : base(/*Skriptum.ObjectType.MyClass*/)
+        {
+            InitializeComponent();
+
+			// @SCRIPT MyClassManager
         }
 
         private new void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+			// @SCRIPT InitializeComponent
         }
 		
-        public MyClassManager() : base(/*Skriptum.ObjectType.MyClass*/)
-        {
-            InitializeComponent();
-			
-			// @SCRIPT MyClassManager
-        }
-
         protected override void LoadSettingsAndLists()
         {
             base.LoadSettingsAndLists();
-			
+
 			// @SCRIPT LoadSettingsAndLists
         }
 
@@ -42,18 +37,18 @@ namespace MB_Studio.Manager
 			//return new MyClass(raw_data);
 			return null;
         }
-		
+
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
 			// @SCRIPT AddFromOtherMod
-			
-            //base.AddFromOtherMod(f);
+
+            base.AddFromOtherMod(f);
         }
 
         protected override void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)
         {
             base.Language_cbb_SelectedIndexChanged(sender, e);
-			
+
 			// @SCRIPT Language_cbb_SelectedIndexChanged
         }
 
@@ -69,7 +64,7 @@ namespace MB_Studio.Manager
         protected override void Save_translation_btn_Click(object sender, EventArgs e)
         {
             base.Save_translation_btn_Click(sender, e);
-			
+
 			// @SCRIPT Save_translation_btn_Click
         }
 
@@ -80,7 +75,7 @@ namespace MB_Studio.Manager
             tmp += name_txt.Text.Replace(' ', '_') + ';';
 
 			// @SCRIPT SaveTypeByIndex
-			
+
             values.Clear();
             values = new List<string>(tmp.Split(';'));
 
@@ -89,6 +84,16 @@ namespace MB_Studio.Manager
             //MB_Studio.SavePseudoCodeByType(c, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
+        }
+
+		protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+				components.Dispose();
+
+			// @SCRIPT Dispose
+
+            base.Dispose(disposing);
         }
     }
 }

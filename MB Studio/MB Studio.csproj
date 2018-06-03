@@ -460,9 +460,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
-    <Content Include="Manager\Scripts\Example\Example.xml">
+    <None Include="Manager\Scripts\Example\Example.Designer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="Manager\Scripts\Example\Example.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

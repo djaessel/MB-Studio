@@ -6,30 +6,35 @@ using Microsoft.CSharp;
 using System.Reflection;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using importantLib;
 
 namespace MB_Studio.Manager
 {
     internal class ScriptCommander
     {
-        //private const string METHOD_IDENTIFIER = @"/(public|protected|private) (static |)(override |)(\w[A-z]*\w )(\w*[A-Z]*\w)([(])([A-z, 0-9_=<>\[\]]*|)([)])/g";
+        //private const string METHOD_IDENTIFIER = @"\b(public|protected|private)\s(static\s)?(override\s)?(\w[A-z]+*\w\s)(\w*[A-Z]+*\w)\b[\s]+?[(]";// + "([A-z, 0-9_=<>\[\]]*|)[)]";
         private const string METHOD_IDENTIFIER = "protected override ";
         private const string SCRIPT_MARKER = "// @SCRIPT ";
+        private const string ATTRIBUTES_MARKER = "// @ATTRIBUTES";
 
         private static string ScriptsFolder { get; } = Path.GetFullPath(@".\Manager\Scripts");
 
-        private readonly List<ToolForm> customManagers = new List<ToolForm>();
+        public List<ToolForm> CustomManagers { get; } = new List<ToolForm>();
 
-        public ScriptCommander()
+        private static readonly XmlReaderSettings xmlSettings = new XmlReaderSettings
         {
-            //Console.Write(Environment.NewLine + "Initializing ScriptCommander...");
-            //
-            //Console.WriteLine("done.");
-        }
+            Async = false,
+            CheckCharacters = true,
+            CloseInput = true,
+            ConformanceLevel = ConformanceLevel.Auto,
+            IgnoreComments = true,
+            IgnoreProcessingInstructions = true,
+            IgnoreWhitespace = true,
+            MaxCharactersInDocument = 0,
+        };
 
-        public List<ToolForm> GetCustomManagers()
-        {
-            return customManagers;
-        }
+        public ScriptCommander() { }
+
 
         public void LoadManagers()
         {
@@ -43,22 +48,7 @@ namespace MB_Studio.Manager
                     string managerName = Path.GetFileName(configFile);
                     //managerName = managerName.Remove(managerName.IndexOf('.'));
 
-                    XmlReaderSettings settings = new XmlReaderSettings
-                    {
-                        Async = false,
-                        CheckCharacters = true,
-                        CloseInput = true,
-                        ConformanceLevel = ConformanceLevel.Auto,
-                        IgnoreComments = true,
-                        IgnoreProcessingInstructions = true,
-                        IgnoreWhitespace = true,
-                        MaxCharactersInDocument = 0,
-                        //MaxCharactersFromEntities = 0,
-                        //ValidationType = ValidationType.DTD,
-                        //ValidationFlags = XmlSchemaValidationFlags.AllowXmlAttributes,
-                    };
-
-                    using (XmlReader xmlReader = XmlReader.Create(File.OpenRead(configFile), settings))
+                    using (XmlReader xmlReader = XmlReader.Create(File.OpenRead(configFile), xmlSettings))
                     {
                         while (xmlReader.Read())
                         {
@@ -151,11 +141,132 @@ namespace MB_Studio.Manager
                             scripts = scripts.Trim('\t', ' ', ';');
 
                             ToolForm newManager = CreateCustomManagerFromScripts(name, new List<string>(scripts.Split(';')));
-                            customManagers.Add(newManager);
+                            CustomManagers.Add(newManager);
                         }
                     }
                 }
             }
+        }
+
+        private static List<string> GenerateInitializeGUIMethod(string className, out List<string> classAttributes)
+        {
+            string groupBox = "GroupBox";
+            string guiFile = ScriptsFolder + "\\" + className + "\\" + className + ".Designer.xml";
+
+            classAttributes = new List<string>();
+
+            List<string> func = new List<string>();
+
+            List<string> alwaysStart = new List<string>()
+            {
+                "InitializeComponent",//"private new void InitializeComponent()"
+                "{",
+                "this.toolPanel.SuspendLayout();" + Environment.NewLine + "\t\t\t",
+                "this.groupBox_0_gb.SuspendLayout();" + Environment.NewLine + "\t\t\t",
+                "this.SuspendLayout();" + Environment.NewLine + Environment.NewLine + "\t\t\t",
+        };
+
+            List<string> alreadyHere = new List<string>()
+            {
+                "save_translation_btn",
+                "language_cbb",
+                "language_lbl",
+                "singleNameTranslation_txt",
+                "singleNameTranslation_lbl",
+                "pluralNameTranslation_txt",
+                "pluralNameTranslation_lbl",
+            };
+
+            List<string> specialAttributes = new List<string>()
+            {
+                "childIndex",
+                "label",
+                "lines",
+            };
+
+            func.AddRange(alwaysStart);
+
+            using (XmlReader reader = XmlReader.Create(File.OpenRead(guiFile), xmlSettings))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement(groupBox))
+                    {
+                        int id = int.Parse(reader.GetAttribute("id"));
+                        int height = int.Parse(reader.GetAttribute("height"));
+                        
+                        func.Add("this.showGroup_" + id + "_btn.Tag = \"" + (height - ToolForm.GROUP_HEIGHT_MAX) + "\";" + Environment.NewLine + Environment.NewLine + "\t\t\t");
+
+                        bool read, isEndElement;
+                        do
+                        {
+                            read = reader.Read();
+                            isEndElement = (reader.Name.Equals(groupBox) && !reader.IsStartElement());
+
+                            string name = reader.GetAttribute("name");
+
+                            if (!alreadyHere.Contains(name) && !isEndElement)
+                            {
+                                classAttributes.Add(reader.Name + '|' + name);
+
+                                name = "this." + name;
+
+                                func.Add(name + " = new " + reader.Name + "();");
+
+                                if (reader.HasAttributes)
+                                {
+                                    while (reader.MoveToNextAttribute())
+                                    {
+                                        if (!specialAttributes.Contains(reader.Name))
+                                        {
+                                            bool isNumeric = ImportantMethods.IsNumeric(reader.Value, true);
+                                            bool isBoolean = bool.TryParse(reader.Value, out bool result);
+
+                                            string codeLine = name + '.' + reader.Name.Substring(0, 1).ToUpper() + reader.Name.Substring(1) + " = ";
+
+                                            if (isNumeric || isBoolean)
+                                                codeLine += reader.Value;
+                                            else
+                                                codeLine += '\"' + reader.Value + '\"';
+
+                                            codeLine += ';' + Environment.NewLine + "\t\t\t";
+
+                                            func.Add(codeLine);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Special Attribute: " + reader.Name + '=' + reader.Value);
+                                        }
+                                    }
+
+                                    reader.MoveToElement();
+                                }
+
+                                func.Add("this.groupBox_" + id + "_gb.Controls.Add(" + name + ");" + Environment.NewLine + "\t\t\t");
+                            }
+
+                        } while (read && !isEndElement);
+                    }
+                }
+            }
+
+            List<string> alwaysEnd = new List<string>()
+            {
+                Environment.NewLine + "\t\t\t",
+                "this.Name = \"" + className + "Manager\";" + Environment.NewLine + "\t\t\t",
+                "this.Text = this.Name;" + Environment.NewLine + "\t\t\t",
+                Environment.NewLine + "\t\t\t",
+                "this.toolPanel.ResumeLayout(false);" + Environment.NewLine + "\t\t\t",
+                "this.groupBox_0_gb.ResumeLayout(false);" + Environment.NewLine + "\t\t\t",
+                "this.groupBox_0_gb.PerformLayout();" + Environment.NewLine + "\t\t\t",
+                "this.ResumeLayout(false);" + Environment.NewLine + "\t\t\t",
+                "this.PerformLayout();" + Environment.NewLine + "\t\t",
+                "}"
+            };
+
+            func.AddRange(alwaysEnd);
+
+            return func;
         }
 
         private static ToolForm CreateCustomManagerFromScripts(string className, List<string> regionsRaw)
@@ -163,7 +274,9 @@ namespace MB_Studio.Manager
             string constructorIdentifier = "public " + className + "Manager()";
             string basePath = ScriptsFolder + '\\' + className;
 
-            List<List<string>> functions = new List<List<string>>();
+            List<List<string>> functions = new List<List<string>> {
+                GenerateInitializeGUIMethod(className, out List<string> classAttributes)
+            };
 
             foreach (string regionRaw in regionsRaw)
             {
@@ -179,8 +292,7 @@ namespace MB_Studio.Manager
                     bool isMethod = codeLines[i].StartsWith(METHOD_IDENTIFIER);
                     if (isMethod || codeLines[i].StartsWith(constructorIdentifier))
                     {
-                        curList = new List<string>
-                        {
+                        curList = new List<string> {
                             codeLines[i].Trim().Split()[((isMethod) ? 3 : 1)].Split('(')[0].Replace(" ", string.Empty)
                         };
                     }
@@ -189,9 +301,7 @@ namespace MB_Studio.Manager
                         addToFunction = true;
 
                     if (addToFunction && curList != null)
-                    {
                         curList.Add(codeLines[i].Trim());
-                    }
 
                     if (codeLines[i].Contains("}"))
                     {
@@ -202,16 +312,25 @@ namespace MB_Studio.Manager
                 }
             }
 
-            return CreateCustomManagerByCode(className, functions);
+            return CreateCustomManagerByCode(className, classAttributes, functions);
         }
 
-        private static ToolForm CreateCustomManagerByCode(string className, List<List<string>> functions)
+        private static ToolForm CreateCustomManagerByCode(string className, List<string> classAttributes, List<List<string>> functions)
         {
             string exeName = Assembly.GetEntryAssembly().Location;
             string newClassName = "MB_Studio.Manager." + className + "Manager";
-            string managerTemplate = ScriptsFolder + @"\Template\CustomManagerTemplate.cs";
-            string managerTemplateCode = File.ReadAllText(managerTemplate).Replace("MyClass", className);
+            string managerTemplateFile = ScriptsFolder + @"\Template\CustomManagerTemplate.cs";
+            string managerTemplateCode = File.ReadAllText(managerTemplateFile).Replace("MyClass", className);
             string genSourceFile = ScriptsFolder + '\\' + newClassName + ".cs";
+
+            StringBuilder attributeBlock = new StringBuilder();
+            foreach (string attribute in classAttributes)
+            {
+                string[] sp = attribute.Split('|');
+                attributeBlock.Append("private " + sp[0] + " " + sp[1] + ';' + Environment.NewLine + "\t\t");
+            }
+
+            managerTemplateCode = managerTemplateCode.Replace(ATTRIBUTES_MARKER, attributeBlock.ToString());
 
             foreach (List<string> function in functions)
             {
@@ -234,10 +353,10 @@ namespace MB_Studio.Manager
                 GenerateInMemory = true,
             };
 
-            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             parameters.ReferencedAssemblies.Add("System.dll");
-            parameters.ReferencedAssemblies.Add("importantLib.dll");
+            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             parameters.ReferencedAssemblies.Add("skillhunter.dll");
+            parameters.ReferencedAssemblies.Add("importantLib.dll");
             parameters.ReferencedAssemblies.Add("MB_Decompiler_Library.dll");
             parameters.ReferencedAssemblies.Add(exeName);
             //parameters.ReferencedAssemblies.Add(typeof(ToolForm).Assembly.CodeBase);

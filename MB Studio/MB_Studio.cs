@@ -758,7 +758,7 @@ namespace MB_Studio
             // VORERST //
 
             scriptCommander.LoadManagers();
-            foreach (ToolForm cm in scriptCommander.GetCustomManagers())
+            foreach (ToolForm cm in scriptCommander.CustomManagers)
                 projectFiles_lb.Items.Add(cm.GetType().Name.Replace("Manager", string.Empty));
         }
 
@@ -786,7 +786,7 @@ namespace MB_Studio
                 else if (item.Equals("Skills"))
                     form = new SkillManager();
                 else
-                    foreach (ToolForm cm in scriptCommander.GetCustomManagers())
+                    foreach (ToolForm cm in scriptCommander.CustomManagers)
                         if (cm.GetType().Name.Equals(itemManagerName))
                             form = cm;
             }
