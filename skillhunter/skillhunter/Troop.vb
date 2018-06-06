@@ -4,33 +4,24 @@ Public Class Troop
     Inherits Skriptum
 
     Private ValuesX As String()
-    Private names() As Object = New String(2) {}
-    'Private temp_values() As String = New String(2) {}
+    Private ReadOnly names() As Object = New String(2) {}
     Private my_dialogImage As String
+    'Private my_dialogImage_GZ As Integer
     Private my_sceneCode As String
     Private my_reserved As String
-    'Private my_dialogImage_GZ As Integer
     Private my_sceneCode_GZ As ULong
     Private my_reserved_GZ As Integer
     Private my_flags As String
     Private my_flags_GZ As Integer
-    Private faction_ID As Integer
-    Private upgradePath() As Integer = New Integer(1) {}
-    Private upgradePathError() As String = New String(1) {}
-    Private my_items As List(Of Integer)
+    Private ReadOnly upgradePath() As Integer = New Integer(1) {}
+    Private ReadOnly upgradePathError() As String = New String(1) {}
     Private my_itemFlags As List(Of ULong)
-    Private my_skills() As Integer = New Integer(41) {}
     Private face_codes() As String = New String(1) {}
-    Private my_attributes() As Integer = New Integer(4) {}
     Private my_proficiencies() As Integer = New Integer(6) {}
     Private my_proficiencies_SC As String
     Public Const Guarantee_All As Integer = 133169152
-
-    Private Shared allShortAttribs As Boolean = False
-    'Private Shared m_header_imodbits As HeaderVariable() = {}
-    'Private Shared m_header_imods As HeaderVariable() = {}
     Private Shared m_header_flags As HeaderVariable() = {}
-    'Private Shared m_header_itemCapabilitiyFlags As HeaderVariable() = {}
+
 
     Public Sub New(values As String())
         MyBase.New(values(0).TrimStart().Split()(0), ObjectType.TROOP)
@@ -42,7 +33,7 @@ Public Class Troop
         For index = 0 To 2
             names(index) = String.Empty
         Next
-        faction_ID = 0
+        FactionID = 0
         'For index = 0 To 2
         '    temp_values(index) = "0"
         'Next
@@ -52,18 +43,18 @@ Public Class Troop
         For index = 0 To 1
             upgradePath(index) = 0
         Next
-        If IsNothing(my_items) Then
-            my_items = New List(Of Integer)
+        If IsNothing(Items) Then
+            Items = New List(Of Integer)
         Else
-            my_items.Clear()
+            Items.Clear()
         End If
         If IsNothing(my_itemFlags) Then
             my_itemFlags = New List(Of ULong)
         Else
             my_itemFlags.Clear()
         End If
-        For index = 0 To my_skills.Length - 1
-            my_skills(index) = 0
+        For index = 0 To Skills.Length - 1
+            Skills(index) = 0
         Next
         For index = 0 To 1
             face_codes(0) = "0x0"
@@ -148,12 +139,12 @@ Public Class Troop
         For i = 0 To items.Length - 1
             itemFlags(i) = tmpArray(i * 2 + 1)
         Next
-        my_items.Clear()
+        Me.Items.Clear()
         my_itemFlags.Clear()
         For index = 0 To items.Length - 1
             items(index) = items(index).Trim()
             If Not items(index).Equals("-1") And Not items(index).Equals(String.Empty) Then
-                my_items.Add(items(index))
+                Me.Items.Add(items(index))
                 my_itemFlags.Add(itemFlags(index) >> 24)
             End If
         Next
@@ -395,7 +386,7 @@ Public Class Troop
             tmp = "wpe(" + my_proficiencies(2).ToString() + ", " + my_proficiencies(3).ToString() + ", " + my_proficiencies(4).ToString() + ", " + my_proficiencies(5).ToString()
         ElseIf (my_proficiencies(0) + 20) = my_proficiencies(1) = (my_proficiencies(2) + 10) Then
             tmp = "wp_melee(" + my_proficiencies(1).ToString()
-        ElseIf Not allShortAttribs Then
+        ElseIf Not ShortProficies Then
             If (OneHanded > 0) Then
                 tmp += "wp_one_handed(" + my_proficiencies(0).ToString() 'OneHanded
             End If
@@ -495,7 +486,7 @@ Public Class Troop
     Public Sub SetSkills(knowledge As String)
         Dim sk As New SkillHunter
         sk.ReadSkills(knowledge)
-        my_skills = sk.Skills
+        Skills = sk.Skills
     End Sub
 
     Public Sub SetFaceCodes(facecodeX As String)
@@ -506,14 +497,7 @@ Public Class Troop
 
 #Region "Properties"
 
-    Public Shared Property ShortProficies As Boolean
-        Get
-            Return allShortAttribs
-        End Get
-        Set(value As Boolean)
-            allShortAttribs = value
-        End Set
-    End Property
+    Public Shared Property ShortProficies As Boolean = False
 
     Public ReadOnly Property Flags As String
         Get
@@ -569,11 +553,7 @@ Public Class Troop
         End Get
     End Property
 
-    Public ReadOnly Property Attributes As Integer()
-        Get
-            Return my_attributes
-        End Get
-    End Property
+    Public ReadOnly Property Attributes As Integer() = New Integer(4) {}
 
     Public ReadOnly Property Proficiencies As Integer()
         Get
@@ -615,13 +595,6 @@ Public Class Troop
     End Property
 
     Public Property FactionID As Integer
-        Set(value As Integer)
-            faction_ID = value
-        End Set
-        Get
-            Return faction_ID
-        End Get
-    End Property
 
     Public Property UpgradeTroop1 As Integer
         Set(value As Integer)
@@ -686,13 +659,6 @@ Public Class Troop
     End Property
 
     Public Property Items As List(Of Integer)
-        Set(list As List(Of Integer))
-            my_items = list
-        End Set
-        Get
-            Return my_items
-        End Get
-    End Property
 
     Public ReadOnly Property ItemFlags As List(Of ULong)
         Get
@@ -700,228 +666,221 @@ Public Class Troop
         End Get
     End Property
 
-    Public Property Skills As Integer()
-        Set(list As Integer())
-            my_skills = list
-        End Set
-        Get
-            Return my_skills
-        End Get
-    End Property
+    Public Property Skills As Integer() = New Integer(41) {}
 
     Public Property Persuasion As Integer
         Set(value As Integer)
-            my_skills(0) = value
+            Skills(0) = value
         End Set
         Get
-            Return my_skills(0)
+            Return Skills(0)
         End Get
     End Property
 
     Public Property PrisonerManagement As Integer
         Set(value As Integer)
-            my_skills(1) = value
+            Skills(1) = value
         End Set
         Get
-            Return my_skills(1)
+            Return Skills(1)
         End Get
     End Property
 
     Public Property Leadership As Integer
         Set(value As Integer)
-            my_skills(2) = value
+            Skills(2) = value
         End Set
         Get
-            Return my_skills(2)
+            Return Skills(2)
         End Get
     End Property
 
     Public Property Trade As Integer
         Set(value As Integer)
-            my_skills(3) = value
+            Skills(3) = value
         End Set
         Get
-            Return my_skills(3)
+            Return Skills(3)
         End Get
     End Property
 
     Public Property Tactics As Integer
         Set(value As Integer)
-            my_skills(4) = value
+            Skills(4) = value
         End Set
         Get
-            Return my_skills(4)
+            Return Skills(4)
         End Get
     End Property
 
     Public Property Pathfinding As Integer
         Set(value As Integer)
-            my_skills(5) = value
+            Skills(5) = value
         End Set
         Get
-            Return my_skills(5)
+            Return Skills(5)
         End Get
     End Property
 
     Public Property Spotting As Integer
         Set(value As Integer)
-            my_skills(6) = value
+            Skills(6) = value
         End Set
         Get
-            Return my_skills(6)
+            Return Skills(6)
         End Get
     End Property
 
     Public Property InventoryManagement As Integer
         Set(value As Integer)
-            my_skills(7) = value
+            Skills(7) = value
         End Set
         Get
-            Return my_skills(7)
+            Return Skills(7)
         End Get
     End Property
 
     Public Property WoundTreatment As Integer
         Set(value As Integer)
-            my_skills(8) = value
+            Skills(8) = value
         End Set
         Get
-            Return my_skills(8)
+            Return Skills(8)
         End Get
     End Property
 
     Public Property Surgery As Integer
         Set(value As Integer)
-            my_skills(9) = value
+            Skills(9) = value
         End Set
         Get
-            Return my_skills(9)
+            Return Skills(9)
         End Get
     End Property
 
     Public Property FirstAid As Integer
         Set(value As Integer)
-            my_skills(10) = value
+            Skills(10) = value
         End Set
         Get
-            Return my_skills(10)
+            Return Skills(10)
         End Get
     End Property
 
     Public Property Engineer As Integer
         Set(value As Integer)
-            my_skills(11) = value
+            Skills(11) = value
         End Set
         Get
-            Return my_skills(11)
+            Return Skills(11)
         End Get
     End Property
 
     Public Property HorseArchery As Integer
         Set(value As Integer)
-            my_skills(12) = value
+            Skills(12) = value
         End Set
         Get
-            Return my_skills(12)
+            Return Skills(12)
         End Get
     End Property
 
     Public Property Looting As Integer
         Set(value As Integer)
-            my_skills(13) = value
+            Skills(13) = value
         End Set
         Get
-            Return my_skills(13)
+            Return Skills(13)
         End Get
     End Property
 
     Public Property Training As Integer
         Set(value As Integer)
-            my_skills(14) = value
+            Skills(14) = value
         End Set
         Get
-            Return my_skills(14)
+            Return Skills(14)
         End Get
     End Property
 
     Public Property Tracking As Integer
         Set(value As Integer)
-            my_skills(15) = value
+            Skills(15) = value
         End Set
         Get
-            Return my_skills(15)
+            Return Skills(15)
         End Get
     End Property
 
     Public Property WeaponMaster As Integer
         Set(value As Integer)
-            my_skills(16) = value
+            Skills(16) = value
         End Set
         Get
-            Return my_skills(16)
+            Return Skills(16)
         End Get
     End Property
 
     Public Property Shield As Integer
         Set(value As Integer)
-            my_skills(17) = value
+            Skills(17) = value
         End Set
         Get
-            Return my_skills(17)
+            Return Skills(17)
         End Get
     End Property
 
     Public Property Athletics As Integer
         Set(value As Integer)
-            my_skills(18) = value
+            Skills(18) = value
         End Set
         Get
-            Return my_skills(18)
+            Return Skills(18)
         End Get
     End Property
 
     Public Property Riding As Integer
         Set(value As Integer)
-            my_skills(19) = value
+            Skills(19) = value
         End Set
         Get
-            Return my_skills(19)
+            Return Skills(19)
         End Get
     End Property
 
     Public Property Ironflesh As Integer
         Set(value As Integer)
-            my_skills(20) = value
+            Skills(20) = value
         End Set
         Get
-            Return my_skills(20)
+            Return Skills(20)
         End Get
     End Property
 
     Public Property PowerStrike As Integer
         Set(value As Integer)
-            my_skills(21) = value
+            Skills(21) = value
         End Set
         Get
-            Return my_skills(21)
+            Return Skills(21)
         End Get
     End Property
 
     Public Property PowerThrow As Integer
         Set(value As Integer)
-            my_skills(22) = value
+            Skills(22) = value
         End Set
         Get
-            Return my_skills(22)
+            Return Skills(22)
         End Get
     End Property
 
     Public Property PowerDraw As Integer
         Set(value As Integer)
-            my_skills(23) = value
+            Skills(23) = value
         End Set
         Get
-            Return my_skills(23)
+            Return Skills(23)
         End Get
     End Property
 
