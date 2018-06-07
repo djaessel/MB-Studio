@@ -1,40 +1,29 @@
-﻿Imports System.Globalization
-Imports System.IO
+﻿Imports System.IO
+Imports System.Globalization
 
 Public Class Item
     Inherits Skriptum
 
-    Private my_names As String() = New String(1) {} ' was 2 before because of ID included in old versions
+    Public Const ZERO_15_CHARS As String = "000000000000000"
+
+    Private ReadOnly my_names As String() = New String(1) {}
     Private my_triggers As List(Of String)
     Private my_factions As List(Of Integer)
     Private my_meshes As List(Of String)
     Private my_special_values As String() = New String(2) {}
     Private my_item_stats As Integer() = New Integer(11) {}
-    Private my_itemProperties As String = String.Empty
-    Private Shared ReadOnly MY_ITEM_STATS_NAMES As String() = {"weigth", "abundance", "head_armor", "body_armor", "leg_armor", "difficulty", "hit_points", "spd_rtng", "shoot_speed", "weapon_length",
-                                                               "max_ammo", "thrust_damage", "swing_damage"}
-    Private goldvalue As Integer = 0
-    Private weightvalue As Double = 0.000000
+    Private ReadOnly my_itemProperties As String = String.Empty
     Private my_meshcount As Integer = 1
-
-    Public Const ZERO_15_CHARS As String = "000000000000000"
 
     Private Shared m_header_imodbits As HeaderVariable() = {}
     Private Shared m_header_imods As HeaderVariable() = {}
     Private Shared m_header_itemProperties As HeaderVariable() = {}
     Private Shared m_header_itemCapabilitiyFlags As HeaderVariable() = {}
-    'Private Shared XXXXX As Boolean = False
 
 
     Public Sub New(Optional values As String() = Nothing)
-        MyBase.New(values(0).TrimStart().Split()(0).Substring(4), ObjectType.ITEM) 'values(0).Substring(1).Split(SkillHunter.DOUBLESPACE)(0).Split(SkillHunter.SPACE)(1), ObjectType.ITEM)
+        MyBase.New(values(0).TrimStart().Split()(0).Substring(4), ObjectType.ITEM)
         ResetItem()
-        'XXXXX = values(0).Contains("itm_flintlock")
-        'If XXXXX Then
-        '    For Each valueX As String In values
-        '        MsgBox(valueX)
-        '    Next
-        'End If
         If Not IsNothing(values) Then
             SetFirstLine(values(0))
             SetFactionAndTriggerValues(values)
@@ -43,10 +32,6 @@ Public Class Item
 
     Public ReadOnly Property ModBits As String
         Get
-            'If my_itemProperties.Equals(String.Empty) Then
-            'my_itemProperties = GetItemPropertiesFromValue(SpecialValues(SpecialValues.Length - 1))
-            'End If
-            'Return my_itemProperties
             Return GetItemModifiers_IMODBITS(SkillHunter.Dec2Hex_16CHARS(my_special_values(2)), True).TrimStart("|")
         End Get
     End Property
@@ -64,76 +49,29 @@ Public Class Item
     End Property
 
     Private Sub SetFirstLine(line As String)
-        'Dim tvs As String() = GetTVSArray(line.Substring(1).Split(SkillHunter.DOUBLESPACE))
-        Dim xvalues As String() = line.Split(SkillHunter.SPACE) 'tvs(0).Split(SkillHunter.SPACE)
+        Dim xvalues As String() = line.Split(SkillHunter.SPACE)
         'ID = xvalues(0)
         Name = xvalues(1).Replace("_"c, " "c)
         PluralName = xvalues(2).Replace("_"c, " "c)
         my_meshcount = StrToInt(xvalues(3))
 
-        'Dim a As String() = tvs(1).Trim().Replace("  ", ":").Split(":")
-        'For i = 0 To a.Length - 1
-        'If a(i).Split().Length > 1 Then
-        'my_meshes.Add(a(i))
-        'Else
-        'my_meshes.Add(a(i) + " " + a(i + 1))
-        'i += 1
-        'End If
-        'Next
         For i = 0 To my_meshcount - 1
             my_meshes.Add(xvalues(4 + (i * 2)) + " " + xvalues(5 + (i * 2)))
         Next
 
         my_meshcount = my_meshcount * 2 'from here my_meshcount is used as local variable to get the correct new index below
 
-        'xvalues = tvs(tvs.Length - 1).Split(SkillHunter.SPACE)
         my_special_values(0) = xvalues(my_meshcount + 4) 'xvalues(0)
         my_special_values(1) = xvalues(my_meshcount + 5) 'xvalues(1)
-        goldvalue = StrToInt(xvalues(my_meshcount + 6)) 'StrToInt(xvalues(2))
+        Price = StrToInt(xvalues(my_meshcount + 6)) 'StrToInt(xvalues(2))
         my_special_values(2) = xvalues(my_meshcount + 7) 'xvalues(3)
-        weightvalue = Double.Parse(xvalues(my_meshcount + 8), CultureInfo.InvariantCulture) 'Double.Parse(xvalues(4), CultureInfo.InvariantCulture)    'weightvalue = Convert.ToDouble(xvalues(4))
+        Weight = Double.Parse(xvalues(my_meshcount + 8), CultureInfo.InvariantCulture) 'Double.Parse(xvalues(4), CultureInfo.InvariantCulture)    'weightvalue = Convert.ToDouble(xvalues(4))
 
         For i = 0 To 11
             my_item_stats(i) = StrToInt(xvalues(i + my_meshcount + 9))
         Next
 
-        'If my_item_stats(0) = 100 Then 'WUUUT?!
-        '    my_item_stats(0) = 0
-        'End If
-        'If my_item_stats(5) >= 11264 Then 'WUUUT?! - ULong.MaxValue - Maybe Check First if this is needed!
-        'my_item_stats(5) = 0
-        'End If
-
     End Sub
-
-    'Private Function GetTVSArray(args As String()) As String()
-    '    Dim rs As String() = New String() {String.Empty, String.Empty, String.Empty}
-    '    Dim list As List(Of Integer) = New List(Of Integer)
-    '    For i = 0 To args.Length - 1
-    '        If args(i).Trim(SkillHunter.SPACE).Equals(String.Empty) Then
-    '            list.Add(i)
-    '        End If
-    '    Next
-    '    For i = 0 To args.Length - 1
-    '        If i < list(0) Then
-    '            rs(0) += args(i)
-    '            If i < (list(0) - 1) Then
-    '                rs(0) += SkillHunter.SPACE
-    '            End If
-    '        ElseIf i >= list(0) And i <= list(list.Count - 1) Then
-    '            rs(1) += args(i)
-    '            If i < list(list.Count - 1) Then
-    '                rs(1) += SkillHunter.SPACE
-    '            End If
-    '        Else
-    '            rs(2) += args(i)
-    '            If i < args.Length - 1 Then
-    '                rs(2) += SkillHunter.SPACE
-    '            End If
-    '        End If
-    '    Next
-    '    Return rs
-    'End Function
 
     Private Sub SetFactionAndTriggerValues(tmpvalues() As String)
         Dim tmpS As String()
@@ -148,7 +86,7 @@ Public Class Item
         End If
         Try
             If x > 0 Then
-                tmpS = tmpvalues(2).Split(SkillHunter.SPACE) 'tmpvalues(2).Substring(1).Split(SkillHunter.SPACE)
+                tmpS = tmpvalues(2).Split(SkillHunter.SPACE)
                 For i = 0 To tmpS.Length - 1
                     my_factions.Add(Convert.ToInt32(tmpS(i)))
                 Next
@@ -205,8 +143,8 @@ Public Class Item
         Else
             my_meshes.Clear()
         End If
-        goldvalue = 0
-        weightvalue = 0.000000
+        Price = 0
+        Weight = 0.000000
         For i = 0 To my_item_stats.Length - 1
             my_item_stats(i) = 0
         Next
@@ -644,11 +582,8 @@ Public Class Item
         Return retur
     End Function
 
-    Public Shared ReadOnly Property ITEM_STATS_NAMES As String()
-        Get
-            Return MY_ITEM_STATS_NAMES
-        End Get
-    End Property
+    Public Shared ReadOnly Property ItemStatsNames As String() = {"weigth", "abundance", "head_armor", "body_armor", "leg_armor", "difficulty", "hit_points", "spd_rtng", "shoot_speed", "weapon_length",
+                                                               "max_ammo", "thrust_damage", "swing_damage"}
 
     Public ReadOnly Property Triggers As List(Of String)
         Get
@@ -661,15 +596,6 @@ Public Class Item
             Return my_factions
         End Get
     End Property
-
-    'Public Property ID As String
-    'Set(value As String)
-    '        my_names(0) = value
-    'End Set
-    'Get
-    'Return my_names(0)
-    'End Get
-    'End Property
 
     Public Property Name As String
         Set(value As String)
@@ -689,23 +615,9 @@ Public Class Item
         End Get
     End Property
 
-    Public Property Price As Integer
-        Set(value As Integer)
-            goldvalue = value
-        End Set
-        Get
-            Return goldvalue
-        End Get
-    End Property
+    Public Property Price As Integer = 0
 
-    Public Property Weight As Double
-        Set(value As Double)
-            weightvalue = value
-        End Set
-        Get
-            Return weightvalue
-        End Get
-    End Property
+    Public Property Weight As Double = 0.000000
 
     Public Property Abundance As Integer
         Set(value As Integer)

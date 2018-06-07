@@ -638,7 +638,7 @@ namespace MB_Decompiler_Library.IO
                                 //{
                                 //if (i > 0 && !first)
                                 //  wr.Write("|");
-                                wr.Write("|" + Item.ITEM_STATS_NAMES[i + 1] + "(" + ConvertItemStats(item.ItemStats[i], i) + ")");
+                                wr.Write("|" + Item.ItemStatsNames[i + 1] + "(" + ConvertItemStats(item.ItemStats[i], i) + ")");
                     //first = false;
                     //}
                     //}
