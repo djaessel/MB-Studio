@@ -107,6 +107,7 @@
     <Compile Include="Objects\Presentation.cs" />
     <Compile Include="Objects\Support\Variable.cs" />
     <Compile Include="Objects\Trigger.cs" />
+    <Compile Include="Objects\Troop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\CodeReader.cs" />
     <Compile Include="Objects\Support\PMember.cs" />

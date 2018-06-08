@@ -6,7 +6,6 @@ Public Class Troop
     Private ValuesX As String()
     Private ReadOnly names() As Object = New String(2) {}
     Private my_dialogImage As String
-    'Private my_dialogImage_GZ As Integer
     Private my_sceneCode As String
     Private my_reserved As String
     Private my_sceneCode_GZ As ULong
@@ -90,7 +89,7 @@ Public Class Troop
             SendErrorMessage1()
         End If
     End Sub
-
+    'ALREADY IN C# MARKER - - - - -
     Private Sub SetFirstLine(lineOne As String)
         Dim line As String() = lineOne.Trim().Split()
         If line.Length >= 10 Then
@@ -511,23 +510,11 @@ Public Class Troop
         End Get
     End Property
 
-    'Public ReadOnly Property TempValues() As String()
-    '    Get
-    '        Return temp_values
-    '    End Get
-    'End Property
-
     Public ReadOnly Property DialogImage As String
         Get
             Return my_dialogImage
         End Get
     End Property
-
-    'Public ReadOnly Property DialogImageGZ As Integer
-    '    Get
-    '        Return my_dialogImage_GZ
-    '    End Get
-    'End Property
 
     Public ReadOnly Property SceneCode As String
         Get
@@ -566,15 +553,6 @@ Public Class Troop
             Return my_proficiencies_SC
         End Get
     End Property
-
-    'Public Property ID As String
-    'Set(value As String)
-    '        names(0) = value
-    'End Set
-    'Get
-    'Return names(0)
-    'End Get
-    'End Property
 
     Public Property Name As String
         Set(value As String)
