@@ -89,7 +89,7 @@ Public Class Troop
             SendErrorMessage1()
         End If
     End Sub
-    'ALREADY IN C# MARKER - - - - -
+
     Private Sub SetFirstLine(lineOne As String)
         Dim line As String() = lineOne.Trim().Split()
         If line.Length >= 10 Then
@@ -149,153 +149,6 @@ Public Class Troop
         Next
     End Sub
 
-    Private Shared Sub InitializeHeaderFlags(Optional file As String = "header_troops.py", Optional itemPointsX As List(Of HeaderVariable) = Nothing)
-        Dim itemPoints As List(Of HeaderVariable)
-        Dim file2 As String = "header_mb_decompiler.py"
-        If IsNothing(itemPointsX) Then
-            itemPoints = New List(Of HeaderVariable)
-        Else
-            itemPoints = itemPointsX
-        End If
-        Using sr As New StreamReader(SkillHunter.FilesPath + file)
-            Dim s As String
-            Dim sp As String()
-            While Not sr.EndOfStream
-                s = sr.ReadLine().Split("#")(0)
-                If s.Split("_")(0).Equals("tf") Then
-                    sp = s.Replace(" ", String.Empty).Replace("\t", String.Empty).Split("=")
-                    If sp(1).Contains("0x") Then
-                        itemPoints = RemoveHeaderVariableListEquals(itemPoints, sp(1).Substring(2))
-                        itemPoints.Add(New HeaderVariable(sp(1).Substring(2), sp(0)))
-                    ElseIf IsNumeric(sp(1)) Then
-                        s = String.Empty
-                        For index = 0 To (7 - sp(1).Length) ' because of 8 character hex -> 00000000
-                            s += "0"c
-                        Next
-                        s += sp(1)
-                        itemPoints = RemoveHeaderVariableListEquals(itemPoints, s)
-                        itemPoints.Add(New HeaderVariable(s, sp(0)))
-                        'Else
-                        ' FIND tf_female|tf_hero or something like that in here
-                    End If
-                End If
-            End While
-        End Using
-        If Not file.Equals(file2) Then
-            InitializeHeaderFlags(file2, itemPoints)
-        Else
-            m_header_flags = itemPoints.ToArray()
-        End If
-    End Sub
-
-    Private Shared Function RemoveHeaderVariableListEquals(list As List(Of HeaderVariable), hfValue As String) As List(Of HeaderVariable)
-        Dim i As Integer = -1
-        For index = 0 To list.Count - 1
-            If list.Item(index).VariableValue.Equals(hfValue) Then
-                i = index
-                index = list.Count - 1
-            End If
-        Next
-        If i >= 0 Then
-            list.RemoveAt(i)
-        End If
-        Return list
-    End Function
-
-    Private Shared Function GetFlagsGZFromString(my_flags As String) As Integer
-        Dim tmp As String
-        Dim foundX As Boolean
-        Dim flagsGZ As Integer = 0
-        If m_header_flags.Length = 0 Then
-            InitializeHeaderFlags()
-        End If
-        For Each flag As String In my_flags.Split("|"c)
-            foundX = False
-            For index = 0 To m_header_flags.Length - 1
-                If m_header_flags(index).VariableName.Equals(flag) Then
-                    tmp = m_header_flags(index).VariableValue
-                    If tmp.Contains("0x") Then
-                        tmp = SkillHunter.Hex2Dec(tmp.Replace("0x", String.Empty)).ToString()
-                    End If
-                    flagsGZ = flagsGZ Or Integer.Parse(tmp)
-                    index = m_header_flags.Length
-                End If
-            Next
-            If Not foundX And IsNumeric(flag) Then
-                flagsGZ = flagsGZ Or Integer.Parse(flag)
-            Else
-                MsgBox("ERROR: 0x4943 - FLAG_NOT_FOUND " + flag)
-            End If
-        Next
-        Return flagsGZ
-    End Function
-
-    Private Shared Function GetFlagsFromValue(value As String) As String
-        Dim retur As String = String.Empty, tmp As String
-        If m_header_flags.Length = 0 Then
-            InitializeHeaderFlags()
-        End If
-        For i = 0 To m_header_flags.Length - 1
-            tmp = m_header_flags(i).VariableValue.TrimStart("0")
-            If tmp.Length = 0 Then
-                tmp = "0"
-            End If
-            If tmp.Chars(0) = value.Chars(value.Length - tmp.Length) And tmp.Length > 1 Then
-                retur += "|" + m_header_flags(i).VariableName
-            ElseIf Not value.Chars(value.Length - tmp.Length) = "0"c Then
-                Dim list As New List(Of HeaderVariable)
-                Dim x_tmp As Integer = SkillHunter.Hex2Dec(value.Chars(value.Length - tmp.Length)), x_counter As Integer = 0
-                If tmp.Length > 1 Then
-                    For j = 0 To m_header_flags.Length - 1
-                        If m_header_flags(j).VariableValue.TrimStart("0").Length = value.Substring(value.Length - tmp.Length).Length Then
-                            list.Add(m_header_flags(j))
-                        End If
-                    Next
-                    list.Reverse()
-                    For Each variable As HeaderVariable In list
-                        If x_counter < x_tmp Then
-                            Dim xtert As Integer = SkillHunter.Hex2Dec(variable.VariableValue.Trim("0"))
-                            If xtert <= x_tmp And xtert + x_counter <= x_tmp Then ' NOCHMAL ÜBERPRÜFEN
-                                x_counter += xtert
-                                If Not retur.Contains(variable.VariableName) Then
-                                    retur += "|" + variable.VariableName
-                                End If
-                            End If
-                        End If
-                    Next
-                End If
-            End If
-        Next
-        tmp = value.Substring(value.Length - 1) '.TrimStart("0")
-        If Not tmp = "0" Then
-            For Each troopFlag As HeaderVariable In m_header_flags
-                Dim tmp2 As String = troopFlag.VariableValue.TrimStart("0").ToLower()
-                'MsgBox("1: " + tmp + " : " + tmp2 + " : " + troopFlag.VariableName)
-                If tmp2.Length < 2 Then
-                    If tmp.ToLower().Equals(tmp2) Then
-                        'MsgBox("2: " + tmp + " : " + tmp2 + " : " + troopFlag.VariableName)
-                        retur += "|" + troopFlag.VariableName
-                    End If
-                End If
-            Next
-        End If
-        If Not retur.Equals(String.Empty) Then
-            retur = retur.Substring(1)
-        End If
-        Dim tmpS As String() = SkillHunter.RemoveItemDoublesFromArray(retur.Split("|"))
-        retur = String.Empty
-        For i = 0 To tmpS.Length - 1
-            retur += tmpS(i)
-            If i < tmpS.Length - 1 Then
-                retur += "|"
-            End If
-        Next
-        If retur.Equals(String.Empty) Then
-            retur = "0"
-        End If
-        Return retur
-    End Function
-
     Public Sub SetSceneCode(code As ULong)
         Dim entryPoint As Byte = 0
         my_sceneCode_GZ = code
@@ -310,16 +163,6 @@ Public Class Troop
             my_sceneCode = Str(code) + "|"c + Str(entryPoint)
         End If
     End Sub
-
-    'Public Sub SetSceneCodeGZ(code As String)
-    '    Dim entryPoint As Byte = 0
-    '    my_sceneCode = code
-    '    If code.Contains("|"c) Then
-    '        Dim sss As String() = code.Split("|"c)
-    '        entryPoint = Byte.Parse(sss(1).TrimStart("(").TrimEnd(")").Trim())
-    '        my_sceneCode_GZ
-    '    End If
-    'End Sub
 
     Public Sub SetReserved(reserved As String)
         Dim resV As String = "reserved"
@@ -493,6 +336,153 @@ Public Class Troop
         ff.ReadFaceCode(facecodeX)
         face_codes = ff.FaceCodes
     End Sub
+
+    Private Shared Function GetFlagsGZFromString(my_flags As String) As Integer
+        Dim tmp As String
+        Dim foundX As Boolean
+        Dim flagsGZ As Integer = 0
+        If m_header_flags.Length = 0 Then
+            InitializeHeaderFlags()
+        End If
+        For Each flag As String In my_flags.Split("|"c)
+            foundX = False
+            For index = 0 To m_header_flags.Length - 1
+                If m_header_flags(index).VariableName.Equals(flag) Then
+                    tmp = m_header_flags(index).VariableValue
+                    If tmp.Contains("0x") Then
+                        tmp = SkillHunter.Hex2Dec(tmp.Replace("0x", String.Empty)).ToString()
+                    End If
+                    flagsGZ = flagsGZ Or Integer.Parse(tmp)
+                    index = m_header_flags.Length
+                End If
+            Next
+            If Not foundX And IsNumeric(flag) Then
+                flagsGZ = flagsGZ Or Integer.Parse(flag)
+            Else
+                MsgBox("ERROR: 0x4943 - FLAG_NOT_FOUND " + flag)
+            End If
+        Next
+        Return flagsGZ
+    End Function
+
+    Private Shared Function GetFlagsFromValue(value As String) As String
+        Dim retur As String = String.Empty, tmp As String
+        If m_header_flags.Length = 0 Then
+            InitializeHeaderFlags()
+        End If
+        For i = 0 To m_header_flags.Length - 1
+            tmp = m_header_flags(i).VariableValue.TrimStart("0")
+            If tmp.Length = 0 Then
+                tmp = "0"
+            End If
+            If tmp.Chars(0) = value.Chars(value.Length - tmp.Length) And tmp.Length > 1 Then
+                retur += "|" + m_header_flags(i).VariableName
+            ElseIf Not value.Chars(value.Length - tmp.Length) = "0"c Then
+                Dim list As New List(Of HeaderVariable)
+                Dim x_tmp As Integer = SkillHunter.Hex2Dec(value.Chars(value.Length - tmp.Length)), x_counter As Integer = 0
+                If tmp.Length > 1 Then
+                    For j = 0 To m_header_flags.Length - 1
+                        If m_header_flags(j).VariableValue.TrimStart("0").Length = value.Substring(value.Length - tmp.Length).Length Then
+                            list.Add(m_header_flags(j))
+                        End If
+                    Next
+                    list.Reverse()
+                    For Each variable As HeaderVariable In list
+                        If x_counter < x_tmp Then
+                            Dim xtert As Integer = SkillHunter.Hex2Dec(variable.VariableValue.Trim("0"))
+                            If xtert <= x_tmp And xtert + x_counter <= x_tmp Then ' NOCHMAL ÜBERPRÜFEN
+                                x_counter += xtert
+                                If Not retur.Contains(variable.VariableName) Then
+                                    retur += "|" + variable.VariableName
+                                End If
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Next
+        tmp = value.Substring(value.Length - 1) '.TrimStart("0")
+        If Not tmp = "0" Then
+            For Each troopFlag As HeaderVariable In m_header_flags
+                Dim tmp2 As String = troopFlag.VariableValue.TrimStart("0").ToLower()
+                'MsgBox("1: " + tmp + " : " + tmp2 + " : " + troopFlag.VariableName)
+                If tmp2.Length < 2 Then
+                    If tmp.ToLower().Equals(tmp2) Then
+                        'MsgBox("2: " + tmp + " : " + tmp2 + " : " + troopFlag.VariableName)
+                        retur += "|" + troopFlag.VariableName
+                    End If
+                End If
+            Next
+        End If
+        If Not retur.Equals(String.Empty) Then
+            retur = retur.Substring(1)
+        End If
+        Dim tmpS As String() = SkillHunter.RemoveItemDoublesFromArray(retur.Split("|"))
+        retur = String.Empty
+        For i = 0 To tmpS.Length - 1
+            retur += tmpS(i)
+            If i < tmpS.Length - 1 Then
+                retur += "|"
+            End If
+        Next
+        If retur.Equals(String.Empty) Then
+            retur = "0"
+        End If
+        Return retur
+    End Function
+
+    Private Shared Sub InitializeHeaderFlags(Optional file As String = "header_troops.py", Optional itemPointsX As List(Of HeaderVariable) = Nothing)
+        Dim itemPoints As List(Of HeaderVariable)
+        Dim file2 As String = "header_mb_decompiler.py"
+        If IsNothing(itemPointsX) Then
+            itemPoints = New List(Of HeaderVariable)
+        Else
+            itemPoints = itemPointsX
+        End If
+        Using sr As New StreamReader(SkillHunter.FilesPath + file)
+            Dim s As String
+            Dim sp As String()
+            While Not sr.EndOfStream
+                s = sr.ReadLine().Split("#")(0)
+                If s.Split("_")(0).Equals("tf") Then
+                    sp = s.Replace(" ", String.Empty).Replace("\t", String.Empty).Split("=")
+                    If sp(1).Contains("0x") Then
+                        itemPoints = RemoveHeaderVariableListEquals(itemPoints, sp(1).Substring(2))
+                        itemPoints.Add(New HeaderVariable(sp(1).Substring(2), sp(0)))
+                    ElseIf IsNumeric(sp(1)) Then
+                        s = String.Empty
+                        For index = 0 To (7 - sp(1).Length) ' because of 8 character hex -> 00000000
+                            s += "0"c
+                        Next
+                        s += sp(1)
+                        itemPoints = RemoveHeaderVariableListEquals(itemPoints, s)
+                        itemPoints.Add(New HeaderVariable(s, sp(0)))
+                        'Else
+                        ' FIND tf_female|tf_hero or something like that in here
+                    End If
+                End If
+            End While
+        End Using
+        If Not file.Equals(file2) Then
+            InitializeHeaderFlags(file2, itemPoints)
+        Else
+            m_header_flags = itemPoints.ToArray()
+        End If
+    End Sub
+
+    Private Shared Function RemoveHeaderVariableListEquals(list As List(Of HeaderVariable), hfValue As String) As List(Of HeaderVariable)
+        Dim i As Integer = -1
+        For index = 0 To list.Count - 1
+            If list.Item(index).VariableValue.Equals(hfValue) Then
+                i = index
+                index = list.Count - 1
+            End If
+        Next
+        If i >= 0 Then
+            list.RemoveAt(i)
+        End If
+        Return list
+    End Function
 
 #Region "Properties"
 
