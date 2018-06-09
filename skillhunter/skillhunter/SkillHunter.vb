@@ -253,7 +253,7 @@
         GoTo Dec2Hex_End
 
 Dec2Hex_Error:
-        MsgBox("Error" + SPACE + "#" & Err.Number & ":" & Environment.NewLine & Err.ToString())
+        MsgBox("Error" + SPACE + "#111" & Err.Number & ":" & Environment.NewLine & Err.Description)
 
 Dec2Hex_End:
 
@@ -293,7 +293,7 @@ Dec2Hex_End:
         GoTo Dec2Hex_End
 
 Dec2Hex_Error:
-        MsgBox("Error" + SPACE + "#" & Err.Number & ":" & Environment.NewLine & Err.ToString())
+        MsgBox("Error" + SPACE + "#222" & Err.Number & ":" & Environment.NewLine + Err.Description)
 
 Dec2Hex_End:
 
@@ -332,7 +332,7 @@ Dec2Hex_End:
         GoTo Hex2Dec_End
 
 Hex2Dec_Error:
-        MsgBox("Error" + SPACE + "#" & Err.Number & ":" & Environment.NewLine & Err.ToString())
+        MsgBox("Error" + SPACE + "#333" & Err.Number & ":" & Environment.NewLine & Err.Description)
 
 Hex2Dec_End:
     End Function
@@ -370,7 +370,7 @@ Hex2Dec_End:
         GoTo Hex2Dec_End
 
 Hex2Dec_Error:
-        MsgBox("Error" + SPACE + "#" & Err.Number & ":" & Environment.NewLine & Err.ToString())
+        MsgBox("Error" + SPACE + "#444" & Err.Number & ":" & Environment.NewLine & Err.Description)
 
 Hex2Dec_End:
     End Function

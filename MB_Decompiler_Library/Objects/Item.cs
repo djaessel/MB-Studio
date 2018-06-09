@@ -230,7 +230,7 @@ namespace MB_Decompiler_Library.Objects
 
         private static void InitializeHeaderIMods()
         {
-            HeaderIMods = InitializeModsOrModBits("imod", true);
+            HeaderIMods = InitializeModsOrModBits("imod", false);
         }
 
         #endregion
@@ -567,7 +567,7 @@ namespace MB_Decompiler_Library.Objects
             return retur;
         }
 
-        public static string GetItemModifiers_IMODS(string value)//USE THIS METHOD FOR COMBINING OF MODBITS !!!
+        public static string GetItemModifiers_IMODS(string value)//USE THIS METHOD FOR COMBINING OF MODBITS !!! 
         {
             string retur = string.Empty;
 
