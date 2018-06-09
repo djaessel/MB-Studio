@@ -113,8 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FaceFinder.vb" />
-    <Compile Include="HeaderVariable.vb" />
-    <Compile Include="Item.vb" />
     <Compile Include="SkillHunter.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

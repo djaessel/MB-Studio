@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Decompiler_Library.Objects
 {

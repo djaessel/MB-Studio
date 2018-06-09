@@ -1,6 +1,6 @@
-﻿using skillhunter;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using MB_Decompiler_Library.Objects;
 
 namespace MB_Studio.Manager.Support.External
 {
@@ -65,7 +65,7 @@ namespace MB_Studio.Manager.Support.External
             base.Types_cbb_SelectedIndexChanged(sender, e);
 
             Item item = (Item)SelectedType;
-            item.SetFactions(new List<int>() { 0 });//prevent Faction Problems
+            item.Factions = new List<int>() { 0 };//prevent Faction Problems
 
             List<string> meshes = item.Meshes;
             ToolForm.OpenBrfManager.SelectItemNameByKind(meshes[meshes.Count - 1].Split()[0]);

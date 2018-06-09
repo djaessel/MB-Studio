@@ -3,6 +3,7 @@ using skillhunter;
 using MB_Decompiler_Library.IO;
 using System.IO;
 using System.Collections.Generic;
+using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Decompiler_Library.Objects
 {

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
+using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Studio.Manager
 {
@@ -246,9 +247,9 @@ namespace MB_Studio.Manager
 
             if (groupBox_4_gb.Controls.Count == 0)
             {
-                HeaderVariable[] headerVars = Item.GetHeaderIMODBITS();
-                string[] headerVarNames = new string[headerVars.Length];
-                for (int i = 0; i < headerVars.Length; i++)
+                List<HeaderVariable> headerVars = Item.HeaderIModBits;
+                string[] headerVarNames = new string[headerVars.Count];
+                for (int i = 0; i < headerVars.Count; i++)
                     headerVarNames[i] = headerVars[i].VariableName;
                 InitializeGroupBoxCheckBoxesByArray_Create(groupBox_4_gb, headerVarNames, imodbits);
             }
@@ -1094,7 +1095,7 @@ namespace MB_Studio.Manager
         {
             ulong modbits = 0ul;
 
-            HeaderVariable[] headerVars = Item.GetHeaderIMODBITS();
+            List<HeaderVariable> headerVars = Item.HeaderIModBits;
             foreach (HeaderVariable var in headerVars)
                 if (((CheckBox)groupBox_4_gb.Controls.Find(var.VariableName + "_cb", false)[0]).Checked)
                     modbits |= HexToUInt64(var.VariableValue);
@@ -1236,7 +1237,7 @@ namespace MB_Studio.Manager
         private ulong GetModBitStringToValue(string modbitString)
         {
             ulong value = 0ul;
-            HeaderVariable[] headerVars = Item.GetHeaderIMODBITS();
+            List<HeaderVariable> headerVars = Item.HeaderIModBits;
             string[] tmp = modbitString.Trim(' ', '|').Split('|');
 
             foreach (HeaderVariable var in headerVars)

@@ -1,4 +1,5 @@
-﻿using skillhunter;
+﻿using MB_Decompiler_Library.Objects.Support;
+using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
