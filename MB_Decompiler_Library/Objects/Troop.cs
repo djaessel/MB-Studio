@@ -51,9 +51,6 @@ namespace MB_Decompiler_Library.Objects
 
             itemPoints = itemPointsX ?? new List<HeaderVariable>();
 
-            if (itemPointsX == null)
-                itemPoints = new List<HeaderVariable>();
-
             using (StreamReader sr = new StreamReader(SkillHunter.FilesPath + file))
             {
                 while (!sr.EndOfStream)
@@ -62,24 +59,28 @@ namespace MB_Decompiler_Library.Objects
                     if (s.Split('_')[0].Equals("tf"))
                     {
                         string[] sp = s.Replace(" ", string.Empty).Replace("\t", string.Empty).Split('=');
+                        bool isHexValue = sp[1].Contains("0x");
                         bool isNumeric = ImportantMethods.IsNumericGZ(sp[1]);
-                        if (isNumeric || sp[1].Contains("0x"))
+                        if (isHexValue)
                         {
-                            if (isNumeric)
-                            {
-                                s = string.Empty;
-                                int leftCount = 8 - sp[1].Length;// because of 8 character hex -> 00000000
-                                for (int i = 0; i < leftCount; i++)
-                                    s += '0';
-                                s += sp[1];
-                            }
-                            else
-                                s = sp[1].Substring(2);
-                            RemoveHeaderVariableListEquals(ref itemPoints, s);
-                            itemPoints.Add(new HeaderVariable(s, sp[0]));
+                            s = sp[1].Substring(2);
+                        }
+                        else if (isNumeric)
+                        {
+                            s = string.Empty;
+                            int leftCount = 8 - sp[1].Length;// because of 8 character hex -> 00000000
+                            for (int i = 0; i < leftCount; i++)
+                                s += '0';
+                            s += sp[1];
                         }
                         //else
                         // FIND tf_female|tf_hero or something like that in here
+
+                        if (isHexValue || isNumeric)
+                        {
+                            RemoveHeaderVariableListEquals(ref itemPoints, s);
+                            itemPoints.Add(new HeaderVariable(s, sp[0]));
+                        }
                     }
                 }
             }
@@ -449,7 +450,7 @@ namespace MB_Decompiler_Library.Objects
             return flagsGZ;
         }
 
-        private string GetFlagsFromValues(string v)
+        private string GetFlagsFromValues(string value)
         {
             string tmp, retur = string.Empty;
 
@@ -463,42 +464,37 @@ namespace MB_Decompiler_Library.Objects
                 if (tmp.Length == 0)
                     tmp = "0";
 
-                char hotChar = v[v.Length - tmp.Length];
-
-                if (tmp[0] == hotChar && tmp.Length > 1)
-                {
-                    retur += '|' + headerFlags[i].VariableName;
-                }
-                else if (hotChar != '0')
+                int curIdx = value.Length - tmp.Length;
+                if (tmp[0] == value[curIdx] && tmp.Length > 1)
+                    retur += "|" + headerFlags[i].VariableName;
+                else if (value[curIdx] != '0')
                 {
                     List<HeaderVariable> list = new List<HeaderVariable>();
-                    ulong x = ulong.Parse(SkillHunter.Hex2Dec(hotChar.ToString()).ToString());
-                    ulong counter = 0;
+                    uint x_tmp = uint.Parse(SkillHunter.Hex2Dec(value.Substring(curIdx, 1)).ToString()), x_counter = 0;
                     if (tmp.Length > 1)
                     {
                         foreach (HeaderVariable hVar in headerFlags)
-                            if (hVar.VariableValue.TrimStart('0').Length == v.Substring(v.Length - tmp.Length).Length)
+                            if (hVar.VariableValue.TrimStart('0').Length == value.Substring(value.Length - tmp.Length).Length)
                                 list.Add(hVar);
                         list.Reverse();
                         foreach (HeaderVariable variable in list)
                         {
-                            if (counter < x)
+                            if (x_counter < x_tmp)
                             {
-                                ulong x2 = ulong.Parse(SkillHunter.Hex2Dec(variable.VariableValue.TrimStart('0')).ToString());
-                                if (x2 <= x && x2 + counter <= x)// vielleicht nochmal überprüfen irgendwanm
+                                uint x_tmp2 = uint.Parse(SkillHunter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
+                                if (x_tmp2 <= x_tmp && (x_tmp2 + x_counter) <= x_tmp)// vielleicht nochmal überprüfen irgendwanm
                                 {
-                                    counter += x2;
+                                    x_counter += x_tmp2;
                                     if (!retur.Contains(variable.VariableName))
-                                        retur += '|' + variable.VariableName;
+                                        retur += "|" + variable.VariableName;
                                 }
                             }
                         }
                     }
-
                 }
             }
 
-            tmp = v.Substring(v.Length - 1);
+            tmp = value.Substring(value.Length - 1);
             if (!tmp.Equals("0"))
             {
                 foreach (HeaderVariable troopFlag in headerFlags)
