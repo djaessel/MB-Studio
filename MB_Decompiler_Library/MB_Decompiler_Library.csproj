@@ -79,6 +79,7 @@
     <Compile Include="IO\ImportsManager.cs" />
     <Compile Include="IO\SourceReader.cs" />
     <Compile Include="Objects\Animation.cs" />
+    <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\Support\AnimationSequence.cs" />
     <Compile Include="Objects\Dialog.cs" />
     <Compile Include="IO\ConstantsFinder.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Objects\Support\GameMenuOption.cs" />
     <Compile Include="Objects\GameString.cs" />
     <Compile Include="Objects\InfoPage.cs" />
+    <Compile Include="Objects\Support\HeaderVariable.cs" />
     <Compile Include="Objects\Support\IntervalCode.cs" />
     <Compile Include="IO\LocalVariable.cs" />
     <Compile Include="IO\LocalVariableInterpreter.cs" />

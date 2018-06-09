@@ -4,6 +4,8 @@ Imports System.Globalization
 Public Class Item
     Inherits Skriptum
 
+#Region "Consts AND Attributes"
+
     Public Const ZERO_15_CHARS As String = "000000000000000"
 
     Private ReadOnly my_names As String() = New String(1) {}
@@ -20,6 +22,7 @@ Public Class Item
     Private Shared m_header_itemProperties As HeaderVariable() = {}
     Private Shared m_header_itemCapabilitiyFlags As HeaderVariable() = {}
 
+#End Region
 
     Public Sub New(Optional values As String() = Nothing)
         MyBase.New(values(0).TrimStart().Split()(0).Substring(4), ObjectType.ITEM)
@@ -582,6 +585,8 @@ Public Class Item
         Return retur
     End Function
 
+#Region "Properties"
+
     Public Shared ReadOnly Property ItemStatsNames As String() = {"weigth", "abundance", "head_armor", "body_armor", "leg_armor", "difficulty", "hit_points", "spd_rtng", "shoot_speed", "weapon_length",
                                                                "max_ammo", "thrust_damage", "swing_damage"}
 
@@ -764,5 +769,7 @@ Public Class Item
     Public Sub SetTriggers(list As List(Of String))
         my_triggers = list
     End Sub
+
+#End Region
 
 End Class

@@ -347,9 +347,8 @@ namespace MB_Decompiler_Library.Objects
         {
             FaceFinder ff = new FaceFinder();
             ff.ReadFaceCode(faceCode);
-            string[] faces = (string[])ff.FaceCodes;
-            Face1 = faces[0];
-            Face2 = faces[1];
+            Face1 = ff.Face1;
+            Face2 = ff.Face2;
         }
 
         #endregion
