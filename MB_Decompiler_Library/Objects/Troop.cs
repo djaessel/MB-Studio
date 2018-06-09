@@ -9,12 +9,16 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Troop : Skriptum
     {
+        #region Consts And Attributes
+
         public const int GUARANTEE_ALL = 0x07F00000;//133169152‬
 
         private const string ERROR_MSG_1 = "You probably have too many lines found in troop init! Check your files!";
         private const string ERROR_MSG_2 = "Too few lines found in troop init! Check your files!";
 
         private static List<HeaderVariable> headerFlags = null;
+
+        #endregion
 
         #region Initializing
 
@@ -31,7 +35,7 @@ namespace MB_Decompiler_Library.Objects
                 SetFirstLine(values[0]);
                 SetItems(values[1]);
                 SetAttributes(values[2]);
-                SetProficies(values[3]);
+                SetProficiencies(values[3]);
                 SetSkills(values[4]);
                 SetFaceCodes(values[5]);
                 return;
@@ -197,7 +201,7 @@ namespace MB_Decompiler_Library.Objects
                 SendErrorMessage(true);
         }
 
-        private void SetItems(string items)
+        public void SetItems(string items)
         {
             Items.Clear();
             ItemFlags.Clear();
@@ -216,7 +220,7 @@ namespace MB_Decompiler_Library.Objects
             }
         }
 
-        private void SetSceneCode(string sceneCode)
+        public void SetSceneCode(string sceneCode)
         {
             SceneCodeGZ = ulong.Parse(sceneCode);
             if (SceneCodeGZ == 0)
@@ -264,7 +268,7 @@ namespace MB_Decompiler_Library.Objects
             SendErrorMessage();
         }
 
-        private void SetProficies(string proficies)
+        private void SetProficiencies(string proficies)
         {
             string[] profS = proficies.Substring(1).Split();
             if (profS.Length >= 7)
@@ -331,7 +335,7 @@ namespace MB_Decompiler_Library.Objects
             ProficienciesSC = (tmp.Length == 0) ? "0" : tmp.TrimStart(')','|') + ')';
         }
 
-        private void SetSkills(string knowledge)
+        public void SetSkills(string knowledge)
         {
             SkillHunter sk = new SkillHunter();
             sk.ReadSkills(knowledge);
@@ -468,8 +472,8 @@ namespace MB_Decompiler_Library.Objects
                 else if (hotChar != '0')
                 {
                     List<HeaderVariable> list = new List<HeaderVariable>();
-                    int x = (int)SkillHunter.Hex2Dec(hotChar.ToString());
-                    int counter = 0;
+                    ulong x = ulong.Parse(SkillHunter.Hex2Dec(hotChar.ToString()).ToString());
+                    ulong counter = 0;
                     if (tmp.Length > 1)
                     {
                         foreach (HeaderVariable hVar in headerFlags)
@@ -480,8 +484,8 @@ namespace MB_Decompiler_Library.Objects
                         {
                             if (counter < x)
                             {
-                                int x2 = (int)SkillHunter.Hex2Dec(variable.VariableValue.TrimStart('0'));
-                                if (x2 <= x && x2 + counter <= x) // vielleicht nochmal überprüfen irgendwanm
+                                ulong x2 = ulong.Parse(SkillHunter.Hex2Dec(variable.VariableValue.TrimStart('0')).ToString());
+                                if (x2 <= x && x2 + counter <= x)// vielleicht nochmal überprüfen irgendwanm
                                 {
                                     counter += x2;
                                     if (!retur.Contains(variable.VariableName))
@@ -529,47 +533,37 @@ namespace MB_Decompiler_Library.Objects
 
         #region Properties
 
+        #region General
+
         public static bool ShortProficies { get; private set; } = false;
 
-        public int[] Proficiencies { get; private set; }
-
-        public string ProficienciesSC { get; private set; }
+        public string Name { get; private set; }
+        public string PluralName { get; private set; }
 
         public string Flags { get; private set; }
-
         public int FlagsGZ { get; private set; }
 
         public string DialogImage { get; private set; }
-
         //public int DialogImageGZ { get; private set; }
 
         public string SceneCode { get; private set; }
-
         public ulong SceneCodeGZ { get; private set; }
 
         public string Reserved { get; private set; }
-
         public int ReservedGZ { get; private set; }
 
-        public int FactionID { get; private set; }
-
-        public int[] Attributes { get; private set; } = new int[4];
-
-        public string Name { get; private set; }
-
-        public string PluralName { get; private set; }
+        public int FactionID { get; set; }
 
         public List<int> Items { get; private set; } = new List<int>();
-
         public List<ulong> ItemFlags { get; private set; } = new List<ulong>();
 
-        public int[] Skills { get; private set; } = new int[42];
+        #endregion
 
         #region UpgradeTroop
 
-        public int UpgradeTroop1 { get; private set; }
+        public int UpgradeTroop1 { get; set; }
 
-        public int UpgradeTroop2 { get; private set; }
+        public int UpgradeTroop2 { get; set; }
 
         public string UpgradeTroop1ErrorCode { get; private set; }
 
@@ -586,6 +580,8 @@ namespace MB_Decompiler_Library.Objects
         #endregion
 
         #region Skills
+
+        public int[] Skills { get; private set; } = new int[42];
 
         public int Persuasion
         {
@@ -735,6 +731,8 @@ namespace MB_Decompiler_Library.Objects
 
         #region Attributes
 
+        public int[] Attributes { get; private set; } = new int[5];
+
         public int Strength
         {
             get { return Attributes[0]; }
@@ -768,6 +766,10 @@ namespace MB_Decompiler_Library.Objects
         #endregion
 
         #region Proficiencies
+
+        public string ProficienciesSC { get; private set; }
+
+        public int[] Proficiencies { get; private set; } = new int[7];
 
         public int OneHanded
         {

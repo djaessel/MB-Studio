@@ -26,7 +26,7 @@ static void showUsage(){
 }
 
 
-extern const char* applVersion;
+extern const STRING applVersion;
 static MainWindow* curWindow = nullptr;
 static QApplication* curApp = nullptr;
 static bool windowShown = false;
@@ -44,7 +44,7 @@ static bool CurWindowIsShown(bool showError = true)
 	return false;
 }
 
-DLL_EXPORT byte DLL_EXPORT_DEF_CALLCONV IsCurHWndShown()
+DLL_EXPORT BYTE DLL_EXPORT_DEF_CALLCONV IsCurHWndShown()
 {
 	return CurWindowIsShown(false);
 }
@@ -60,7 +60,7 @@ DLL_EXPORT INT_PTR DLL_EXPORT_DEF_CALLCONV GetCurWindowPtr()
 	return (INT_PTR)curWindow->winId();
 }
 
-DLL_EXPORT_VOID SetModPath(char* modPath)
+DLL_EXPORT_VOID SetModPath(STRING modPath)
 {
 	if (IsCurHWndShown())
 		curWindow->setModPathExternal(string(modPath));
@@ -78,19 +78,19 @@ DLL_EXPORT_VOID SelectCurKindMany(int startIndex, int endIndex)
 		curWindow->selectCurManyIndices(startIndex, endIndex);
 }
 
-DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKind(char* name, int kind = 0)
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKind(STRING name, int kind = 0)
 {
 	if (CurWindowIsShown())
 		return curWindow->searchIniExplicit(QString(name), kind);
 	return false;
 }
 
-DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char* name, int kind = 0)
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(STRING name, int kind = 0)
 {
-	bool found = false;
+	BOOLEAN found = false;
 	if (CurWindowIsShown())
 	{
-		typedef std::vector<char*> StringArray;
+		typedef std::vector<STRING> StringArray;
 		StringArray names = curWindow->getMeshNames();
 		string sName = string(name);
 		for (size_t i = 0; i < names.size(); i++)
@@ -106,9 +106,9 @@ DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(char*
 	return found;
 }
 
-DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/)
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/)
 {
-	bool retur = SelectItemByNameAndKind(meshName);
+	BOOL retur = SelectItemByNameAndKind(meshName);
 	if (retur) {//includes CurWindowIsShown()
 		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition/*, isAtOrigin*/);
 	}
@@ -126,7 +126,7 @@ DLL_EXPORT_VOID ShowTroop3DPreview()
 		curWindow->showTroop3DPreview();
 }
 
-DLL_EXPORT_VOID RemoveMeshFromXViewModel(char* meshName)
+DLL_EXPORT_VOID RemoveMeshFromXViewModel(STRING meshName)
 {
 	//add skin name if needed here
 	//if (SelectItemByNameAndKind(meshName)) {//includes CurWindowIsShown()
@@ -143,7 +143,7 @@ DLL_EXPORT_VOID ClearTempMeshesTroop3DPreview() {
 		curWindow->clearTempTroop3DPreviewMeshes();
 }
 
-DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(char* modName) {
+DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(STRING modName) {
 	if (CurWindowIsShown())
 		curWindow->copyCurMeshToMod(QString(modName));
 }
@@ -254,16 +254,10 @@ DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeA
 	}
 }
 
-/*DLL_EXPORT_VOID ClearTroop3DPreview()
-{
-	if (CurWindowIsShown())
-		curWindow->clearTroop3DPreview();
-}*/
-
 /**
 * Main Method - For External Usage
 */
-DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
+DLL_EXPORT INT DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, STRING argv[])
 {
 	/*bool debugMode = false;
 	if (argc == 1)
@@ -348,7 +342,7 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 		curWindow = &w;
 
 		if (changeModule)
-			w.setModPathExternal((char*)arguments[3].toStdString().c_str());
+			w.setModPathExternal((STRING)arguments[3].toStdString().c_str());
 
 		if (arguments.size() > 1) 
 			w.loadFile(arguments[1]);
@@ -373,7 +367,7 @@ DLL_EXPORT int DLL_EXPORT_DEF_CALLCONV StartExternal(int argc, char* argv[])
 /**
 * Main Method
 */
-int main(int argc, char* argv[])
+int main(int argc, STRING argv[])
 {
 	Q_INIT_RESOURCE(resource);
 	return StartExternal(argc, argv);

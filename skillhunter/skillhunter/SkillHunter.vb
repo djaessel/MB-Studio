@@ -1,6 +1,6 @@
 ﻿Public Class SkillHunter
 
-#Region "Attributes"
+#Region "Const"
 
     Public Const KNOWS As String = "knows_"
     Public Const EMPTY As String = "nothing"
@@ -8,43 +8,20 @@
     Public Const DOUBLESPACE As String = SPACE + SPACE
     Public Const FilesPath As String = ".\files\"
 
-    Private m_skills As Integer() = New Integer(47) {} ' was 41 before for 42 slots
+#End Region
 
-    'Private Shared m_text_skills As String() = New String() {"persuasion", "prisoner_management", "leadership", "trade", "tactics", "pathfinding", "spotting",
-    '                                                    "inventory_management", "wound_treatment", "surgery", "first_aid", "engineer", "horse_archery",
-    '                                                    "looting", "trainer", "tracking", "weapon_master", "shield", "athletics", "riding", "ironflesh",
-    '                                                    "power_strike", "power_throw", "power_draw"} 'V1
+#Region "Properties"
 
-    'Private Shared m_text_skills As String() = New String() {"persuasion", "reserved_I", "reserved_II", "reserved_III", "reserved_IV", "prisoner_management", "leadership", "trade", "tactics",
-    '                                                    "pathfinding", "spotting", "inventory_management", "wound_treatment", "surgery", "first_aid", "engineer", "horse_archery", "looting",
-    '                                                    "reserved_V", "reserved_VI", "reserved_VII", "reserved_VIII", "trainer", "tracking", "reserved_IX", "reserved_X", "reserved_XI", "maintenance",
-    '                                                    "weapon_master", "shield", "athletics", "riding", "reserved_XIII", "sea_king", "navigation", "ironflesh", "power_strike", "power_throw",
-    '                                                    "power_draw", "reserved_XVI", "reserved_XVII", "reserved_XVIII", "reserved_XIX", "reserved_XX", "reserved_XXI", "reserved_XXII",
-    '                                                    "reserved_XXIII", "reserved_XXIV"} 'V2
+    Public Shared ReadOnly Property DebugMode As Boolean = False
 
-    'Private Shared m_text_skills As String() = New String() {"persuasion", "reserved_1", "reserved_2", "reserved_3", "reserved_4", "prisoner_management", "leadership", "trade", "tactics",
-    '                                                    "pathfinding", "spotting", "inventory_management", "wound_treatment", "surgery", "first_aid", "engineer", "horse_archery", "looting",
-    '                                                    "reserved_5", "reserved_6", "reserved_7", "reserved_8", "trainer", "tracking", "reserved_9", "reserved_10", "reserved_11", "reserved_12",
-    '                                                    "weapon_master", "shield", "athletics", "riding", "reserved_13", "reserved_14", "reserved_15", "ironflesh", "power_strike", "power_throw",
-    '                                                    "power_draw", "reserved_16", "reserved_17", "reserved_18", "reserved_19", "reserved_20", "reserved_21", "reserved_22",
-    '                                                    "reserved_23", "reserved_24"} ' Change known later in header files if needed - V3
+    Public ReadOnly Property Skills As Integer() = New Integer(47) {} 'was 41 before for 42 slots
 
-    'Private Shared m_text_skills As String() = New String() {"persuasion", "reserved_4", "reserved_3", "reserved_2", "reserved_1", "prisoner_management", "leadership", "trade", "tactics",
-    '                                                    "pathfinding", "spotting", "inventory_management", "wound_treatment", "surgery", "first_aid", "engineer", "horse_archery", "looting",
-    '                                                    "reserved_8", "reserved_7", "reserved_6", "reserved_5", "trainer", "tracking", "reserved_12", "reserved_11", "reserved_10", "reserved_9",
-    '                                                    "weapon_master", "shield", "athletics", "riding", "reserved_16", "reserved_15", "reserved_14", "ironflesh", "power_strike", "power_throw",
-    '                                                    "power_draw", "reserved_13", "reserved_24", "reserved_23", "reserved_22", "reserved_21", "reserved_20", "reserved_19",
-    '                                                    "reserved_18", "reserved_17"} ' Change known later in header files if needed to real skills instead of reserved_X - V4
-
-    Private Shared m_text_skills As String() = New String() {"persuasion", "reserved_4", "reserved_3", "reserved_2", "reserved_1", "prisoner_management", "leadership", "trade", "tactics",
+    Public Shared ReadOnly Property Skillnames As String() = New String() {"persuasion", "reserved_4", "reserved_3", "reserved_2", "reserved_1", "prisoner_management", "leadership", "trade", "tactics",
                                                         "pathfinding", "spotting", "inventory_management", "wound_treatment", "surgery", "first_aid", "engineer", "horse_archery", "looting",
                                                         "reserved_8", "reserved_7", "reserved_6", "reserved_5", "trainer", "tracking", "reserved_12", "reserved_11", "reserved_10", "reserved_9",
                                                         "weapon_master", "shield", "athletics", "riding", "reserved_16", "reserved_15", "reserved_14", "ironflesh", "power_strike", "power_throw",
                                                         "power_draw", "reserved_13", "reserved_17", "reserved_18", "reserved_19", "reserved_20", "reserved_21", "reserved_22",
-                                                        "reserved_23", "reserved_24"} ' Change known later in header files if needed to real skills instead of reserved_X - V5
-
-
-    Private Shared _debugMode As Boolean = False
+                                                        "reserved_23", "reserved_24"} 'Change known later in header files if needed to real skills instead of reserved_X - V5
 
 #End Region
 
@@ -61,17 +38,17 @@
     End Sub
 
     Private Sub InitialiseArrays()
-        For index = 0 To m_text_skills.Length - 1
-            If Not m_text_skills(index).Substring(m_text_skills(index).Length - 1).Equals("_") Then
-                m_text_skills(index) += "_"
+        For index = 0 To Skillnames.Length - 1
+            If Not Skillnames(index).Substring(Skillnames(index).Length - 1).Equals("_") Then
+                Skillnames(index) += "_"
             End If
         Next
         ResetSkillArray()
     End Sub
 
     Private Sub ResetSkillArray()
-        For index = 0 To m_skills.Length - 1
-            m_skills(index) = -1
+        For index = 0 To Skills.Length - 1
+            Skills(index) = -1
         Next
     End Sub
 
@@ -88,47 +65,47 @@
         'read first set of values (if value is A then set it to 10)
         'HexString = Right$("0000000" & Hex$(TempArray(0)), 8)
         HexString = Dec2Hex(tempArray(0))
-        m_skills(0) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'persuasion
-        m_skills(1) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'prisoner_management
-        m_skills(2) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'leadership
-        m_skills(3) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'trade
+        Skills(0) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'persuasion
+        Skills(1) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'prisoner_management
+        Skills(2) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'leadership
+        Skills(3) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'trade
 
         'read second set of values
         'Hex$ method breaks on Stannis Bartheon (large number in TempArray(1))
         'HexString = Right$("0000000" & Hex$(TempArray(1)), 8)
         HexString = Dec2Hex(tempArray(1))
-        m_skills(4) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'tactics
-        m_skills(5) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'pathfinding
-        m_skills(6) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'spotting
-        m_skills(7) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'inventory_management
-        m_skills(8) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'wound_treatment
-        m_skills(9) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'surgery
-        m_skills(10) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'first_aid
-        m_skills(11) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'engineer
+        Skills(4) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'tactics
+        Skills(5) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'pathfinding
+        Skills(6) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'spotting
+        Skills(7) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'inventory_management
+        Skills(8) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'wound_treatment
+        Skills(9) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'surgery
+        Skills(10) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'first_aid
+        Skills(11) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'engineer
 
         'read third set of values
         'HexString = Right$("0000000" & Hex$(TempArray(2)), 8)
         HexString = Dec2Hex(tempArray(2))
-        m_skills(12) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'horse_archery
-        m_skills(13) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'looting
-        m_skills(14) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'trainer
-        m_skills(15) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'tracking
+        Skills(12) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'horse_archery
+        Skills(13) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'looting
+        Skills(14) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'trainer
+        Skills(15) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'tracking
 
         'read fourth set of values
         'HexString = Right$("0000000" & Hex$(TempArray(3)), 8)
         HexString = Dec2Hex(tempArray(3))
-        m_skills(16) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'weapon_master
-        m_skills(17) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'shield
-        m_skills(18) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'athletics
-        m_skills(19) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'riding
+        Skills(16) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'weapon_master
+        Skills(17) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'shield
+        Skills(18) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'athletics
+        Skills(19) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'riding
 
         'read fifth set of values
         'HexString = Right$("0000000" & Hex$(TempArray(4)), 8)
         HexString = Dec2Hex(tempArray(4))
-        m_skills(20) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'ironflesh
-        m_skills(21) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'power_strike
-        m_skills(22) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'power_throw
-        m_skills(23) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'power_draw
+        Skills(20) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'ironflesh
+        Skills(21) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'power_strike
+        Skills(22) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'power_throw
+        Skills(23) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'power_draw
     End Sub
 
     Private Sub StartUpAll(skill_line As String)
@@ -139,69 +116,69 @@
         'read first set of values (if value is A then set it to 10)
         'HexString = Right$("0000000" & Hex$(TempArray(0)), 8)
         HexString = Dec2Hex(tempArray(0))
-        m_skills(0) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'persuasion | - - - X - - -
-        m_skills(1) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_IV | - - - X - - -
-        m_skills(2) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_III | - - - X - - -
-        m_skills(3) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_II | - - - X - - -
-        m_skills(4) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_I | - - - X - - -
-        m_skills(5) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'prisoner_management | - - - X - - -
-        m_skills(6) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'leadership | - - - X - - -
-        m_skills(7) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'trade | - - - X - - -
+        Skills(0) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'persuasion | - - - X - - -
+        Skills(1) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_IV | - - - X - - -
+        Skills(2) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_III | - - - X - - -
+        Skills(3) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_II | - - - X - - -
+        Skills(4) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_I | - - - X - - -
+        Skills(5) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'prisoner_management | - - - X - - -
+        Skills(6) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'leadership | - - - X - - -
+        Skills(7) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'trade | - - - X - - -
 
         'read second set of values
         'Hex$ method breaks on Stannis Bartheon (large number in TempArray(1))
         'HexString = Right$("0000000" & Hex$(TempArray(1)), 8)
         HexString = Dec2Hex(tempArray(1))
-        m_skills(8) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'tactics | - - - X - - -
-        m_skills(9) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'pathfinding | - - - X - - -
-        m_skills(10) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'spotting | - - - X - - -
-        m_skills(11) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'inventory_management | - - - X - - -
-        m_skills(12) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'wound_treatment | - - - X - - -
-        m_skills(13) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'surgery | - - - X - - -
-        m_skills(14) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'first_aid | - - - X - - -
-        m_skills(15) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'engineer | - - - X - - -
+        Skills(8) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'tactics | - - - X - - -
+        Skills(9) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'pathfinding | - - - X - - -
+        Skills(10) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'spotting | - - - X - - -
+        Skills(11) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'inventory_management | - - - X - - -
+        Skills(12) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'wound_treatment | - - - X - - -
+        Skills(13) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'surgery | - - - X - - -
+        Skills(14) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'first_aid | - - - X - - -
+        Skills(15) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'engineer | - - - X - - -
 
         'read third set of values
         'HexString = Right$("0000000" & Hex$(TempArray(2)), 8)
         HexString = Dec2Hex(tempArray(2))
-        m_skills(16) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'horse_archery | - - - X - - -
-        m_skills(17) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'looting | - - - X - - -
-        m_skills(18) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_VIII | - - - X - - -
-        m_skills(19) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_VII | - - - X - - -
-        m_skills(20) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_VI | - - - X - - -
-        m_skills(21) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'reserved_V | - - - X - - -
-        m_skills(22) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'trainer | - - - X - - -
-        m_skills(23) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'tracking | - - - X - - -
+        Skills(16) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'horse_archery | - - - X - - -
+        Skills(17) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'looting | - - - X - - -
+        Skills(18) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_VIII | - - - X - - -
+        Skills(19) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_VII | - - - X - - -
+        Skills(20) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_VI | - - - X - - -
+        Skills(21) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'reserved_V | - - - X - - -
+        Skills(22) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'trainer | - - - X - - -
+        Skills(23) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'tracking | - - - X - - -
 
         'read fourth set of values
         'HexString = Right$("0000000" & Hex$(TempArray(3)), 8)
         HexString = Dec2Hex(tempArray(3))
-        m_skills(24) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XII ?
-        m_skills(25) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XI ? 
-        m_skills(26) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_X ?
-        m_skills(27) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_IV | - - - X - - -
-        m_skills(28) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'weapon_master | - - - X - - -
-        m_skills(29) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'shield | - - - X - - -
-        m_skills(30) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'athletics | - - - X - - -
-        m_skills(31) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'riding | - - - X - - -
+        Skills(24) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XII ?
+        Skills(25) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XI ? 
+        Skills(26) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_X ?
+        Skills(27) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_IV | - - - X - - -
+        Skills(28) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'weapon_master | - - - X - - -
+        Skills(29) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'shield | - - - X - - -
+        Skills(30) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'athletics | - - - X - - -
+        Skills(31) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'riding | - - - X - - -
 
         'read fifth set of values
         'HexString = Right$("0000000" & Hex$(TempArray(4)), 8)
         HexString = Dec2Hex(tempArray(4))
-        m_skills(32) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XVI ?
-        m_skills(33) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XV | - - - X - - -
-        m_skills(34) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_XIV | - - - X - - -
-        m_skills(35) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'ironflesh | - - - X - - -
-        m_skills(36) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'power_strike | - - - X - - -
-        m_skills(37) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'power_throw | - - - X - - -
-        m_skills(38) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'power_draw | - - - X - - -
-        m_skills(39) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'reserved_XIII
+        Skills(32) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XVI ?
+        Skills(33) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XV | - - - X - - -
+        Skills(34) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_XIV | - - - X - - -
+        Skills(35) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'ironflesh | - - - X - - -
+        Skills(36) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'power_strike | - - - X - - -
+        Skills(37) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'power_throw | - - - X - - -
+        Skills(38) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'power_draw | - - - X - - -
+        Skills(39) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'reserved_XIII
 
         'read sixth set of values
         'HexString = Right$("0000000" & Hex$(TempArray(5)), 8)
         HexString = Dec2Hex(tempArray(5))
-        m_skills(40) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XVII
-        m_skills(41) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XVIII
+        Skills(40) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XVII
+        Skills(41) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XVIII
         'm_skills(42) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_XIX ???
         'm_skills(43) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_XX ???
         'm_skills(44) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_XXI ???
@@ -399,457 +376,6 @@ Hex2Dec_End:
     End Function
 
 #End Region
-
-    Public Shared Function TroopUpdate(TroopX As Troop) As String()
-        On Error GoTo Update_Error
-
-        'check the number of items they have added
-
-        Dim tempString As String
-        Dim TroopCode() As String = New String(5) {}
-        Dim CurrentFlag As String = Dec2Hex(TroopX.Flags)
-
-#Region "UPDATE TROOP FLAG"
-
-        'If (CmbRace.ListIndex = Race) Then
-        'race hasn't changed, do nothing
-        'Else
-        'clear the old flag
-        '   CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not RaceArray(Race))
-        'set the new flag
-        '    CurrentFlag = Dec2Hex("&H" & CurrentFlag Or RaceArray(CmbRace.ListIndex))
-        '    Race = CmbRace.ListIndex
-        'End If
-        '
-        '   'check tf_male = 0
-        '   If optGender(0).Value = True Then
-        '      'add flag
-        '      CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 0)
-        '   Else
-        '      'clear flag
-        '      CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 0)
-        '   End If
-        '
-        '   'check tf_female = 1
-        '   If optGender(1).Value = True Then
-        '      'add flag
-        '      CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 1)
-        '   Else
-        '      'clear flag
-        '      CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 1)
-        '   End If
-
-        '   'check tf_undead = 2
-        '   If optGender(2).Value = True Then
-        '      'add flag
-        '      CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 2)
-        '   Else
-        '      'clear flag
-        '      CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 2)
-        '   End If
-
-        'check troop_type_mask = 0x0000000f (kingdom lord wife may use it??)
-        'dont change the flag, ignore it....
-
-        'check hero flag (tf_hero = 0x00000010)
-        'If chkHero.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 10)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 10)
-        'End If
-
-        'tf_inactive = 0x00000020
-        'If chkInactive.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 20)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 20)
-        'End If
-
-        'tf_unkillable = 0x00000040
-        'If chkUnkillable.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 40)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 40)
-        'End If
-
-        'tf_allways_fall_dead = 0x00000080
-        'If chkFallDead.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 80)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 80)
-        'End If
-
-        'tf_no_capture_alive = 0x00000100
-        'If chkNoCapture.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 100)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 100)
-        'End If
-
-        'tf_mounted = 0x00000400 #Troop's movement speed on map is determined by riding skill.
-        'If chkMounted.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 400)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 400)
-        'End If
-
-        'tf_is_merchant = 0x00001000 #When set, troop does not equip stuff he owns
-        'If chkMerchant.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 1000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 1000)
-        'End If
-
-        'check boots flag (tf_guarantee_boots = 0x00100000)
-        'If chkBoots.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 100000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 100000)
-        'End If
-
-        'check armor flag (tf_guarantee_armor = 0x00200000)
-        'If chkArmor.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 200000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 200000)
-        'End If
-
-        'check helmet flag (tf_guarantee_helmet = 0x00400000)
-        'If chkHelmet.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 400000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 400000)
-        'End If
-
-        'tf_guarantee_gloves = 0x00800000
-        'If chkGloves.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 800000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 800000)
-        'End If
-
-        'tf_guarantee_horse = 0x01000000
-        'If chkHorse.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 1000000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 1000000)
-        'End If
-
-        'tf_guarantee_shield = 0x02000000
-        'If chkShield.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 2000000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 2000000)
-        'End If
-
-        'tf_guarantee_ranged = 0x04000000
-        'If chkRanged.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 4000000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 4000000)
-        'End If
-
-        'tf_unmoveable_in_party_window = 0x10000000
-        'If chkUnmoveable.Value = Checked Then
-        'add flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag Or "&H" & 10000000)
-        'Else
-        'clear flag
-        'CurrentFlag = Dec2Hex("&H" & CurrentFlag And Not "&H" & 10000000)
-        'End If
-
-#End Region
-
-        'update name/flag/upgrade information (row 0)
-        CurrentFlag = Hex2Dec(CurrentFlag)
-        tempString = TroopX.ID & SPACE & TroopX.ID & SPACE & TroopX.PluralName & SPACE & TroopX.DialogImage & SPACE & CurrentFlag & SPACE & TroopX.SceneCodeGZ & SPACE &
-            TroopX.ReservedGZ & SPACE & TroopX.FactionID & SPACE & TroopX.UpgradeTroop1 & SPACE & TroopX.UpgradeTroop2
-        TroopCode(0) = tempString
-
-        'update item information (row 1)
-        Dim i As Integer
-        Dim iArray() As String
-        tempString = SPACE + SPACE
-        For i = 0 To TroopX.Items.Count - 1
-            If TroopX.Items.Item(i).Equals(String.Empty) Then
-                tempString = tempString & "-1" & " 0 "
-            Else
-                iArray = Split(TroopX.Items.Item(i), " - ")
-                tempString = tempString & iArray(0) & " 0 "
-            End If
-        Next
-        Dim TempItem As String = "-1"
-        For i = (TroopX.Items.Count * 2) To 127
-            If TempItem.Equals("0") Then
-                tempString = tempString & "0 "
-                TempItem = "-1"
-            ElseIf TempItem.Equals("-1") Then
-                tempString = tempString & "-1 "
-                TempItem = "0"
-            End If
-        Next
-        TroopCode(1) = tempString
-
-        'update attribute information (row 2), first 2 elements are white space
-        tempString = DOUBLESPACE & TroopX.Strength & SPACE & TroopX.Agility & SPACE & TroopX.Intelligence & SPACE & TroopX.Charisma & SPACE & TroopX.Level
-        TroopCode(2) = tempString
-
-        'update proficiencies information (row 3), first 1 element is white space
-        tempString = SPACE & TroopX.OneHanded & SPACE & TroopX.TwoHanded & SPACE & TroopX.Polearm & SPACE & TroopX.Archery & SPACE & TroopX.Crossbow & SPACE & TroopX.Throwing & SPACE & TroopX.Firearm
-        TroopCode(3) = tempString
-
-        'update skills information (row 4)
-        Dim SkillLine As String
-        Dim SkillHexTemp As String
-
-        'update first set of values (if value is 10 then set it to A)
-        'HexString = Right$("0000000" & Hex$(TempArray(0)), 8)
-
-        'update first set of skills
-        SkillHexTemp = ReplaceDec(TroopX.Persuasion) & "0000" & ReplaceDec(TroopX.PrisonerManagement) & ReplaceDec(TroopX.Leadership) & ReplaceDec(TroopX.Trade)
-        SkillLine = Hex2Dec(SkillHexTemp)
-        'update second set of skills
-        SkillHexTemp = ReplaceDec(TroopX.Tactics) & ReplaceDec(TroopX.Pathfinding) & ReplaceDec(TroopX.Spotting) & ReplaceDec(TroopX.InventoryManagement) & ReplaceDec(TroopX.WoundTreatment) &
-            ReplaceDec(TroopX.Surgery) & ReplaceDec(TroopX.FirstAid) & ReplaceDec(TroopX.Engineer)
-        SkillLine = SkillLine & SPACE & Hex2Dec(SkillHexTemp)
-        'update third set of skills
-        SkillHexTemp = ReplaceDec(TroopX.HorseArchery) & ReplaceDec(TroopX.Looting) & "0000" & ReplaceDec(TroopX.Training) & ReplaceDec(TroopX.Tracking)
-        SkillLine = SkillLine & SPACE & Hex2Dec(SkillHexTemp)
-        'update fourth set of values
-        SkillHexTemp = "0000" & ReplaceDec(TroopX.WeaponMaster) & ReplaceDec(TroopX.Shield) & ReplaceDec(TroopX.Athletics) & ReplaceDec(TroopX.Riding)
-        SkillLine = SkillLine & SPACE & Hex2Dec(SkillHexTemp)
-        'update fifth set of values
-        SkillHexTemp = "000" & ReplaceDec(TroopX.Ironflesh) & ReplaceDec(TroopX.PowerStrike) & ReplaceDec(TroopX.PowerThrow) & ReplaceDec(TroopX.PowerDraw) & "0"
-        SkillLine = SkillLine & SPACE & Hex2Dec(SkillHexTemp)
-        'add sixth value (zero)
-        SkillLine = SkillLine & " 0"
-
-        TroopCode(4) = SkillLine
-
-        'update face information (row 5)
-        TroopCode(5) = FaceFinder.GetFaceCodestring(TroopX)
-
-        'MsgBox(TroopX.Name & " (" & TroopX.ID & ") has been updated!")
-
-        GoTo Update_End
-
-Update_Error:
-        MsgBox("Error" + SPACE + "#" & Err.Number & ":" & Environment.NewLine & Err.ToString())
-        GoTo Update_Real_End
-
-Update_End:
-        Return TroopCode
-Update_Real_End:
-    End Function
-
-#End Region
-
-#Region "Properties"
-
-    Public ReadOnly Property Skills() As Integer()
-        Get
-            Return m_skills
-        End Get
-    End Property
-
-    Public Shared ReadOnly Property Skillnames As String()
-        Get
-            Return m_text_skills
-        End Get
-    End Property
-
-#Region "UNUSED PROPERTIES"
-
-    'Public ReadOnly Property AdvancedSkills() As Integer()
-    '    Get
-    '        Return mx_skills
-    '    End Get
-    'End Property
-
-    ' - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    'Public ReadOnly Property Persuasion() As Integer
-    '    Get
-    '        Return m_skills(0)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property PrisonerManagement() As Integer
-    '    Get
-    '        Return m_skills(1)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Leadership() As Integer
-    '    Get
-    '        Return m_skills(2)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Trade() As Integer
-    '    Get
-    '        Return m_skills(3)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Tactics() As Integer
-    '    Get
-    '        Return m_skills(4)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Pathfinding() As Integer
-    '    Get
-    '        Return m_skills(5)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Spotting() As Integer
-    '    Get
-    '        Return m_skills(6)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property InventoryManagement() As Integer
-    '    Get
-    '        Return m_skills(7)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property WoundTreatment() As Integer
-    '    Get
-    '        Return m_skills(8)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Surgery() As Integer
-    '    Get
-    '        Return m_skills(9)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property FirstAid() As Integer
-    '    Get
-    '        Return m_skills(10)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Engineer() As Integer
-    '    Get
-    '        Return m_skills(11)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property HorseArchery() As Integer
-    '    Get
-    '        Return m_skills(12)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Looting() As Integer
-    '    Get
-    '        Return m_skills(13)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Training() As Integer
-    '    Get
-    '        Return m_skills(14)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Tracking() As Integer
-    '    Get
-    '        Return m_skills(15)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property WeaponMaster() As Integer
-    '    Get
-    '        Return m_skills(16)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Shield() As Integer
-    '    Get
-    '        Return m_skills(17)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Athletics() As Integer
-    '    Get
-    '        Return m_skills(18)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Riding() As Integer
-    '    Get
-    '        Return m_skills(19)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property Ironflesh() As Integer
-    '    Get
-    '        Return m_skills(20)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property PowerStrike() As Integer
-    '    Get
-    '        Return m_skills(21)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property PowerThrow() As Integer
-    '    Get
-    '        Return m_skills(22)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property PowerDraw() As Integer
-    '    Get
-    '        Return m_skills(23)
-    '    End Get
-    'End Property
-
-#End Region
-
-    Public Shared Property DebugMode() As Boolean
-        Get
-            Return _debugMode
-        End Get
-        Set(value As Boolean)
-            _debugMode = value
-        End Set
-    End Property
 
 #End Region
 

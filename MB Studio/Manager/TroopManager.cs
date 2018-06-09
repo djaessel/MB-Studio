@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
+using MB_Decompiler_Library.Objects;
 using System.Collections.Specialized;
 using MB_Studio.Manager.Support.External;
 

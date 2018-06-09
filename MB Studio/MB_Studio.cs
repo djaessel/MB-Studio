@@ -753,13 +753,12 @@ namespace MB_Studio
             projectFiles_lb.Items.Add("Items");
             projectFiles_lb.Items.Add("Info Pages");
             projectFiles_lb.Items.Add("Skills");
-            //projectFiles_lb.Items.Add("Presentations");
-            //projectFiles_lb.Items.Add("...");
             // VORERST //
-
+            // NEW SOLUTION - WIP //
             scriptCommander.LoadManagers();
             foreach (ToolForm cm in scriptCommander.CustomManagers)
                 projectFiles_lb.Items.Add(cm.GetType().Name.Replace("Manager", string.Empty));
+            // NEW SOLUTION - WIP //
         }
 
         private void ProjectFiles_lb_SelectedIndexChanged(object sender, EventArgs e)

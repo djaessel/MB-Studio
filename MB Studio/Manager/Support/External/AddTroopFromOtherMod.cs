@@ -1,4 +1,5 @@
 ﻿using MB_Decompiler_Library.IO;
+using MB_Decompiler_Library.Objects;
 using skillhunter;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace MB_Studio.Manager.Support.External
 
             troop.SetSkills("0 0 0 0 0 0");
 
-            troop.SetSceneCode(0);
+            troop.SetSceneCode("0");
 
             troop.UpgradeTroop1 = -1;
             troop.UpgradeTroop2 = -1;
