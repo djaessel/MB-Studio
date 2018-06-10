@@ -1,5 +1,4 @@
-﻿using skillhunter;
-using MB_Decompiler_Library.Objects;
+﻿using MB_Decompiler_Library.Objects;
 using MB_Studio.Manager.Support.External;
 using System;
 using System.Collections.Generic;

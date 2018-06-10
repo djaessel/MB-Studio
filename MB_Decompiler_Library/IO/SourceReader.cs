@@ -5,14 +5,12 @@ using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using static skillhunter.Skriptum;
+using static MB_Decompiler_Library.Objects.Skriptum;
 
 namespace MB_Decompiler_Library.IO
 {
     public class SourceReader
     {
-        private static string modPath = string.Empty; //SHOULD BE string.Empty in the Release Version!!!
-
         //change this to source files
         public static readonly string[] Files = { "scripts.txt", "mission_templates.txt", "presentations.txt", "menus.txt", "troops.txt", "item_kinds1.txt", "strings.txt", "simple_triggers.txt",
                 "triggers.txt", "info_pages.txt", "meshes.txt", "music.txt", "quests.txt", "sounds.txt", "scene_props.txt", "tableau_materials.txt", "map_icons.txt", "conversation.txt",
@@ -20,16 +18,16 @@ namespace MB_Decompiler_Library.IO
 
         private static LocalVariableInterpreter localVariableInterpreter;
 
-        private string filePath;
+        private readonly string filePath;
 
         public SourceReader(string filePath = null)
         {
             this.filePath = filePath;
         }
 
-        public static void SetModPath(string modPath) { SourceReader.modPath = modPath; }
+        public static void SetModPath(string modPath) { SourceReader.ModPath = modPath; }
 
-        public static string ModPath { get { return modPath; } }
+        public static string ModPath { get; private set; } = string.Empty;
 
         private static string GetNegationCode(string code)
         {

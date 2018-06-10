@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
 using brfManager;
-using skillhunter;
 using importantLib;
 using MB_Decompiler;
 using MB_Studio.Main;
@@ -14,7 +13,8 @@ using WarbandTranslator;
 using MB_Decompiler_Library.IO;
 using importantLib.ToolTipsListBox;
 using MB_Studio.Manager.Support.External;
-using static skillhunter.Skriptum;
+using static MB_Decompiler_Library.Objects.Skriptum;
+using MB_Decompiler_Library.Objects;
 
 namespace MB_Studio.Manager
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using static skillhunter.Skriptum;
+using static MB_Decompiler_Library.Objects.Skriptum;
 
 namespace MB_Decompiler_Library.IO
 {
@@ -11,7 +11,7 @@ namespace MB_Decompiler_Library.IO
         private const byte IMPORT = 0;
         private const byte DESCRIPTION = 1;
         private const byte CODE = 2;
-        private string path;
+        private readonly string path;
 
         public ImportsManager(string path = "")
         {

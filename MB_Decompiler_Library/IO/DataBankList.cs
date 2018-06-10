@@ -1,21 +1,18 @@
 ﻿using System.Collections.Generic;
-using static skillhunter.Skriptum;
+using static MB_Decompiler_Library.Objects.Skriptum;
 
 namespace MB_Decompiler_Library.IO
 {
     public class DataBankList
     {
-        private string kind;
-        private int objectTypeID;
-
         private List<string> m_imports = new List<string>();
         private List<string> m_description_lines = new List<string>();
         private List<string> m_codes = new List<string>();
 
         public DataBankList(int objectTypeID, string kind)
         {
-            this.objectTypeID = objectTypeID;
-            this.kind = kind;
+            ObjectTypeID = objectTypeID;
+            Kind = kind;
         }
 
         public void AddImport(string line) { m_imports.Add(line); }
@@ -24,11 +21,11 @@ namespace MB_Decompiler_Library.IO
 
         public void AddCodeLine(string line) { m_codes.Add(line); }
 
-        public int ObjectTypeID { get { return objectTypeID; } }
+        public int ObjectTypeID { get; }
 
-        public ObjectType ObjectType { get { return (ObjectType)objectTypeID; } }
+        public ObjectType ObjectType { get { return (ObjectType)ObjectTypeID; } }
 
-        public string Kind { get { return kind; } }
+        public string Kind { get; }
 
         public string[] Imports { get { return m_imports.ToArray(); } }
 

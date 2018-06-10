@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using importantLib;
-using skillhunter;
+using MB_Decompiler_Library.Objects;
 
 namespace MB_Decompiler
 {

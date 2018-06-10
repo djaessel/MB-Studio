@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
 using skillhunter;
-using static skillhunter.Skriptum;
+using static MB_Decompiler_Library.Objects.Skriptum;
 
 namespace MB_Decompiler_Library.IO
 {

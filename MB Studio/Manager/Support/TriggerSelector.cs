@@ -1,6 +1,6 @@
 ﻿using importantLib;
 using System;
-using static skillhunter.Skriptum;
+using static MB_Decompiler_Library.Objects.Skriptum;
 
 namespace MB_Studio
 {
@@ -8,10 +8,6 @@ namespace MB_Studio
     {
         private ObjectType type;
         private string selectedTrigger;
-
-        private string[] selection;
-        private double[] selectionValues;
-
         private static readonly string[] item_trigger = new string[] { "ti_on_init_item", "ti_on_weapon_attack", "ti_on_missile_hit", "ti_on_shield_hit" };
         private static readonly double[] item_check_interval = new double[] { -50d, -51d, -52d, -80d };
 
@@ -27,29 +23,29 @@ namespace MB_Studio
             Init();
         }
 
-        public string[] TriggerNames { get { return selection; } }
-        public double[] TriggerCheckIntervals { get { return selectionValues; } }
+        public string[] TriggerNames { get; private set; }
+        public double[] TriggerCheckIntervals { get; private set; }
 
         private void Init()
         {
             if (type == ObjectType.ITEM)
             {
-                selection = item_trigger;
-                selectionValues = item_check_interval;
+                TriggerNames = item_trigger;
+                TriggerCheckIntervals = item_check_interval;
             }
             else
             {
-                selection = new string[0];
-                selectionValues = new double[0];
+                TriggerNames = new string[0];
+                TriggerCheckIntervals = new double[0];
             }
             InitializeComponent();
         }
 
         private void TriggerSelector_Load(object sender, EventArgs e)
         {
-            if (selection.Length != 0)
+            if (TriggerNames.Length != 0)
             {
-                foreach (string t in selection)
+                foreach (string t in TriggerNames)
                     trigger_cbb.Items.Add(ImportantMethods.ToUpperAfterBlank(t.Substring(t.IndexOf('_') + 1).Replace('_', ' ')));
                 trigger_cbb.SelectedIndex = 0;
             }

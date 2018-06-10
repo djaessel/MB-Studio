@@ -2,7 +2,6 @@
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
-using MB_Studio.Main;
 using skillhunter;
 using System;
 using System.Collections.Generic;

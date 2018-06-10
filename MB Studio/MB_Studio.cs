@@ -1,5 +1,4 @@
-﻿using skillhunter;
-using importantLib;
+﻿using importantLib;
 using MB_Decompiler;
 using MB_Studio.Main;
 using MB_Studio.Manager;
@@ -14,6 +13,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
+using MB_Decompiler_Library.Objects;
 
 namespace MB_Studio
 {
