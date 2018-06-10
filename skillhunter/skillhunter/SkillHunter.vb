@@ -293,7 +293,7 @@ Dec2Hex_End:
         GoTo Dec2Hex_End
 
 Dec2Hex_Error:
-        MsgBox("Error" + SPACE + "#222" & Err.Number & ":" & Environment.NewLine + Err.Description)
+        MsgBox("Error" + SPACE + "#222" & Err.Number & ":" & Environment.NewLine & Err.Description)
 
 Dec2Hex_End:
 

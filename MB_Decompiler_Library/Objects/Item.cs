@@ -138,7 +138,7 @@ namespace MB_Decompiler_Library.Objects
         public Item(string[] values = null) : base(values[0].TrimStart().Split()[0].Substring(4), ObjectType.ITEM)
         {
             ResetItem();
-            if (values == null)
+            if (values != null)
             {
                 SetFirstLine(values[0]);
                 SetFactionAndTriggerValues(values);
@@ -254,9 +254,9 @@ namespace MB_Decompiler_Library.Objects
             tmp *= 2;
 
             SpecialValues[0] = xvalues[tmp + 4];
-            SpecialValues[0] = xvalues[tmp + 5];
+            SpecialValues[1] = xvalues[tmp + 5];
             Price = int.Parse(xvalues[tmp + 6]);
-            SpecialValues[0] = xvalues[tmp + 7];
+            SpecialValues[2] = xvalues[tmp + 7];
             Weight = double.Parse(xvalues[tmp + 8], NumberStyles.Any);//Culture.Invariant VB
 
             for (int i = 0; i < ItemStats.Length; i++)
@@ -275,51 +275,36 @@ namespace MB_Decompiler_Library.Objects
 
             try
             {
-                int x2 = int.Parse(values[2].Trim());
                 if (x > 0)
                 {
                     tmpS = values[2].Split();
                     for (int i = 0; i < tmpS.Length; i++)
                         Factions.Add(int.Parse(tmpS[i]));
-                    x2 = int.Parse(values[3].Trim());
+                    x = int.Parse(values[3].Trim());
                     if (HasTriggers(x))
-                        for (int i = 4; i < (x + 3); i++)
+                    {
+                        int ix = 4;
+                        int endI = x + ix;
+                        for (int i = ix; i < endI; i++)
                             Triggers.Add(values[i]);
+                    }
                 }
-                else if (x == 0 && HasTriggers(x2))
-                    for (int i = 3; i < (x2 + 2); i++)
-                        Triggers.Add(values[i]);
-                else if (HasTriggers(x2))
-                    ErrorMsg(x, 1);
+                else
+                {
+                    int ix = 3;
+                    int x2 = int.Parse(values[2].Trim());
+                    int endI = x2 + ix;
+                    if (x == 0 && HasTriggers(x2))
+                        for (int i = ix; i < endI; i++)
+                            Triggers.Add(values[i]);
+                    else if (HasTriggers(x2))
+                        ErrorMsg(x, 1);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + "; " + tmp + Environment.NewLine + values.Length);
+                MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
             }
-
-            /*
-        Try
-            If x > 0 Then
-                tmpS = tmpvalues(2).Split(SkillHunter.SPACE)
-                For i = 0 To tmpS.Length - 1
-                    my_factions.Add(Convert.ToInt32(tmpS(i)))
-                Next
-                If HasTriggers(StrToInt(tmpvalues(3).Trim())) Then
-                    For i = 4 To (StrToInt(tmpvalues(3).Trim()) + 3)
-                        my_triggers.Add(tmpvalues(i))
-                    Next
-                End If
-            ElseIf x = 0 And HasTriggers(StrToInt(tmpvalues(2).Trim())) Then
-                For i = 3 To (StrToInt(tmpvalues(2).Trim()) + 2)
-                    my_triggers.Add(tmpvalues(i))
-                Next
-            ElseIf HasTriggers(HasTriggers(StrToInt(tmpvalues(2).Trim()))) Then
-                ErrorMsg(x, 1)
-            End If
-        Catch ex As Exception
-            MsgBox(ex.ToString() + Environment.NewLine + tmpvalues(0) + "; " + tmp + Environment.NewLine + tmpvalues.Length.ToString())
-        End Try
-            */
         }
 
         #endregion
@@ -602,7 +587,7 @@ namespace MB_Decompiler_Library.Objects
         {
             string retur = string.Empty;
 
-            if (int.Parse(SkillHunter.Hex2Dec_16CHARS(value).ToString()) != 0)
+            if (ulong.Parse(SkillHunter.Hex2Dec_16CHARS(value).ToString()) != 0u)
             {
                 if (value[0] == '1')
                     retur = "ixmesh_inventory";
