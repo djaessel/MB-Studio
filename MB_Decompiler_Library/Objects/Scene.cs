@@ -1,44 +1,37 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.IO;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
     public class Scene : Skriptum
     {
-        private ulong flagsGZ;
-        private string meshName, flags, bodyName, terrainCode, terrainBase;
-        private double[] minPos, maxPos;
-        private double waterLevel;
-        private string[] otherScenes, chestTroops;
-
         public Scene(string[] raw_data, string[] otherScenes, string[] chestTroops, string terrainBase) : base(raw_data[1], ObjectType.SCENE)
         {
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
-                flagsGZ = ulong.Parse(raw_data[2]);
+                FlagsGZ = ulong.Parse(raw_data[2]);
                 SetFlags();
             }
             else
             {
-                flags = raw_data[2];
+                Flags = raw_data[2];
                 SetFlagsGZ();
             }
-            meshName = raw_data[3];
-            bodyName = raw_data[4];
-            minPos = new double[] { double.Parse(CodeReader.Repl_DotWComma(raw_data[5])), double.Parse(CodeReader.Repl_DotWComma(raw_data[6])) };
-            maxPos = new double[] { double.Parse(CodeReader.Repl_DotWComma(raw_data[7])), double.Parse(CodeReader.Repl_DotWComma(raw_data[8])) };
-            waterLevel = double.Parse(CodeReader.Repl_DotWComma(raw_data[9]));
-            terrainCode = raw_data[10];
-            this.otherScenes = otherScenes;
-            this.chestTroops = chestTroops;
-            this.terrainBase = terrainBase;
+            MeshName = raw_data[3];
+            BodyName = raw_data[4];
+            MinPosition = new double[] { double.Parse(CodeReader.Repl_DotWComma(raw_data[5])), double.Parse(CodeReader.Repl_DotWComma(raw_data[6])) };
+            MaxPosition = new double[] { double.Parse(CodeReader.Repl_DotWComma(raw_data[7])), double.Parse(CodeReader.Repl_DotWComma(raw_data[8])) };
+            WaterLevel = double.Parse(CodeReader.Repl_DotWComma(raw_data[9]));
+            TerrainCode = raw_data[10];
+            OtherScenes = otherScenes;
+            ChestTroops = chestTroops;
+            TerrainBase = terrainBase;
         }
 
         private void SetFlagsGZ()
         {
             ulong flagsGZ = 0;
-            string[] sp = flags.Split('|');
+            string[] sp = Flags.Split('|');
 
             foreach (string flag in sp)
             {
@@ -58,57 +51,57 @@ namespace MB_Decompiler_Library.Objects
                     flagsGZ |= 0x00001000; //Changes the shader of the river mesh
             }
 
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
         {
             string flags = string.Empty;
 
-            if ((flagsGZ & 0x0001) == 0x0001)
+            if ((FlagsGZ & 0x0001) == 0x0001)
                 flags += "sf_indoors|";
-            if ((flagsGZ & 0x0002) == 0x0002)
+            if ((FlagsGZ & 0x0002) == 0x0002)
                 flags += "sf_force_skybox|";
-            if ((flagsGZ & 0x0100) == 0x0100)
+            if ((FlagsGZ & 0x0100) == 0x0100)
                 flags += "sf_generate|";
-            if ((flagsGZ & 0x0200) == 0x0200)
+            if ((FlagsGZ & 0x0200) == 0x0200)
                 flags += "sf_randomize|";
-            if ((flagsGZ & 0x0400) == 0x0400)
+            if ((FlagsGZ & 0x0400) == 0x0400)
                 flags += "sf_auto_entry_points|";
-            if ((flagsGZ & 0x0800) == 0x0800)
+            if ((FlagsGZ & 0x0800) == 0x0800)
                 flags += "sf_no_horses|";
-            if ((flagsGZ & 0x1000) == 0x1000)
+            if ((FlagsGZ & 0x1000) == 0x1000)
                 flags += "sf_muddy_water|";
 
             if (flags.Length != 0)
                 flags = flags.TrimEnd('|');
             else
-                flags = flagsGZ.ToString();
+                flags = FlagsGZ.ToString();
 
-            this.flags = flags;
+            this.Flags = flags;
         }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public string MeshName { get { return meshName; } }
+        public string MeshName { get; }
 
-        public string BodyName { get { return bodyName; } }
+        public string BodyName { get; }
 
-        public string TerrainCode { get { return terrainCode; } }
+        public string TerrainCode { get; }
 
-        public string TerrainBase { get { return terrainBase; } }
+        public string TerrainBase { get; }
 
-        public double WaterLevel { get { return waterLevel; } }
+        public double WaterLevel { get; }
 
-        public double[] MinPosition { get { return minPos; } }
+        public double[] MinPosition { get; }
 
-        public double[] MaxPosition { get { return maxPos; } }
+        public double[] MaxPosition { get; }
 
-        public string[] OtherScenes { get { return otherScenes; } }
+        public string[] OtherScenes { get; }
 
-        public string[] ChestTroops { get { return chestTroops; } }
+        public string[] ChestTroops { get; }
 
     }
 }

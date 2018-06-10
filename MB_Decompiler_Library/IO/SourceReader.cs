@@ -1,7 +1,6 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1989,7 +1988,7 @@ namespace MB_Decompiler_Library.IO
                         {
                             tmp[j] = list[i].VariableValue;
                             if (tmp[j].StartsWith("0x"))
-                                tmp[j] = SkillHunter.Hex2Dec_16CHARS(tmp[j].Substring(2)).ToString();
+                                tmp[j] = HexConverter.Hex2Dec_16CHARS(tmp[j].Substring(2)).ToString();
                             i = list.Count;
                         }
                     }

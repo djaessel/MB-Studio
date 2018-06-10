@@ -3,14 +3,13 @@ using System.IO;
 using System.Collections.Generic;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 using static MB_Decompiler_Library.Objects.Skriptum;
+using importantLib;
 
 namespace MB_Decompiler_Library.IO
 {
     public class SourceWriter
     {
-        private static bool makeBackup = false;
         private static DataBankList[] allDataBankObjects = new DataBankList[0];
 
         public static string ModuleFilesPath = @".\moduleFiles\";
@@ -60,11 +59,7 @@ namespace MB_Decompiler_Library.IO
 
         #endregion
 
-        public static bool MakeBackup
-        {
-            set { makeBackup = value; }
-            get { return makeBackup; }
-        }
+        public static bool MakeBackup { set; get; } = false;
 
         private static void MakeBackupOfFile(string source)
         {
@@ -240,7 +235,7 @@ namespace MB_Decompiler_Library.IO
 
         public static void Reset(bool makeBackup = false)
         {
-            SourceWriter.makeBackup = makeBackup;
+            SourceWriter.MakeBackup = makeBackup;
             allDataBankObjects = new DataBankList[0];
         }
 
@@ -481,14 +476,14 @@ namespace MB_Decompiler_Library.IO
                     else
                         scnCode = troop.SceneCode;
 
-                    //Troop.GetFlagsFromValue(SkillHunter.Dec2Hex(troop.Flags)) --> troop.Flags
+                    //Troop.GetFlagsFromValue(HexConverter.Dec2Hex(troop.Flags)) --> troop.Flags
                     wr.Write(Environment.NewLine + " [\"" + troop.ID.Substring(4) + "\",\"" + troop.Name + "\",\"" + troop.PluralName + "\"," + troop.Flags + "," + scnCode + ","
                         + troop.Reserved + "," + CodeReader.Factions[troop.FactionID] + "," + Environment.NewLine + "  [");
 
                     for (int i = 0; i < troop.Items.Count; i++)
                     {
                         if (troop.ItemFlags[i] != 0)
-                            wr.Write("(" + CodeReader.Items[troop.Items[i]] + ", " + Item.GetItemModifiers_IMODBITS(SkillHunter.Dec2Hex_16CHARS(troop.ItemFlags[i])).Substring(1) + ")");//maybe as property as well - later
+                            wr.Write("(" + CodeReader.Items[troop.Items[i]] + ", " + Item.GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(troop.ItemFlags[i])).Substring(1) + ")");//maybe as property as well - later
                         else
                             wr.Write(CodeReader.Items[troop.Items[i]]);
                         if (i < troop.Items.Count - 1)
@@ -624,12 +619,12 @@ namespace MB_Decompiler_Library.IO
                     for (int i = 0; i < item.Meshes.Count; i++)
                     {
                         string[] sp = item.Meshes[i].Trim().Split();
-                        wr.Write("(\"" + sp[0] + "\"," + Item.GetMeshKindFromValue(SkillHunter.Dec2Hex_16CHARS(sp[1])) + ')');
+                        wr.Write("(\"" + sp[0] + "\"," + Item.GetMeshKindFromValue(HexConverter.Dec2Hex_16CHARS(sp[1])) + ')');
                         if (i < item.Meshes.Count - 1)
                             wr.Write(",");
                     }
-                    wr.Write("], " + item.Properties);//Item.GetItemPropertiesFromValue(SkillHunter.Dec2Hex_16CHARS(item.SpecialValues[0])));
-                    wr.Write(", " + item.CapabilityFlags + ", "//Item.GetItemCapabilityFlagsFromValue(SkillHunter.Dec2Hex_16CHARS(item.SpecialValues[1]), item.ID) + ", "
+                    wr.Write("], " + item.Properties);//Item.GetItemPropertiesFromValue(HexConverter.Dec2Hex_16CHARS(item.SpecialValues[0])));
+                    wr.Write(", " + item.CapabilityFlags + ", "//Item.GetItemCapabilityFlagsFromValue(HexConverter.Dec2Hex_16CHARS(item.SpecialValues[1]), item.ID) + ", "
                         + item.Price + ", weight(" + CodeReader.Repl_CommaWDot(item.Weight.ToString()) + ')');
                     //bool first = true;
                         for (int i = 0; i < item.ItemStats.Length; i++)
@@ -642,7 +637,7 @@ namespace MB_Decompiler_Library.IO
                     //first = false;
                     //}
                     //}
-                    wr.Write(", " + item.ModBits); //string imodbits_SOMETHING = SkillHunter.Dec2Hex_16CHARS(item.SpecialValues[item.SpecialValues.Length - 1]);
+                    wr.Write(", " + item.ModBits); //string imodbits_SOMETHING = HexConverter.Dec2Hex_16CHARS(item.SpecialValues[item.SpecialValues.Length - 1]);
                                                       //wr.Write(", " + Item.GetItemModifiers_IMODBITS(imodbits_SOMETHING, true));
                     if (item.Triggers.Count != 0)
                     {
@@ -1094,7 +1089,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.POST_FX);
                 foreach (PostFX postFX in objects)
                 {
-                    wr.Write("  (\"" + postFX.ID + "\", " + postFX.Flags + ", " + postFX.TonemapOperatorType + ", ");
+                    wr.Write("  (\"" + postFX.ID + "\", " + postFX.FlagsGZ + ", " + postFX.TonemapOperatorType + ", ");
                     for (int i = 0; i < postFX.AllShaderParameters.Count; i++)
                     {
                         WriteAShaderParameter(wr, postFX.AllShaderParameters[i]);
@@ -1115,7 +1110,7 @@ namespace MB_Decompiler_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PARTICLE_SYSTEM);
                 foreach (ParticleSystem pSystem in objects)
                 {
-                    wr.WriteLine(Environment.NewLine + "\t(\"" + pSystem.ID + "\", " + pSystem.Flags + ", \"" + pSystem.MeshName + "\",");
+                    wr.WriteLine(Environment.NewLine + "\t(\"" + pSystem.ID + "\", " + pSystem.FlagsGZ + ", \"" + pSystem.MeshName + "\",");
                     wr.Write("\t " + pSystem.ParticlesPerSecond + ", " + CodeReader.Repl_CommaWDot(pSystem.ParticleLifeTime.ToString()) + ", "
                         + CodeReader.Repl_CommaWDot(pSystem.Damping.ToString()) + ", ");
                     if (pSystem.GravityStrength == -0.00000000001337)
@@ -1217,7 +1212,7 @@ namespace MB_Decompiler_Library.IO
                     wr.WriteLine("\t[");
                     foreach (FaceTexture faceTexture in skin.FaceTextures)
                     {
-                        wr.Write("\t (\"" + faceTexture.Name + "\",0x" + SkillHunter.Dec2Hex_16CHARS(faceTexture.PrimaryHexValue).ToLower().TrimStart('0') + ",[");
+                        wr.Write("\t (\"" + faceTexture.Name + "\",0x" + HexConverter.Dec2Hex_16CHARS(faceTexture.PrimaryHexValue).ToLower().TrimStart('0') + ",[");
                         for (int i = 0; i < faceTexture.Textures.Length; i++)
                         {
                             wr.Write('\"' + faceTexture.Textures[i] + '\"');
@@ -1227,7 +1222,7 @@ namespace MB_Decompiler_Library.IO
                         wr.Write("],[");
                         for (int i = 0; i < faceTexture.TextureHexValues.Length; i++)
                         {
-                            wr.Write("0x" + SkillHunter.Dec2Hex_16CHARS(faceTexture.TextureHexValues[i]).ToLower().TrimStart('0'));
+                            wr.Write("0x" + HexConverter.Dec2Hex_16CHARS(faceTexture.TextureHexValues[i]).ToLower().TrimStart('0'));
                             if (i < faceTexture.TextureHexValues.Length - 1)
                                 wr.Write(",");
                         }
@@ -1313,15 +1308,15 @@ namespace MB_Decompiler_Library.IO
         private string ConvertItemStats(int value, int index)
         {
             string retur = string.Empty;
-            string itemStat = SkillHunter.Dec2Hex_16CHARS(value).TrimStart('0');
+            string itemStat = HexConverter.Dec2Hex_16CHARS(value).TrimStart('0');
             if (index > 9)
             {
                 if (itemStat[0] == '2' && itemStat.Length == 3)
-                    retur = Convert.ToString(SkillHunter.Hex2Dec(itemStat.Substring(1))) + ",blunt";
+                    retur = Convert.ToString(HexConverter.Hex2Dec(itemStat.Substring(1))) + ",blunt";
                 else if (itemStat[0] == '1' && itemStat.Length == 3)
-                    retur = Convert.ToString(SkillHunter.Hex2Dec(itemStat.Substring(1))) + ",pierce";
+                    retur = Convert.ToString(HexConverter.Hex2Dec(itemStat.Substring(1))) + ",pierce";
                 else
-                    retur = Convert.ToString(SkillHunter.Hex2Dec(itemStat)) + ",cut";
+                    retur = Convert.ToString(HexConverter.Hex2Dec(itemStat)) + ",cut";
             }
             else
                 retur = value.ToString();

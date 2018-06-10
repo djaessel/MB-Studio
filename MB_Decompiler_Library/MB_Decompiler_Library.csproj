@@ -87,6 +87,7 @@
     <Compile Include="Objects\Support\Entrypoint.cs" />
     <Compile Include="IO\ExchangeObject.cs" />
     <Compile Include="IO\ExchangeObjectBox.cs" />
+    <Compile Include="Objects\Support\FaceFinder.cs" />
     <Compile Include="Objects\Support\FaceKey.cs" />
     <Compile Include="Objects\Support\FaceKeyConstraint.cs" />
     <Compile Include="Objects\Support\FaceTexture.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Objects\PartyTemplate.cs" />
     <Compile Include="Objects\PostFX.cs" />
     <Compile Include="Objects\Presentation.cs" />
+    <Compile Include="Objects\Support\SkillHunter.cs" />
     <Compile Include="Objects\Support\Variable.cs" />
     <Compile Include="Objects\Trigger.cs" />
     <Compile Include="Objects\Troop.cs" />
@@ -129,10 +131,6 @@
     <ProjectReference Include="..\importantLib\importantLib\importantLib.csproj">
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\skillhunter\skillhunter\skillhunter.vbproj">
-      <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
-      <Name>skillhunter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

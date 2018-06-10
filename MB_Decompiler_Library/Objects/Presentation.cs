@@ -1,45 +1,39 @@
-﻿using skillhunter;
-
-namespace MB_Decompiler_Library.Objects
+﻿namespace MB_Decompiler_Library.Objects
 {
     public class Presentation : Skriptum
     {
-        private ulong flags;
-        private int meshID;
-        private SimpleTrigger[] simple_triggers;
-
         public Presentation(string name, ulong flags, int mesh_id, int triggerCount) : base(name, ObjectType.PRESENTATION)
         {
-            this.flags = flags;
-            this.meshID = mesh_id;
-            simple_triggers = new SimpleTrigger[triggerCount];
+            Flags = flags;
+            MeshID = mesh_id;
+            SimpleTriggers = new SimpleTrigger[triggerCount];
         }
 
         public void addSimpleTriggerToFreeIndex(SimpleTrigger simpleTrigger, int index = -1)
         {
             if (index < 0)
             {
-                for (int i = 0; i < simple_triggers.Length; i++)
+                for (int i = 0; i < SimpleTriggers.Length; i++)
                 {
-                    if (simple_triggers[i] == null)
+                    if (SimpleTriggers[i] == null)
                     {
-                        simple_triggers[i] = simpleTrigger;
-                        i = simple_triggers.Length;
+                        SimpleTriggers[i] = simpleTrigger;
+                        i = SimpleTriggers.Length;
                     }
                 }
             }
             else
             {
-                if (index < simple_triggers.Length)
-                    simple_triggers[index] = simpleTrigger;
+                if (index < SimpleTriggers.Length)
+                    SimpleTriggers[index] = simpleTrigger;
             }
         }
 
-        public ulong Flags { get { return flags; } }
+        public ulong Flags { get; }
 
-        public int MeshID { get { return meshID; } }
+        public int MeshID { get; }
 
-        public SimpleTrigger[] SimpleTriggers { get { return simple_triggers; } }
+        public SimpleTrigger[] SimpleTriggers { get; }
 
     }
 }

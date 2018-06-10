@@ -175,9 +175,9 @@ namespace importantLib
         public void AddNativeChildWindow(IntPtr hWndChild, IntPtr hWndParent, Control parentControl, bool resize = false, int addWidth = 0)
         {
             //uint style = NativeMethods.GetWindowLong(hWndChild, GWL_STYLE);
-            //MessageBox.Show("BEFORE: " + skillhunter.SkillHunter.Dec2Hex(style));
+            //MessageBox.Show("BEFORE: " + skillhunter.HexConverter.Dec2Hex(style));
             //style = (style & ~(WS_OVERLAPPEDWINDOW | WS_POPUP)) | WS_CHILD;
-            //MessageBox.Show("AFTER: " + skillhunter.SkillHunter.Dec2Hex(style));
+            //MessageBox.Show("AFTER: " + skillhunter.HexConverter.Dec2Hex(style));
             NativeMethods.SetWindowLong(hWndChild, GWL_STYLE, WS_CHILDWINDOW | WS_VISIBLE);// | WS_CAPTION);//style);
 
             //let the .NET control  be the parent of the native window

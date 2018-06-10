@@ -1,5 +1,4 @@
 ﻿using MB_Decompiler_Library.IO;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {

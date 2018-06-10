@@ -1,47 +1,41 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.IO;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
     public class MapIcon : Skriptum
     {
-        private SimpleTrigger[] s_triggers = new SimpleTrigger[0];
-        private byte flagsGZ;
-        private double scale, offsetX, offsetY, offsetZ;
-        private string mapIconName, flags, sound;
-
         public MapIcon(string[] raw_data) : base(raw_data[0], ObjectType.MAP_ICON)
         {
             if (ImportantMethods.IsNumericGZ(raw_data[1]))
             {
-                flagsGZ = byte.Parse(raw_data[1]);
+                FlagsGZ = byte.Parse(raw_data[1]);
                 SetFlags();
             }
             else
             {
-                flags = raw_data[1];
+                Flags = raw_data[1];
                 SetFlagsGZ();
             }
 
-            mapIconName = raw_data[2];
-            scale = double.Parse(CodeReader.Repl_DotWComma(raw_data[3]));
-            sound = CodeReader.Sounds[int.Parse(raw_data[4])];
+            MapIconName = raw_data[2];
+            Scale = double.Parse(CodeReader.Repl_DotWComma(raw_data[3]));
+            Sound = CodeReader.Sounds[int.Parse(raw_data[4])];
 
             string x = CodeReader.Repl_DotWComma(raw_data[5]);
             string y = CodeReader.Repl_DotWComma(raw_data[6]);
             string z = CodeReader.Repl_DotWComma(raw_data[7]);
             if (x.Length > 1 && y.Length > 1 && z.Length > 1)
             {
-                offsetX = double.Parse(x);
-                offsetY = double.Parse(y);
-                offsetZ = double.Parse(z);
+                OffsetX = double.Parse(x);
+                OffsetY = double.Parse(y);
+                OffsetZ = double.Parse(z);
             }
             else
             {
-                offsetX = double.NaN;
-                offsetY = double.NaN;
-                offsetZ = double.NaN;
+                OffsetX = double.NaN;
+                OffsetY = double.NaN;
+                OffsetZ = double.NaN;
             }
         }
 
@@ -49,46 +43,42 @@ namespace MB_Decompiler_Library.Objects
         {
             byte flagsGZ = 0;
 
-            if (flags.Equals("mcn_no_shadow"))
+            if (Flags.Equals("mcn_no_shadow"))
                 flagsGZ++;
 
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
         {
             string flags = string.Empty;
 
-            if (flagsGZ == 0x1)
+            if (FlagsGZ == 0x1)
                 flags = "mcn_no_shadow";
 
             if (flags.Length == 0)
-                flags = flagsGZ.ToString();
+                flags = FlagsGZ.ToString();
 
-            this.flags = flags;
+            this.Flags = flags;
         }
 
-        public SimpleTrigger[] SimpleTriggers
-        {
-            get { return s_triggers; }
-            set { s_triggers = value; }
-        }
+        public SimpleTrigger[] SimpleTriggers { get; set; } = new SimpleTrigger[0];
 
-        public byte FlagsGZ { get { return flagsGZ; } }
+        public byte FlagsGZ { get; private set; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public double Scale { get { return scale; } }
+        public double Scale { get; }
 
-        public double OffsetX { get { return offsetX; } }
+        public double OffsetX { get; }
 
-        public double OffsetY { get { return offsetY; } }
+        public double OffsetY { get; }
 
-        public double OffsetZ { get { return offsetZ; } }
+        public double OffsetZ { get; }
 
-        public string MapIconName { get { return mapIconName; } }
+        public string MapIconName { get; }
 
-        public string Sound { get { return sound; } }
+        public string Sound { get; }
 
     }
 }

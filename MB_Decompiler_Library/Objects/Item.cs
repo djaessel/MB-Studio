@@ -1,10 +1,10 @@
-﻿using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
+﻿using importantLib;
+using MB_Decompiler_Library.Objects.Support;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
+using System.Globalization;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace MB_Decompiler_Library.Objects
 {
@@ -123,11 +123,11 @@ namespace MB_Decompiler_Library.Objects
 
         #region HeaderVariables
 
-        public string Properties { get { return GetItemPropertiesFromValue(SkillHunter.Dec2Hex_16CHARS(SpecialValues[0])); } }
+        public string Properties { get { return GetItemPropertiesFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[0])); } }
 
-        public string CapabilityFlags { get { return GetItemCapabilityFlagsFromValue(SkillHunter.Dec2Hex_16CHARS(SpecialValues[1])); } }
+        public string CapabilityFlags { get { return GetItemCapabilityFlagsFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[1])); } }
 
-        public string ModBits { get { return GetItemModifiers_IMODBITS(SkillHunter.Dec2Hex_16CHARS(SpecialValues[2]), true).TrimStart('|'); } }
+        public string ModBits { get { return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(SpecialValues[2]), true).TrimStart('|'); } }
 
         #endregion
 
@@ -216,7 +216,7 @@ namespace MB_Decompiler_Library.Objects
                     if (s.Split('_')[0].Equals(flagMarker))
                     {
                         string[] sp = s.Replace(" ", string.Empty).Split('=');
-                        list.Add(new HeaderVariable((convToHex) ? SkillHunter.Dec2Hex_16CHARS(sp[1]) : sp[1], sp[0]));
+                        list.Add(new HeaderVariable((convToHex) ? HexConverter.Dec2Hex_16CHARS(sp[1]) : sp[1], sp[0]));
                     }
                 }
             }
@@ -334,7 +334,7 @@ namespace MB_Decompiler_Library.Objects
                     {
                         List<HeaderVariable> list = new List<HeaderVariable>();
                         uint x_counter = 0;
-                        uint x_tmp = uint.Parse(SkillHunter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
+                        uint x_tmp = uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
 
                         if (tmp.Length > 2)
                         {
@@ -346,7 +346,7 @@ namespace MB_Decompiler_Library.Objects
                             {
                                 if (x_counter < x_tmp)
                                 {
-                                    uint x_tmp2 = uint.Parse(SkillHunter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
+                                    uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
                                     if (x_tmp2 <= x_tmp && (x_tmp2 + x_counter) <= x_tmp)
                                     {
                                         x_counter += x_tmp2;
@@ -408,8 +408,8 @@ namespace MB_Decompiler_Library.Objects
                     List<HeaderVariable> list = new List<HeaderVariable>();
                     uint x_counter = 0;
                     uint x_tmp = (tmp.Length == 9) ?
-                        uint.Parse(SkillHunter.Hex2Dec(value.Substring(value.Length - tmp.Length, 2)).ToString()) :
-                        uint.Parse(SkillHunter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
+                        uint.Parse(HexConverter.Hex2Dec(value.Substring(value.Length - tmp.Length, 2)).ToString()) :
+                        uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
 
                     for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
                     {
@@ -437,7 +437,7 @@ namespace MB_Decompiler_Library.Objects
                             while (varStart.Length < 8)
                                 varStart = "0" + varStart;
 
-                            uint x_tmp2 = uint.Parse(SkillHunter.Hex2Dec(varStart).ToString());
+                            uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(varStart).ToString());
                             varStart = varStart.TrimStart('0');
 
                             uint tttt = x_tmp2 + x_counter;
@@ -446,7 +446,7 @@ namespace MB_Decompiler_Library.Objects
                             {
                                 if (varStart.Length == 1 || 
                                     (varStart[1] == value[8] && varStart[0] == value[7] ||
-                                    uint.Parse(SkillHunter.Hex2Dec(varStart.Substring(0, 1)).ToString()) == (uint.Parse(SkillHunter.Hex2Dec(value.Substring(7, 1)).ToString()) - 8)))
+                                    uint.Parse(HexConverter.Hex2Dec(varStart.Substring(0, 1)).ToString()) == (uint.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) - 8)))
                                 {
                                     x_counter += x_tmp2;
                                     if (IsValueInValueString(retur, variable.VariableName))
@@ -460,13 +460,13 @@ namespace MB_Decompiler_Library.Objects
 
             if (value.Length >= 8)
             {
-                if (int.Parse(SkillHunter.Hex2Dec(value.Substring(7, 1)).ToString()) >= 8)//Or Not value.Chars(7) = "0" Or Not value.Chars(7) = "1" Or Not value.Chars(7) = "2" Or Not value.Chars(7) = "3" Then
+                if (int.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) >= 8)//Or Not value.Chars(7) = "0" Or Not value.Chars(7) = "1" Or Not value.Chars(7) = "2" Or Not value.Chars(7) = "3" Then
                 {
                     string holsterdVar = string.Empty;
                     for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
                     {
                         holsterdVar = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                        if (int.Parse(SkillHunter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8 && holsterdVar.Length == 9)
+                        if (int.Parse(HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8 && holsterdVar.Length == 9)
                         {
                             holsterdVar = HeaderItemCapabilityFlags[i].VariableName;
                             i = HeaderItemCapabilityFlags.Count;
@@ -515,7 +515,7 @@ namespace MB_Decompiler_Library.Objects
                 {
                     List<HeaderVariable> list = new List<HeaderVariable>();
                     uint x_counter = 0;
-                    uint x_tmp = uint.Parse(SkillHunter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
+                    uint x_tmp = uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
                     for (int j = 0; j < HeaderIModBits.Count; j++)
                         if (HeaderIModBits[j].VariableValue.TrimStart('0').Length == value.Substring(curIdx).Length)
                             list.Add(HeaderIModBits[j]);
@@ -524,7 +524,7 @@ namespace MB_Decompiler_Library.Objects
                     {
                         if (x_counter < x_tmp)
                         {
-                            uint x_tmp2 = uint.Parse(SkillHunter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
+                            uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
                             if (!retur.Contains(variable.VariableName))
                                 retur += "|" + variable.VariableName;
                         }
@@ -587,7 +587,7 @@ namespace MB_Decompiler_Library.Objects
         {
             string retur = string.Empty;
 
-            if (ulong.Parse(SkillHunter.Hex2Dec_16CHARS(value).ToString()) != 0u)
+            if (ulong.Parse(HexConverter.Hex2Dec_16CHARS(value).ToString()) != 0u)
             {
                 if (value[0] == '1')
                     retur = "ixmesh_inventory";

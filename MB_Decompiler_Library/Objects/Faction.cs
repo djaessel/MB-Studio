@@ -1,6 +1,5 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.IO;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
@@ -8,41 +7,37 @@ namespace MB_Decompiler_Library.Objects
     {
         private static int lastID;
 
-        private int id;
-        private ulong flagsGZ;
-        private double[] relations;
-        private string name, flags, colorCode;
-        private string[] ranks = new string[0];
+        private readonly int id;
 
         public Faction(string[] raw_data) : base(raw_data[0].Split()[0].Replace("fac_", string.Empty), ObjectType.FACTION)
         {
             string[] tmp = raw_data[0].Split();
-            name = tmp[1];
+            Name = tmp[1];
             if (ImportantMethods.IsNumericGZ(tmp[2]))
             {
-                flagsGZ = ulong.Parse(tmp[2]);
+                FlagsGZ = ulong.Parse(tmp[2]);
                 SetFlags();
             }
             else
             {
-                flags = tmp[2].Replace('\t', ' ').Replace(" ", string.Empty);
+                Flags = tmp[2].Replace('\t', ' ').Replace(" ", string.Empty);
                 SetFlagsGZ();
             }
 
             if (ImportantMethods.IsNumericGZ(tmp[3]))
-                colorCode = SkillHunter.Dec2Hex(int.Parse(tmp[3])).Substring(2);
+                ColorCode = HexConverter.Dec2Hex(int.Parse(tmp[3])).Substring(2);
             else if (tmp[3].StartsWith("0x"))
-                colorCode = tmp[3].Substring(2);
+                ColorCode = tmp[3].Substring(2);
             else
-                colorCode = tmp[3];
+                ColorCode = tmp[3];
 
             lastID++;
             id = lastID;
 
             string[] relationsString = raw_data[1].Split();
-            relations = new double[relationsString.Length];
+            Relations = new double[relationsString.Length];
             for (int i = 0; i < relationsString.Length; i++)
-                relations[i] = double.Parse(CodeReader.Repl_DotWComma(relationsString[i]));
+                Relations[i] = double.Parse(CodeReader.Repl_DotWComma(relationsString[i]));
 
             tmp = raw_data[2].Split();
 
@@ -50,16 +45,16 @@ namespace MB_Decompiler_Library.Objects
 
             if (x > 0)
             {
-                ranks = new string[x];
+                Ranks = new string[x];
                 for (int i = 0; i < x; i++)
-                    ranks[i] = tmp[i + 1];
+                    Ranks[i] = tmp[i + 1];
             }
         }
 
         private void SetFlagsGZ()
         {
             ulong flagsGZ = 0;
-            string[] sp = flags.Split('|');
+            string[] sp = Flags.Split('|');
 
             foreach (string flag in sp)
             {
@@ -74,46 +69,45 @@ namespace MB_Decompiler_Library.Objects
                 }
             }
 
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
         {
             string flags = string.Empty;
 
-            if ((flagsGZ & 0x00000001) == 0x00000001)
+            if ((FlagsGZ & 0x00000001) == 0x00000001)
                 flags = "ff_always_hide_label";
 
-            if ((flagsGZ & 0x0000ff00) != 0)
+            if ((FlagsGZ & 0x0000ff00) != 0)
             {
-                byte x = (byte)((flagsGZ & 0x0000ff00) >> 8);
+                byte x = (byte)((FlagsGZ & 0x0000ff00) >> 8);
                 x = (byte)(100 - x);
                 flags += "|max_player_rating(" + x + ")";
             }
 
             if (flags.Length == 0)
-                flags = flagsGZ.ToString();
+                flags = FlagsGZ.ToString();
             else
                 flags = flags.TrimStart('|');
 
-            this.flags = flags;
+            this.Flags = flags;
         }
 
         public static void ResetIDs() { lastID = -1; }
 
-        public string Name { get { return name; } }
+        public string Name { get; }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public double FactionCoherence { get { return relations[id]; } }
+        public double FactionCoherence { get { return Relations[id]; } }
 
-        public string ColorCode { get { return colorCode; } }
+        public string ColorCode { get; }
 
-        public double[] Relations { get { return relations; } }
+        public double[] Relations { get; }
 
-        public string[] Ranks { get { return ranks; } }
-
+        public string[] Ranks { get; } = new string[0];
     }
 }

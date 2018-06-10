@@ -1,6 +1,4 @@
-﻿using skillhunter;
-
-namespace MB_Decompiler_Library.Objects
+﻿namespace MB_Decompiler_Library.Objects
 {
     public class InfoPage : Skriptum
     {

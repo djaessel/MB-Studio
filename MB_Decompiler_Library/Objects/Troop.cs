@@ -1,5 +1,4 @@
-﻿using skillhunter;
-using importantLib;
+﻿using importantLib;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -168,7 +167,7 @@ namespace MB_Decompiler_Library.Objects
                 if (ImportantMethods.IsNumericGZ(Flags))
                 {
                     FlagsGZ = int.Parse(Flags);
-                    Flags = GetFlagsFromValues(SkillHunter.Dec2Hex(FlagsGZ));
+                    Flags = GetFlagsFromValues(HexConverter.Dec2Hex(FlagsGZ));
                 }
                 else
                     FlagsGZ = GetFlagsGZFromString(Flags);
@@ -436,7 +435,7 @@ namespace MB_Decompiler_Library.Objects
                     {
                         string tmp = headerFlags[i].VariableName;
                         if (tmp.Contains("0x"))
-                            tmp = SkillHunter.Hex2Dec(tmp.Replace("0x", string.Empty)).ToString();
+                            tmp = HexConverter.Hex2Dec(tmp.Replace("0x", string.Empty)).ToString();
                         flagsGZ |= int.Parse(tmp);
                         i = headerFlags.Count;
                     }
@@ -470,7 +469,7 @@ namespace MB_Decompiler_Library.Objects
                 else if (value[curIdx] != '0')
                 {
                     List<HeaderVariable> list = new List<HeaderVariable>();
-                    uint x_tmp = uint.Parse(SkillHunter.Hex2Dec(value.Substring(curIdx, 1)).ToString()), x_counter = 0;
+                    uint x_tmp = uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString()), x_counter = 0;
                     if (tmp.Length > 1)
                     {
                         foreach (HeaderVariable hVar in headerFlags)
@@ -481,7 +480,7 @@ namespace MB_Decompiler_Library.Objects
                         {
                             if (x_counter < x_tmp)
                             {
-                                uint x_tmp2 = uint.Parse(SkillHunter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
+                                uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
                                 if (x_tmp2 <= x_tmp && (x_tmp2 + x_counter) <= x_tmp)// vielleicht nochmal überprüfen irgendwanm
                                 {
                                     x_counter += x_tmp2;

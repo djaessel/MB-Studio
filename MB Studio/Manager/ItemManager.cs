@@ -1,5 +1,4 @@
-﻿using skillhunter;
-using importantLib;
+﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Studio.Manager.Support.External;
@@ -437,12 +436,12 @@ namespace MB_Studio.Manager
                 }
             );
 
-            string meshKind = Item.GetMeshKindFromValue(SkillHunter.Dec2Hex_16CHARS(tmp[1]));
+            string meshKind = Item.GetMeshKindFromValue(HexConverter.Dec2Hex_16CHARS(tmp[1]));
             if (!meshKind.Equals("0"))
                 ixmesh_cbb.SelectedItem = meshKind.Split('|')[0].Substring(7);
             else
                 ixmesh_cbb.SelectedIndex = 0;
-            //ixmesh_cbb.SelectedIndex = byte.Parse(SkillHunter.Dec2Hex_16CHARS(tmp[1])[0].ToString());
+            //ixmesh_cbb.SelectedIndex = byte.Parse(HexConverter.Dec2Hex_16CHARS(tmp[1])[0].ToString());
 
             if (meshKind.Contains("|"))
                 meshKind = meshKind.Substring(meshKind.IndexOf('|') + 1);
@@ -1083,7 +1082,7 @@ namespace MB_Studio.Manager
                             else if (nameEnd.Equals("cbb"))
                                 meshKindValue = HexToUInt64(((ComboBox)c).SelectedIndex + Item.ZERO_15_CHARS);
                             //else if (nameEnd.Equals("cbb"))
-                            //    tmp += SkillHunter.Hex2Dec_16CHARS(((ComboBox)c).SelectedIndex.ToString() + Item.ZERO_15_CHARS).ToString() + ' ';
+                            //    tmp += HexConverter.Hex2Dec_16CHARS(((ComboBox)c).SelectedIndex.ToString() + Item.ZERO_15_CHARS).ToString() + ' ';
                         }
                     }
                 }
@@ -1231,7 +1230,7 @@ namespace MB_Studio.Manager
 
         private static ulong HexToUInt64(string value)
         {
-            return ulong.Parse(SkillHunter.Hex2Dec_16CHARS(value).ToString());
+            return ulong.Parse(HexConverter.Hex2Dec_16CHARS(value).ToString());
         }
 
         private ulong GetModBitStringToValue(string modbitString)

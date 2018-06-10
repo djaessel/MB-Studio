@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB Studio", "MB Studio\MB S
 		{7F48F8D5-100D-3065-9AB1-476973B61E07} = {7F48F8D5-100D-3065-9AB1-476973B61E07}
 	EndProjectSection
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "skillhunter", "skillhunter\skillhunter\skillhunter.vbproj", "{FA4558D0-9F6F-456B-888F-D9DED33DFB90}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warband - Translator", "Warband - Translator\Warband - Translator\Warband - Translator.csproj", "{114F6AE7-9935-4D6A-8E17-49A48BA1C036}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "importantLib", "importantLib\importantLib\importantLib.csproj", "{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}"
@@ -75,14 +73,6 @@ Global
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Release|x64.Build.0 = Release|x64
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Release|x86.ActiveCfg = Release|x86
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Release|x86.Build.0 = Release|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x64.ActiveCfg = Debug|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x64.Build.0 = Debug|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x86.ActiveCfg = Debug|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Debug|x86.Build.0 = Debug|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x64.ActiveCfg = Release|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x64.Build.0 = Release|x64
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x86.ActiveCfg = Release|x86
-		{FA4558D0-9F6F-456B-888F-D9DED33DFB90}.Release|x86.Build.0 = Release|x86
 		{114F6AE7-9935-4D6A-8E17-49A48BA1C036}.Debug|x64.ActiveCfg = Debug|x64
 		{114F6AE7-9935-4D6A-8E17-49A48BA1C036}.Debug|x64.Build.0 = Debug|x64
 		{114F6AE7-9935-4D6A-8E17-49A48BA1C036}.Debug|x86.ActiveCfg = Debug|x86

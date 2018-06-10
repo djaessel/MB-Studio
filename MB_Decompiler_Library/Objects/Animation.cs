@@ -1,6 +1,5 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,13 +7,10 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Animation : Skriptum
     {
-        private ulong flagsGZ, masterFlagsGZ;
-        string flags, masterFlags;
-        private AnimationSequence[] sequences = new AnimationSequence[0];
-
         private const string SP_NORMAL_FLAGS = "acf_";
         private const string SP_MASTER_FLAGS = "amf_";
         private const string ACF_ANIM_LENGTH = "acf_anim_length(";
+
         private static HeaderVariable[] headerVariablesNormal = null;
         private static HeaderVariable[] headerVariablesMaster = null;
 
@@ -27,32 +23,32 @@ namespace MB_Decompiler_Library.Objects
 
             if (ImportantMethods.IsNumericGZ(raw_data[1]))
             {
-                flagsGZ = ulong.Parse(raw_data[1]);
-                flags = SetFlagsX(flagsGZ, headerVariablesNormal);
-                ulong x = (flagsGZ & 0xff000000);
+                FlagsGZ = ulong.Parse(raw_data[1]);
+                Flags = SetFlagsX(FlagsGZ, headerVariablesNormal);
+                ulong x = (FlagsGZ & 0xff000000);
                 if (x != 0)
                 {
-                    flags += "|" + ACF_ANIM_LENGTH + (x >> 24) + ")";
-                    flags = flags.TrimStart('0', '|');
+                    Flags += "|" + ACF_ANIM_LENGTH + (x >> 24) + ")";
+                    Flags = Flags.TrimStart('0', '|');
                 }
             }
             else
             {
-                flags = raw_data[1];
-                flagsGZ = SetFlagsXGZ(flags, headerVariablesNormal);
-                if (flags.Contains(ACF_ANIM_LENGTH))
-                    flagsGZ |= ulong.Parse(flags.Substring(flags.IndexOf(ACF_ANIM_LENGTH)).Split(')')[0].Trim());
+                Flags = raw_data[1];
+                FlagsGZ = SetFlagsXGZ(Flags, headerVariablesNormal);
+                if (Flags.Contains(ACF_ANIM_LENGTH))
+                    FlagsGZ |= ulong.Parse(Flags.Substring(Flags.IndexOf(ACF_ANIM_LENGTH)).Split(')')[0].Trim());
             }
 
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
-                masterFlagsGZ = ulong.Parse(raw_data[2]);
-                masterFlags = SetFlagsX(masterFlagsGZ, headerVariablesMaster);
+                MasterFlagsGZ = ulong.Parse(raw_data[2]);
+                MasterFlags = SetFlagsX(MasterFlagsGZ, headerVariablesMaster);
             }
             else
             {
-                masterFlags = raw_data[2];
-                masterFlagsGZ = SetFlagsXGZ(masterFlags, headerVariablesMaster);
+                MasterFlags = raw_data[2];
+                MasterFlagsGZ = SetFlagsXGZ(MasterFlags, headerVariablesMaster);
             }
         }
 
@@ -119,7 +115,7 @@ namespace MB_Decompiler_Library.Objects
             foreach (string flag in tmp)
                 foreach (HeaderVariable var in variables)
                     if (var.VariableName.Equals(flag))
-                        flagsGZ |= ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                        flagsGZ |= ulong.Parse(HexConverter.Hex2Dec_16CHARS(var.VariableValue).ToString());
             return flagsGZ;
         }
 
@@ -130,7 +126,7 @@ namespace MB_Decompiler_Library.Objects
 
             foreach (HeaderVariable var in variables)
             {
-                x = ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                x = ulong.Parse(HexConverter.Hex2Dec_16CHARS(var.VariableValue).ToString());
                 if ((x & flagsGZ) == x)
                     flags += var.VariableName + '|';
             }
@@ -143,19 +139,14 @@ namespace MB_Decompiler_Library.Objects
             return flags;
         }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; }
 
-        public ulong MasterFlagsGZ { get { return masterFlagsGZ; } }
+        public ulong MasterFlagsGZ { get; }
 
-        public string MasterFlags { get { return masterFlags; } }
+        public string MasterFlags { get; }
 
-        public AnimationSequence[] Sequences
-        {
-            get { return sequences; }
-            set { sequences = value; }
-        }
-
+        public AnimationSequence[] Sequences { get; set; } = new AnimationSequence[0];
     }
 }

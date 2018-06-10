@@ -1,5 +1,4 @@
 ﻿using importantLib;
-using skillhunter;
 using MB_Decompiler_Library.IO;
 using System;
 using System.Drawing;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using MB_Decompiler_Library.Objects;
 using System.Collections.Specialized;
 using MB_Studio.Manager.Support.External;
+using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Studio.Manager
 {
@@ -188,8 +188,8 @@ namespace MB_Studio.Manager
 
             #region GROUP1 - Flags & Guarantee
 
-            //string skin = "0000000" + SkillHunter.Dec2Hex(troop.FlagsGZ).Substring(7);
-            //skins_lb.SelectedIndex = int.Parse(SkillHunter.Hex2Dec(skin).ToString());
+            //string skin = "0000000" + HexConverter.Dec2Hex(troop.FlagsGZ).Substring(7);
+            //skins_lb.SelectedIndex = int.Parse(HexConverter.Hex2Dec(skin).ToString());
             skins_lb.SelectedIndex = troop.FlagsGZ & 0xF;
             if (troop.FlagsGZ > 0)
             {
@@ -662,14 +662,14 @@ namespace MB_Studio.Manager
                     Control num = groupBox_6_gb.Controls[j];
                     if (num.TabIndex == i && num.Name.Substring(num.Name.LastIndexOf('_') + 1).Equals("num"))
                     {
-                        tmp += SkillHunter.Dec2Hex(((NumericUpDown)num).Value).Substring(7);
+                        tmp += HexConverter.Dec2Hex(((NumericUpDown)num).Value).Substring(7);
                         j = groupBox_6_gb.Controls.Count;
                     }
                 }
             }
             tmp += "000000"; // maybe replace later if there are more than 42 skills possible
             for (int i = 5; i >= 0; i--)
-                skillCodes[i] = uint.Parse(SkillHunter.Hex2Dec(ImportantMethods.ReverseString(tmp.Substring(i * 8, 8))).ToString());
+                skillCodes[i] = uint.Parse(HexConverter.Hex2Dec(ImportantMethods.ReverseString(tmp.Substring(i * 8, 8))).ToString());
             //MessageBox.Show(skillCode);
             //IEnumerable<string> skillCodes = ImportantMethods.WholeChunks(skillCode, 8);
             //for (int i = 0; i < sss.Length; i++)
@@ -678,7 +678,7 @@ namespace MB_Studio.Manager
             //    if (i < sss.Length - 1)
             //        skillCodes.GetEnumerator().MoveNext();
             //}
-            //MessageBox.Show(SkillHunter.Hex2Dec(sss[0]) + "|" + SkillHunter.Hex2Dec(sss[1]) + "|" + SkillHunter.Hex2Dec(sss[2]) + "|" + SkillHunter.Hex2Dec(sss[3]) + "|" + SkillHunter.Hex2Dec(sss[4]) + "|" + SkillHunter.Hex2Dec(sss[5]));
+            //MessageBox.Show(HexConverter.Hex2Dec(sss[0]) + "|" + HexConverter.Hex2Dec(sss[1]) + "|" + HexConverter.Hex2Dec(sss[2]) + "|" + HexConverter.Hex2Dec(sss[3]) + "|" + HexConverter.Hex2Dec(sss[4]) + "|" + HexConverter.Hex2Dec(sss[5]));
             return skillCodes;
         }
 

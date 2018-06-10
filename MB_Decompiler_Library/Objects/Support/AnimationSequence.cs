@@ -1,19 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using System.Collections.Generic;
 using importantLib;
 using MB_Decompiler_Library.IO;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects.Support
 {
     public class AnimationSequence
     {
-        private double duration;
-        private double[] lastNumbersDOUBLE = new double[4];
-        private int beginFrame, endFrame;
-        private ulong flagsGZ, lastNumberINT;
-        private string resourceName, flags;
-
         private static HeaderVariable[] headerVariables = null;
 
         public AnimationSequence(string[] raw_data)
@@ -22,41 +15,41 @@ namespace MB_Decompiler_Library.Objects.Support
                 InitializeHeaderVariables();
 
             //if (ImportantMethods.IsNumeric(CodeReader.Repl_DotWComma(raw_data[0]), true))
-                duration = double.Parse(CodeReader.Repl_DotWComma(raw_data[0]));//change if needed
+                Duration = double.Parse(CodeReader.Repl_DotWComma(raw_data[0]));//change if needed
 
-            resourceName = raw_data[1];
+            ResourceName = raw_data[1];
 
             //if (ImportantMethods.IsNumericGZ(raw_data[2]))
-                beginFrame = int.Parse(raw_data[2]);//change if needed
+                BeginFrame = int.Parse(raw_data[2]);//change if needed
 
             //if (ImportantMethods.IsNumericGZ(raw_data[3]))
-                endFrame = int.Parse(raw_data[3]);//change if needed
+                EndFrame = int.Parse(raw_data[3]);//change if needed
 
             if (ImportantMethods.IsNumericGZ(raw_data[4]))
             {
-                flagsGZ = ulong.Parse(raw_data[4]);
+                FlagsGZ = ulong.Parse(raw_data[4]);
                 SetFlags();
             }
             else
             {
-                flags = raw_data[4];
+                Flags = raw_data[4];
                 SetFlagsGZ();
             }
             
             if (ImportantMethods.IsNumericGZ(raw_data[5]))
-                lastNumberINT = ulong.Parse(raw_data[5]);
+                LastNumberGZ = ulong.Parse(raw_data[5]);
 
-            for (int i = 0; i < lastNumbersDOUBLE.Length; i++)
+            for (int i = 0; i < LastNumbersFKZ.Length; i++)
             {
                 string tmp = CodeReader.Repl_DotWComma(raw_data[i + 6]);
                 if (tmp.Length > 3)
                 {
-                    lastNumbersDOUBLE[i] = double.Parse(tmp);
-                    if (tmp.Contains("-") && lastNumbersDOUBLE[i] == 0d)
-                        lastNumbersDOUBLE[i] = -0.000001;
+                    LastNumbersFKZ[i] = double.Parse(tmp);
+                    if (tmp.Contains("-") && LastNumbersFKZ[i] == 0d)
+                        LastNumbersFKZ[i] = -0.000001;
                 }
                 else
-                    lastNumbersDOUBLE[i] = double.NaN;
+                    LastNumbersFKZ[i] = double.NaN;
             }
         }
 
@@ -117,15 +110,15 @@ namespace MB_Decompiler_Library.Objects.Support
 
         private void SetFlagsGZ()
         {
-            string[] tmp = flags.Split('|');
+            string[] tmp = Flags.Split('|');
             ulong flagsGZ = 0;
 
             foreach (string flag in tmp)
                 foreach (HeaderVariable var in headerVariables)
                     if (var.VariableName.Equals(flag))
-                        flagsGZ |= ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                        flagsGZ |= ulong.Parse(HexConverter.Hex2Dec_16CHARS(var.VariableValue).ToString());
 
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
@@ -135,34 +128,33 @@ namespace MB_Decompiler_Library.Objects.Support
 
             foreach (HeaderVariable var in headerVariables)
             {
-                x = ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
-                if ((x & flagsGZ) == x)
+                x = ulong.Parse(HexConverter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                if ((x & FlagsGZ) == x)
                     flags += var.VariableName + '|';
             }
 
             if (flags.Length != 0)
                 flags = flags.TrimEnd('|');
             else
-                flags = flagsGZ.ToString();
+                flags = FlagsGZ.ToString();
 
-            this.flags = flags;
+            this.Flags = flags;
         }
 
-        public double Duration { get { return duration; } }
+        public double Duration { get; }
 
-        public int BeginFrame { get { return beginFrame; } }
+        public int BeginFrame { get; }
 
-        public int EndFrame { get { return endFrame; } }
+        public int EndFrame { get; }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public string ResourceName { get { return resourceName; } }
+        public string ResourceName { get; }
 
-        public ulong LastNumberGZ { get { return lastNumberINT; } }
-        
-        public double[] LastNumbersFKZ { get { return lastNumbersDOUBLE; } }
+        public ulong LastNumberGZ { get; }
 
+        public double[] LastNumbersFKZ { get; } = new double[4];
     }
 }

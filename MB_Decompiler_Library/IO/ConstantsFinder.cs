@@ -1,5 +1,4 @@
 ﻿using importantLib;
-using skillhunter;
 using System.Collections.Generic;
 using System.IO;
 
@@ -35,7 +34,7 @@ namespace MB_Decompiler_Library.Objects.Support
                                 d = decimal.Parse(split[1]);
                             }
                             else
-                                d = decimal.Parse(SkillHunter.Hex2Dec(split[1].Substring(2)).ToString());
+                                d = decimal.Parse(HexConverter.Hex2Dec(split[1].Substring(2)).ToString());
                             deli = -1;
                             for (int i = 0; i < constantsX.Count; i++)
                             {

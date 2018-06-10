@@ -84,6 +84,7 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlWriter.cs" />
+    <Compile Include="HexConverter.cs" />
     <Compile Include="ImportantMethods.cs" />
     <Compile Include="ToolTips\ToolTipListBoxItem.cs" />
     <Compile Include="SearchTextBox.cs">
@@ -131,12 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MB-Studio-importantLib.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\skillhunter\skillhunter\skillhunter.vbproj">
-      <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
-      <Name>skillhunter</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

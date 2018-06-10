@@ -1,8 +1,7 @@
-﻿using importantLib;
-using skillhunter;
-using MB_Decompiler_Library.IO;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
+using importantLib;
+using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Decompiler_Library.Objects
@@ -10,12 +9,6 @@ namespace MB_Decompiler_Library.Objects
     public class ParticleSystem : Skriptum
     {
         private static List<HeaderVariable> headerVariables = null;
-
-        private int particlesPerSecond;
-        private ulong flagsGZ;
-        private string meshName, flags;
-        private double particleLife, damping, gravityStrength, turbulanceSize, turbulanceStrength, emitDirRandomness, particleRotationSpeed, particleRotationDamping;
-        private double[] alphaKeys, redKeys, greenKeys, blueKeys, scaleKeys, emitBoxScale, emitVelocity;
 
         public ParticleSystem(List<string[]> raw_data) : base(raw_data[0][0].Split()[0], ObjectType.PARTICLE_SYSTEM)
         {
@@ -26,51 +19,51 @@ namespace MB_Decompiler_Library.Objects
 
             if (ImportantMethods.IsNumericGZ(sp[1]))
             {
-                flagsGZ = ulong.Parse(sp[1]);
+                FlagsGZ = ulong.Parse(sp[1]);
                 SetFlags();
             }
             else
             {
-                flags = sp[1];
+                Flags = sp[1];
                 SetFlagsGZ();
             }
 
-            meshName = sp[2];
+            MeshName = sp[2];
             sp = raw_data[0][1].Split();
 
-            particlesPerSecond = int.Parse(sp[0]);
-            particleLife = double.Parse(CodeReader.Repl_DotWComma(sp[1]));
-            damping = double.Parse(CodeReader.Repl_DotWComma(sp[2]));
+            ParticlesPerSecond = int.Parse(sp[0]);
+            ParticleLifeTime = double.Parse(CodeReader.Repl_DotWComma(sp[1]));
+            Damping = double.Parse(CodeReader.Repl_DotWComma(sp[2]));
             double d = double.Parse(CodeReader.Repl_DotWComma(sp[3]));
             if (sp[3].Substring(0, 1).Equals("-") && d == 0d)
-                gravityStrength = -0.00000000001337; // for -0.0
+                GravityStrength = -0.00000000001337; // for -0.0
             else
-                gravityStrength = d;
-            turbulanceSize = double.Parse(CodeReader.Repl_DotWComma(sp[4]));
-            turbulanceStrength = double.Parse(CodeReader.Repl_DotWComma(sp[5]));
+                GravityStrength = d;
+            TurbulanceSize = double.Parse(CodeReader.Repl_DotWComma(sp[4]));
+            TurbulanceStrength = double.Parse(CodeReader.Repl_DotWComma(sp[5]));
 
-            alphaKeys = ConvertStringArrayIntoDouble(raw_data[1]);
-            redKeys = ConvertStringArrayIntoDouble(raw_data[2]);
-            greenKeys = ConvertStringArrayIntoDouble(raw_data[3]);
-            blueKeys = ConvertStringArrayIntoDouble(raw_data[4]);
-            scaleKeys = ConvertStringArrayIntoDouble(raw_data[5]);
+            AlphaKeys = ConvertStringArrayIntoDouble(raw_data[1]);
+            RedKeys = ConvertStringArrayIntoDouble(raw_data[2]);
+            GreenKeys = ConvertStringArrayIntoDouble(raw_data[3]);
+            BlueKeys = ConvertStringArrayIntoDouble(raw_data[4]);
+            ScaleKeys = ConvertStringArrayIntoDouble(raw_data[5]);
 
             sp = raw_data[6][0].Split();
-            emitBoxScale = ConvertStringArrayIntoDouble(sp);
+            EmitBoxScale = ConvertStringArrayIntoDouble(sp);
             sp = raw_data[6][1].Split();
-            emitVelocity = ConvertStringArrayIntoDouble(sp);
-            emitDirRandomness = double.Parse(CodeReader.Repl_DotWComma(raw_data[6][2]));
+            EmitVelocity = ConvertStringArrayIntoDouble(sp);
+            EmitDirectionRandomness = double.Parse(CodeReader.Repl_DotWComma(raw_data[6][2]));
 
             if (!raw_data[7][0].Trim().Equals("0.0 0.0"))
             {
                 sp = raw_data[7][0].Split();
-                particleRotationSpeed = double.Parse(CodeReader.Repl_DotWComma(sp[0]));
-                particleRotationDamping = double.Parse(CodeReader.Repl_DotWComma(sp[1]));
+                ParticleRotationSpeed = double.Parse(CodeReader.Repl_DotWComma(sp[0]));
+                ParticleRotationDamping = double.Parse(CodeReader.Repl_DotWComma(sp[1]));
             }
             else
             {
-                particleRotationSpeed = double.NaN;
-                particleRotationDamping = double.NaN;
+                ParticleRotationSpeed = double.NaN;
+                ParticleRotationDamping = double.NaN;
             }
         }
 
@@ -81,28 +74,28 @@ namespace MB_Decompiler_Library.Objects
             foreach (HeaderVariable headerVar in headerVariables)
             {
                 ulong x = ulong.Parse(headerVar.VariableValue);
-                if ((x & flagsGZ) == x)
+                if ((x & FlagsGZ) == x)
                     flags += headerVar.VariableName + '|';
             }
 
             if (flags.Length != 0)
                 flags = flags.TrimEnd('|');
             else
-                flags = flagsGZ.ToString();
+                flags = FlagsGZ.ToString();
 
-            this.flags = flags;
+            this.Flags = flags;
         }
 
         //place normalized version in Skriptum ? for every Skriptum Object and public
         private void SetFlags()
         {
             ulong flagsGZ = 0;
-            string[] sp = flags.Split('|');
+            string[] sp = Flags.Split('|');
             foreach (HeaderVariable headerVar in headerVariables)
                 foreach (string flag in sp)
                     if (headerVar.VariableName.Equals(flag))
                         flagsGZ |= ulong.Parse(headerVar.VariableValue);
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
         //place normalized version in Skriptum ? for every Skriptum Object and public
@@ -120,7 +113,7 @@ namespace MB_Decompiler_Library.Objects
                     {
                         tmp = s.Replace('\t', ' ').Replace(" ", string.Empty).Split('=');
 
-                        s = SkillHunter.Hex2Dec(tmp[1].Substring(2).TrimStart('0')).ToString();
+                        s = HexConverter.Hex2Dec(tmp[1].Substring(2).TrimStart('0')).ToString();
 
                         for (int i = 0; i < list.Count; i++)
                         {
@@ -146,41 +139,43 @@ namespace MB_Decompiler_Library.Objects
             return dd;
         }
 
-        public ulong Flags { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public string MeshName { get { return meshName; } }
+        public string Flags { get; private set; }
 
-        public int ParticlesPerSecond { get { return particlesPerSecond; } }
+        public string MeshName { get; }
 
-        public double ParticleLifeTime { get { return particleLife; } }
+        public int ParticlesPerSecond { get; }
 
-        public double Damping { get { return damping; } }
+        public double ParticleLifeTime { get; }
 
-        public double GravityStrength { get { return gravityStrength; } }
+        public double Damping { get; }
 
-        public double TurbulanceSize { get { return turbulanceSize; } }
+        public double GravityStrength { get; }
 
-        public double TurbulanceStrength { get { return turbulanceStrength; } }
+        public double TurbulanceSize { get; }
 
-        public double EmitDirectionRandomness { get { return emitDirRandomness; } }
+        public double TurbulanceStrength { get; }
 
-        public double ParticleRotationSpeed { get { return particleRotationSpeed; } }
+        public double EmitDirectionRandomness { get; }
 
-        public double ParticleRotationDamping { get { return particleRotationDamping; } }
+        public double ParticleRotationSpeed { get; }
 
-        public double[] AlphaKeys { get { return alphaKeys; } }
+        public double ParticleRotationDamping { get; }
 
-        public double[] RedKeys { get { return redKeys; } }
+        public double[] AlphaKeys { get; }
 
-        public double[] GreenKeys { get { return greenKeys; } }
+        public double[] RedKeys { get; }
 
-        public double[] BlueKeys { get { return blueKeys; } }
+        public double[] GreenKeys { get; }
 
-        public double[] ScaleKeys { get { return scaleKeys; } }
+        public double[] BlueKeys { get; }
 
-        public double[] EmitBoxScale { get { return emitBoxScale; } }
+        public double[] ScaleKeys { get; }
 
-        public double[] EmitVelocity { get { return emitVelocity; } }
+        public double[] EmitBoxScale { get; }
+
+        public double[] EmitVelocity { get; }
 
     }
 }

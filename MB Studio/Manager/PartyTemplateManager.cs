@@ -2,7 +2,6 @@
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -284,7 +283,7 @@ namespace MB_Studio.Manager
 
             #region GROUP4
 
-            char[] personality = SkillHunter.Dec2Hex(partyTemplate.Personality).ToString().Substring(5).ToCharArray();
+            char[] personality = HexConverter.Dec2Hex(partyTemplate.Personality).ToString().Substring(5).ToCharArray();
             courage_num.Value = int.Parse(personality[0].ToString());
             aggressiveness_num.Value = int.Parse(personality[1].ToString());
             if (personality[2] != '0')
@@ -350,14 +349,14 @@ namespace MB_Studio.Manager
 
         private ushort GetPersonality()
         {
-            string aggresiveness = SkillHunter.Dec2Hex(aggressiveness_num.Value).TrimStart('0');
-            string courage = SkillHunter.Dec2Hex(courage_num.Value).TrimStart('0');
+            string aggresiveness = HexConverter.Dec2Hex(aggressiveness_num.Value).TrimStart('0');
+            string courage = HexConverter.Dec2Hex(courage_num.Value).TrimStart('0');
             byte bandit = 0;
             if (banditness_cb.Checked)
                 bandit++;
             string personality = "00000" + bandit + aggresiveness + courage;
 
-            return ushort.Parse(SkillHunter.Hex2Dec(personality).ToString());
+            return ushort.Parse(HexConverter.Hex2Dec(personality).ToString());
         }
 
         private ulong GetFlags()

@@ -1,7 +1,6 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 using System.Collections.Generic;
 using System.IO;
 

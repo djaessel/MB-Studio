@@ -3,19 +3,11 @@ using System.Collections.Generic;
 using importantLib;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
     public class Party : Skriptum
     {
-        private ulong flagsGZ;
-        private double degrees;
-        private PMember[] members;
-        private double[] initialCoordinates = new double[2];
-        private string menuIDString, name, partyTemplate, faction, flags;
-        private int menuID, partyTemplateID, factionID, aiBehavior, aiTargetParty, personality;
-
         private static readonly string[] AiBehaviors = {
             "ai_bhvr_hold",
             "ai_bhvr_travel_to_party",
@@ -33,48 +25,48 @@ namespace MB_Decompiler_Library.Objects
 
         public Party(string[] raw_data) : base(raw_data[3].Substring(2), ObjectType.PARTY)
         {
-            name = raw_data[4];
-            flagsGZ = ulong.Parse(raw_data[5]);
+            Name = raw_data[4];
+            FlagsGZ = ulong.Parse(raw_data[5]);
             SetFlagsString();
-            menuID = int.Parse(raw_data[6]);
-            partyTemplateID = int.Parse(raw_data[7]);
-            partyTemplate = CodeReader.PartyTemplates[partyTemplateID];
-            factionID = int.Parse(raw_data[8]);
-            faction = CodeReader.Factions[factionID];
-            personality = int.Parse(raw_data[9]);//was ulong before
-            aiBehavior = int.Parse(raw_data[11]);//was ulong before
-            aiTargetParty = int.Parse(raw_data[12]);//was ulong before
-            initialCoordinates[0] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[14])), 6);
-            initialCoordinates[1] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[15])), 6);
-            members = new PMember[int.Parse(raw_data[21])];
-            for (int i = 0; i < members.Length; i++)
-                members[i] = new PMember(new string[] { raw_data[(i * 4) + 22], raw_data[(i * 4) + 23], raw_data[(i * 4) + 24], raw_data[(i * 4) + 25] });
-            degrees = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[raw_data.Length - 1])), 6);//this.degrees = degrees;
+            MenuID = int.Parse(raw_data[6]);
+            PartyTemplateID = int.Parse(raw_data[7]);
+            PartyTemplate = CodeReader.PartyTemplates[PartyTemplateID];
+            FactionID = int.Parse(raw_data[8]);
+            Faction = CodeReader.Factions[FactionID];
+            Personality = int.Parse(raw_data[9]);//was ulong before
+            AIBehavior = int.Parse(raw_data[11]);//was ulong before
+            AITargetParty = int.Parse(raw_data[12]);//was ulong before
+            InitialCoordinates[0] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[14])), 6);
+            InitialCoordinates[1] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[15])), 6);
+            Members = new PMember[int.Parse(raw_data[21])];
+            for (int i = 0; i < Members.Length; i++)
+                Members[i] = new PMember(new string[] { raw_data[(i * 4) + 22], raw_data[(i * 4) + 23], raw_data[(i * 4) + 24], raw_data[(i * 4) + 25] });
+            PartyDirectionInDegrees = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[raw_data.Length - 1])), 6);//this.degrees = degrees;
         }
 
         public Party(string[] source_data, bool hasDegree) : base(source_data[0], ObjectType.PARTY)
         {
             int curIdx = 0;
 
-            name = source_data[curIdx++];
+            Name = source_data[curIdx++];
 
-            flags = source_data[curIdx++];
+            Flags = source_data[curIdx++];
             SetFlagsGZ();
 
-            menuIDString = source_data[curIdx++];
-            if (menuIDString.Equals("no_menu"))
-                menuID = 0;
+            Menu = source_data[curIdx++];
+            if (Menu.Equals("no_menu"))
+                MenuID = 0;
             else
-                menuID = CodeReader.GameMenus.IndexOf(menuIDString);
+                MenuID = CodeReader.GameMenus.IndexOf(Menu);
 
-            partyTemplate = source_data[curIdx++];
-            partyTemplateID = CodeReader.PartyTemplates.IndexOf(partyTemplate);
+            PartyTemplate = source_data[curIdx++];
+            PartyTemplateID = CodeReader.PartyTemplates.IndexOf(PartyTemplate);
 
             //faction = source_data[curIdx++];
             //if (faction.Equals("no_faction"))
             //    factionID = -1;
             //else
-                factionID = CodeReader.Factions.IndexOf(source_data[curIdx++]);
+                FactionID = CodeReader.Factions.IndexOf(source_data[curIdx++]);
 
             string tmpS = source_data[curIdx++].Replace("soldier_personality", "aggressiveness_8|courage_9");
             tmpS = tmpS.Replace("merchant_personality", "aggressiveness_0|courage_7");
@@ -94,7 +86,7 @@ namespace MB_Decompiler_Library.Objects
                 else if (tmp2[0].Equals("banditness"))
                     x |= 0x0100;
             }
-            personality = x;
+            Personality = x;
 
             x = 0;
             tmp = source_data[curIdx++].Split('|');
@@ -109,23 +101,23 @@ namespace MB_Decompiler_Library.Objects
                     }
                 }
             }
-            aiBehavior = x;
+            AIBehavior = x;
 
             tmp = new string[] { source_data[curIdx++] };
             x = CodeReader.Parties.IndexOf(tmp[0]);
             if (x < 0)
                 x = 0;
-            aiTargetParty = x;
+            AITargetParty = x;
 
-            initialCoordinates[0] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(source_data[curIdx++].TrimStart('(', ' '))), 6);
-            initialCoordinates[1] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(source_data[curIdx++].TrimEnd(')', ' '))), 6);
+            InitialCoordinates[0] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(source_data[curIdx++].TrimStart('(', ' '))), 6);
+            InitialCoordinates[1] = Math.Round(double.Parse(CodeReader.Repl_DotWComma(source_data[curIdx++].TrimEnd(')', ' '))), 6);
 
             x = 0;
             if (hasDegree)
                 x++;
             x = (source_data.Length - (11 + x)) / 3;
 
-            members = new PMember[x];
+            Members = new PMember[x];
             for (int i = 0; i < x; i++)
             {
                 curIdx = 11 + i * 3;
@@ -137,13 +129,13 @@ namespace MB_Decompiler_Library.Objects
                 if (!ImportantMethods.IsNumericGZ(source_data[curIdx]))
                     DisplayErrorMessage();
                 curIdx -= 2;
-                members[i] = new PMember(new string[] { source_data[curIdx], source_data[curIdx++], source_data[curIdx++] });
+                Members[i] = new PMember(new string[] { source_data[curIdx], source_data[curIdx++], source_data[curIdx++] });
             }
 
             if (hasDegree)
-                degrees = Math.Round(double.Parse(CodeReader.Repl_DotWComma(source_data[source_data.Length - 1].TrimEnd(')', ' '))), 6);
+                PartyDirectionInDegrees = Math.Round(double.Parse(CodeReader.Repl_DotWComma(source_data[source_data.Length - 1].TrimEnd(')', ' '))), 6);
             else
-                degrees = 0d;
+                PartyDirectionInDegrees = 0d;
         }
 
         private static void DisplayErrorMessage()
@@ -153,101 +145,101 @@ namespace MB_Decompiler_Library.Objects
 
         private void SetFlagsString()
         {
-            char[] cc = SkillHunter.Dec2Hex_16CHARS(flagsGZ).ToCharArray();
-            string tmp = SkillHunter.Hex2Dec("000000" + cc[cc.Length - 2] + cc[cc.Length - 1]).ToString();
+            char[] cc = HexConverter.Dec2Hex_16CHARS(FlagsGZ).ToCharArray();
+            string tmp = HexConverter.Hex2Dec("000000" + cc[cc.Length - 2] + cc[cc.Length - 1]).ToString();
             if (CodeReader.MapIcons.Count > 0)
-                flags = CodeReader.MapIcons[int.Parse(tmp)];
+                Flags = CodeReader.MapIcons[int.Parse(tmp)];
 
             byte b = byte.Parse(cc[13].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flags += "|pf_is_static";
+                Flags += "|pf_is_static";
             }
             if (b >= 2)
             {
                 b -= 2;
-                flags += "|pf_is_ship";
+                Flags += "|pf_is_ship";
             }
             if (b == 1)
-                flags += "|pf_disabled";
+                Flags += "|pf_disabled";
 
             b = byte.Parse(cc[12].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flags += "|pf_always_visible";
+                Flags += "|pf_always_visible";
             }
             if (b == 2)
-                flags += "|pf_label_large";
+                Flags += "|pf_label_large";
             else if (b == 1)
-                flags += "|pf_label_medium";
+                Flags += "|pf_label_medium";
             else
-                flags += "|pf_label_small";
+                Flags += "|pf_label_small";
 
             b = byte.Parse(cc[11].ToString());
             if (b == 8)
             {
                 b -= 8;
-                flags += "|pf_no_label";
+                Flags += "|pf_no_label";
             }
             if (b >= 4)
             {
                 b -= 4;
-                flags += "|pf_quest_party";
+                Flags += "|pf_quest_party";
             }
             if (b >= 2)
             {
                 b -= 2;
-                flags += "|pf_auto_remove_in_town";
+                Flags += "|pf_auto_remove_in_town";
             }
             if (b == 1)
-                flags += "|pf_default_behavior";
+                Flags += "|pf_default_behavior";
 
             b = byte.Parse(cc[10].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flags += "|pf_show_faction";
+                Flags += "|pf_show_faction";
             }
             if (b >= 2)
             {
                 b -= 2;
-                flags += "|pf_hide_defenders";
+                Flags += "|pf_hide_defenders";
             }
             if (b == 1)
-                flags += "|pf_limit_members";
+                Flags += "|pf_limit_members";
 
             b = byte.Parse(cc[9].ToString());
             if (b >= 4)
             {
                 b -= 4;
-                flags += "|pf_civilian";
+                Flags += "|pf_civilian";
             }
             if (b == 2) /*//if (b >= 2)
             {
                 b -= 2;*/
-                flags += "|pf_dont_attack_civilians";
+                Flags += "|pf_dont_attack_civilians";
             /*}
             if (b == 1)
                 flagsString += "|pf_is_hidden";*/
 
-            b = byte.Parse(SkillHunter.Hex2Dec("000000" + cc[0] + cc[1]).ToString());
+            b = byte.Parse(HexConverter.Hex2Dec("000000" + cc[0] + cc[1]).ToString());
             if (b > 0)
-                flags += "|carries_gold(" + b + ")";
+                Flags += "|carries_gold(" + b + ")";
 
-            b = byte.Parse(SkillHunter.Hex2Dec("000000" + cc[2] + cc[3]).ToString());
+            b = byte.Parse(HexConverter.Hex2Dec("000000" + cc[2] + cc[3]).ToString());
             if (b > 0)
-                flags += "|carries_goods(" + b + ")";
+                Flags += "|carries_goods(" + b + ")";
 
-            flags = flags.Replace(" ", string.Empty).Trim('|');
+            Flags = Flags.Replace(" ", string.Empty).Trim('|');
         }
 
         private void SetFlagsGZ()
         {
             int x;
             ulong flagsGZ = 0;
-            List<string> flagsList = new List<string>(flags.Split('|'));
+            List<string> flagsList = new List<string>(Flags.Split('|'));
 
             if (flagsList.Contains("pf_disabled"))
                 flagsGZ |= 0x00000100;
@@ -298,38 +290,37 @@ namespace MB_Decompiler_Library.Objects
                     flagsGZ |= (uint)CodeReader.MapIcons.IndexOf(flagS);
             }
 
-            this.flagsGZ = flagsGZ;
+            this.FlagsGZ = flagsGZ;
         }
 
-        public string Menu { get { return menuIDString; } }
+        public string Menu { get; }
 
-        public string Name { get { return name; } }
+        public string Name { get; }
 
-        public string PartyTemplate { get { return partyTemplate; } }
+        public string PartyTemplate { get; }
 
-        public int PartyTemplateID { get { return partyTemplateID; } }
+        public int PartyTemplateID { get; }
 
-        public string Faction { get { return faction; } }
+        public string Faction { get; }
 
-        public int FactionID { get { return factionID; } }
+        public int FactionID { get; }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; private set; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; private set; }
 
-        public int MenuID { get { return menuID; } }
+        public int MenuID { get; }
 
-        public int Personality { get { return personality; } } //was ulong before
+        public int Personality { get; } //was ulong before
 
-        public int AIBehavior { get { return aiBehavior; } } //was ulong before
+        public int AIBehavior { get; } //was ulong before
 
-        public int AITargetParty { get { return aiTargetParty; } } //was ulong before
+        public int AITargetParty { get; } //was ulong before
 
-        public double[] InitialCoordinates { get { return initialCoordinates; } }
+        public double[] InitialCoordinates { get; } = new double[2];
+        public double PartyDirectionInDegrees { get; }
 
-        public double PartyDirectionInDegrees { get { return degrees; } }
-
-        public PMember[] Members { get { return members; } }
+        public PMember[] Members { get; }
 
     }
 }

@@ -4,7 +4,6 @@ using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
 using System;
 using importantLib;
-using skillhunter;
 
 namespace MB_Decompiler_Library.IO
 {
@@ -12,12 +11,8 @@ namespace MB_Decompiler_Library.IO
     {
         #region Attributes
 
-        private string filepath;
-
-        private static int objectsRead;
+        private readonly string filepath;
         private static int objectsExpected;
-
-        private static string modPath = string.Empty; //SHOULD BE string.Empty in the Release Version!!!
 
         //private static List<List<int>> unusedIndicies;//, unusedIndiciesEXTRA;
         private static LocalVariableInterpreter localVariableInterpreter;
@@ -95,7 +90,7 @@ namespace MB_Decompiler_Library.IO
 
         #endregion
 
-        public static string ModPath { get { return modPath; } }
+        public static string ModPath { get; private set; } = string.Empty;
 
         /*public static string ModName {
             get
@@ -110,7 +105,7 @@ namespace MB_Decompiler_Library.IO
 
         public static string ProjectPath { get; set; }
 
-        public static int ObjectsRead { get { return objectsRead; } }
+        public static int ObjectsRead { get; private set; }
 
         #endregion
 
@@ -302,7 +297,7 @@ namespace MB_Decompiler_Library.IO
         private static List<string> ReadGlobalVariables()
         {
             List<string> globalVariables = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "variables.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "variables.txt"))
                 while (!sr.EndOfStream)
                     globalVariables.Add('$' + sr.ReadLine());
             return globalVariables;
@@ -312,7 +307,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> scriptNames = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "scripts.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "scripts.txt"))
             {
                 sr.ReadLine();
                 sr.ReadLine();
@@ -329,7 +324,7 @@ namespace MB_Decompiler_Library.IO
         private static List<string> ReadQuickStrings()
         {
             List<string> quick_strings = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "quick_strings.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "quick_strings.txt"))
             {
                 sr.ReadLine();
                 while (!sr.EndOfStream)
@@ -342,7 +337,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> presentations = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "presentations.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "presentations.txt"))
             {
                 sr.ReadLine();
                 while (!sr.EndOfStream)
@@ -359,7 +354,7 @@ namespace MB_Decompiler_Library.IO
         {
             string tmp;
             List<string> strings = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "strings.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "strings.txt"))
             {
                 sr.ReadLine();
                 sr.ReadLine();
@@ -377,7 +372,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> items = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "item_kinds1.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "item_kinds1.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -394,7 +389,7 @@ namespace MB_Decompiler_Library.IO
             string[] s;
             List<string> factions = new List<string>();
             //factions.Add("fac_no_faction"); // Why was this used before???
-            using (StreamReader sr = new StreamReader(modPath + "factions.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "factions.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -419,7 +414,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> troops = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "troops.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "troops.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -435,7 +430,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> scene_props = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "scene_props.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "scene_props.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -451,7 +446,7 @@ namespace MB_Decompiler_Library.IO
         {
             string[] s;
             List<string> parties = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "parties.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "parties.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -467,7 +462,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> party_templates = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "party_templates.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "party_templates.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -483,7 +478,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> meshes = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "meshes.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "meshes.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -499,7 +494,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> skills = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "skills.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "skills.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -515,7 +510,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> mission_templates = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "mission_templates.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "mission_templates.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -531,7 +526,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> sounds = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "sounds.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "sounds.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -547,7 +542,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> particles = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "particle_systems.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "particle_systems.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -563,7 +558,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> menus = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "menus.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "menus.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -580,7 +575,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> quests = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "quests.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "quests.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -596,7 +591,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> tableau_materials = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "tableau_materials.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "tableau_materials.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -612,7 +607,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> animations = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "actions.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "actions.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -628,7 +623,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> scenes = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "scenes.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "scenes.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -644,7 +639,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> tracks = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "music.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "music.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -673,7 +668,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> map_icons = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "map_icons.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "map_icons.txt"))
             {
                 sr.ReadLine();
                 while (!sr.EndOfStream)
@@ -690,7 +685,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> infoPages = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "info_pages.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "info_pages.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -706,7 +701,7 @@ namespace MB_Decompiler_Library.IO
         {
             string s;
             List<string> postFXParams = new List<string>();
-            using (StreamReader sr = new StreamReader(modPath + "postfx.txt"))
+            using (StreamReader sr = new StreamReader(ModPath + "postfx.txt"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -722,7 +717,7 @@ namespace MB_Decompiler_Library.IO
 
         #region Main Reader
 
-        public static int Overflow { get { return objectsRead - objectsExpected; } }
+        public static int Overflow { get { return ObjectsRead - objectsExpected; } }
 
         public static string RemNTrimAllXtraSp(string s)
         {
@@ -882,7 +877,7 @@ namespace MB_Decompiler_Library.IO
             }
             if (missionTemplate != null)
                 missionTemplates.Add(missionTemplate);
-            objectsRead += missionTemplates.Count;
+            ObjectsRead += missionTemplates.Count;
             return missionTemplates.ToArray();
         }
 
@@ -920,7 +915,7 @@ namespace MB_Decompiler_Library.IO
             }
             if (presentation != null)
                 presentations.Add(presentation);
-            objectsRead += presentations.Count;
+            ObjectsRead += presentations.Count;
             return presentations.ToArray();
         }
 
@@ -939,7 +934,7 @@ namespace MB_Decompiler_Library.IO
                         game_menus.Add(new GameMenu(new string[] { s, RemNTrimAllXtraSp(sr.ReadLine()) }));
                 }
             }
-            objectsRead += game_menus.Count;
+            ObjectsRead += game_menus.Count;
             return game_menus.ToArray();
         }
 
@@ -979,7 +974,7 @@ namespace MB_Decompiler_Library.IO
             }
             if (script != null)
                 scripts.Add(new Script(script));
-            objectsRead += scripts.Count;
+            ObjectsRead += scripts.Count;
             return scripts.ToArray();
         }
 
@@ -1000,7 +995,7 @@ namespace MB_Decompiler_Library.IO
                     troops[i] = new Troop(tempus);
                 }
             }
-            objectsRead += troops.Length;
+            ObjectsRead += troops.Length;
             return troops;
         }
 
@@ -1038,7 +1033,7 @@ namespace MB_Decompiler_Library.IO
                 }
             }
 
-            objectsRead += items.Length;
+            ObjectsRead += items.Length;
             return items;
         }
 
@@ -1054,7 +1049,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < strings.Length; i++)
                     strings[i] = new GameString(sr.ReadLine().Substring(4).Split());
             }
-            objectsRead += strings.Length;
+            ObjectsRead += strings.Length;
             return strings;
         }
 
@@ -1078,7 +1073,7 @@ namespace MB_Decompiler_Library.IO
                     simple_triggers[i].ConsequencesBlock = GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
                 }
             }
-            objectsRead += simple_triggers.Length;
+            ObjectsRead += simple_triggers.Length;
             return simple_triggers;
         }
 
@@ -1094,7 +1089,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < triggers.Length; i++)
                     triggers[i] = DecompileTrigger(sr.ReadLine().Split());
             }
-            objectsRead += triggers.Length;
+            ObjectsRead += triggers.Length;
             return triggers;
         }
 
@@ -1110,7 +1105,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < info_pages.Length; i++)
                     info_pages[i] = new InfoPage(sr.ReadLine().Split());
             }
-            objectsRead += info_pages.Length;
+            ObjectsRead += info_pages.Length;
             return info_pages;
         }
 
@@ -1125,7 +1120,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < meshes.Length; i++)
                     meshes[i] = new Mesh(sr.ReadLine().Substring(5).Split());
             }
-            objectsRead += meshes.Length;
+            ObjectsRead += meshes.Length;
             return meshes;
         }
 
@@ -1143,7 +1138,7 @@ namespace MB_Decompiler_Library.IO
                     musicTracks[i] = new Music(new string[] { Tracks[i].Substring(6), sts[0], sts[1], sts[2] });
                 }
             }
-            objectsRead += musicTracks.Length;
+            ObjectsRead += musicTracks.Length;
             return musicTracks;
         }
 
@@ -1159,7 +1154,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < quests.Length; i++)
                     quests[i] = new Quest(sr.ReadLine().Substring(4).Split());
             }
-            objectsRead += quests.Length;
+            ObjectsRead += quests.Length;
             return quests;
         }
 
@@ -1178,7 +1173,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < sounds.Length && !sr.EndOfStream; i++)
                     sounds[i] = new Sound(sr.ReadLine().Substring(4).Split());
             }
-            objectsRead += sounds.Length;
+            ObjectsRead += sounds.Length;
             return sounds;
         }
 
@@ -1216,7 +1211,7 @@ namespace MB_Decompiler_Library.IO
                     _scenes[i] = new Scene(firstLine.Split(), otherScenes, chestTroops, sr.ReadLine().Trim());
                 }
             }
-            objectsRead += _scenes.Length;
+            ObjectsRead += _scenes.Length;
             return _scenes;
         }
 
@@ -1231,7 +1226,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < tableaus.Length; i++)
                     tableaus[i] = new TableauMaterial(sr.ReadLine().Substring(4).TrimEnd().Split());
             }
-            objectsRead += tableaus.Length;
+            ObjectsRead += tableaus.Length;
             return tableaus;
         }
 
@@ -1273,7 +1268,7 @@ namespace MB_Decompiler_Library.IO
                     sr.ReadLine();
                 }
             }
-            objectsRead += sceneProps.Length;
+            ObjectsRead += sceneProps.Length;
             return sceneProps;
         }
 
@@ -1324,7 +1319,7 @@ namespace MB_Decompiler_Library.IO
                     _factions[i] = new Faction(new string[] { firstLine, secondLine, line });
                 }
             }
-            objectsRead += _factions.Length;
+            ObjectsRead += _factions.Length;
             return _factions;
         }
 
@@ -1362,7 +1357,7 @@ namespace MB_Decompiler_Library.IO
                     sr.ReadLine();
                 }
             }
-            objectsRead += mapIcons.Length;
+            ObjectsRead += mapIcons.Length;
             return mapIcons;
         }
 
@@ -1385,7 +1380,7 @@ namespace MB_Decompiler_Library.IO
                     animations[i].Sequences = sequences;
                 }
             }
-            objectsRead += animations.Length;
+            ObjectsRead += animations.Length;
             return animations;
         }
 
@@ -1401,7 +1396,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < partyTemplates.Length; i++)
                     partyTemplates[i] = new PartyTemplate(sr.ReadLine().Substring(3).TrimEnd().Split());
             }
-            objectsRead += partyTemplates.Length;
+            ObjectsRead += partyTemplates.Length;
             return partyTemplates;
         }
 
@@ -1417,7 +1412,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < dialogs.Length; i++)
                     dialogs[i] = new Dialog(sr.ReadLine().Substring(5).TrimEnd().Split());
             }
-            objectsRead += dialogs.Length;
+            ObjectsRead += dialogs.Length;
             return dialogs;
         }
 
@@ -1440,7 +1435,7 @@ namespace MB_Decompiler_Library.IO
                     parties[i] = new Party(line.Split());
                 }
             }
-            objectsRead += parties.Length;
+            ObjectsRead += parties.Length;
             return parties;
         }
 
@@ -1455,7 +1450,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < skills.Length; i++)
                     skills[i] = new Skill(sr.ReadLine().Substring(4).Split());
             }
-            objectsRead += skills.Length;
+            ObjectsRead += skills.Length;
             return skills;
         }
 
@@ -1471,7 +1466,7 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < postfxs.Length; i++)
                     postfxs[i] = new PostFX(sr.ReadLine().Substring(4));
             }
-            objectsRead += postfxs.Length;
+            ObjectsRead += postfxs.Length;
             return postfxs;
         }
 
@@ -1500,7 +1495,7 @@ namespace MB_Decompiler_Library.IO
                     particleSystems[i] = new ParticleSystem(list);
                 }
             }
-            objectsRead += particleSystems.Length;
+            ObjectsRead += particleSystems.Length;
             return particleSystems;
         }
 
@@ -1547,7 +1542,7 @@ namespace MB_Decompiler_Library.IO
                     skins[i] = new Skin(list);
                 }
             }
-            objectsRead += skins.Length;
+            ObjectsRead += skins.Length;
             return skins;
         }
 
@@ -2190,14 +2185,14 @@ namespace MB_Decompiler_Library.IO
             return newArray;
         }
 
-        public static void SetModPath(string modPath) { CodeReader.modPath = modPath; }
+        public static void SetModPath(string modPath) { CodeReader.ModPath = modPath; }
 
         public static void Reset(bool clearAllLists = false, bool resetModpath = false)
         {
             objectsExpected = 0;
-            objectsRead = 0;
+            ObjectsRead = 0;
             if (resetModpath)
-                modPath = string.Empty;
+                ModPath = string.Empty;
             if (clearAllLists)
                 ClearLists();
         }

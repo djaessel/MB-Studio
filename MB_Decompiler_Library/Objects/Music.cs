@@ -2,15 +2,11 @@
 using System.IO;
 using importantLib;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 
 namespace MB_Decompiler_Library.Objects
 {
     public class Music : Skriptum
     {
-        private ulong flagsGZ, continueFlagsGZ;
-        private string trackFile, flags, continueFlags;
-
         private static HeaderVariable[] headerVariables = null;
 
         public Music(string[] raw_data) : base(raw_data[0], ObjectType.MUSIC)
@@ -18,28 +14,28 @@ namespace MB_Decompiler_Library.Objects
             if (headerVariables == null)
                 InitializeHeaderVariables();
 
-            trackFile = raw_data[1];
+            TrackFile = raw_data[1];
 
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {
-                flagsGZ = ulong.Parse(raw_data[2]);
-                flags = SetFlags(flagsGZ);
+                TrackFlagsGZ = ulong.Parse(raw_data[2]);
+                TrackFlags = SetFlags(TrackFlagsGZ);
             }
             else
             {
-                flags = raw_data[2];
-                flagsGZ = SetFlagsGZ(flags);
+                TrackFlags = raw_data[2];
+                TrackFlagsGZ = SetFlagsGZ(TrackFlags);
             }
 
             if (ImportantMethods.IsNumericGZ(raw_data[3]))
             {
-                continueFlagsGZ = ulong.Parse(raw_data[3]);
-                continueFlags = SetFlags(continueFlagsGZ);
+                ContinueTrackFlagsGZ = ulong.Parse(raw_data[3]);
+                ContinueTrackFlags = SetFlags(ContinueTrackFlagsGZ);
             }
             else
             {
-                continueFlags = raw_data[3];
-                continueFlagsGZ = SetFlagsGZ(continueFlags);
+                ContinueTrackFlags = raw_data[3];
+                ContinueTrackFlagsGZ = SetFlagsGZ(ContinueTrackFlags);
             }
         }
 
@@ -110,7 +106,7 @@ namespace MB_Decompiler_Library.Objects
 
             foreach (HeaderVariable var in headerVariables)
             {
-                x = ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                x = ulong.Parse(HexConverter.Hex2Dec_16CHARS(var.VariableValue).ToString());
                 if ((x & flagsGZ) == x)
                     flags += var.VariableName + '|';
             }
@@ -131,20 +127,20 @@ namespace MB_Decompiler_Library.Objects
             foreach (string flag in tmp)
                 foreach (HeaderVariable var in headerVariables)
                     if (var.VariableName.Equals(flag))
-                        flagsGZ |= ulong.Parse(SkillHunter.Hex2Dec_16CHARS(var.VariableValue).ToString());
+                        flagsGZ |= ulong.Parse(HexConverter.Hex2Dec_16CHARS(var.VariableValue).ToString());
 
             return flagsGZ;
         }
 
-        public string TrackFile { get { return trackFile; } }//change to Name if possible
+        public string TrackFile { get; }//change to Name if possible
 
-        public string TrackFlags { get { return flags; } }
+        public string TrackFlags { get; }
 
-        public ulong TrackFlagsGZ { get { return flagsGZ; } }
+        public ulong TrackFlagsGZ { get; }
 
-        public string ContinueTrackFlags { get { return continueFlags; } }
+        public string ContinueTrackFlags { get; }
 
-        public ulong ContinueTrackFlagsGZ { get { return continueFlagsGZ; } }
+        public ulong ContinueTrackFlagsGZ { get; }
 
     }
 }

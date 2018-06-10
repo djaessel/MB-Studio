@@ -1,4 +1,5 @@
-﻿using MB_Decompiler_Library.IO;
+﻿using importantLib;
+using MB_Decompiler_Library.IO;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -26,7 +27,7 @@ namespace MB_Studio.Support
             {
                 wr.WriteLine();
                 for (int i = minValue; i < maxValue + 1; i++)
-                    wr.WriteLine(exampleHeaderCode_txt.Text.Replace("VAR_INT", i.ToString()).Replace("VAR_HEX", skillhunter.SkillHunter.Dec2Hex(i << shift)).ToLower());
+                    wr.WriteLine(exampleHeaderCode_txt.Text.Replace("VAR_INT", i.ToString()).Replace("VAR_HEX", HexConverter.Dec2Hex(i << shift)).ToLower());
             }
         }
     }

@@ -3,7 +3,6 @@ using MB_Decompiler;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Studio.Support;
-using skillhunter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -84,7 +83,7 @@ namespace MB_Studio.Main
             itemsFlags.Clear();
             if (itemsFlagsX.Length > 1 || !itemsFlagsX[0].Equals("-"))
                 foreach (string itemFlag in itemsFlagsX)
-                    itemsFlags.Add(ulong.Parse(SkillHunter.Hex2Dec_16CHARS(itemFlag).ToString()));
+                    itemsFlags.Add(ulong.Parse(HexConverter.Hex2Dec_16CHARS(itemFlag).ToString()));
             else
                 for (int i = 0; i < itemsIDs.Count; i++)
                     itemsFlags.Add(0);
@@ -249,7 +248,7 @@ namespace MB_Studio.Main
             {
                 itemsString += usedItems_lb.Items[i].ToString().Split('-')[0].TrimEnd() + '|';
                 if (i < itemsFlags.Count)
-                    itemsFlagsString += SkillHunter.Dec2Hex_16CHARS(itemsFlags[i]);
+                    itemsFlagsString += HexConverter.Dec2Hex_16CHARS(itemsFlags[i]);
                 else
                     itemsFlagsString += '0';
                 itemsFlagsString += '|';

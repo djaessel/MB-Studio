@@ -1,7 +1,6 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects.Support;
-using skillhunter;
 using System.Drawing;
 
 namespace MB_Decompiler_Library.Objects
@@ -87,7 +86,7 @@ namespace MB_Decompiler_Library.Objects
                     {
                         if (tmp.StartsWith("0x"))
                             tmp = tmp.Substring(2);
-                        tmp = SkillHunter.Hex2Dec(tmp).ToString();
+                        tmp = HexConverter.Hex2Dec(tmp).ToString();
                     }
                     flagsGZ |= (ulong.Parse(tmp) << 32); //color
                 }
@@ -101,7 +100,7 @@ namespace MB_Decompiler_Library.Objects
             string flags = string.Empty;
             ulong tmpU = FlagsGZ;
 
-            char[] cc = SkillHunter.Dec2Hex_16CHARS(FlagsGZ).ToCharArray();
+            char[] cc = HexConverter.Dec2Hex_16CHARS(FlagsGZ).ToCharArray();
 
             if (cc.Length > 7)
             {
@@ -142,11 +141,11 @@ namespace MB_Decompiler_Library.Objects
 
             if (tmpU > 0)
             {
-                string tmp = SkillHunter.Dec2Hex(tmpU >> 32);
-                TextColor = Color.FromArgb(byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(0, 2)).ToString()),
-                                           byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(2, 2)).ToString()),
-                                           byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(4, 2)).ToString()),
-                                           byte.Parse(SkillHunter.Hex2Dec(tmp.Substring(6, 2)).ToString()));
+                string tmp = HexConverter.Dec2Hex(tmpU >> 32);
+                TextColor = Color.FromArgb(byte.Parse(HexConverter.Hex2Dec(tmp.Substring(0, 2)).ToString()),
+                                           byte.Parse(HexConverter.Hex2Dec(tmp.Substring(2, 2)).ToString()),
+                                           byte.Parse(HexConverter.Hex2Dec(tmp.Substring(4, 2)).ToString()),
+                                           byte.Parse(HexConverter.Hex2Dec(tmp.Substring(6, 2)).ToString()));
                 flags += "|menu_text_color(0x" + tmp +')';
             }
 

@@ -437,10 +437,6 @@
       <Project>{FC643914-80E5-42FF-806B-C23E37DD9EC5}</Project>
       <Name>MB_Decompiler_Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\skillhunter\skillhunter\skillhunter.vbproj">
-      <Project>{FA4558D0-9F6F-456B-888F-D9DED33DFB90}</Project>
-      <Name>skillhunter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warband - Translator\Warband - Translator\Warband - Translator.csproj">
       <Project>{114F6AE7-9935-4D6A-8E17-49A48BA1C036}</Project>
       <Name>Warband - Translator</Name>

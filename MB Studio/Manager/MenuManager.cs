@@ -1,5 +1,4 @@
-﻿using skillhunter;
-using importantLib;
+﻿using importantLib;
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
@@ -107,7 +106,7 @@ namespace MB_Studio.Manager
                 }
             }
 
-            //MessageBox.Show(SkillHunter.Dec2Hex_16CHARS(menu.FlagsGZ));
+            //MessageBox.Show(HexConverter.Dec2Hex_16CHARS(menu.FlagsGZ));
             /*
             mnf_join_battle            = 0x00000001 #Consider this menu when the player joins a battle
             mnf_auto_enter             = 0x00000010 #Automatically enter the town with the first menu option. 
@@ -201,7 +200,7 @@ namespace MB_Studio.Manager
             if (hexCode.Contains("0x") && !hexColor_txt.ForeColor.Equals(Color.Red))
             {
                 hexCode = hexCode.Substring(2);
-                flags |= ulong.Parse(SkillHunter.Hex2Dec(hexColor_txt.Text).ToString()) << 32;
+                flags |= ulong.Parse(HexConverter.Hex2Dec(hexColor_txt.Text).ToString()) << 32;
             }
 
             return flags;
@@ -226,10 +225,10 @@ namespace MB_Studio.Manager
 
                     colorOverrideMode = !colorOverrideMode; // true
 
-                    alpha_num.Value = int.Parse(SkillHunter.Hex2Dec("000000" + value.Substring(0, 2)).ToString());
-                    red_num.Value = int.Parse(SkillHunter.Hex2Dec("000000" + value.Substring(2, 2)).ToString());
-                    green_num.Value = int.Parse(SkillHunter.Hex2Dec("000000" + value.Substring(4, 2)).ToString());
-                    blue_num.Value = int.Parse(SkillHunter.Hex2Dec("000000" + value.Substring(6, 2)).ToString());
+                    alpha_num.Value = int.Parse(HexConverter.Hex2Dec("000000" + value.Substring(0, 2)).ToString());
+                    red_num.Value = int.Parse(HexConverter.Hex2Dec("000000" + value.Substring(2, 2)).ToString());
+                    green_num.Value = int.Parse(HexConverter.Hex2Dec("000000" + value.Substring(4, 2)).ToString());
+                    blue_num.Value = int.Parse(HexConverter.Hex2Dec("000000" + value.Substring(6, 2)).ToString());
 
                     if (hexColor_txt.Text.Equals("0x00000000"))// default?
                         textColor_lbl.BackColor = Color.Black;
@@ -280,10 +279,10 @@ namespace MB_Studio.Manager
                 {
 
                     string hexCode = "0x";
-                    hexCode += SkillHunter.Dec2Hex(alpha).Substring(6);
-                    hexCode += SkillHunter.Dec2Hex(red).Substring(6);
-                    hexCode += SkillHunter.Dec2Hex(green).Substring(6);
-                    hexCode += SkillHunter.Dec2Hex(blue).Substring(6);
+                    hexCode += HexConverter.Dec2Hex(alpha).Substring(6);
+                    hexCode += HexConverter.Dec2Hex(red).Substring(6);
+                    hexCode += HexConverter.Dec2Hex(green).Substring(6);
+                    hexCode += HexConverter.Dec2Hex(blue).Substring(6);
                     hexColor_txt.Text = hexCode;
                 }
                 else

@@ -1,5 +1,4 @@
-﻿using skillhunter;
-using System;
+﻿using System;
 
 namespace importantLib
 {
@@ -27,7 +26,7 @@ namespace importantLib
             setValueFromString();
             valueUInt = new uint[uintCount];
             for (int i = 0; i < valueUInt.Length; i++)
-                valueUInt[i] = uint.Parse(SkillHunter.Hex2Dec(valueString.Substring((valueUInt.Length - i - 1) * uintCount, 8)).ToString()); // 8 because uint.MaxValue = 0xffffffff
+                valueUInt[i] = uint.Parse(HexConverter.Hex2Dec(valueString.Substring((valueUInt.Length - i - 1) * uintCount, 8)).ToString()); // 8 because uint.MaxValue = 0xffffffff
         }
 
         public SuperGZ(uint[] valueUInt)
@@ -35,7 +34,7 @@ namespace importantLib
             this.valueUInt = valueUInt;
             valueString = string.Empty;
             for (int i = 0; i < valueUInt.Length; i++)
-                valueString += SkillHunter.Dec2Hex(valueUInt[i]);
+                valueString += HexConverter.Dec2Hex(valueUInt[i]);
             setValueFromString();
         }
 
