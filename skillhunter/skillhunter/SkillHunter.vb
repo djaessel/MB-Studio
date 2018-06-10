@@ -179,12 +179,17 @@
         HexString = Dec2Hex(tempArray(5))
         Skills(40) = Int(ReplaceHex(Mid(HexString, 1, 1))) 'reserved_XVII
         Skills(41) = Int(ReplaceHex(Mid(HexString, 2, 1))) 'reserved_XVIII
-        'm_skills(42) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_XIX ???
-        'm_skills(43) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_XX ???
-        'm_skills(44) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_XXI ???
-        'm_skills(45) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'reserved_XXII ???
-        'm_skills(46) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'reserved_XXIII ???
-        'm_skills(47) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'reserved_XXIV ???
+
+        If Not HexString.Length > 8 Then
+            Return
+        End If
+
+        Skills(42) = Int(ReplaceHex(Mid(HexString, 3, 1))) 'reserved_XIX ???
+        Skills(43) = Int(ReplaceHex(Mid(HexString, 4, 1))) 'reserved_XX ???
+        Skills(44) = Int(ReplaceHex(Mid(HexString, 5, 1))) 'reserved_XXI ???
+        Skills(45) = Int(ReplaceHex(Mid(HexString, 6, 1))) 'reserved_XXII ???
+        Skills(46) = Int(ReplaceHex(Mid(HexString, 7, 1))) 'reserved_XXIII ???
+        Skills(47) = Int(ReplaceHex(Mid(HexString, 8, 1))) 'reserved_XXIV ???
     End Sub
 
     Public Shared Function RemoveItemDoublesFromArray(array As String()) As String()
