@@ -398,11 +398,9 @@ namespace MB_Studio.Manager
             parameters.ReferencedAssemblies.Add("System.dll");
             parameters.ReferencedAssemblies.Add("System.Drawing.dll");
             parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
-            parameters.ReferencedAssemblies.Add("skillhunter.dll");
             parameters.ReferencedAssemblies.Add("importantLib.dll");
             parameters.ReferencedAssemblies.Add("MB_Decompiler_Library.dll");
-            parameters.ReferencedAssemblies.Add(exeName);
-            //parameters.ReferencedAssemblies.Add(typeof(ToolForm).Assembly.CodeBase);
+            parameters.ReferencedAssemblies.Add(exeName);//parameters.ReferencedAssemblies.Add(typeof(ToolForm).Assembly.CodeBase);
 
             CompilerResults results = provider.CompileAssemblyFromFile(parameters, new string[] { genSourceFile });
             if (results.Errors.HasErrors)
