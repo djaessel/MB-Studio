@@ -39,6 +39,7 @@ Global
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Description = Modding Studio Package
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6E4A3036-1E9C-4539-B64F-1814A82DBD62}.Debug|x64.ActiveCfg = Debug|x64

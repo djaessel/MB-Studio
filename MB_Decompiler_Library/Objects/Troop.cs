@@ -508,7 +508,8 @@ namespace MB_Decompiler_Library.Objects
             if (retur.Length != 0)
                 retur = retur.Substring(1);
 
-            string[] tmpS = SkillHunter.RemoveItemDoublesFromArray(retur.Split('|'));
+            string[] tmpS = retur.Split('|');
+            SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
             retur = string.Empty;
             int minusOne = tmpS.Length - 1;
             for (int i = 0; i < tmpS.Length; i++)

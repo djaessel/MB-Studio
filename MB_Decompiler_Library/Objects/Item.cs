@@ -123,11 +123,29 @@ namespace MB_Decompiler_Library.Objects
 
         #region HeaderVariables
 
-        public string Properties { get { return GetItemPropertiesFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[0])); } }
+        public string Properties
+        {
+            get
+            {
+                return GetItemPropertiesFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[0]));
+            }
+        }
 
-        public string CapabilityFlags { get { return GetItemCapabilityFlagsFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[1])); } }
+        public string CapabilityFlags
+        {
+            get
+            {
+                return GetItemCapabilityFlagsFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[1]));
+            }
+        }
 
-        public string ModBits { get { return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(SpecialValues[2]), true).TrimStart('|'); } }
+        public string ModBits
+        {
+            get
+            {
+                return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(SpecialValues[2]), true).TrimStart('|');
+            }
+        }
 
         #endregion
 
@@ -376,7 +394,8 @@ namespace MB_Decompiler_Library.Objects
             if (retur.Length != 0)
                 retur = retur.Substring(1);
 
-            string[] tmpS = SkillHunter.RemoveItemDoublesFromArray(retur.Split('|'));
+            string[] tmpS = retur.Split('|');
+            SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
             retur = string.Empty;
             for (int i = 0; i < tmpS.Length; i++)
             {
@@ -481,7 +500,8 @@ namespace MB_Decompiler_Library.Objects
             if (retur.Length != 0)
                 retur = retur.Substring(1);
 
-            string[] tmpS = SkillHunter.RemoveItemDoublesFromArray(retur.Split('|'));
+            string[] tmpS = retur.Split('|');
+            SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
             retur = string.Empty;
             for (int i = 0; i < tmpS.Length; i++)
             {
@@ -535,7 +555,8 @@ namespace MB_Decompiler_Library.Objects
             if (retur.Length != 0)
             {
                 retur = retur.Substring(1);
-                string[] tmpS = SkillHunter.RemoveItemDoublesFromArray(retur.Split('|'));
+                string[] tmpS = retur.Split('|');
+                SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
                 retur = string.Empty;
                 for (int i = 0; i < tmpS.Length; i++)
                 {

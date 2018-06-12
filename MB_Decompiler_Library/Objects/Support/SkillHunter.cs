@@ -43,6 +43,7 @@ namespace MB_Decompiler_Library.Objects.Support
         public void ReadSkills(string skillLine)
         {
             ResetSkillArray();
+            skillLine = skillLine.Trim();
             //StartUp(skillLine);//only 24 skills
             StartUpAll(skillLine);//all 48 Skills (are there more?)
         }
@@ -104,23 +105,20 @@ namespace MB_Decompiler_Library.Objects.Support
             string[] tmpArray = skillLine.Split();// example: 274 131072 0 1 0 0
 
             //read first set of values (if value is A then set it to 10)
-            //hexString = Right$("0000000" & Hex$(tmpArray(0)), 8)
             hexString = HexConverter.Dec2Hex(tmpArray[0]);
-            Skills[0] = int.Parse(ReplaceHex(hexString[0])); //persuasion | - - - X - - -
-            Skills[1] = int.Parse(ReplaceHex(hexString[1])); //reserved_IV | - - - X - - -
-            Skills[2] = int.Parse(ReplaceHex(hexString[2])); //reserved_III | - - - X - - -
-            Skills[3] = int.Parse(ReplaceHex(hexString[3])); //reserved_II | - - - X - - -
-            Skills[4] = int.Parse(ReplaceHex(hexString[4])); //reserved_I | - - - X - - -
-            Skills[5] = int.Parse(ReplaceHex(hexString[5])); //prisoner_management | - - - X - - -
-            Skills[6] = int.Parse(ReplaceHex(hexString[6])); //leadership | - - - X - - -
-            Skills[7] = int.Parse(ReplaceHex(hexString[7])); //trade | - - - X - - -
+            Skills[0] = int.Parse(ReplaceHex(hexString[0]));  //persuasion | - - - X - - -
+            Skills[1] = int.Parse(ReplaceHex(hexString[1]));  //reserved_IV | - - - X - - -
+            Skills[2] = int.Parse(ReplaceHex(hexString[2]));  //reserved_III | - - - X - - -
+            Skills[3] = int.Parse(ReplaceHex(hexString[3]));  //reserved_II | - - - X - - -
+            Skills[4] = int.Parse(ReplaceHex(hexString[4]));  //reserved_I | - - - X - - -
+            Skills[5] = int.Parse(ReplaceHex(hexString[5]));  //prisoner_management | - - - X - - -
+            Skills[6] = int.Parse(ReplaceHex(hexString[6]));  //leadership | - - - X - - -
+            Skills[7] = int.Parse(ReplaceHex(hexString[7]));  //trade | - - - X - - -
 
             //read second set of values
-            //Hex$ method breaks on Stannis Bartheon (large number in tmpArray(1))
-            //hexString = Right$("0000000" & Hex$(tmpArray(1)), 8)
             hexString = HexConverter.Dec2Hex(tmpArray[1]);
-            Skills[8] = int.Parse(ReplaceHex(hexString[0])); //tactics | - - - X - - -
-            Skills[9] = int.Parse(ReplaceHex(hexString[1])); //pathfinding | - - - X - - -
+            Skills[8] = int.Parse(ReplaceHex(hexString[0]));  //tactics | - - - X - - -
+            Skills[9] = int.Parse(ReplaceHex(hexString[1]));  //pathfinding | - - - X - - -
             Skills[10] = int.Parse(ReplaceHex(hexString[2])); //spotting | - - - X - - -
             Skills[11] = int.Parse(ReplaceHex(hexString[3])); //inventory_management | - - - X - - -
             Skills[12] = int.Parse(ReplaceHex(hexString[4])); //wound_treatment | - - - X - - -
@@ -129,7 +127,6 @@ namespace MB_Decompiler_Library.Objects.Support
             Skills[15] = int.Parse(ReplaceHex(hexString[7])); //engineer | - - - X - - -
 
             //read third set of values
-            //hexString = Right$("0000000" & Hex$(tmpArray(2)), 8)
             hexString = HexConverter.Dec2Hex(tmpArray[2]);
             Skills[16] = int.Parse(ReplaceHex(hexString[0])); //horse_archery | - - - X - - -
             Skills[17] = int.Parse(ReplaceHex(hexString[1])); //looting | - - - X - - -
@@ -141,7 +138,6 @@ namespace MB_Decompiler_Library.Objects.Support
             Skills[23] = int.Parse(ReplaceHex(hexString[7])); //tracking | - - - X - - -
 
             //read fourth set of values
-            //hexString = Right$("0000000" & Hex$(tmpArray(3)), 8)
             hexString = HexConverter.Dec2Hex(tmpArray[3]);
             Skills[24] = int.Parse(ReplaceHex(hexString[0])); //reserved_XII
             Skills[25] = int.Parse(ReplaceHex(hexString[1])); //reserved_XI
@@ -153,7 +149,6 @@ namespace MB_Decompiler_Library.Objects.Support
             Skills[31] = int.Parse(ReplaceHex(hexString[7])); //riding | - - - X - - -
 
             //read fifth set of values
-            //hexString = Right$("0000000" & Hex$(tmpArray(4)), 8)
             hexString = HexConverter.Dec2Hex(tmpArray[4]);
             Skills[32] = int.Parse(ReplaceHex(hexString[0])); //reserved_XVI ?
             Skills[33] = int.Parse(ReplaceHex(hexString[1])); //reserved_XV | - - - X - - -
@@ -165,7 +160,6 @@ namespace MB_Decompiler_Library.Objects.Support
             Skills[39] = int.Parse(ReplaceHex(hexString[7])); //reserved_XIII
 
             //read sixth set of values
-            //hexString = Right$("0000000" & Hex$(tmpArray(5)), 8)
             hexString = HexConverter.Dec2Hex(tmpArray[5]);
             Skills[40] = int.Parse(ReplaceHex(hexString[0])); //reserved_XVII
             Skills[41] = int.Parse(ReplaceHex(hexString[1])); //reserved_XVIII
@@ -225,13 +219,22 @@ namespace MB_Decompiler_Library.Objects.Support
             return hextex;
         }*/
 
-        public static string[] RemoveItemDoublesFromArray(string[] array)
+        public static void RemoveItemDoublesFromArray(ref string[] array)
         {
             List<string> retList = new List<string>();
             foreach (string s in array)
-                if (retList.Contains(s))
+                if (!retList.Contains(s))
                     retList.Add(s);
-            return retList.ToArray();
+            array = retList.ToArray();
+        }
+
+        public static void RemoveItemDoublesFromList(ref List<string> list)
+        {
+            List<string> retList = new List<string>();
+            foreach (string s in list)
+                if (!retList.Contains(s))
+                    retList.Add(s);
+            list = retList;
         }
 
         #endregion

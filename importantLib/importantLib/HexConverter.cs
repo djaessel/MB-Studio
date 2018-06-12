@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -12,15 +13,10 @@ namespace importantLib
 
         private const ulong TWO_TO_THE_49TH_POWER = 562949953421312;
 
-        private const string BIN_VALUES = "*0000*0001*0010*0011" + 
-                                          "*0100*0101*0110*0111" + 
-                                          "*1000*1001*1010*1011" + 
-                                          "*1100*1101*1110*1111*";
-
-        private const string BIN_VALUES_2 = "0000000100100011" + 
-                                            "0100010101100111" + 
-                                            "1000100110101011" + 
-                                            "1100110111101111";
+        private const string BIN_VALUES = "0000"+"0001"+"0010"+"0011"+ 
+                                          "0100"+"0101"+"0110"+"0111"+ 
+                                          "1000"+"1001"+"1010"+"1011"+ 
+                                          "1100"+"1101"+"1110"+"1111";
 
         private const string HEX_VALUES = "0123456789ABCDEF";
 
@@ -40,17 +36,24 @@ namespace importantLib
             {
                 string binaryString = string.Empty;
 
-                ulong input = ulong.Parse(decimalIn.ToString());
+                decimal input = decimal.Parse(decimalIn.ToString());
                 while (input != 0)
                 {
-                    binaryString = (input - 2 * (ulong)Math.Round(input / 2d, 0)).ToString().Trim() + binaryString;
-                    input = (ulong)Math.Round(input / 2d, 0);
+                    decimal tmpX = Conversion.Int(input / 2M);
+                    decimal zeroOrOne = input - 2 * tmpX;
+                    binaryString = zeroOrOne + binaryString;
+                    input = tmpX;
                 }
 
                 binaryString = new string('0', (4 - binaryString.Length % 4) % 4) + binaryString;
 
+                int binIndex;
                 for (int i = 0; i <= binaryString.Length - 4; i += 4)
-                    retur += HEX_VALUES.Substring(4 + (BIN_VALUES.IndexOf("*" + binaryString.Substring(i, 4) + "*")) / 4, 1);
+                {
+                    string tmp = binaryString.Substring(i, 4);
+                    binIndex = BIN_VALUES.IndexOf(tmp) / 4;
+                    retur += HEX_VALUES[binIndex];
+                }
 
                 string placeHolder = (use16Chars) ? ZERO_16 : ZERO_8;
                 retur = RightS(placeHolder + retur, placeHolder.Length);
@@ -83,14 +86,23 @@ namespace importantLib
                 if (hexString.Length <= 23)
                 {
                     for (int i = 0; i < hexString.Length; i++)
-                        binaryString += BIN_VALUES_2.Substring(4 * int.Parse(hexString.Substring(i, 1), NumberStyles.HexNumber), 4);
+                    {
+                        int singleHex = int.Parse(hexString.Substring(i, 1), NumberStyles.HexNumber);
+                        singleHex *= 4;
+                        binaryString += BIN_VALUES.Substring(singleHex, 4);
+                    }
 
+                    int binIndex;
+                    ulong zeroOrOne, power, adder;
                     for (int i = 0; i < binaryString.Length; i++)
                     {
-                        if (i < 50)
-                            retur += ulong.Parse(binaryString.Substring(binaryString.Length - i - 1, 1)) * (ulong)(2 ^ i);
-                        else
-                            retur += TWO_TO_THE_49TH_POWER * ulong.Parse(binaryString.Substring(binaryString.Length - i - 1, 1)) * (ulong)(2 ^ (i - 49));
+                        binIndex = binaryString.Length - i - 1;
+                        zeroOrOne = Convert.ToUInt64(binaryString[binIndex]);
+                        power = (ulong)((i < 50) ? i : (i - 49));
+                        adder = zeroOrOne * (2L ^ power);
+                        if (i >= 50)
+                            adder *= TWO_TO_THE_49TH_POWER;
+                        retur += adder;
                     }
                 }
             }
