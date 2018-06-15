@@ -2,6 +2,7 @@
 using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Studio.Manager.Support.External;
+using MB_Decompiler_Library.Objects.Support;
 using System;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Studio.Manager
 {
@@ -243,7 +243,6 @@ namespace MB_Studio.Manager
             #region Modifier Bits
 
             string[] imodbits = item.ModBits.Trim('|').Split('|');
-
             if (groupBox_4_gb.Controls.Count == 0)
             {
                 List<HeaderVariable> headerVars = Item.HeaderIModBits;
@@ -281,10 +280,8 @@ namespace MB_Studio.Manager
             swing_damage_type_cbb.SelectedIndex = 0x3 & (swingDamage >> 8);
 
             // später mit for schleife und index als tag
-            //int[] stats = item.ItemStats;
-            //
+            // int[] stats = item.ItemStats;
             // Label Texte anpassen für spezielle Item Types
-            //
 
             #endregion
 

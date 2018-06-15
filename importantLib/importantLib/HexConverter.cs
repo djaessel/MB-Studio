@@ -77,31 +77,35 @@ namespace importantLib
 
             try
             {
-                string binaryString = string.Empty;
-
-                if (hexString.Length > 2)
-                    if (hexString.Substring(0, 2).Equals("0x"))
-                        hexString = hexString.Substring(2);
+                if (hexString.StartsWith("0x"))
+                    hexString = hexString.Substring(2);
 
                 if (hexString.Length <= 23)
                 {
+                    string binaryString = string.Empty;
+
                     for (int i = 0; i < hexString.Length; i++)
                     {
-                        int singleHex = int.Parse(hexString.Substring(i, 1), NumberStyles.HexNumber);
+                        int singleHex = int.Parse(hexString[i].ToString(), NumberStyles.HexNumber);
                         singleHex *= 4;
                         binaryString += BIN_VALUES.Substring(singleHex, 4);
                     }
 
-                    int binIndex;
-                    ulong zeroOrOne, power, adder;
                     for (int i = 0; i < binaryString.Length; i++)
                     {
-                        binIndex = binaryString.Length - i - 1;
-                        zeroOrOne = Convert.ToUInt64(binaryString[binIndex]);
-                        power = (ulong)((i < 50) ? i : (i - 49));
-                        adder = zeroOrOne * (2L ^ power);
-                        if (i >= 50)
+                        ulong power = (ulong)i;
+                        int binIndex = binaryString.Length - i;
+                        binIndex--;//VB to C# Index from 1-based to 0-based
+                        ulong adder = ulong.Parse(binaryString[binIndex].ToString());
+
+                        uint constX = 49;
+                        if (i > constX)
+                        {
+                            power -= constX;
                             adder *= TWO_TO_THE_49TH_POWER;
+                        }
+
+                        adder *= (2ul ^ power);
                         retur += adder;
                     }
                 }
@@ -117,6 +121,47 @@ namespace importantLib
             }
 
             return retur;
+        }
+
+        public static int[] ConvertSingleHexCodeToIntArray(string hexCode)
+        {
+            int[] vals = new int[hexCode.Length];
+            char[] cc = hexCode.ToCharArray();
+            for (int i = 0; i < cc.Length; i++)
+                vals[i] = ReplaceHexToInt(cc[i]);
+            return vals;
+        }
+
+        public static int ReplaceHexToInt(char hexChar)
+        {
+            int retur = 0;
+            switch (hexChar)
+            {
+                case 'A':
+                    retur = 10;
+                    break;
+                case 'B':
+                    retur = 11;
+                    break;
+                case 'C':
+                    retur = 12;
+                    break;
+                case 'D':
+                    retur = 13;
+                    break;
+                case 'E':
+                    retur = 14;
+                    break;
+                case 'F':
+                    retur = 15;
+                    break;
+            }
+            return retur;
+        }
+
+        public static string ReplaceHexToIntString(char hexChar)
+        {
+            return ReplaceHexToInt(hexChar).ToString();
         }
 
         #endregion

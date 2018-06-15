@@ -275,7 +275,7 @@ namespace MB_Decompiler_Library.Objects
             SpecialValues[1] = xvalues[tmp + 5];
             Price = int.Parse(xvalues[tmp + 6]);
             SpecialValues[2] = xvalues[tmp + 7];
-            Weight = double.Parse(xvalues[tmp + 8], NumberStyles.Any);//Culture.Invariant VB
+            Weight = double.Parse(xvalues[tmp + 8], CultureInfo.InvariantCulture);
 
             for (int i = 0; i < ItemStats.Length; i++)
                 ItemStats[i] = int.Parse(xvalues[i + tmp + 9]);
@@ -357,7 +357,7 @@ namespace MB_Decompiler_Library.Objects
                         if (tmp.Length > 2)
                         {
                             for (int j = 9; j < HeaderItemProperties.Count; j++)
-                                if (HeaderItemProperties[j].VariableValue.TrimStart('0').Length == value.Substring(curIdx, 1).Length)
+                                if (HeaderItemProperties[j].VariableValue.TrimStart('0').Length == value.Substring(curIdx, 1).Length)//== 1 ???
                                     list.Add(HeaderItemProperties[j]);
                             list.Reverse();
                             foreach (HeaderVariable variable in list)
@@ -420,16 +420,16 @@ namespace MB_Decompiler_Library.Objects
             for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
             {
                 tmp = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-
                 int curIdx = value.Length - tmp.Length;
                 if (value[curIdx] != '0')
                 {
-                    List<HeaderVariable> list = new List<HeaderVariable>();
-                    uint x_counter = 0;
-                    uint x_tmp = (tmp.Length == 9) ?
-                        uint.Parse(HexConverter.Hex2Dec(value.Substring(value.Length - tmp.Length, 2)).ToString()) :
-                        uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
+                    int hexValueLength = 1;
+                    if (tmp.Length == 9)
+                        hexValueLength++;
 
+                    List<HeaderVariable> list = new List<HeaderVariable>();
+                    ulong x_counter = 0;
+                    ulong x_tmp = ulong.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, hexValueLength)).ToString());
                     for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
                     {
                         string varValue = HeaderItemCapabilityFlags[j].VariableValue.TrimStart('0');
@@ -445,7 +445,7 @@ namespace MB_Decompiler_Library.Objects
                             string varXYZ = varStart.TrimEnd('0');
 
                             if (varStart.Length == 9 && varXYZ.Equals("1") || varXYZ.Equals("8"))
-                                varStart += '.';
+                                varStart += ".";
                             else if (varStart.Length == 8)
                                 varStart = "." + varStart;
 
@@ -456,19 +456,21 @@ namespace MB_Decompiler_Library.Objects
                             while (varStart.Length < 8)
                                 varStart = "0" + varStart;
 
-                            uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(varStart).ToString());
+                            string teeeee = HexConverter.Hex2Dec(varStart).ToString();
+                            ulong x_tmp2 = ulong.Parse(teeeee);
                             varStart = varStart.TrimStart('0');
 
-                            uint tttt = x_tmp2 + x_counter;
-
+                            ulong tttt = x_tmp2 + x_counter;
                             if (x_tmp2 <= x_tmp && tttt <= x_tmp)
                             {
-                                if (varStart.Length == 1 || 
-                                    (varStart[1] == value[8] && varStart[0] == value[7] ||
-                                    uint.Parse(HexConverter.Hex2Dec(varStart.Substring(0, 1)).ToString()) == (uint.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) - 8)))
+                                ulong var1 = ulong.Parse(HexConverter.Hex2Dec(varStart.Substring(0, 1)).ToString());
+                                ulong var2 = ulong.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) - 8;
+                                if (varStart.Length == 1 ||
+                                    (varStart[1] == value[8] && 
+                                    (varStart[0] == value[7] || var1 == var2)))
                                 {
                                     x_counter += x_tmp2;
-                                    if (IsValueInValueString(retur, variable.VariableName))
+                                    if (!retur.Contains(variable.VariableName))
                                         retur += "|" + variable.VariableName;
                                 }
                             }
@@ -485,12 +487,11 @@ namespace MB_Decompiler_Library.Objects
                     for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
                     {
                         holsterdVar = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                        if (int.Parse(HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8 && holsterdVar.Length == 9)
+                        if (HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).Equals(8) && holsterdVar.Length == 9)
                         {
                             holsterdVar = HeaderItemCapabilityFlags[i].VariableName;
                             i = HeaderItemCapabilityFlags.Count;
                         }
-
                         if (holsterdVar.Length != 0)
                             retur += "|" + holsterdVar;
                     }
@@ -593,16 +594,6 @@ namespace MB_Decompiler_Library.Objects
         #endregion
 
         #region Helper Methods
-
-        private static bool IsValueInValueString(string valueString, string value)
-        {
-            bool b = false;
-            string[] sp = valueString.Trim().Split('|');
-            foreach (string s in sp)
-                if (s.Equals(value))
-                    b = true;
-            return b;
-        }
 
         public static string GetMeshKindFromValue(string value)
         {
