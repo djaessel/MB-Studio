@@ -58,12 +58,9 @@ namespace MB_Decompiler_Library.Objects.Support
         // Only the default 24 Skills
         private void StartUpDefault(string[] tempArray)// example: 274 131072 0 1 0 0
         {
-            int[] hexValues;
-            string hexString;
-
             //read first set of values (if value is A then set it to 10)
-            hexString = HexConverter.Dec2Hex(tempArray[0]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            string hexString = HexConverter.Dec2Hex(tempArray[0]);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out int[] hexValues);
             Skills[0] = hexValues[0];   //persuasion
             Skills[1] = hexValues[5];   //prisoner_management
             Skills[2] = hexValues[6];   //leadership
@@ -71,7 +68,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read second set of values
             hexString = HexConverter.Dec2Hex(tempArray[1]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[4] = hexValues[0];   //tactics
             Skills[5] = hexValues[1];   //pathfinding
             Skills[6] = hexValues[2];   //spotting
@@ -83,7 +80,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read third set of values
             hexString = HexConverter.Dec2Hex(tempArray[2]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[12] = hexValues[0];  //horse_archery
             Skills[13] = hexValues[1];  //looting
             Skills[14] = hexValues[6];  //trainer
@@ -91,7 +88,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read fourth set of values
             hexString = HexConverter.Dec2Hex(tempArray[3]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[16] = hexValues[4];  //weapon_master
             Skills[17] = hexValues[5];  //shield
             Skills[18] = hexValues[6];  //athletics
@@ -99,7 +96,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read fifth set of values
             hexString = HexConverter.Dec2Hex(tempArray[4]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);            
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);            
             Skills[20] = hexValues[3];  //ironflesh
             Skills[21] = hexValues[4];  //power_strike
             Skills[22] = hexValues[5];  //power_throw
@@ -109,12 +106,9 @@ namespace MB_Decompiler_Library.Objects.Support
         // All known 48 skills (maybe more available)
         private void StartUpAll(string[] tmpArray)// example: 274 131072 0 1 0 0
         {
-            int[] hexValues;
-            string hexString;
-
             //read first set of values (if value is A then set it to 10)
-            hexString = HexConverter.Dec2Hex(tmpArray[0]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            string hexString = HexConverter.Dec2Hex(tmpArray[0]);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out int[] hexValues);
             Skills[0] = hexValues[0];   //persuasion | - - - X - - -
             Skills[1] = hexValues[1];   //reserved_IV | - - - X - - -
             Skills[2] = hexValues[2];   //reserved_III | - - - X - - -
@@ -126,7 +120,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read second set of values
             hexString = HexConverter.Dec2Hex(tmpArray[1]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[8] = hexValues[0];   //tactics | - - - X - - -
             Skills[9] = hexValues[1];   //pathfinding | - - - X - - -
             Skills[10] = hexValues[2];  //spotting | - - - X - - -
@@ -138,7 +132,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read third set of values
             hexString = HexConverter.Dec2Hex(tmpArray[2]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[16] = hexValues[0];  //horse_archery | - - - X - - -
             Skills[17] = hexValues[1];  //looting | - - - X - - -
             Skills[18] = hexValues[2];  //reserved_VIII | - - - X - - -
@@ -150,7 +144,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read fourth set of values
             hexString = HexConverter.Dec2Hex(tmpArray[3]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[24] = hexValues[0];  //reserved_XII
             Skills[25] = hexValues[1];  //reserved_XI
             Skills[26] = hexValues[2];  //reserved_X
@@ -162,7 +156,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read fifth set of values
             hexString = HexConverter.Dec2Hex(tmpArray[4]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[32] = hexValues[0];  //reserved_XVI ?
             Skills[33] = hexValues[1];  //reserved_XV | - - - X - - -
             Skills[34] = hexValues[2];  //reserved_XIV | - - - X - - -
@@ -174,7 +168,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
             //read sixth set of values
             hexString = HexConverter.Dec2Hex(tmpArray[5]);
-            hexValues = HexConverter.ConvertSingleHexCodeToIntArray(hexString);
+            HexConverter.ConvertSingleHexCodeToIntArray(hexString, out hexValues);
             Skills[40] = hexValues[0];  //reserved_XVII
             Skills[41] = hexValues[1];  //reserved_XVIII
 

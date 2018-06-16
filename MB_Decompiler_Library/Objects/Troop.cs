@@ -340,7 +340,8 @@ namespace MB_Decompiler_Library.Objects
         public void SetSkills(string knowledge)
         {
             sk.ReadSkills(knowledge);
-            Skills = sk.Skills;
+            for (int i = 0; i < Skills.Length; i++)
+                Skills[i] = sk.Skills[i];
         }
 
         private void SetFaceCodes(string faceCode)

@@ -31,11 +31,9 @@ namespace importantLib
         public static string Dec2Hex(object decimalIn, bool use16Chars = false)
         {
             string retur = string.Empty;
-
             try
             {
                 string binaryString = string.Empty;
-
                 decimal input = decimal.Parse(decimalIn.ToString());
                 while (input != 0)
                 {
@@ -47,11 +45,10 @@ namespace importantLib
 
                 binaryString = new string('0', (4 - binaryString.Length % 4) % 4) + binaryString;
 
-                int binIndex;
                 for (int i = 0; i <= binaryString.Length - 4; i += 4)
                 {
                     string tmp = binaryString.Substring(i, 4);
-                    binIndex = BIN_VALUES.IndexOf(tmp) / 4;
+                    int binIndex = BIN_VALUES.IndexOf(tmp) / 4;
                     retur += HEX_VALUES[binIndex];
                 }
 
@@ -67,7 +64,6 @@ namespace importantLib
                     MessageBoxIcon.Error
                 );
             }
-
             return retur;
         }
 
@@ -123,13 +119,12 @@ namespace importantLib
             return retur;
         }
 
-        public static int[] ConvertSingleHexCodeToIntArray(string hexCode)
+        public static void ConvertSingleHexCodeToIntArray(string hexCode, out int[] array)
         {
-            int[] vals = new int[hexCode.Length];
+            array = new int[hexCode.Length];
             char[] cc = hexCode.ToCharArray();
-            for (int i = 0; i < cc.Length; i++)
-                vals[i] = ReplaceHexToInt(cc[i]);
-            return vals;
+            for (int i = 0; i < hexCode.Length; i++)
+                array[i] = ReplaceHexToInt(cc[i]);
         }
 
         public static int ReplaceHexToInt(char hexChar)
@@ -138,21 +133,27 @@ namespace importantLib
             if (isNum) return retur;
             switch (hexChar)
             {
+                case 'a':
                 case 'A':
                     retur = 10;
                     break;
+                case 'b':
                 case 'B':
                     retur = 11;
                     break;
+                case 'c':
                 case 'C':
                     retur = 12;
                     break;
+                case 'd':
                 case 'D':
                     retur = 13;
                     break;
+                case 'e':
                 case 'E':
                     retur = 14;
                     break;
+                case 'f':
                 case 'F':
                     retur = 15;
                     break;

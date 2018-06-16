@@ -727,88 +727,93 @@ namespace MB_Decompiler_Library.IO
             return s;
         }
 
-        public List<Skriptum> ReadObjectType(int objectType)
+        public List<Skriptum> ReadObjectType(int objectTypeID)
+        {
+            return ReadObjectType((Skriptum.ObjectType)objectTypeID);
+        }
+
+        public List<Skriptum> ReadObjectType(Skriptum.ObjectType objectType)
         {
             List<Skriptum> skriptums = new List<Skriptum>();
-            if (objectType == (int)Skriptum.ObjectType.SCRIPT)
+            if (objectType == Skriptum.ObjectType.SCRIPT)
                 foreach (Skriptum s in ReadScript())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.MISSION_TEMPLATE)
+            else if (objectType == Skriptum.ObjectType.MISSION_TEMPLATE)
                 foreach (Skriptum s in ReadMissionTemplate())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.PRESENTATION)
+            else if (objectType == Skriptum.ObjectType.PRESENTATION)
                 foreach (Presentation p in ReadPresentation())
                     skriptums.Add(p);
-            else if (objectType == (int)Skriptum.ObjectType.GAME_MENU)
+            else if (objectType == Skriptum.ObjectType.GAME_MENU)
                 foreach (GameMenu g in ReadGameMenu())
                     skriptums.Add(g);
-            else if (objectType == (int)Skriptum.ObjectType.GAME_STRING)
+            else if (objectType == Skriptum.ObjectType.GAME_STRING)
                 foreach (GameString s in ReadString())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.SIMPLE_TRIGGER)
+            else if (objectType == Skriptum.ObjectType.SIMPLE_TRIGGER)
                 foreach (SimpleTrigger t in ReadSimpleTrigger())
                     skriptums.Add(t);
-            else if (objectType == (int)Skriptum.ObjectType.TRIGGER)
+            else if (objectType == Skriptum.ObjectType.TRIGGER)
                 foreach (Trigger t in ReadTrigger())
                     skriptums.Add(t);
-            else if (objectType == (int)Skriptum.ObjectType.INFO_PAGE)
+            else if (objectType == Skriptum.ObjectType.INFO_PAGE)
                 foreach (InfoPage p in ReadInfoPage())
                     skriptums.Add(p);
-            else if (objectType == (int)Skriptum.ObjectType.SOUND)
+            else if (objectType == Skriptum.ObjectType.SOUND)
                 foreach (Sound s in ReadSound())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.QUEST)
+            else if (objectType == Skriptum.ObjectType.QUEST)
                 foreach (Quest q in ReadQuest())
                     skriptums.Add(q);
-            else if (objectType == (int)Skriptum.ObjectType.SCENE)
+            else if (objectType == Skriptum.ObjectType.SCENE)
                 foreach (Scene s in ReadScene())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.SCENE_PROP)
+            else if (objectType == Skriptum.ObjectType.SCENE_PROP)
                 foreach (SceneProp s in ReadSceneProp())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.TABLEAU_MATERIAL)
+            else if (objectType == Skriptum.ObjectType.TABLEAU_MATERIAL)
                 foreach (TableauMaterial t in ReadTableauMaterial())
                     skriptums.Add(t);
-            else if (objectType == (int)Skriptum.ObjectType.MUSIC)
+            else if (objectType == Skriptum.ObjectType.MUSIC)
                 foreach (Music m in ReadMusic())
                     skriptums.Add(m);
-            else if (objectType == (int)Skriptum.ObjectType.MESH)
+            else if (objectType == Skriptum.ObjectType.MESH)
                 foreach (Mesh m in ReadMesh())
                     skriptums.Add(m);
-            else if (objectType == (int)Skriptum.ObjectType.FACTION)
+            else if (objectType == Skriptum.ObjectType.FACTION)
                 foreach (Faction f in ReadFaction())
                     skriptums.Add(f);
-            else if (objectType == (int)Skriptum.ObjectType.MAP_ICON)
+            else if (objectType == Skriptum.ObjectType.MAP_ICON)
                 foreach (MapIcon m in ReadMapIcon())
                     skriptums.Add(m);
-            else if (objectType == (int)Skriptum.ObjectType.ANIMATION)
+            else if (objectType == Skriptum.ObjectType.ANIMATION)
                 foreach (Animation a in ReadAnimation())
                     skriptums.Add(a);
-            else if (objectType == (int)Skriptum.ObjectType.PARTY_TEMPLATE)
+            else if (objectType == Skriptum.ObjectType.PARTY_TEMPLATE)
                 foreach (PartyTemplate p in ReadPartyTemplate())
                     skriptums.Add(p);
-            else if (objectType == (int)Skriptum.ObjectType.DIALOG)
+            else if (objectType == Skriptum.ObjectType.DIALOG)
                 foreach (Dialog d in ReadDialog())
                     skriptums.Add(d);
-            else if (objectType == (int)Skriptum.ObjectType.PARTY)
+            else if (objectType == Skriptum.ObjectType.PARTY)
                 foreach (Party p in ReadParty())
                     skriptums.Add(p);
-            else if (objectType == (int)Skriptum.ObjectType.SKILL)
+            else if (objectType == Skriptum.ObjectType.SKILL)
                 foreach (Skill s in ReadSkill())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.POST_FX)
+            else if (objectType == Skriptum.ObjectType.POST_FX)
                 foreach (PostFX p in ReadPostFX())
                     skriptums.Add(p);
-            else if (objectType == (int)Skriptum.ObjectType.PARTICLE_SYSTEM)
+            else if (objectType == Skriptum.ObjectType.PARTICLE_SYSTEM)
                 foreach (ParticleSystem p in ReadParticleSystem())
                     skriptums.Add(p);
-            else if (objectType == (int)Skriptum.ObjectType.SKIN)
+            else if (objectType == Skriptum.ObjectType.SKIN)
                 foreach (Skin s in ReadSkin())
                     skriptums.Add(s);
-            else if (objectType == (int)Skriptum.ObjectType.TROOP)
+            else if (objectType == Skriptum.ObjectType.TROOP)
                 foreach (Troop t in ReadTroop())
                     skriptums.Add(t);
-            else if (objectType == (int)Skriptum.ObjectType.ITEM)
+            else if (objectType == Skriptum.ObjectType.ITEM)
                 foreach (Item itm in ReadItem())
                     skriptums.Add(itm);
             return skriptums;
@@ -980,23 +985,22 @@ namespace MB_Decompiler_Library.IO
 
         public Troop[] ReadTroop()
         {
-            string[] tempus = new string[7];
-            Troop[] troops;
+            List<Troop> troops = new List<Troop>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int maxTroops = int.Parse(sr.ReadLine().TrimEnd());
-                troops = new Troop[maxTroops];
                 objectsExpected += maxTroops;
                 for (int i = 0; i < maxTroops; i++)
                 {
-                    for (int j = 0; j < 7; j++)
+                    string[] tempus = new string[7];
+                    for (int j = 0; j < tempus.Length; j++)
                         tempus[j] = sr.ReadLine();
-                    troops[i] = new Troop(tempus);
+                    troops.Add(new Troop(tempus));
                 }
             }
-            ObjectsRead += troops.Length;
-            return troops;
+            ObjectsRead += troops.Count;
+            return troops.ToArray();
         }
 
         public Item[] ReadItem()
@@ -1004,13 +1008,12 @@ namespace MB_Decompiler_Library.IO
             int i = -1;
             string tempus;
             List<string> lines = new List<string>();
-            Item[] items;
+            List<Item> items = new List<Item>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int maxItems = int.Parse(sr.ReadLine());
                 objectsExpected += maxItems;
-                items = new Item[maxItems];
                 while (!sr.EndOfStream)
                 {
                     tempus = sr.ReadLine();
@@ -1028,13 +1031,13 @@ namespace MB_Decompiler_Library.IO
                                 lines.Add(tempus);
                             tempus = sr.ReadLine().TrimStart();
                         } while (!tempus.Equals(string.Empty) || lines.Count < 3);
-                        items[i] = new Item(lines.ToArray());
+                        items.Add(new Item(lines.ToArray()));
                     }
                 }
             }
 
-            ObjectsRead += items.Length;
-            return items;
+            ObjectsRead += items.Count;
+            return items.ToArray();
         }
 
         public GameString[] ReadString()
