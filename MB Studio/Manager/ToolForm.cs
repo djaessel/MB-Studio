@@ -445,7 +445,7 @@ namespace MB_Studio.Manager
                 id = Prefix + id;
             for (int i = 0; i < typeSelect_lb.Items.Count; i++)
             {
-                if (typeSelect_lb.Items[i].Equals(id))
+                if (typeSelect_lb.Items[i].ToString().Equals(id))
                 {
                     isInList = true;
                     i = typeSelect_lb.Items.Count;

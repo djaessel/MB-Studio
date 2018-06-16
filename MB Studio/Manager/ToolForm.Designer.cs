@@ -87,7 +87,7 @@ namespace MB_Studio.Manager
             this.save_btn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.save_btn.Size = new System.Drawing.Size(95, 23);
             this.save_btn.TabIndex = 34;
-            this.save_btn.Text = "SAVE";
+            this.save_btn.Text = "CREATE";
             this.save_btn.UseVisualStyleBackColor = false;
             this.save_btn.Click += new System.EventHandler(this.Save_btn_Click);
             // 
