@@ -1,9 +1,9 @@
 ﻿using importantLib;
+using MB_Decompiler_Library.Objects.Support;
 using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Decompiler_Library.Objects
 {
@@ -18,6 +18,292 @@ namespace MB_Decompiler_Library.Objects
 
         private static List<HeaderVariable> headerFlags = null;
         private static SkillHunter sk = new SkillHunter();
+
+        #endregion
+
+        #region Properties
+
+        #region General
+
+        public static bool ShortProficies { get; private set; } = false;
+
+        public string Name { get; private set; }
+        public string PluralName { get; private set; }
+
+        public string Flags { get; private set; }
+        public int FlagsGZ { get; private set; }
+
+        public string DialogImage { get; private set; }
+        //public int DialogImageGZ { get; private set; }
+
+        public string SceneCode { get; private set; }
+        public ulong SceneCodeGZ { get; private set; }
+
+        public string Reserved { get; private set; }
+        public int ReservedGZ { get; private set; }
+
+        public int FactionID { get; set; }
+
+        public List<int> Items { get; private set; } = new List<int>();
+        public List<ulong> ItemFlags { get; private set; } = new List<ulong>();
+
+        #endregion
+
+        #region UpgradeTroop
+
+        public int UpgradeTroop1 { get; set; }
+
+        public int UpgradeTroop2 { get; set; }
+
+        public string UpgradeTroop1ErrorCode { get; private set; }
+
+        public string UpgradeTroop2ErrorCode { get; private set; }
+
+        #endregion
+
+        #region Faces
+
+        public string Face1 { get; private set; }
+
+        public string Face2 { get; private set; }
+
+        #endregion
+
+        #region Skills
+
+        public int[] Skills { get; private set; } = new int[42];
+
+        public int Persuasion
+        {
+            get { return Skills[0]; }
+            set { Skills[0] = value; }
+        }
+
+        public int PrisonerManagement
+        {
+            get { return Skills[1]; }
+            set { Skills[1] = value; }
+        }
+
+        public int Leadership
+        {
+            get { return Skills[2]; }
+            set { Skills[2] = value; }
+        }
+
+        public int Trade
+        {
+            get { return Skills[3]; }
+            set { Skills[3] = value; }
+        }
+
+        public int Tactics
+        {
+            get { return Skills[4]; }
+            set { Skills[4] = value; }
+        }
+
+        public int Pathfinding
+        {
+            get { return Skills[5]; }
+            set { Skills[5] = value; }
+        }
+
+        public int Spotting
+        {
+            get { return Skills[6]; }
+            set { Skills[6] = value; }
+        }
+
+        public int InventoryManagement
+        {
+            get { return Skills[7]; }
+            set { Skills[7] = value; }
+        }
+
+        public int WoundTreatment
+        {
+            get { return Skills[8]; }
+            set { Skills[8] = value; }
+        }
+
+        public int Surgery
+        {
+            get { return Skills[9]; }
+            set { Skills[9] = value; }
+        }
+
+        public int FirstAid
+        {
+            get { return Skills[10]; }
+            set { Skills[10] = value; }
+        }
+
+        public int Engineer
+        {
+            get { return Skills[11]; }
+            set { Skills[11] = value; }
+        }
+
+        public int HorseArchery
+        {
+            get { return Skills[12]; }
+            set { Skills[12] = value; }
+        }
+
+        public int Looting
+        {
+            get { return Skills[13]; }
+            set { Skills[13] = value; }
+        }
+
+        public int Training
+        {
+            get { return Skills[14]; }
+            set { Skills[14] = value; }
+        }
+
+        public int Tracking
+        {
+            get { return Skills[15]; }
+            set { Skills[15] = value; }
+        }
+
+        public int WeaponMaster
+        {
+            get { return Skills[16]; }
+            set { Skills[16] = value; }
+        }
+
+        public int Shield
+        {
+            get { return Skills[17]; }
+            set { Skills[17] = value; }
+        }
+
+        public int Athletics
+        {
+            get { return Skills[18]; }
+            set { Skills[18] = value; }
+        }
+
+        public int Riding
+        {
+            get { return Skills[19]; }
+            set { Skills[19] = value; }
+        }
+
+        public int Ironflesh
+        {
+            get { return Skills[20]; }
+            set { Skills[20] = value; }
+        }
+
+        public int PowerStrike
+        {
+            get { return Skills[21]; }
+            set { Skills[21] = value; }
+        }
+
+        public int PowerThrow
+        {
+            get { return Skills[22]; }
+            set { Skills[22] = value; }
+        }
+
+        public int PowerDraw
+        {
+            get { return Skills[23]; }
+            set { Skills[23] = value; }
+        }
+
+        #endregion
+
+        #region Attributes
+
+        public int[] Attributes { get; private set; } = new int[5];
+
+        public int Strength
+        {
+            get { return Attributes[0]; }
+            set { Attributes[0] = value; }
+        }
+
+        public int Agility
+        {
+            get { return Attributes[1]; }
+            set { Attributes[1] = value; }
+        }
+
+        public int Intelligence
+        {
+            get { return Attributes[2]; }
+            set { Attributes[2] = value; }
+        }
+
+        public int Charisma
+        {
+            get { return Attributes[3]; }
+            set { Attributes[3] = value; }
+        }
+
+        public int Level
+        {
+            get { return Attributes[4]; }
+            set { Attributes[4] = value; }
+        }
+
+        #endregion
+
+        #region Proficiencies
+
+        public string ProficienciesSC { get; private set; }
+
+        public int[] Proficiencies { get; private set; } = new int[7];
+
+        public int OneHanded
+        {
+            get { return Proficiencies[0]; }
+            set { Proficiencies[0] = value; }
+        }
+
+        public int TwoHanded
+        {
+            get { return Proficiencies[1]; }
+            set { Proficiencies[1] = value; }
+        }
+
+        public int Polearm
+        {
+            get { return Proficiencies[2]; }
+            set { Proficiencies[2] = value; }
+        }
+
+        public int Archery
+        {
+            get { return Proficiencies[3]; }
+            set { Proficiencies[3] = value; }
+        }
+
+        public int Crossbow
+        {
+            get { return Proficiencies[4]; }
+            set { Proficiencies[4] = value; }
+        }
+
+        public int Throwing
+        {
+            get { return Proficiencies[5]; }
+            set { Proficiencies[5] = value; }
+        }
+
+        public int Firearm
+        {
+            get { return Proficiencies[6]; }
+            set { Proficiencies[6] = value; }
+        }
+
+        #endregion
 
         #endregion
 
@@ -470,21 +756,23 @@ namespace MB_Decompiler_Library.Objects
                 else if (value[curIdx] != '0')
                 {
                     List<HeaderVariable> list = new List<HeaderVariable>();
-                    uint x_tmp = uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString()), x_counter = 0;
+                    ulong x_counter = 0;
+                    ulong x_tmp = ulong.Parse(HexConverter.Hex2Dec(value[curIdx].ToString()).ToString());
                     if (tmp.Length > 1)
                     {
                         foreach (HeaderVariable hVar in headerFlags)
-                            if (hVar.VariableValue.TrimStart('0').Length == value.Substring(value.Length - tmp.Length).Length)
+                            if (hVar.VariableValue.TrimStart('0').Length == value.Substring(curIdx).Length)
                                 list.Add(hVar);
                         list.Reverse();
                         foreach (HeaderVariable variable in list)
                         {
                             if (x_counter < x_tmp)
                             {
-                                uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
-                                if (x_tmp2 <= x_tmp && (x_tmp2 + x_counter) <= x_tmp)// vielleicht nochmal überprüfen irgendwanm
+                                ulong x_tmp2 = ulong.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
+                                ulong ttttt = x_tmp2 + x_counter;
+                                if (x_tmp2 <= x_tmp && ttttt <= x_tmp)// vielleicht nochmal überprüfen irgendwanm
                                 {
-                                    x_counter += x_tmp2;
+                                    x_counter = ttttt;
                                     if (!retur.Contains(variable.VariableName))
                                         retur += "|" + variable.VariableName;
                                 }
@@ -525,292 +813,6 @@ namespace MB_Decompiler_Library.Objects
 
             return retur;
         }
-
-        #endregion
-
-        #region Properties
-
-        #region General
-
-        public static bool ShortProficies { get; private set; } = false;
-
-        public string Name { get; private set; }
-        public string PluralName { get; private set; }
-
-        public string Flags { get; private set; }
-        public int FlagsGZ { get; private set; }
-
-        public string DialogImage { get; private set; }
-        //public int DialogImageGZ { get; private set; }
-
-        public string SceneCode { get; private set; }
-        public ulong SceneCodeGZ { get; private set; }
-
-        public string Reserved { get; private set; }
-        public int ReservedGZ { get; private set; }
-
-        public int FactionID { get; set; }
-
-        public List<int> Items { get; private set; } = new List<int>();
-        public List<ulong> ItemFlags { get; private set; } = new List<ulong>();
-
-        #endregion
-
-        #region UpgradeTroop
-
-        public int UpgradeTroop1 { get; set; }
-
-        public int UpgradeTroop2 { get; set; }
-
-        public string UpgradeTroop1ErrorCode { get; private set; }
-
-        public string UpgradeTroop2ErrorCode { get; private set; }
-
-        #endregion
-
-        #region Faces
-
-        public string Face1 { get; private set; }
-
-        public string Face2 { get; private set; }
-
-        #endregion
-
-        #region Skills
-
-        public int[] Skills { get; private set; } = new int[42];
-
-        public int Persuasion
-        {
-            get { return Skills[0]; }
-            set { Skills[0] = value; }
-        }
-
-        public int PrisonerManagement
-        {
-            get { return Skills[1]; }
-            set { Skills[1] = value; }
-        }
-
-        public int Leadership
-        {
-            get { return Skills[2]; }
-            set { Skills[2] = value; }
-        }
-
-        public int Trade
-        {
-            get { return Skills[3]; }
-            set { Skills[3] = value; }
-        }
-
-        public int Tactics
-        {
-            get { return Skills[4]; }
-            set { Skills[4] = value; }
-        }
-
-        public int Pathfinding
-        {
-            get { return Skills[5]; }
-            set { Skills[5] = value; }
-        }
-
-        public int Spotting
-        {
-            get { return Skills[6]; }
-            set { Skills[6] = value; }
-        }
-
-        public int InventoryManagement
-        {
-            get { return Skills[7]; }
-            set { Skills[7] = value; }
-        }
-
-        public int WoundTreatment
-        {
-            get { return Skills[8]; }
-            set { Skills[8] = value; }
-        }
-
-        public int Surgery
-        {
-            get { return Skills[9]; }
-            set { Skills[9] = value; }
-        }
-
-        public int FirstAid
-        {
-            get { return Skills[10]; }
-            set { Skills[10] = value; }
-        }
-
-        public int Engineer
-        {
-            get { return Skills[11]; }
-            set { Skills[11] = value; }
-        }
-
-        public int HorseArchery
-        {
-            get { return Skills[12]; }
-            set { Skills[12] = value; }
-        }
-
-        public int Looting
-        {
-            get { return Skills[13]; }
-            set { Skills[13] = value; }
-        }
-
-        public int Training
-        {
-            get { return Skills[14]; }
-            set { Skills[14] = value; }
-        }
-
-        public int Tracking
-        {
-            get { return Skills[15]; }
-            set { Skills[15] = value; }
-        }
-
-        public int WeaponMaster
-        {
-            get { return Skills[16]; }
-            set { Skills[16] = value; }
-        }
-
-        public int Shield
-        {
-            get { return Skills[17]; }
-            set { Skills[17] = value; }
-        }
-
-        public int Athletics
-        {
-            get { return Skills[18]; }
-            set { Skills[18] = value; }
-        }
-
-        public int Riding
-        {
-            get { return Skills[19]; }
-            set { Skills[19] = value; }
-        }
-
-        public int Ironflesh
-        {
-            get { return Skills[20]; }
-            set { Skills[20] = value; }
-        }
-
-        public int PowerStrike
-        {
-            get { return Skills[21]; }
-            set { Skills[21] = value; }
-        }
-
-        public int PowerThrow
-        {
-            get { return Skills[22]; }
-            set { Skills[22] = value; }
-        }
-
-        public int PowerDraw
-        {
-            get { return Skills[23]; }
-            set { Skills[23] = value; }
-        }
-
-        #endregion
-
-        #region Attributes
-
-        public int[] Attributes { get; private set; } = new int[5];
-
-        public int Strength
-        {
-            get { return Attributes[0]; }
-            set { Attributes[0] = value; }
-        }
-
-        public int Agility
-        {
-            get { return Attributes[1]; }
-            set { Attributes[1] = value; }
-        }
-
-        public int Intelligence
-        {
-            get { return Attributes[2]; }
-            set { Attributes[2] = value; }
-        }
-
-        public int Charisma
-        {
-            get { return Attributes[3]; }
-            set { Attributes[3] = value; }
-        }
-
-        public int Level
-        {
-            get { return Attributes[4]; }
-            set { Attributes[4] = value; }
-        }
-
-        #endregion
-
-        #region Proficiencies
-
-        public string ProficienciesSC { get; private set; }
-
-        public int[] Proficiencies { get; private set; } = new int[7];
-
-        public int OneHanded
-        {
-            get { return Proficiencies[0]; }
-            set { Proficiencies[0] = value; }
-        }
-
-        public int TwoHanded
-        {
-            get { return Proficiencies[1]; }
-            set { Proficiencies[1] = value; }
-        }
-
-        public int Polearm
-        {
-            get { return Proficiencies[2]; }
-            set { Proficiencies[2] = value; }
-        }
-
-        public int Archery
-        {
-            get { return Proficiencies[3]; }
-            set { Proficiencies[3] = value; }
-        }
-
-        public int Crossbow
-        {
-            get { return Proficiencies[4]; }
-            set { Proficiencies[4] = value; }
-        }
-
-        public int Throwing
-        {
-            get { return Proficiencies[5]; }
-            set { Proficiencies[5] = value; }
-        }
-
-        public int Firearm
-        {
-            get { return Proficiencies[6]; }
-            set { Proficiencies[6] = value; }
-        }
-
-        #endregion
 
         #endregion
     }

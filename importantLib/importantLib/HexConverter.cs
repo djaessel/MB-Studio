@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -37,7 +36,7 @@ namespace importantLib
                 decimal input = decimal.Parse(decimalIn.ToString());
                 while (input != 0)
                 {
-                    decimal tmpX = Conversion.Int(input / 2M);
+                    ulong tmpX = (ulong)(input / 2);//Conversion.Int(input / 2M);
                     decimal zeroOrOne = input - 2 * tmpX;
                     binaryString = zeroOrOne + binaryString;
                     input = tmpX;
@@ -48,7 +47,7 @@ namespace importantLib
                 for (int i = 0; i <= binaryString.Length - 4; i += 4)
                 {
                     string tmp = binaryString.Substring(i, 4);
-                    int binIndex = BIN_VALUES.IndexOf(tmp) / 4;
+                    int binIndex = IndexOfBinValues(tmp);
                     retur += HEX_VALUES[binIndex];
                 }
 
@@ -70,7 +69,6 @@ namespace importantLib
         public static object Hex2Dec(string hexString, bool use16Char = false)
         {
             ulong retur = 0;
-
             try
             {
                 if (hexString.StartsWith("0x"))
@@ -115,7 +113,6 @@ namespace importantLib
                     MessageBoxIcon.Error
                 );
             }
-
             return retur;
         }
 
@@ -178,6 +175,20 @@ namespace importantLib
         public static object Hex2Dec_16CHARS(string hexString)
         {
             return Hex2Dec(hexString, true);
+        }
+
+        private static int IndexOfBinValues(string binText)
+        {
+            int ret = -1;
+            for (int i = 0; i < BIN_VALUES.Length; i++)
+            {
+                if (BIN_VALUES.Substring(i * 4, 4).Equals(binText))
+                {
+                    ret = i;
+                    i = BIN_VALUES.Length;
+                }
+            }
+            return ret;
         }
 
         private static string RightS(string sText, int nLen) // Method Right() in VB.NET nachgebaut
