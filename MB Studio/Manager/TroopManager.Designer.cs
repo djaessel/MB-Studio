@@ -210,6 +210,14 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
             // 
+            // pluralNameTranslation_lbl
+            // 
+            this.pluralNameTranslation_lbl.Visible = true;
+            // 
+            // pluralNameTranslation_txt
+            // 
+            this.pluralNameTranslation_txt.Visible = true;
+            // 
             // min_btn
             // 
             this.min_btn.FlatAppearance.BorderSize = 0;

@@ -1,14 +1,14 @@
 ﻿using importantLib;
 using MB_Decompiler_Library.IO;
+using MB_Decompiler_Library.Objects;
+using MB_Studio.Manager.Support.External;
+using MB_Decompiler_Library.Objects.Support;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects;
 using System.Collections.Specialized;
-using MB_Studio.Manager.Support.External;
-using MB_Decompiler_Library.Objects.Support;
 
 namespace MB_Studio.Manager
 {
@@ -188,8 +188,6 @@ namespace MB_Studio.Manager
 
             #region GROUP1 - Flags & Guarantee
 
-            //string skin = "0000000" + HexConverter.Dec2Hex(troop.FlagsGZ).Substring(7);
-            //skins_lb.SelectedIndex = int.Parse(HexConverter.Hex2Dec(skin).ToString());
             skins_lb.SelectedIndex = troop.FlagsGZ & 0xF;
             if (troop.FlagsGZ > 0)
             {

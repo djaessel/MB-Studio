@@ -46,12 +46,12 @@
 
         public Skriptum(string sIdName, ObjectType type)
         {
+            ObjectTyp = type;
+
             sIdName = sIdName.Trim();
             if (sIdName.StartsWith(Prefix))
                 sIdName = sIdName.Substring(Prefix.Length);
-
             ID = sIdName;
-            ObjectTyp = type;
         }
 
     }

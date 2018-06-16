@@ -299,12 +299,7 @@ namespace MB_Studio.Manager
             }
 
             for (int i = 0; i < types.Count; i++)
-            {
-                string id = types[i].ID;
-                if (!ContainsPrefix(id))
-                    id = Prefix + id;
-                typesIDs.Add(id);
-            }
+                typesIDs.Add(Prefix + types[i].ID);
 
             foreach (Control c in toolPanel.Controls)
                 if (c.Name.Split('_')[0].Equals("showGroup"))
@@ -323,15 +318,6 @@ namespace MB_Studio.Manager
         protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
         {
             throw new NotImplementedException();
-        }
-
-        protected bool ContainsPrefix(string text)
-        {
-            bool b = false;
-            if (text.Contains(Prefix))
-                if (text.Substring(0, Prefix.Length).Equals(Prefix))
-                    b = !b;//true
-            return b;
         }
 
         #endregion
@@ -424,7 +410,7 @@ namespace MB_Studio.Manager
 
         private void Save_btn_Click(object sender, EventArgs e)
         {
-            if (!ContainsPrefix(id_txt.Text))
+            if (!id_txt.Text.StartsWith(Prefix))
                 id_txt.Text = Prefix + id_txt.Text;
 
             List<string> list = new List<string> {
@@ -455,7 +441,7 @@ namespace MB_Studio.Manager
         {
             bool isInList = false;
             string id = id_txt.Text.Trim();
-            if (id.IndexOf(Prefix) != 0)
+            if (!id.StartsWith(Prefix))
                 id = Prefix + id;
             for (int i = 0; i < typeSelect_lb.Items.Count; i++)
             {
@@ -485,25 +471,25 @@ namespace MB_Studio.Manager
 
         protected void SearchForContaining(ListBox lb, List<Skriptum> orgList, string searchText, List<Skriptum> usedList = null, bool addID = false, bool addNew = false)
         {
-            List<Skriptum> ddd;
+            List<Skriptum> list;
             if (usedList == null)
-                ddd = orgList;
+                list = orgList;
             else
-                ddd = usedList;
+                list = usedList;
             lb.Items.Clear();
             bool defaultList = searchText.Contains("Search ...") || searchText.Length == 0;
             if (defaultList && addNew)
                 lb.Items.Add("New");
             if (!int.TryParse(searchText, out int id))
             {
-                foreach (Skriptum type in ddd)
+                foreach (Skriptum type in list)
                     if ((type.ID.Contains(searchText) || type.ID.Contains(searchText)) || defaultList)
                         lb.Items.Add(((addID) ? orgList.IndexOf(type) + " - " : string.Empty) + type.Prefix + type.ID);
             }
             else if (id < orgList.Count && id >= 0)
             {
                 Skriptum skriptum = orgList[id];
-                if (ddd.Contains(skriptum))
+                if (list.Contains(skriptum))
                     lb.Items.Add(((addID) ? id + " - " : string.Empty) + skriptum.Prefix + skriptum.ID);
             }
         }
@@ -884,9 +870,8 @@ namespace MB_Studio.Manager
         protected int GetIndexOfTypeByID(string id)
         {
             int index = -1;
-            if (types.Count != 0)
-                if (!types[0].ID.StartsWith(Prefix))//&& id.StartsWith(Prefix)
-                    id = id.Substring(id.IndexOf('_') + 1);
+            if (id.StartsWith(Prefix))
+                id = id.Substring(Prefix.Length);
             for (int i = 0; i < types.Count; i++)
             {
                 if (types[i].ID.Equals(id))

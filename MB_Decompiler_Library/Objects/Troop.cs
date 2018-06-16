@@ -327,7 +327,6 @@ namespace MB_Decompiler_Library.Objects
                 SetFaceCodes(values[5]);
                 return;
             }
-            //else if (values.Length == 0)
             SendErrorMessage();
         }
 
