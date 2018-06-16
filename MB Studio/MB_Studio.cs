@@ -19,7 +19,7 @@ namespace MB_Studio
 {
     public partial class MB_Studio : SpecialForm
     {
-        public static bool RunAutoUpdate { get; private set; } = false;
+        public static bool RunAutoUpdate { get; private set; } = !File.Exists("debugMode.enabled");
 
         #region Attributes
 
