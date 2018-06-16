@@ -134,7 +134,8 @@ namespace importantLib
 
         public static int ReplaceHexToInt(char hexChar)
         {
-            int retur = 0;
+            bool isNum = int.TryParse(hexChar.ToString(), out int retur);
+            if (isNum) return retur;
             switch (hexChar)
             {
                 case 'A':

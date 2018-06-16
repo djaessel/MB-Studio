@@ -17,6 +17,7 @@ namespace MB_Decompiler_Library.Objects
         private const string ERROR_MSG_2 = "Too few lines found in troop init! Check your files!";
 
         private static List<HeaderVariable> headerFlags = null;
+        private static SkillHunter sk = new SkillHunter();
 
         #endregion
 
@@ -338,7 +339,6 @@ namespace MB_Decompiler_Library.Objects
 
         public void SetSkills(string knowledge)
         {
-            SkillHunter sk = new SkillHunter();
             sk.ReadSkills(knowledge);
             Skills = sk.Skills;
         }
@@ -509,7 +509,7 @@ namespace MB_Decompiler_Library.Objects
                 retur = retur.Substring(1);
 
             string[] tmpS = retur.Split('|');
-            SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
+            SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
             retur = string.Empty;
             int minusOne = tmpS.Length - 1;
             for (int i = 0; i < tmpS.Length; i++)

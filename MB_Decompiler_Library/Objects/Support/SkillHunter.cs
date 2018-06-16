@@ -33,6 +33,14 @@ namespace MB_Decompiler_Library.Objects.Support
             InitialiseArrays();
         }
 
+        public void ReadSkills(string skillLine)
+        {
+            ResetSkillArray();
+            skillLine = skillLine.Trim();
+            //StartUpDefault(skillLine.Split());//only 24 skills
+            StartUpAll(skillLine.Split());//all skills (48 - are there more?)
+        }
+
         private void InitialiseArrays()
         {
             for (int i = 0; i < Skillnames.Length; i++)
@@ -44,23 +52,14 @@ namespace MB_Decompiler_Library.Objects.Support
         private void ResetSkillArray()
         {
             for (int i = 0; i < Skills.Length; i++)
-                Skills[i] = -1;
-        }
-
-        public void ReadSkills(string skillLine)
-        {
-            ResetSkillArray();
-            skillLine = skillLine.Trim();
-            //StartUpDefault(skillLine);//only 24 skills
-            StartUpAll(skillLine);//all skills (48 - are there more?)
+                Skills[i] = 0;//-1;
         }
 
         // Only the default 24 Skills
-        private void StartUpDefault(string skillLine)
+        private void StartUpDefault(string[] tempArray)// example: 274 131072 0 1 0 0
         {
             int[] hexValues;
             string hexString;
-            string[] tempArray = skillLine.Split();// example: 274 131072 0 1 0 0
 
             //read first set of values (if value is A then set it to 10)
             hexString = HexConverter.Dec2Hex(tempArray[0]);
@@ -108,11 +107,10 @@ namespace MB_Decompiler_Library.Objects.Support
         }
 
         // All known 48 skills (maybe more available)
-        private void StartUpAll(string skillLine)
+        private void StartUpAll(string[] tmpArray)// example: 274 131072 0 1 0 0
         {
             int[] hexValues;
             string hexString;
-            string[] tmpArray = skillLine.Split();// example: 274 131072 0 1 0 0
 
             //read first set of values (if value is A then set it to 10)
             hexString = HexConverter.Dec2Hex(tmpArray[0]);
@@ -180,9 +178,7 @@ namespace MB_Decompiler_Library.Objects.Support
             Skills[40] = hexValues[0];  //reserved_XVII
             Skills[41] = hexValues[1];  //reserved_XVIII
 
-            if (hexString.Length < 3) return;
-
-            if (hexString.Substring(2).Replace("0", string.Empty).Length == 0) return;
+            if (hexString.Length <= 2) return;
 
             Skills[42] = hexValues[2];  //reserved_XIX ???
             Skills[43] = hexValues[3];  //reserved_XX ???
@@ -196,7 +192,7 @@ namespace MB_Decompiler_Library.Objects.Support
 
         #region Useful Methods
 
-        public static void RemoveItemDoublesFromArray(ref string[] array)
+        public static void RemoveItemDuplicatesFromArray(ref string[] array)
         {
             List<string> retList = new List<string>();
             foreach (string s in array)
@@ -205,7 +201,7 @@ namespace MB_Decompiler_Library.Objects.Support
             array = retList.ToArray();
         }
 
-        public static void RemoveItemDoublesFromList(ref List<string> list)
+        public static void RemoveItemDuplicatesFromList(ref List<string> list)
         {
             List<string> retList = new List<string>();
             foreach (string s in list)

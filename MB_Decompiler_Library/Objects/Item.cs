@@ -395,7 +395,7 @@ namespace MB_Decompiler_Library.Objects
                 retur = retur.Substring(1);
 
             string[] tmpS = retur.Split('|');
-            SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
+            SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
             retur = string.Empty;
             for (int i = 0; i < tmpS.Length; i++)
             {
@@ -502,7 +502,7 @@ namespace MB_Decompiler_Library.Objects
                 retur = retur.Substring(1);
 
             string[] tmpS = retur.Split('|');
-            SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
+            SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
             retur = string.Empty;
             for (int i = 0; i < tmpS.Length; i++)
             {
@@ -557,7 +557,7 @@ namespace MB_Decompiler_Library.Objects
             {
                 retur = retur.Substring(1);
                 string[] tmpS = retur.Split('|');
-                SkillHunter.RemoveItemDoublesFromArray(ref tmpS);
+                SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
                 retur = string.Empty;
                 for (int i = 0; i < tmpS.Length; i++)
                 {

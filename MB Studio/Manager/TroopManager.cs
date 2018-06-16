@@ -233,26 +233,18 @@ namespace MB_Studio.Manager
 
             #region GROUP3 - Items
 
-            //if (Has3DView)
-            //    openBrfManager.Troop3DPreviewClearData();
-
             IsDataLoaded = false;
 
             foreach (int itemID in troop.Items)
             {
                 Item itemX = (Item)itemsRList[itemID];
                 AddItemToInventarComboboxByKind(itemID, itemX.Prefix + itemX.ID);
-                //if (Has3DView)
-                //    SetupTroopItemBone(itemX);
                 usedItems_lb.Items.Add(itemID + " - " + itemX.Prefix + itemX.ID);
             }
 
             inventoryItemFlags = troop.ItemFlags;
 
             SelectFirstInventarComboBoxItems();
-
-            //if (Has3DView)
-            //    openBrfManager.Troop3DPreviewShow();
 
             #endregion
 
