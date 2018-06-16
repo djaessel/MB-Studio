@@ -768,11 +768,13 @@ namespace MB_Decompiler_Library.Objects
                         {
                             if (x_counter < x_tmp)
                             {
-                                ulong x_tmp2 = ulong.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
+                                string valre = variable.VariableValue.Trim('0');
+                                valre = HexConverter.Hex2Dec(valre).ToString();
+                                ulong x_tmp2 = ulong.Parse(valre);
                                 ulong ttttt = x_tmp2 + x_counter;
                                 if (x_tmp2 <= x_tmp && ttttt <= x_tmp)// vielleicht nochmal überprüfen irgendwanm
                                 {
-                                    x_counter = ttttt;
+                                    x_counter += x_tmp2;
                                     if (!retur.Contains(variable.VariableName))
                                         retur += "|" + variable.VariableName;
                                 }

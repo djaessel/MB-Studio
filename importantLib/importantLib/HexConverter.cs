@@ -99,7 +99,7 @@ namespace importantLib
                             adder *= TWO_TO_THE_49TH_POWER;
                         }
 
-                        adder *= (2ul ^ power);
+                        adder *= (ulong)Math.Pow(2d, power);
                         retur += adder;
                     }
                 }
