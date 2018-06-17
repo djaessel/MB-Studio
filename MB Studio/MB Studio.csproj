@@ -149,6 +149,9 @@
       <DependentUpon>QuestManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\ScriptCommander.cs" />
+    <None Include="debugMode.enabled">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">
       <SubType>Form</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
