@@ -33,9 +33,6 @@ namespace MB_Studio.Manager
             MaxCharactersInDocument = 0,
         };
 
-        public ScriptCommander() { }
-
-
         public void LoadManagers()
         {
             if (!Directory.Exists(ScriptsFolder)) return;

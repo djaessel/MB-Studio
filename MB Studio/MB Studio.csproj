@@ -149,30 +149,6 @@
       <DependentUpon>QuestManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\ScriptCommander.cs" />
-    <None Include="Manager\Scripts\Example\Optional\Example.AddFromOtherMod.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Optional\Example.ClickEvents.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Optional\Example.GUI.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Optional\Example.OpenBrf.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Required\Example.Loading.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Required\Example.Save.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Required\Example.Setup.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Required\Example.Translation.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">
       <SubType>Form</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -456,12 +432,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
-    <None Include="Manager\Scripts\Example\Example.Designer.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Manager\Scripts\Example\Example.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

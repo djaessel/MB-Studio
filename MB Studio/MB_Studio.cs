@@ -747,17 +747,16 @@ namespace MB_Studio
 
             // VORERST // - AddRange later with optimized file names(?)
             projectFiles_lb.Items.Add("Troops");
-            projectFiles_lb.Items.Add("Party Templates");
+            projectFiles_lb.Items.Add("PartyTemplates");
             projectFiles_lb.Items.Add("Parties");
             projectFiles_lb.Items.Add("Menus");
             projectFiles_lb.Items.Add("Items");
-            projectFiles_lb.Items.Add("Info Pages");
             projectFiles_lb.Items.Add("Skills");
             // VORERST //
             // NEW SOLUTION - WIP //
             scriptCommander.LoadManagers();
             foreach (ToolForm cm in scriptCommander.CustomManagers)
-                projectFiles_lb.Items.Add(cm.GetType().Name.Replace("Manager", string.Empty));
+                projectFiles_lb.Items.Add(cm.GetType().Name.Replace("Manager", "s"));
             // NEW SOLUTION - WIP //
         }
 
