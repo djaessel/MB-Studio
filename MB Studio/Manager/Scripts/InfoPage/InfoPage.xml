@@ -7,15 +7,15 @@
   <!-- C# Scripts -->
 	<Scripts>
     <!-- Required -->
-		<Script name="Loading" src="\Required\InfoPage.Loading.cs" required="true" />
-		<Script name="Setup" src="\Required\InfoPage.Setup.cs" required="true" />
-		<Script name="Save" src="\Required\InfoPage.Save.cs" required="true" />
-		<Script name="Translation" src="\Required\InfoPage.Translation.cs" required="true" />
+		<Script name="Loading" src="\Required\Loading.cs" required="true" />
+		<Script name="Setup" src="\Required\Setup.cs" required="true" />
+		<Script name="Save" src="\Required\Save.cs" required="true" />
+		<Script name="Translation" src="\Required\Translation.cs" required="true" />
     <!-- Required -->
     <!-- Optional -->
-		<Script name="GUI" src="\Optional\InfoPage.GUI.cs" required="false" />
-		<Script name="ClickEvents" src="\Optional\InfoPage.ClickEvents.cs" required="false" />
-		<Script name="AddFromOtherMod" src="\Optional\InfoPage.AddFromOtherMod.cs" required="false" />
+		<Script name="GUI" src="\Optional\GUI.cs" required="false" />
+		<Script name="ClickEvents" src="\Optional\ClickEvents.cs" required="false" />
+		<Script name="AddFromOtherMod" src="\Optional\AddFromOtherMod.cs" required="false" />
     <!-- Optional -->
 	</Scripts>
   <!-- C# Scripts -->

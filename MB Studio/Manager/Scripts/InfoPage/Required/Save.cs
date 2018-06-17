@@ -4,6 +4,6 @@
 
 protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
 {
-	
+	tmp += text_txt.Text.Replace(' ', '_');
 }
 

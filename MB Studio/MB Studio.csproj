@@ -153,6 +153,30 @@
       <SubType>Form</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Manager\Scripts\InfoPage\Objects\InfoPage.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Optional\AddFromOtherMod.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Optional\ClickEvents.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Optional\GUI.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Required\Loading.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Required\Save.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Required\Setup.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\Required\Translation.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Manager\SkillManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -432,6 +456,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
+    <None Include="Manager\Scripts\InfoPage\InfoPage.Designer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\InfoPage\InfoPage.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="PostBuildEvents.bat" />
     <None Include="files\exchange_objects.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

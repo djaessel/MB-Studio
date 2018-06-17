@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Studio.Manager.Support.External;
 
@@ -94,6 +96,7 @@ namespace MB_Studio.Manager
 
             base.Dispose(disposing);
         }
+        // @PRIVATE_FUNCTIONS
     }
 }
 

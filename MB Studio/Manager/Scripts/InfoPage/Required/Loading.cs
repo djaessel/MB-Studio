@@ -2,7 +2,7 @@
  * MyClassManager - C# Scripting
 */
 
-public ExampleManager()
+public InfoPageManager()
 {
 	
 }

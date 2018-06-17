@@ -13,8 +13,10 @@ namespace MB_Studio.Manager
     internal class ScriptCommander
     {
         //private const string METHOD_IDENTIFIER = @"\b(public|protected|private)\s(static\s)?(override\s)?(\w[A-z]+*\w\s)(\w*[A-Z]+*\w)\b[\s]+?[(]";// + "([A-z, 0-9_=<>\[\]]*|)[)]";
+        private const string PRIVATE_METHOD_IDENTIFIER = "private ";
         private const string METHOD_IDENTIFIER = "protected override ";
         private const string SCRIPT_MARKER = "// @SCRIPT ";
+        private const string PRIVATE_FUNCTIONS_MARKER = "// @PRIVATE_FUNCTIONS";
         private const string ATTRIBUTES_MARKER = "// @ATTRIBUTES";
 
         private static string ScriptsFolder { get; } = Path.GetFullPath(@".\Manager\Scripts");
@@ -324,29 +326,46 @@ namespace MB_Studio.Manager
                 string[] codeLines = File.ReadAllLines(codeFile);
                 List<string> curList = null;
                 bool addToFunction = false;
+                int countC = 0;
                 for (int i = 0; i < codeLines.Length; i++)
                 {
                     //Match match = Regex.Match(codeLines[i], METHOD_IDENTIFIER, RegexOptions.Singleline);
                     //bool isMethod = match.Success;
-                    bool isMethod = codeLines[i].StartsWith(METHOD_IDENTIFIER);
+                    bool isPrivateMethod = codeLines[i].StartsWith(PRIVATE_METHOD_IDENTIFIER);
+                    bool isMethod = codeLines[i].StartsWith(METHOD_IDENTIFIER) || isPrivateMethod;
                     if (isMethod || codeLines[i].StartsWith(constructorIdentifier))
                     {
-                        curList = new List<string> {
-                            codeLines[i].Trim().Split()[((isMethod) ? 3 : 1)].Split('(')[0].Replace(" ", string.Empty)
-                        };
+                        string firstLine = codeLines[i].Trim();
+                        if (!isPrivateMethod)
+                            firstLine = firstLine.Split()[((isMethod) ? 3 : 1)].Split('(')[0].Replace(" ", string.Empty);
+                        else
+                            firstLine = "\t\t" + firstLine;
+                        curList = new List<string> { firstLine };
                     }
 
                     if (codeLines[i].Contains("{"))
+                    {
                         addToFunction = true;
+                        countC++;
+                    }
 
-                    if (addToFunction && curList != null)
-                        curList.Add(codeLines[i].Trim());
+                    if (addToFunction && curList != null && countC > 0)
+                    {
+                        string codeLine = codeLines[i];
+                        if (isPrivateMethod)
+                            codeLine = "\t\t" + codeLine;
+                        curList.Add(codeLine);
+                    }
 
                     if (codeLines[i].Contains("}"))
                     {
-                        addToFunction = false;
-                        functions.Add(curList);
-                        curList = null;
+                        countC--;
+                        if (curList != null && countC == 0)
+                        {
+                            addToFunction = false;
+                            functions.Add(curList);
+                            curList = null;
+                        }
                     }
                 }
             }
@@ -371,18 +390,37 @@ namespace MB_Studio.Manager
 
             managerTemplateCode = managerTemplateCode.Replace(ATTRIBUTES_MARKER, attributeBlock.ToString());
 
+            List<string> privateFunctions = new List<string>();
             foreach (List<string> function in functions)
             {
                 string name = function[0];
+                bool isPrivate = name.TrimStart().StartsWith(PRIVATE_METHOD_IDENTIFIER);
                 string functionCode = string.Empty;
 
                 for (int i = 1; i < function.Count; i++)
-                    functionCode += function[i];
+                {
+                    string tmpCode = function[i];
+                    if (isPrivate)
+                        tmpCode = "\t\t" + tmpCode + Environment.NewLine;
+                    functionCode += tmpCode;
+                }
 
-                functionCode = functionCode.TrimStart('{').TrimEnd('}').Trim();
+                if (isPrivate)
+                {
+                    privateFunctions.Add(name + functionCode + Environment.NewLine);
+                    continue;
+                }
+
+                functionCode = functionCode.TrimStart('{').TrimStart();
+                functionCode = functionCode.Remove(functionCode.LastIndexOf('}'));
 
                 managerTemplateCode = managerTemplateCode.Replace(SCRIPT_MARKER + name, functionCode);
             }
+
+            string privateFunctionsCode = string.Empty;
+            foreach (string privateFunc in privateFunctions)
+                privateFunctionsCode += Environment.NewLine + privateFunc + Environment.NewLine;
+            managerTemplateCode = managerTemplateCode.Replace(PRIVATE_FUNCTIONS_MARKER, privateFunctionsCode);
 
             File.WriteAllText(genSourceFile, managerTemplateCode);
 
@@ -392,9 +430,13 @@ namespace MB_Studio.Manager
                 GenerateInMemory = true,
             };
 
+            // SYSTEM LIBRARIES
             parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("System.IO.dll");
             parameters.ReferencedAssemblies.Add("System.Drawing.dll");
             parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+
+            // STUDIO LIBRARIES
             parameters.ReferencedAssemblies.Add("importantLib.dll");
             parameters.ReferencedAssemblies.Add("MB_Decompiler_Library.dll");
             parameters.ReferencedAssemblies.Add(exeName);//parameters.ReferencedAssemblies.Add(typeof(ToolForm).Assembly.CodeBase);
