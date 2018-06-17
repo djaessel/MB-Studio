@@ -13,7 +13,7 @@ namespace MB_Studio
 
         public TriggerSelector()
         {
-            type = ObjectType.SCRIPT;
+            type = ObjectType.Script;
             Init();
         }
 
@@ -28,7 +28,7 @@ namespace MB_Studio
 
         private void Init()
         {
-            if (type == ObjectType.ITEM)
+            if (type == ObjectType.Item)
             {
                 TriggerNames = item_trigger;
                 TriggerCheckIntervals = item_check_interval;

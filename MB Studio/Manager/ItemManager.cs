@@ -37,7 +37,7 @@ namespace MB_Studio.Manager
 
         #region Loading
 
-        public ItemManager() : base(Skriptum.ObjectType.ITEM, true)
+        public ItemManager() : base(Skriptum.ObjectType.Item, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform

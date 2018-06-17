@@ -7,7 +7,7 @@ namespace MB_Studio.Manager
 {
     public partial class QuestManager : ToolForm
     {
-        public QuestManager() : base(Skriptum.ObjectType.QUEST)
+        public QuestManager() : base(Skriptum.ObjectType.Quest)
         {
             InitializeComponent();
         }

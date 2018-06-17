@@ -13,7 +13,7 @@ namespace MB_Decompiler_Library.Objects
 
         protected static List<IntervalCode> intervalCodes = new List<IntervalCode>();
 
-        public SimpleTrigger(string checkInterval, ObjectType objectType = ObjectType.SIMPLE_TRIGGER) : base("SIMPLE_TRIGGER", objectType)
+        public SimpleTrigger(string checkInterval, ObjectType objectType = ObjectType.SimpleTrigger) : base("SIMPLE_TRIGGER", objectType)
         {
             if (intervalCodes.Count == 0)
                 InitializeIntervalCodes();

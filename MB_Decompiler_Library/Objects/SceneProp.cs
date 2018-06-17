@@ -10,7 +10,7 @@ namespace MB_Decompiler_Library.Objects
         private int useTime;
         private static HeaderVariable[] headerVariables = null;
 
-        public SceneProp(string[] raw_data) : base(raw_data[0].Substring(4), ObjectType.SCENE_PROP)
+        public SceneProp(string[] raw_data) : base(raw_data[0].Substring(4), ObjectType.SceneProp)
         {
             if (headerVariables == null)
                 InitializeHeaderVariables();

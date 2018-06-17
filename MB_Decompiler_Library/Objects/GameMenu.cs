@@ -9,7 +9,7 @@ namespace MB_Decompiler_Library.Objects
     {
         private static readonly ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);
 
-        public GameMenu(string[] raw_data) : base(raw_data[0].Substring(raw_data[0].IndexOf('_') + 1).Split()[0], ObjectType.GAME_MENU)
+        public GameMenu(string[] raw_data) : base(raw_data[0].Substring(raw_data[0].IndexOf('_') + 1).Split()[0], ObjectType.GameMenu)
         {
             string[] tmpS = raw_data[0].Split();
             InitializeGameMeu(tmpS);

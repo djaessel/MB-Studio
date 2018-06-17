@@ -2,7 +2,7 @@
 {
     public class Script : Skriptum
     {
-        public Script(string[] raw_data) : base(raw_data[0], (int)ObjectType.SCRIPT) // base(name, type)
+        public Script(string[] raw_data) : base(raw_data[0], (int)ObjectType.Script) // base(name, type)
         {
             Code = new string[raw_data.Length - 1];
             for (int i = 0; i < Code.Length; i++)

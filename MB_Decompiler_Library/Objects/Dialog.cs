@@ -13,7 +13,7 @@ namespace MB_Decompiler_Library.Objects
 
         private static bool noErrorCode = true;
 
-        public Dialog(string[] raw_data) : base(raw_data[0], ObjectType.DIALOG)
+        public Dialog(string[] raw_data) : base(raw_data[0], ObjectType.Dialog)
         {
             //try
             //{

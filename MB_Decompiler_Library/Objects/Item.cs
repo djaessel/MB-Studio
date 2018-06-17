@@ -153,7 +153,7 @@ namespace MB_Decompiler_Library.Objects
 
         #region Initializing
 
-        public Item(string[] values = null) : base(values[0].TrimStart().Split()[0].Substring(4), ObjectType.ITEM)
+        public Item(string[] values = null) : base(values[0].TrimStart().Split()[0].Substring(4), ObjectType.Item)
         {
             ResetItem();
             if (values != null)

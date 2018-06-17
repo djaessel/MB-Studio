@@ -139,7 +139,7 @@ namespace MB_Studio.Manager
             Init(objectType, uses3DView);
         }
 
-        private void Init(ObjectType objectType = ObjectType.SCRIPT, bool uses3DView = false)
+        private void Init(ObjectType objectType = ObjectType.Script, bool uses3DView = false)
         {
             InitializeComponent();
 

@@ -4,7 +4,7 @@ namespace MB_Decompiler_Library.Objects
 {
     public class PostFX : Skriptum
     {
-        public PostFX(string raw_data) : base(raw_data.Split()[0], ObjectType.POST_FX)
+        public PostFX(string raw_data) : base(raw_data.Split()[0], ObjectType.PostFX)
         {
             raw_data = raw_data.Trim();
             while (raw_data.Contains("  "))

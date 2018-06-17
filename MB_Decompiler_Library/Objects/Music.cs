@@ -9,7 +9,7 @@ namespace MB_Decompiler_Library.Objects
     {
         private static HeaderVariable[] headerVariables = null;
 
-        public Music(string[] raw_data) : base(raw_data[0], ObjectType.MUSIC)
+        public Music(string[] raw_data) : base(raw_data[0], ObjectType.Music)
         {
             if (headerVariables == null)
                 InitializeHeaderVariables();

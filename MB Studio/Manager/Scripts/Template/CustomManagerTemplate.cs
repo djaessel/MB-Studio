@@ -13,7 +13,7 @@ namespace MB_Studio.Manager
 
 		// @ATTRIBUTES
 
-        public MyClassManager() : base(/*Skriptum.ObjectType.MyClass*/)
+        public MyClassManager() : base(Skriptum.ObjectType.MyClass)
         {
             InitializeComponent();
 
@@ -34,8 +34,7 @@ namespace MB_Studio.Manager
 
         protected override Skriptum GetNewTypeFromClass(string[] raw_data)
         {
-			//return new MyClass(raw_data);
-			return null;
+			return new MyClass(raw_data);
         }
 
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
@@ -56,7 +55,7 @@ namespace MB_Studio.Manager
         {
             base.SetupType(type);
 
-            //MyClass skriptum = (MyClass)type;
+            MyClass skriptum = (MyClass)type;
 
 			// @SCRIPT SetupType
         }
@@ -80,8 +79,8 @@ namespace MB_Studio.Manager
             values = new List<string>(tmp.Split(';'));
 
             string[] valuesX = values.ToArray();
-            //MyClass c = new MyClass(valuesX);
-            //MB_Studio.SavePseudoCodeByType(c, valuesX);
+            MyClass obj = new MyClass(valuesX);
+            MB_Studio.SavePseudoCodeByType(obj, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }

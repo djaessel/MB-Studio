@@ -16,7 +16,7 @@ namespace MB_Studio.Manager
 
         private List<int[]> memberValues = new List<int[]>();
 
-        public PartyManager() : base(Skriptum.ObjectType.PARTY)
+        public PartyManager() : base(Skriptum.ObjectType.Party)
         {
             if (DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform

@@ -735,85 +735,85 @@ namespace MB_Decompiler_Library.IO
         public List<Skriptum> ReadObjectType(Skriptum.ObjectType objectType)
         {
             List<Skriptum> skriptums = new List<Skriptum>();
-            if (objectType == Skriptum.ObjectType.SCRIPT)
+            if (objectType == Skriptum.ObjectType.Script)
                 foreach (Skriptum s in ReadScript())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.MISSION_TEMPLATE)
+            else if (objectType == Skriptum.ObjectType.MissionTemplate)
                 foreach (Skriptum s in ReadMissionTemplate())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.PRESENTATION)
+            else if (objectType == Skriptum.ObjectType.Presentation)
                 foreach (Presentation p in ReadPresentation())
                     skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.GAME_MENU)
+            else if (objectType == Skriptum.ObjectType.GameMenu)
                 foreach (GameMenu g in ReadGameMenu())
                     skriptums.Add(g);
-            else if (objectType == Skriptum.ObjectType.GAME_STRING)
+            else if (objectType == Skriptum.ObjectType.GameString)
                 foreach (GameString s in ReadString())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.SIMPLE_TRIGGER)
+            else if (objectType == Skriptum.ObjectType.SimpleTrigger)
                 foreach (SimpleTrigger t in ReadSimpleTrigger())
                     skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.TRIGGER)
+            else if (objectType == Skriptum.ObjectType.Trigger)
                 foreach (Trigger t in ReadTrigger())
                     skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.INFO_PAGE)
+            else if (objectType == Skriptum.ObjectType.InfoPage)
                 foreach (InfoPage p in ReadInfoPage())
                     skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.SOUND)
+            else if (objectType == Skriptum.ObjectType.Sound)
                 foreach (Sound s in ReadSound())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.QUEST)
+            else if (objectType == Skriptum.ObjectType.Quest)
                 foreach (Quest q in ReadQuest())
                     skriptums.Add(q);
-            else if (objectType == Skriptum.ObjectType.SCENE)
+            else if (objectType == Skriptum.ObjectType.Scene)
                 foreach (Scene s in ReadScene())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.SCENE_PROP)
+            else if (objectType == Skriptum.ObjectType.SceneProp)
                 foreach (SceneProp s in ReadSceneProp())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.TABLEAU_MATERIAL)
+            else if (objectType == Skriptum.ObjectType.TableauMaterial)
                 foreach (TableauMaterial t in ReadTableauMaterial())
                     skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.MUSIC)
+            else if (objectType == Skriptum.ObjectType.Music)
                 foreach (Music m in ReadMusic())
                     skriptums.Add(m);
-            else if (objectType == Skriptum.ObjectType.MESH)
+            else if (objectType == Skriptum.ObjectType.Mesh)
                 foreach (Mesh m in ReadMesh())
                     skriptums.Add(m);
-            else if (objectType == Skriptum.ObjectType.FACTION)
+            else if (objectType == Skriptum.ObjectType.Faction)
                 foreach (Faction f in ReadFaction())
                     skriptums.Add(f);
-            else if (objectType == Skriptum.ObjectType.MAP_ICON)
+            else if (objectType == Skriptum.ObjectType.MapIcon)
                 foreach (MapIcon m in ReadMapIcon())
                     skriptums.Add(m);
-            else if (objectType == Skriptum.ObjectType.ANIMATION)
+            else if (objectType == Skriptum.ObjectType.Animation)
                 foreach (Animation a in ReadAnimation())
                     skriptums.Add(a);
-            else if (objectType == Skriptum.ObjectType.PARTY_TEMPLATE)
+            else if (objectType == Skriptum.ObjectType.PartyTemplate)
                 foreach (PartyTemplate p in ReadPartyTemplate())
                     skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.DIALOG)
+            else if (objectType == Skriptum.ObjectType.Dialog)
                 foreach (Dialog d in ReadDialog())
                     skriptums.Add(d);
-            else if (objectType == Skriptum.ObjectType.PARTY)
+            else if (objectType == Skriptum.ObjectType.Party)
                 foreach (Party p in ReadParty())
                     skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.SKILL)
+            else if (objectType == Skriptum.ObjectType.Skill)
                 foreach (Skill s in ReadSkill())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.POST_FX)
+            else if (objectType == Skriptum.ObjectType.PostFX)
                 foreach (PostFX p in ReadPostFX())
                     skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.PARTICLE_SYSTEM)
+            else if (objectType == Skriptum.ObjectType.ParticleSystem)
                 foreach (ParticleSystem p in ReadParticleSystem())
                     skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.SKIN)
+            else if (objectType == Skriptum.ObjectType.Skin)
                 foreach (Skin s in ReadSkin())
                     skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.TROOP)
+            else if (objectType == Skriptum.ObjectType.Troop)
                 foreach (Troop t in ReadTroop())
                     skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.ITEM)
+            else if (objectType == Skriptum.ObjectType.Item)
                 foreach (Item itm in ReadItem())
                     skriptums.Add(itm);
             return skriptums;

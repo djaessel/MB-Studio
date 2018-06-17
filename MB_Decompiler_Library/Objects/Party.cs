@@ -23,7 +23,7 @@ namespace MB_Decompiler_Library.Objects
             "ai_bhvr_driven_by_party"
         };
 
-        public Party(string[] raw_data) : base(raw_data[3].Substring(2), ObjectType.PARTY)
+        public Party(string[] raw_data) : base(raw_data[3].Substring(2), ObjectType.Party)
         {
             Name = raw_data[4];
             FlagsGZ = ulong.Parse(raw_data[5]);
@@ -44,7 +44,7 @@ namespace MB_Decompiler_Library.Objects
             PartyDirectionInDegrees = Math.Round(double.Parse(CodeReader.Repl_DotWComma(raw_data[raw_data.Length - 1])), 6);//this.degrees = degrees;
         }
 
-        public Party(string[] source_data, bool hasDegree) : base(source_data[0], ObjectType.PARTY)
+        public Party(string[] source_data, bool hasDegree) : base(source_data[0], ObjectType.Party)
         {
             int curIdx = 0;
 

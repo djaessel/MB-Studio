@@ -9,7 +9,7 @@ namespace MB_Decompiler_Library.Objects
 
         private readonly int id;
 
-        public Faction(string[] raw_data) : base(raw_data[0].Split()[0].Replace("fac_", string.Empty), ObjectType.FACTION)
+        public Faction(string[] raw_data) : base(raw_data[0].Split()[0].Replace("fac_", string.Empty), ObjectType.Faction)
         {
             string[] tmp = raw_data[0].Split();
             Name = tmp[1];

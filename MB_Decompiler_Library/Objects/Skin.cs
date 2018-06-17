@@ -22,7 +22,7 @@ namespace MB_Decompiler_Library.Objects
         public static string[] SoundKinds { get { return soundKinds; } }
         public static string[] SkinFlags { get { return skf_flags; } }
 
-        public Skin(List<string[]> raw_data) : base(raw_data[0][0], ObjectType.SKIN)
+        public Skin(List<string[]> raw_data) : base(raw_data[0][0], ObjectType.Skin)
         {
             flags = ulong.Parse(raw_data[0][1]);
             bodyMesh = raw_data[1][0];

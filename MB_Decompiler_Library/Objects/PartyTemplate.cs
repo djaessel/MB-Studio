@@ -7,7 +7,7 @@ namespace MB_Decompiler_Library.Objects
 {
     public class PartyTemplate : Skriptum
     {
-        public PartyTemplate(string[] raw_data) : base(raw_data[0], ObjectType.PARTY_TEMPLATE)
+        public PartyTemplate(string[] raw_data) : base(raw_data[0], ObjectType.PartyTemplate)
         {
             Name = raw_data[1];
             FlagsGZ = ulong.Parse(raw_data[2]);
@@ -25,7 +25,7 @@ namespace MB_Decompiler_Library.Objects
                     i = Members.Length;
         }
 
-        public PartyTemplate(string[] source_data, bool second) : base(source_data[0], ObjectType.PARTY)
+        public PartyTemplate(string[] source_data, bool second) : base(source_data[0], ObjectType.Party)
         {
             int curIdx = 0;
 

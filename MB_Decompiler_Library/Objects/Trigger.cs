@@ -8,7 +8,7 @@ namespace MB_Decompiler_Library.Objects
         private string delayInterval, rearmInterval;
         private string[] conditionBlock;
 
-        public Trigger(string checkInterval, string delayInterval, string rearmInterval) : base(checkInterval, ObjectType.TRIGGER)
+        public Trigger(string checkInterval, string delayInterval, string rearmInterval) : base(checkInterval, ObjectType.Trigger)
         {
             if (ImportantMethods.IsNumeric(delayInterval, true))
                 this.delayInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(delayInterval)));

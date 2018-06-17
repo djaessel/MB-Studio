@@ -2,7 +2,7 @@
 {
     public class Presentation : Skriptum
     {
-        public Presentation(string name, ulong flags, int mesh_id, int triggerCount) : base(name, ObjectType.PRESENTATION)
+        public Presentation(string name, ulong flags, int mesh_id, int triggerCount) : base(name, ObjectType.Presentation)
         {
             Flags = flags;
             MeshID = mesh_id;

@@ -10,7 +10,7 @@ namespace MB_Decompiler_Library.Objects
     {
         private static List<HeaderVariable> headerVariables = null;
 
-        public ParticleSystem(List<string[]> raw_data) : base(raw_data[0][0].Split()[0], ObjectType.PARTICLE_SYSTEM)
+        public ParticleSystem(List<string[]> raw_data) : base(raw_data[0][0].Split()[0], ObjectType.ParticleSystem)
         {
             if (headerVariables == null)
                 headerVariables = GetHeaderVariableList();

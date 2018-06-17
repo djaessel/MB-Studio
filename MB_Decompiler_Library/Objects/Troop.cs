@@ -309,7 +309,7 @@ namespace MB_Decompiler_Library.Objects
 
         #region Initializing
 
-        public Troop(string[] values) : base(values[0].TrimStart().Split()[0], ObjectType.TROOP)
+        public Troop(string[] values) : base(values[0].TrimStart().Split()[0], ObjectType.Troop)
         {
             Init(values);
         }

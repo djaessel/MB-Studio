@@ -28,7 +28,7 @@ namespace MB_Studio.Manager
 
         #endregion
 
-        public MenuManager() : base(Skriptum.ObjectType.GAME_MENU)
+        public MenuManager() : base(Skriptum.ObjectType.GameMenu)
         {
             if (DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform

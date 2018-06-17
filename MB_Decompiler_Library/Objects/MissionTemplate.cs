@@ -8,7 +8,7 @@ namespace MB_Decompiler_Library.Objects
         private List<Entrypoint> entryPoints = new List<Entrypoint>();
         private List<Trigger> triggers = new List<Trigger>();
 
-        public MissionTemplate(string[] headerInfo) : base(headerInfo[0], ObjectType.MISSION_TEMPLATE) // base(name, type)
+        public MissionTemplate(string[] headerInfo) : base(headerInfo[0], ObjectType.MissionTemplate) // base(name, type)
         {
             Flags = headerInfo[1];
             MissionType = headerInfo[2];

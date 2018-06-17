@@ -2,7 +2,7 @@
 {
     public class InfoPage : Skriptum
     {
-        public InfoPage(string[] raw_data) : base(raw_data[0].Substring(3), ObjectType.INFO_PAGE)//remove/change SubString(3) if better/possible
+        public InfoPage(string[] raw_data) : base(raw_data[0], ObjectType.InfoPage)
         {
             Name = raw_data[1].Replace('_', ' ');
             Text = raw_data[2].Replace('_', ' ');

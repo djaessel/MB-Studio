@@ -9,7 +9,7 @@ namespace MB_Studio.Manager
 {
     public partial class InfoPageManager : ToolForm
     {
-        public InfoPageManager() : base(Skriptum.ObjectType.INFO_PAGE)
+        public InfoPageManager() : base(Skriptum.ObjectType.InfoPage)
         {
             InitializeComponent();
         }

@@ -9,7 +9,7 @@ namespace MB_Studio.Manager
 {
     public partial class SkillManager : ToolForm
     {
-        public SkillManager() : base(Skriptum.ObjectType.SKILL)
+        public SkillManager() : base(Skriptum.ObjectType.Skill)
         {
             InitializeComponent();
         }

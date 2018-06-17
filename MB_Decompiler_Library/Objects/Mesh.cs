@@ -6,7 +6,7 @@ namespace MB_Decompiler_Library.Objects
     {
         private double[] manipulations = new double[9];
 
-        public Mesh(string[] raw_data) : base(raw_data[0], ObjectType.MESH)
+        public Mesh(string[] raw_data) : base(raw_data[0], ObjectType.Mesh)
         {
             Flags = raw_data[1];
             ResourceName = raw_data[2];

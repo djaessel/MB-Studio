@@ -2,7 +2,7 @@
 {
     public class GameString : Skriptum
     {
-        public GameString(string[] raw_data) : base(raw_data[0], ObjectType.GAME_STRING)
+        public GameString(string[] raw_data) : base(raw_data[0], ObjectType.GameString)
         {
             Text = raw_data[1].Replace('_', ' ');
         }

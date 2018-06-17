@@ -5,7 +5,7 @@ namespace MB_Decompiler_Library.Objects
 {
     public class MapIcon : Skriptum
     {
-        public MapIcon(string[] raw_data) : base(raw_data[0], ObjectType.MAP_ICON)
+        public MapIcon(string[] raw_data) : base(raw_data[0], ObjectType.MapIcon)
         {
             if (ImportantMethods.IsNumericGZ(raw_data[1]))
             {

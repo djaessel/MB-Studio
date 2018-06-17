@@ -14,7 +14,7 @@ namespace MB_Decompiler_Library.Objects
         private static HeaderVariable[] headerVariablesNormal = null;
         private static HeaderVariable[] headerVariablesMaster = null;
 
-        public Animation(string[] raw_data) : base(raw_data[0], ObjectType.ANIMATION)
+        public Animation(string[] raw_data) : base(raw_data[0], ObjectType.Animation)
         {
             if (headerVariablesNormal == null)
                 InitializeHeaderVariables(SP_NORMAL_FLAGS);

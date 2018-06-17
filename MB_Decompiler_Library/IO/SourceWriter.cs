@@ -283,7 +283,7 @@ namespace MB_Decompiler_Library.IO
             MakeBackupOfFile(SCRIPT_SOURCE);
             using (StreamWriter wr = new StreamWriter(SCRIPT_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCRIPT); //wr.Write(scriptStart);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Script); //wr.Write(scriptStart);
                 foreach (Script s in objects)
                 {
                     wr.WriteLine(Environment.NewLine + " (\"" + s.ID + "\",");
@@ -304,7 +304,7 @@ namespace MB_Decompiler_Library.IO
             MakeBackupOfFile(MISSION_TEMPLATE_SOURCE);
             using (StreamWriter wr = new StreamWriter(MISSION_TEMPLATE_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MISSION_TEMPLATE); //wr.Write(missionTemplateStart);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MissionTemplate); //wr.Write(missionTemplateStart);
                 foreach (MissionTemplate m in objects)
                 {
                     wr.WriteLine(Environment.NewLine + "  (\"" + m.ID + "\"," + m.Flags + ',' + m.MissionType + ',');
@@ -342,7 +342,7 @@ namespace MB_Decompiler_Library.IO
             MakeBackupOfFile(PRESENTATION_SOURCE);
             using (StreamWriter wr = new StreamWriter(PRESENTATION_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PRESENTATION); //wr.Write(presentationStart);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Presentation); //wr.Write(presentationStart);
                 foreach (Presentation p in objects)
                 {
                     wr.Write(Environment.NewLine + "  (\"" + p.ID + "\", " + p.Flags + ", " + p.MeshID + ", [");
@@ -379,7 +379,7 @@ namespace MB_Decompiler_Library.IO
             MakeBackupOfFile(GAME_MENU_SOURCE);
             using (StreamWriter wr = new StreamWriter(GAME_MENU_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.GAME_MENU); //wr.WriteLine(gameMenusStart);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.GameMenu); //wr.WriteLine(gameMenusStart);
                 foreach (GameMenu gameMenu in objects)
                 {
                     wr.WriteLine(Environment.NewLine + "  (\"" + gameMenu.ID + "\", " + gameMenu.Flags + ',');
@@ -437,7 +437,7 @@ namespace MB_Decompiler_Library.IO
         {
             List<HeaderVariable> codes = new List<HeaderVariable>();
             ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);
-            DataBankList dbList = impManager.ReadDataBankInfos()[(byte)ObjectType.TROOP];
+            DataBankList dbList = impManager.ReadDataBankInfos()[(byte)ObjectType.Troop];
             for (int i = 0; i < dbList.CodeLines.Length; i++)
             {
                 string tmpCode = dbList.CodeLines[i].Split('#')[0];
@@ -460,7 +460,7 @@ namespace MB_Decompiler_Library.IO
             List<HeaderVariable> codes = GetTroopModuleConstants();
             using (StreamWriter wr = new StreamWriter(TROOPS_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TROOP);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Troop);
 
                 foreach (Troop troop in objects)
                 {
@@ -612,7 +612,7 @@ namespace MB_Decompiler_Library.IO
             //["winged_great_helmet","Winged Great Helmet",[("maciejowski_helmet_new",0)],itp_merchandise|itp_type_head_armor|itp_covers_head,0,1240,weight(2.75)|abundance(100)|head_armor(55)|body_armor(0)|leg_armor(0)|difficulty(10),imodbits_plate],
             using (StreamWriter wr = new StreamWriter(ITEMS_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.ITEM);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Item);
                 foreach (Item item in objects)
                 {
                     wr.Write(Environment.NewLine + "[\"" + item.ID + "\",\"" + item.Name + "\",[");
@@ -679,7 +679,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(GAME_STRING_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.GAME_STRING);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.GameString);
                 for (int i = 0; i < 4; i++)
                     wr.WriteLine("  (\"" + objects[i].ID + "\", \"" + ((GameString)objects[i]).Text + "\"),");
                 wr.WriteLine("# Strings before this point are hardwired.");
@@ -701,7 +701,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(SIMPLE_TRIGGER_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SIMPLE_TRIGGER);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SimpleTrigger);
                 foreach (SimpleTrigger strigger in objects)
                     WriteASimpleTrigger(wr, strigger);
                 wr.WriteLine(Environment.NewLine + "] # SIMPLE_TRIGGERS END");
@@ -713,7 +713,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(TRIGGER_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TRIGGER);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Trigger);
                 foreach (Trigger trigger in objects)
                     WriteATriggers(wr, trigger);
                 wr.WriteLine(Environment.NewLine + "] # TRIGGERS END");
@@ -725,7 +725,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(INFO_PAGE_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.INFO_PAGE);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.InfoPage);
                 foreach (InfoPage infoPage in objects)
                     wr.WriteLine(" (\"" + infoPage.ID + "\", \"" + infoPage.Name + "\", \"" + infoPage.Text + "\"),");
                 wr.WriteLine(Environment.NewLine + "] # INFO_PAGES END");
@@ -737,7 +737,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(MESH_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MESH); //wr.WriteLine("from header_meshes import *");
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Mesh); //wr.WriteLine("from header_meshes import *");
                 foreach (Mesh mesh in objects)
                     wr.WriteLine("  (\"" + mesh.ID + "\", " + mesh.Flags + ", \"" + mesh.ResourceName + "\", "
                         + CodeReader.Repl_CommaWDot(mesh.AxisTranslation[0].ToString()) + ", " + CodeReader.Repl_CommaWDot(mesh.AxisTranslation[1].ToString()) + ", " + CodeReader.Repl_CommaWDot(mesh.AxisTranslation[2].ToString()) + ", "
@@ -752,7 +752,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(MUSIC_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MUSIC);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Music);
                 foreach (Music mtrack in objects)
                     wr.WriteLine("  (\"" + mtrack.ID + "\", \"" + mtrack.TrackFile + "\", " + mtrack.TrackFlags + ", " + mtrack.ContinueTrackFlags + "),");
                 wr.WriteLine("] # MUSIC END");
@@ -764,7 +764,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(QUEST_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.QUEST); //wr.WriteLine("from header_quests import *");
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Quest); //wr.WriteLine("from header_quests import *");
                 foreach (Quest quest in objects)
                     wr.WriteLine(" (\"" + quest.ID + "\", \"" + quest.Name + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
                 wr.WriteLine(Environment.NewLine + "] # QUESTS END");
@@ -776,7 +776,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(SOUND_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SOUND); //wr.WriteLine("from header_sounds import *");
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Sound); //wr.WriteLine("from header_sounds import *");
                 foreach (Sound sound in objects)
                 {
                     wr.Write(" (\"" + sound.ID + "\", " + sound.Flags + ", [");
@@ -797,7 +797,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(SCENE_PROP_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCENE_PROP);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SceneProp);
                 foreach (SceneProp sceneProp in objects)
                 {
                     wr.Write(Environment.NewLine + " (\"" + sceneProp.ID + "\", " + sceneProp.Flags + ", \"" + sceneProp.MeshName + "\", \"" + sceneProp.PhysicsObjectName + "\", [");
@@ -818,7 +818,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(TABLEAU_MATERIAL_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TABLEAU_MATERIAL);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.TableauMaterial);
                 foreach (TableauMaterial tableau in objects)
                 {
                     wr.Write(Environment.NewLine + "  (\"" + tableau.ID + "\", " + tableau.Flags + ", \"" + tableau.SampleMaterialName + "\", " + tableau.Width + ", " + tableau.Height + ", "
@@ -842,7 +842,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(MAP_ICON_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MAP_ICON);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.MapIcon);
                 foreach (MapIcon mapIcon in objects)
                 {
                     wr.Write("  (\"" + mapIcon.ID + "\", " + mapIcon.Flags + ", \"" + mapIcon.MapIconName + "\", ");
@@ -895,7 +895,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(DIALOG_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.DIALOG);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Dialog);
                 foreach (Dialog dialog in objects)
                 {
                     wr.WriteLine(Environment.NewLine + "[" + dialog.TalkingPartnerCode + ", \"" + dialog.StartDialogState + "\", ");
@@ -926,7 +926,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(FACTION_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.FACTION);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Faction);
                 for (int i = 0; i < objects.Count; i++)
                 {
                     Faction fac = (Faction)objects[i];
@@ -960,7 +960,7 @@ namespace MB_Decompiler_Library.IO
             using (StreamWriter wr = new StreamWriter(ANIMATION_SOURCE))
             {
                 string tmp;
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.ANIMATION);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Animation);
                 foreach (Animation animation in objects)
                 {
                     wr.WriteLine(" [\"" + animation.ID + "\", " + animation.Flags + ", " + animation.MasterFlags + ',');
@@ -1003,7 +1003,7 @@ namespace MB_Decompiler_Library.IO
             using (StreamWriter wr = new StreamWriter(PARTY_TEMPLATE_SOURCE))
             {
                 PMember pMember;
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PARTY_TEMPLATE);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PartyTemplate);
                 foreach (PartyTemplate partyTemplate in objects)
                 {
                     wr.Write("  (\"" + partyTemplate.ID + "\",\"" + partyTemplate.Name + "\"," + partyTemplate.Flags + "," + partyTemplate.MenuID + ","
@@ -1035,7 +1035,7 @@ namespace MB_Decompiler_Library.IO
             using (StreamWriter wr = new StreamWriter(PARTY_SOURCE))
             {
                 PMember pMember;
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PARTY);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Party);
                 foreach (Party party in objects)
                 {
                     wr.Write("  (\"" + party.ID + "\", \"" + party.Name + "\", " + party.Flags + ", " + party.MenuID + ", " + party.PartyTemplate + ", " + party.Faction + ", "
@@ -1074,7 +1074,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(SKILL_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SKILL);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Skill);
                 foreach (Skill skill in objects)
                     wr.WriteLine("  (\"" + skill.ID + "\",\"" + skill.Name + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
                 wr.WriteLine("] # SKILLS END");
@@ -1086,7 +1086,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(POST_FX_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.POST_FX);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PostFX);
                 foreach (PostFX postFX in objects)
                 {
                     wr.Write("  (\"" + postFX.ID + "\", " + postFX.FlagsGZ + ", " + postFX.TonemapOperatorType + ", ");
@@ -1107,7 +1107,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(PARTICLE_SYSTEM_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PARTICLE_SYSTEM);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.ParticleSystem);
                 foreach (ParticleSystem pSystem in objects)
                 {
                     wr.WriteLine(Environment.NewLine + "\t(\"" + pSystem.ID + "\", " + pSystem.FlagsGZ + ", \"" + pSystem.MeshName + "\",");
@@ -1150,7 +1150,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(SKIN_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SKIN, false);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Skin, false);
 
                 foreach (Skin skin in objects)
                 {
@@ -1272,7 +1272,7 @@ namespace MB_Decompiler_Library.IO
         {
             using (StreamWriter wr = new StreamWriter(SCENE_SOURCE))
             {
-                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.SCENE);
+                WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Scene);
                 foreach (Scene scene in objects)
                 {
                     wr.WriteLine("  (\"" + scene.ID + "\", " + scene.Flags + ", \"" + scene.MeshName + "\", \"" + scene.BodyName + "\", ("

@@ -4,7 +4,7 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Quest : Skriptum
     {
-        public Quest(string[] raw_data) : base(raw_data[0], ObjectType.QUEST)
+        public Quest(string[] raw_data) : base(raw_data[0], ObjectType.Quest)
         {
             Name = raw_data[1];
             if (ImportantMethods.IsNumericGZ(raw_data[2]))

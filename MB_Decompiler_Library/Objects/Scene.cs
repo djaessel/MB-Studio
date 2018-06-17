@@ -5,7 +5,7 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Scene : Skriptum
     {
-        public Scene(string[] raw_data, string[] otherScenes, string[] chestTroops, string terrainBase) : base(raw_data[1], ObjectType.SCENE)
+        public Scene(string[] raw_data, string[] otherScenes, string[] chestTroops, string terrainBase) : base(raw_data[1], ObjectType.Scene)
         {
             if (ImportantMethods.IsNumericGZ(raw_data[2]))
             {

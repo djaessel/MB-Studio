@@ -4,7 +4,7 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Skill : Skriptum
     {
-        public Skill(string[] raw_data) : base(raw_data[0], ObjectType.SKILL)
+        public Skill(string[] raw_data) : base(raw_data[0], ObjectType.Skill)
         {
             Name = raw_data[1].Replace('_', ' ');
             if (ImportantMethods.IsNumericGZ(raw_data[2]))

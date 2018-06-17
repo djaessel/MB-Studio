@@ -29,7 +29,7 @@ namespace MB_Studio.Main
             title_lbl.Text = Text;
             for (int i = 0; i < CodeReader.Items.Count; i++)
                 itemsIDs.Add(i + " - " + CodeReader.Items[i]);
-            CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)ObjectType.ITEM]);
+            CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)ObjectType.Item]);
             foreach (Item item in cr.ReadItem())
                 items.Add(item);
             ResetControls();

@@ -9,7 +9,7 @@ namespace MB_Decompiler_Library.Objects
         private string sampleMaterialName, flags;
         private string[] operationBlock;
 
-        public TableauMaterial(string[] raw_data, bool source = false) : base(raw_data[0], ObjectType.TABLEAU_MATERIAL)
+        public TableauMaterial(string[] raw_data, bool source = false) : base(raw_data[0], ObjectType.TableauMaterial)
         {
             flagsGZ = ulong.Parse(raw_data[1]);
             flags = flagsGZ.ToString();//change if flags available

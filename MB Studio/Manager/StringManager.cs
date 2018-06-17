@@ -7,7 +7,7 @@ namespace MB_Studio.Manager
 {
     public partial class StringManager : ToolForm
     {
-        public StringManager() : base(Skriptum.ObjectType.GAME_STRING)
+        public StringManager() : base(Skriptum.ObjectType.GameString)
         {
             InitializeComponent();
         }

@@ -27,7 +27,7 @@ namespace MB_Studio.Manager
 
         #region Loading
 
-        public TroopManager() : base(Skriptum.ObjectType.TROOP, true)
+        public TroopManager() : base(Skriptum.ObjectType.Troop, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectType);// ansonsten für alle in Toolform
@@ -44,7 +44,7 @@ namespace MB_Studio.Manager
         {
             base.LoadSettingsAndLists();
 
-            CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.ITEM]);
+            CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.Item]);
             itemsRList.AddRange(cr.ReadItem());
 
             for (int i = 0; i < CodeReader.Items.Count; i++)

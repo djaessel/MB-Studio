@@ -7,7 +7,7 @@ namespace MB_Decompiler_Library.Objects
     {
         private static string[] allSoundFiles = new string[0];
 
-        public Sound(string[] raw_data) : base(raw_data[0], ObjectType.SOUND)
+        public Sound(string[] raw_data) : base(raw_data[0], ObjectType.Sound)
         {
             if (allSoundFiles.Length == 0)
                 InitializeAllSounds();
@@ -18,7 +18,7 @@ namespace MB_Decompiler_Library.Objects
                 SoundFiles[i] = allSoundFiles[int.Parse(raw_data[i * 2 + 3])];
         }
 
-        public Sound(string[] source_data, bool sortSounds) : base(source_data[0], ObjectType.SOUND)
+        public Sound(string[] source_data, bool sortSounds) : base(source_data[0], ObjectType.Sound)
         {
             Flags = source_data[1];
             SetFlagsGZ();
