@@ -1354,7 +1354,7 @@ namespace MB_Studio.Manager
         {
             if (!Has3DView) return;
 
-            int idx = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
+            int idx = typeSelect_lb.SelectedIndex - 1;//typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
             if (idx < 0) return;
 
             for (int i = 0; i < curMeshs.Count; i++)

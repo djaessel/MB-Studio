@@ -496,16 +496,17 @@ namespace MB_Studio.Manager
 
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (typeSelect_lb.Items.Count > 0 && typeSelect_lb.SelectedItem != null)
+            int typeIndex = typeSelect_lb.SelectedIndex;
+
+            if (typeSelect_lb.Items.Count == 0 || typeIndex < 0 || typeIndex >= typeSelect_lb.Items.Count) return;
+
+            if (typeIndex > 0 && typeIndex != curTypeIndex || !typeSelect_lb.SelectedItem.ToString().Equals("New"))
             {
-                if (/*(*/typeSelect_lb.SelectedIndex > 0 && typeSelect_lb.SelectedIndex != curTypeIndex/* && save_btn.Text.Equals("SAVE"))*/ || !typeSelect_lb.SelectedItem.ToString().Equals("New"))
-                {
-                    curTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                    SetupType(types[curTypeIndex]);
-                }
-                else
-                    ResetControls();
+                curTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
+                SetupType(types[curTypeIndex]);
             }
+            else
+                ResetControls();
         }
 
         #endregion
