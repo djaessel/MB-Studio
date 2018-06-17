@@ -767,11 +767,11 @@ namespace MB_Studio
             if (projectFiles_lb.SelectedIndex >= 0)
             {
                 string item = projectFiles_lb.SelectedItem.ToString();
-                string itemManagerName = item + "Manager";
+                string itemManagerName = item.Remove(item.Length - 1) + "Manager";
 
                 if (item.Equals("Troops"))
                     form = new TroopManager();
-                else if (item.Equals("Party Templates"))
+                else if (item.Equals("PartyTemplates"))
                     form = new PartyTemplateManager();
                 else if (item.Equals("Parties"))
                     form = new PartyManager();
@@ -779,8 +779,6 @@ namespace MB_Studio
                     form = new MenuManager();
                 else if (item.Equals("Items"))
                     form = new ItemManager();
-                else if (item.Equals("Info Pages"))
-                    form = new InfoPageManager();
                 else if (item.Equals("Skills"))
                     form = new SkillManager();
                 else
