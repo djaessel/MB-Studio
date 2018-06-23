@@ -32,20 +32,20 @@
             this.description_lbl = new System.Windows.Forms.Label();
             this.showGroup_1_btn = new System.Windows.Forms.Button();
             this.groupBox_1_gb = new System.Windows.Forms.GroupBox();
-            this.maxLevel_lbl = new System.Windows.Forms.Label();
-            this.maxLevel_num = new System.Windows.Forms.NumericUpDown();
+            this.inactive_cb = new System.Windows.Forms.CheckBox();
+            this.effects_party_cb = new System.Windows.Forms.CheckBox();
             this.base_attribute_gb = new System.Windows.Forms.GroupBox();
             this.cha_rb = new System.Windows.Forms.RadioButton();
             this.int_rb = new System.Windows.Forms.RadioButton();
             this.agi_rb = new System.Windows.Forms.RadioButton();
             this.str_rb = new System.Windows.Forms.RadioButton();
-            this.effects_party_cb = new System.Windows.Forms.CheckBox();
-            this.inactive_cb = new System.Windows.Forms.CheckBox();
+            this.maxLevel_num = new System.Windows.Forms.NumericUpDown();
+            this.maxLevel_lbl = new System.Windows.Forms.Label();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_1_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.maxLevel_num)).BeginInit();
             this.base_attribute_gb.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maxLevel_num)).BeginInit();
             this.SuspendLayout();
             // 
             // title_lbl
@@ -139,37 +139,25 @@
             this.groupBox_1_gb.TabStop = false;
             this.groupBox_1_gb.Text = "Flags && MaxLevel";
             // 
-            // maxLevel_lbl
+            // inactive_cb
             // 
-            this.maxLevel_lbl.AutoSize = true;
-            this.maxLevel_lbl.Location = new System.Drawing.Point(356, 52);
-            this.maxLevel_lbl.Name = "maxLevel_lbl";
-            this.maxLevel_lbl.Size = new System.Drawing.Size(83, 20);
-            this.maxLevel_lbl.TabIndex = 0;
-            this.maxLevel_lbl.Text = "Max Level:";
+            this.inactive_cb.AutoSize = true;
+            this.inactive_cb.Location = new System.Drawing.Point(499, 34);
+            this.inactive_cb.Name = "inactive_cb";
+            this.inactive_cb.Size = new System.Drawing.Size(83, 24);
+            this.inactive_cb.TabIndex = 27;
+            this.inactive_cb.Text = "Inactive";
+            this.inactive_cb.UseVisualStyleBackColor = true;
             // 
-            // maxLevel_num
+            // effects_party_cb
             // 
-            this.maxLevel_num.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.maxLevel_num.Location = new System.Drawing.Point(445, 50);
-            this.maxLevel_num.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.maxLevel_num.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.maxLevel_num.Name = "maxLevel_num";
-            this.maxLevel_num.Size = new System.Drawing.Size(42, 26);
-            this.maxLevel_num.TabIndex = 1;
-            this.maxLevel_num.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.effects_party_cb.AutoSize = true;
+            this.effects_party_cb.Location = new System.Drawing.Point(499, 57);
+            this.effects_party_cb.Name = "effects_party_cb";
+            this.effects_party_cb.Size = new System.Drawing.Size(119, 24);
+            this.effects_party_cb.TabIndex = 26;
+            this.effects_party_cb.Text = "Effects Party";
+            this.effects_party_cb.UseVisualStyleBackColor = true;
             // 
             // base_attribute_gb
             // 
@@ -234,39 +222,42 @@
             this.str_rb.Text = "Strength";
             this.str_rb.UseVisualStyleBackColor = true;
             // 
-            // effects_party_cb
+            // maxLevel_num
             // 
-            this.effects_party_cb.AutoSize = true;
-            this.effects_party_cb.Location = new System.Drawing.Point(499, 57);
-            this.effects_party_cb.Name = "effects_party_cb";
-            this.effects_party_cb.Size = new System.Drawing.Size(119, 24);
-            this.effects_party_cb.TabIndex = 26;
-            this.effects_party_cb.Text = "Effects Party";
-            this.effects_party_cb.UseVisualStyleBackColor = true;
+            this.maxLevel_num.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.maxLevel_num.Location = new System.Drawing.Point(445, 50);
+            this.maxLevel_num.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.maxLevel_num.Name = "maxLevel_num";
+            this.maxLevel_num.Size = new System.Drawing.Size(42, 26);
+            this.maxLevel_num.TabIndex = 1;
             // 
-            // inactive_cb
+            // maxLevel_lbl
             // 
-            this.inactive_cb.AutoSize = true;
-            this.inactive_cb.Location = new System.Drawing.Point(499, 34);
-            this.inactive_cb.Name = "inactive_cb";
-            this.inactive_cb.Size = new System.Drawing.Size(83, 24);
-            this.inactive_cb.TabIndex = 27;
-            this.inactive_cb.Text = "Inactive";
-            this.inactive_cb.UseVisualStyleBackColor = true;
+            this.maxLevel_lbl.AutoSize = true;
+            this.maxLevel_lbl.Location = new System.Drawing.Point(356, 52);
+            this.maxLevel_lbl.Name = "maxLevel_lbl";
+            this.maxLevel_lbl.Size = new System.Drawing.Size(83, 20);
+            this.maxLevel_lbl.TabIndex = 0;
+            this.maxLevel_lbl.Text = "Max Level:";
             // 
             // SkillManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(814, 246);
             this.Name = "SkillManager";
+            this.Text = "SkillManager";
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();
             this.groupBox_1_gb.ResumeLayout(false);
             this.groupBox_1_gb.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.maxLevel_num)).EndInit();
             this.base_attribute_gb.ResumeLayout(false);
             this.base_attribute_gb.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maxLevel_num)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

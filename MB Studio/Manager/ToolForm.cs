@@ -103,6 +103,8 @@ namespace MB_Studio.Manager
 
         protected int CurrentTypeIndex { get; private set; } = -1;
 
+        protected bool IsResetActive { get; private set; } = false;
+
         public ObjectType ObjectType { get; private set; }
 
         public int ObjectTypeID
@@ -187,8 +189,6 @@ namespace MB_Studio.Manager
 
         protected virtual void ToolForm_Shown(object sender, EventArgs e)
         {
-            ResetControls();
-
             foreach (Control c in toolPanel.Controls)
                 if (GetNameEndOfControl(c).Equals("gb"))
                     AddUnsavedDataHandler((GroupBox)c);
@@ -436,6 +436,8 @@ namespace MB_Studio.Manager
 
         private void Id_txt_TextChanged(object sender, EventArgs e)
         {
+            if (IsResetActive) return;
+
             bool isInList = false;
             string id = id_txt.Text.Trim();
             if (!id.StartsWith(Prefix))
@@ -448,12 +450,20 @@ namespace MB_Studio.Manager
                     i = typeSelect_lb.Items.Count;
                 }
             }
+
             if (!isInList)
+            {
                 save_btn.Text = "CREATE";
+                if (CurrentTypeIndex != 0) CurrentTypeIndex = 0;
+                return;
+            }
             else if (save_btn.Text.Equals("CREATE"))
                 save_btn.Text = "SAVE";
-            if (isInList)
-                typeSelect_lb.SelectedIndex = typeSelect_lb.Items.IndexOf(id);
+
+            int newIdx = typeSelect_lb.Items.IndexOf(id);
+            if (CurrentTypeIndex == newIdx) return;
+
+            typeSelect_lb.SelectedIndex = newIdx;
         }
 
         private void SearchType_SearchTextBox_TextChanged(object sender, EventArgs e)
@@ -503,14 +513,18 @@ namespace MB_Studio.Manager
             if (noTypesInList)
                 CurrentTypeIndex = typeIndex;
 
-            if ((typeIndex > 0 && typeIndex != CurrentTypeIndex) || 
-                !typeSelect_lb.SelectedItem.ToString().Equals("New"))
+            bool isNewType = typeSelect_lb.SelectedItem.ToString().Equals("New");
+
+            if (typeIndex > 0 || !isNewType)
             {
-                CurrentTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
+                typeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
+                if (typeIndex == CurrentTypeIndex) return;
+                CurrentTypeIndex = typeIndex;
                 SetupType(types[CurrentTypeIndex]);
+                return;
             }
-            else
-                ResetControls();
+
+            ResetControls();
         }
 
         #endregion
@@ -519,6 +533,8 @@ namespace MB_Studio.Manager
 
         protected virtual void ResetControls()
         {
+            IsResetActive = true;
+
             id_txt.ResetText();
             name_txt.ResetText();
             plural_name_txt.ResetText();
@@ -531,6 +547,8 @@ namespace MB_Studio.Manager
 
             singleNameTranslation_txt.ResetText();
             pluralNameTranslation_txt.ResetText();
+
+            IsResetActive = false;
         }
 
         protected virtual void ResetGroupBox(GroupBox groupBox, List<string> exclude = null)
