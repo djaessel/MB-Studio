@@ -1,4 +1,6 @@
-﻿namespace importantLib
+﻿using System.Drawing;
+
+namespace importantLib
 {
     public partial class SpecialFormBlack : SpecialForm
     {
@@ -42,36 +44,36 @@
             // 
             // min_btn
             // 
-            this.min_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.min_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.min_btn.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+            this.min_btn.BackColor = Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.min_btn.FlatAppearance.BorderSize = 0;
-            this.min_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.min_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.min_btn.FlatAppearance.MouseDownBackColor = Color.Black;
+            this.min_btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.min_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.min_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.min_btn.ForeColor = System.Drawing.Color.White;
-            this.min_btn.Location = new System.Drawing.Point(435, -2);
+            //this.min_btn.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.min_btn.ForeColor = Color.White;
+            this.min_btn.Location = new Point(435, -2);
             this.min_btn.Name = "min_btn";
-            this.min_btn.Size = new System.Drawing.Size(32, 26);
+            this.min_btn.Size = new Size(32, 26);
             this.min_btn.TabIndex = 0;
             this.min_btn.TabStop = false;
             this.min_btn.Text = "_";
-            this.min_btn.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            //this.min_btn.TextAlign = ContentAlignment.TopCenter;
             this.min_btn.UseVisualStyleBackColor = false;
             // 
             // exit_btn
             // 
-            this.exit_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.exit_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.exit_btn.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+            this.exit_btn.BackColor = Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.exit_btn.FlatAppearance.BorderSize = 0;
-            this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
-            this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.exit_btn.FlatAppearance.MouseDownBackColor = Color.Black;
+            this.exit_btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exit_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exit_btn.ForeColor = System.Drawing.Color.White;
-            this.exit_btn.Location = new System.Drawing.Point(467, 0);
+            //this.exit_btn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.exit_btn.ForeColor = Color.White;
+            this.exit_btn.Location = new Point(467, 0);
             this.exit_btn.Name = "exit_btn";
-            this.exit_btn.Size = new System.Drawing.Size(32, 24);
+            this.exit_btn.Size = new Size(32, 24);
             this.exit_btn.TabIndex = 0;
             this.exit_btn.TabStop = false;
             this.exit_btn.Text = "X";
@@ -79,26 +81,26 @@
             // 
             // title_lbl
             // 
-            this.title_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.title_lbl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.title_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title_lbl.ForeColor = System.Drawing.Color.Silver;
-            this.title_lbl.Location = new System.Drawing.Point(0, 0);
+            this.title_lbl.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right);
+            this.title_lbl.BackColor = Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            //this.title_lbl.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            this.title_lbl.ForeColor = Color.Silver;
+            this.title_lbl.Location = new Point(0, 0);
             this.title_lbl.Name = "title_lbl";
-            this.title_lbl.Size = new System.Drawing.Size(435, 24);
+            this.title_lbl.Size = new Size(435, 24);
             this.title_lbl.TabIndex = 0;
             this.title_lbl.Text = "Form";
-            this.title_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //this.title_lbl.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // SpecialFormBlack
             // 
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(499, 261);
+            this.BackColor = Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ClientSize = new Size(499, 261);
             this.Controls.Add(this.min_btn);
             this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.title_lbl);
-            this.ForeColor = System.Drawing.Color.White;
+            this.ForeColor = Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SpecialFormBlack";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

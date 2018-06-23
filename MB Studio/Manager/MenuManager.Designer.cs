@@ -730,7 +730,6 @@
             this.Controls.SetChildIndex(this.exit_btn, 0);
             this.Controls.SetChildIndex(this.min_btn, 0);
             this.Controls.SetChildIndex(this.typeSelect_lbl, 0);
-            this.Controls.SetChildIndex(this.typeSelect_lb, 0);
             this.Controls.SetChildIndex(this.closeAll_btn, 0);
             this.Controls.SetChildIndex(this.save_btn, 0);
             this.Controls.SetChildIndex(this.idINFO_lbl, 0);

@@ -262,10 +262,6 @@
             this.groupBox_7_gb.SuspendLayout();
             this.SuspendLayout();
             // 
-            // typeSelect_lb
-            // 
-            this.typeSelect_lb.SelectedIndexChanged += new System.EventHandler(this.TypeSelect_lb_SelectedIndexChanged);
-            // 
             // title_lbl
             // 
             this.title_lbl.Text = "ToolForm";

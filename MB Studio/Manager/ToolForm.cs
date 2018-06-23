@@ -57,8 +57,6 @@ namespace MB_Studio.Manager
 
         #region Private
 
-        private int curTypeIndex = -1;
-
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
 
@@ -102,6 +100,8 @@ namespace MB_Studio.Manager
         #endregion
 
         #region Object
+
+        protected int CurrentTypeIndex { get; private set; } = -1;
 
         public ObjectType ObjectType { get; private set; }
 
@@ -417,15 +417,12 @@ namespace MB_Studio.Manager
                 id_txt.Text.Replace(' ', '_') + ' ' + name_txt.Text.Replace(' ', '_')
             };
 
-            int index;
-            if (typeSelect_lb.SelectedIndex > 0/* && typeSelect_lb.SelectedIndex < typeSelect_lb.Items.Count*/)
-            {
+            int index = -1;
+            if (CurrentTypeIndex > 0)
                 if (save_btn.Text.Equals("SAVE"))
-                    index = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                else
-                    index = typeSelect_lb.Items.Count;
-            }
-            else
+                    index = CurrentTypeIndex;
+
+            if (index < 0)
                 index = typeSelect_lb.Items.Count;
 
             SaveTypeByIndex(list, index);
@@ -466,7 +463,7 @@ namespace MB_Studio.Manager
 
         protected void SearchForContaining(ListBox lb, Skriptum[] orgList, string searchText, List<Skriptum> usedList = null, bool addID = false)
         {
-            SearchForContaining(lb, new List<Skriptum>(orgList), searchText, usedList, addID);//no addNew for arrays!
+            SearchForContaining(lb, new List<Skriptum>(orgList), searchText, usedList, addID);
         }
 
         protected void SearchForContaining(ListBox lb, List<Skriptum> orgList, string searchText, List<Skriptum> usedList = null, bool addID = false, bool addNew = false)
@@ -497,13 +494,20 @@ namespace MB_Studio.Manager
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
             int typeIndex = typeSelect_lb.SelectedIndex;
+            bool noTypesInList = (typeSelect_lb.Items.Count == 0);
 
-            if (typeSelect_lb.Items.Count == 0 || typeIndex < 0 || typeIndex >= typeSelect_lb.Items.Count) return;
+            if ((noTypesInList && typeIndex >= 0) || 
+                typeIndex < 0 || 
+                typeIndex >= typeSelect_lb.Items.Count) return;
 
-            if (typeIndex > 0 && typeIndex != curTypeIndex || !typeSelect_lb.SelectedItem.ToString().Equals("New"))
+            if (noTypesInList)
+                CurrentTypeIndex = typeIndex;
+
+            if ((typeIndex > 0 && typeIndex != CurrentTypeIndex) || 
+                !typeSelect_lb.SelectedItem.ToString().Equals("New"))
             {
-                curTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                SetupType(types[curTypeIndex]);
+                CurrentTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
+                SetupType(types[CurrentTypeIndex]);
             }
             else
                 ResetControls();
@@ -600,10 +604,6 @@ namespace MB_Studio.Manager
             if (changed != null)
             {
                 bool newOne = false;
-
-                if (selectedIndex < 0)
-                    selectedIndex = typeSelect_lb.SelectedIndex;
-
                 if (selectedIndex >= 0)
                 {
                     if (selectedIndex < typesIDs.Count)//was typesIDs.Count - 1 before

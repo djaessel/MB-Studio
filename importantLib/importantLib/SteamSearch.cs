@@ -45,6 +45,9 @@ namespace importantLib
         public static bool SearchSteamRegistryInstallPath()
         {
             bool found_it = false;
+
+            #if NET462
+            
             RegistryKey steamRegKey = null;
             try
             {
@@ -67,6 +70,9 @@ namespace importantLib
                     found_it = true;
                 }
             }
+
+            #endif
+
             return found_it;
         }
 

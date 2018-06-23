@@ -817,7 +817,7 @@ namespace MB_Studio.Manager
 
         private void SearchUsedItems_txt_TextChanged(object sender, EventArgs e)
         {
-            List<int> troopItems = ((Troop)types[typeSelect_lb.SelectedIndex]).Items;
+            List<int> troopItems = ((Troop)types[CurrentTypeIndex]).Items;
             List<Skriptum> list = new List<Skriptum>();
             for (int i = 0; i < itemsRList.Count; i++)
                 if (troopItems.Contains(i))

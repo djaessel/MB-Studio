@@ -426,7 +426,6 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Label idINFO_lbl;
         protected System.Windows.Forms.Button save_btn;
         protected System.Windows.Forms.Button closeAll_btn;
-        protected ToolTipListBox typeSelect_lb;
         protected System.Windows.Forms.Label typeSelect_lbl;
         protected System.Windows.Forms.Label title_lbl;
         protected System.Windows.Forms.Label plural_name_lbl;
@@ -448,5 +447,6 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Button min_btn;
         protected System.Windows.Forms.Button exit_btn;
         protected System.Windows.Forms.Button addFromOtherMod_btn;
+        private ToolTipListBox typeSelect_lb;
     }
 }

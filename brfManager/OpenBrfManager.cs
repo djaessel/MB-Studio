@@ -123,6 +123,16 @@ namespace brfManager
             return StartExternal(args.Length, args);
         }
 
+        /// <summary>
+        /// EXPERIMENTAL
+        /// TODO: Create C++ method to clear scene (maybe use this for Troop3DPreviewClearData as well later!
+        /// </summary>
+        public void Clear()
+        {
+            Troop3DPreviewClearData();
+            Troop3DPreviewShow();
+        }
+
         public void Close()
         {
             CloseApp();

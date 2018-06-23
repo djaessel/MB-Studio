@@ -362,7 +362,7 @@ namespace MB_Studio.Manager
         {
             string[] tmp;
             bool found;
-            int index = typeSelect_lb.SelectedIndex - 1;
+            int index = CurrentTypeIndex - 1;
             if (index >= 0)
             {
                 string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(language_cbb.SelectedIndex));
@@ -402,7 +402,7 @@ namespace MB_Studio.Manager
         {
             base.Language_cbb_SelectedIndexChanged(sender, e);
 
-            int idx = typeSelect_lb.SelectedIndex - 1;
+            int idx = CurrentTypeIndex - 1;
             if (idx >= 0)
             {
                 GameMenu menu = (GameMenu)types[idx];

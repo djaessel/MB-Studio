@@ -14,7 +14,7 @@ protected override void Save_translation_btn_Click(object sender, EventArgs e)
 
 private void InteractWithTextLanguage(bool setValue = false)
 {
-    int index = typeSelect_lb.SelectedIndex - 1;
+    int index = CurrentTypeIndex - 1;
     if (index >= 0)
     {
         string v = Prefix + id_txt.Text + "_text";

@@ -143,7 +143,7 @@ namespace MB_Studio.Manager
 
         private void InteractWithTextLanguage(bool setValue = false)
         {
-            int index = typeSelect_lb.SelectedIndex - 1;
+            int index = CurrentTypeIndex - 1;
             if (index >= 0)
             {
                 string v = Prefix + id_txt.Text + "_desc";

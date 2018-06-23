@@ -238,6 +238,8 @@ namespace MB_Studio.Manager
 
             SetupMeshes(item);
 
+            Change3DView();
+
             #endregion
 
             #region Modifier Bits
@@ -537,7 +539,7 @@ namespace MB_Studio.Manager
 
         private void AddMesh_btn_Click(object sender, EventArgs e)
         {
-            int index = typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
+            int index = CurrentTypeIndex;
             if (index >= 0 && index < types.Count)
             {
                 Item xitem = (Item)types[index];
@@ -1339,11 +1341,6 @@ namespace MB_Studio.Manager
             base.OnHandleDestroyed();
         }
 
-        private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Change3DView();
-        }
-
         private void Show_cb_CheckedChanged(object sender, EventArgs e)
         {
             if (((CheckBox)sender).Checked)
@@ -1354,7 +1351,9 @@ namespace MB_Studio.Manager
         {
             if (!Has3DView) return;
 
-            int idx = typeSelect_lb.SelectedIndex - 1;//typesIDs.IndexOf(typeSelect_lb.SelectedItem.ToString());
+            OpenBrfManager.Clear();
+
+            int idx = CurrentTypeIndex - 1;
             if (idx < 0) return;
 
             for (int i = 0; i < curMeshs.Count; i++)
