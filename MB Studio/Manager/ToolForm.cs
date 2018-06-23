@@ -442,6 +442,7 @@ namespace MB_Studio.Manager
             string id = id_txt.Text.Trim();
             if (!id.StartsWith(Prefix))
                 id = Prefix + id;
+
             for (int i = 0; i < typeSelect_lb.Items.Count; i++)
             {
                 if (typeSelect_lb.Items[i].ToString().Equals(id))
@@ -460,7 +461,15 @@ namespace MB_Studio.Manager
             else if (save_btn.Text.Equals("CREATE"))
                 save_btn.Text = "SAVE";
 
-            int newIdx = typeSelect_lb.Items.IndexOf(id);
+            int newIdx = -1;
+            for (int i = 1; i < typeSelect_lb.Items.Count; i++)
+            {
+                if (id.Equals(typeSelect_lb.Items[i].ToString()))
+                {
+                    newIdx = i;
+                    i = typeSelect_lb.Items.Count;
+                }
+            }
             if (CurrentTypeIndex == newIdx) return;
 
             typeSelect_lb.SelectedIndex = newIdx;
@@ -503,6 +512,8 @@ namespace MB_Studio.Manager
 
         private void TypeSelect_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (IsResetActive) return;
+
             int typeIndex = typeSelect_lb.SelectedIndex;
             bool noTypesInList = (typeSelect_lb.Items.Count == 0);
 
@@ -655,7 +666,7 @@ namespace MB_Studio.Manager
         {
             string[] tmp;
             bool foundSingleName = false;
-            bool foundPluralName = !plural; //ObjectType == ObjectType.ITEM; // because Item plurals are most times the same
+            bool foundPluralName = !plural;//ObjectType == ObjectType.ITEM; // because Item plurals are most times the same
             string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(index));
             if (File.Exists(filePath))
             {
@@ -668,7 +679,7 @@ namespace MB_Studio.Manager
                         {
                             if (tmp[0].Equals(Prefix + id_txt.Text) && tmp.Length > 1)
                             {
-                                translations[index][0] = tmp[1]; //singleNameTranslation_txt.Text = tmp[1];
+                                translations[index][0] = tmp[1];//singleNameTranslation_txt.Text = tmp[1];
                                 foundSingleName = true;
                             }
                         }
@@ -676,15 +687,13 @@ namespace MB_Studio.Manager
                         {
                             if (tmp[0].Equals(Prefix + id_txt.Text + "_pl") && tmp.Length > 1)
                             {
-                                translations[index][1] = tmp[1]; //pluralNameTranslation_txt.Text = tmp[1];
+                                translations[index][1] = tmp[1];//pluralNameTranslation_txt.Text = tmp[1];
                                 foundPluralName = true;
                             }
                         }
                     }
                 }  
             }
-            //else
-            //    MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
         }
 
         protected virtual void Language_cbb_SelectedIndexChanged(object sender = null, EventArgs e = null)

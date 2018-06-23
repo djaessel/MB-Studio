@@ -377,7 +377,7 @@ namespace MB_Studio.Manager
             this.addFromOtherMod_btn.Size = new System.Drawing.Size(182, 23);
             this.addFromOtherMod_btn.TabIndex = 39;
             this.addFromOtherMod_btn.TabStop = false;
-            this.addFromOtherMod_btn.Tag = "";
+            this.addFromOtherMod_btn.Tag = string.Empty;
             this.addFromOtherMod_btn.Text = "ADD EXTERNAL ";
             this.addFromOtherMod_btn.UseVisualStyleBackColor = false;
             this.addFromOtherMod_btn.Click += new System.EventHandler(this.AddFromOtherMod_btn_Click);
@@ -410,7 +410,7 @@ namespace MB_Studio.Manager
             this.Name = "ToolForm";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "ToolForm";
+            this.Text = "Manager";
             this.Load += new System.EventHandler(this.ToolForm_Load);
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
