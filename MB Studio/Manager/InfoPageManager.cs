@@ -80,8 +80,7 @@ namespace MB_Studio.Manager
 
         private void InteractWithTextLanguage(bool setValue = false)
         {
-            int index = CurrentTypeIndex - 1;
-            if (index >= 0)
+            if (CurrentTypeIndex >= 0)
             {
                 string v = Prefix + id_txt.Text + "_text";
                 string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(language_cbb.SelectedIndex));
@@ -106,11 +105,9 @@ namespace MB_Studio.Manager
                         }
                     }
                     if (!found)
-                        v = ((InfoPage)types[index]).Text;
+                        v = ((InfoPage)types[CurrentTypeIndex]).Text;
                     text_txt.Text = v;
                 }
-                //else
-                //    System.Windows.Forms.MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
             }
         }
     }

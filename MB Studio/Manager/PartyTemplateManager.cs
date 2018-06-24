@@ -3,9 +3,9 @@ using MB_Decompiler_Library.IO;
 using MB_Decompiler_Library.Objects;
 using MB_Decompiler_Library.Objects.Support;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace MB_Studio.Manager
 {

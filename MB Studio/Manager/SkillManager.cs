@@ -143,8 +143,7 @@ namespace MB_Studio.Manager
 
         private void InteractWithTextLanguage(bool setValue = false)
         {
-            int index = CurrentTypeIndex - 1;
-            if (index >= 0)
+            if (CurrentTypeIndex >= 0)
             {
                 string v = Prefix + id_txt.Text + "_desc";
                 string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(language_cbb.SelectedIndex));
@@ -169,7 +168,7 @@ namespace MB_Studio.Manager
                         }
                     }
                     if (!found)
-                        v = ((Skill)types[index]).Description;
+                        v = ((Skill)types[CurrentTypeIndex]).Description;
                     description_txt.Text = v;
                 }
                 //else

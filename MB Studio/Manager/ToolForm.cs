@@ -418,7 +418,7 @@ namespace MB_Studio.Manager
             };
 
             int index = -1;
-            if (CurrentTypeIndex > 0)
+            if (CurrentTypeIndex >= 0)
                 if (save_btn.Text.Equals("SAVE"))
                     index = CurrentTypeIndex;
 
@@ -455,24 +455,26 @@ namespace MB_Studio.Manager
             if (!isInList)
             {
                 save_btn.Text = "CREATE";
-                if (CurrentTypeIndex != 0) CurrentTypeIndex = 0;
+                if (CurrentTypeIndex >= 0) CurrentTypeIndex = -1;
                 return;
             }
             else if (save_btn.Text.Equals("CREATE"))
                 save_btn.Text = "SAVE";
 
             int newIdx = -1;
+            int sIdx = newIdx;
             for (int i = 1; i < typeSelect_lb.Items.Count; i++)
             {
                 if (id.Equals(typeSelect_lb.Items[i].ToString()))
                 {
-                    newIdx = i;
+                    newIdx = GetIndexOfTypeByID(typeSelect_lb.Items[i].ToString());
+                    sIdx = i;
                     i = typeSelect_lb.Items.Count;
                 }
             }
             if (CurrentTypeIndex == newIdx) return;
 
-            typeSelect_lb.SelectedIndex = newIdx;
+            typeSelect_lb.SelectedIndex = sIdx;
         }
 
         private void SearchType_SearchTextBox_TextChanged(object sender, EventArgs e)
@@ -514,27 +516,16 @@ namespace MB_Studio.Manager
         {
             if (IsResetActive) return;
 
-            int typeIndex = typeSelect_lb.SelectedIndex;
             bool noTypesInList = (typeSelect_lb.Items.Count == 0);
-
-            if ((noTypesInList && typeIndex >= 0) || 
-                typeIndex < 0 || 
-                typeIndex >= typeSelect_lb.Items.Count) return;
-
-            if (noTypesInList)
-                CurrentTypeIndex = typeIndex;
-
             bool isNewType = typeSelect_lb.SelectedItem.ToString().Equals("New");
-
-            if (typeIndex > 0 || !isNewType)
+            if (!noTypesInList && !isNewType)
             {
-                typeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                if (typeIndex == CurrentTypeIndex) return;
-                CurrentTypeIndex = typeIndex;
+                CurrentTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
                 SetupType(types[CurrentTypeIndex]);
                 return;
             }
 
+            CurrentTypeIndex = typeSelect_lb.SelectedIndex;//-1
             ResetControls();
         }
 

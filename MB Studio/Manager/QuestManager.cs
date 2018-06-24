@@ -126,8 +126,6 @@ namespace MB_Studio.Manager
                         v = ((Skill)types[index]).Description;
                     description_txt.Text = v;
                 }
-                //else
-                //    System.Windows.Forms.MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
             }
         }*/
     }

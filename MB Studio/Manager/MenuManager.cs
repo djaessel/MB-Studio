@@ -362,11 +362,10 @@ namespace MB_Studio.Manager
         {
             string[] tmp;
             bool found;
-            int index = CurrentTypeIndex - 1;
-            if (index >= 0)
+            if (CurrentTypeIndex >= 0)
             {
                 string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(language_cbb.SelectedIndex));
-                GameMenuOption[] mnos = ((GameMenu)types[index]).MenuOptions;
+                GameMenuOption[] mnos = ((GameMenu)types[CurrentTypeIndex]).MenuOptions;
                 mno_translations = new string[mnos.Length];
                 if (File.Exists(filePath))
                 {
@@ -393,8 +392,6 @@ namespace MB_Studio.Manager
                             mno_translations[i] = mnos[i].Text.Replace('_', ' ');
                     }
                 }
-                //else
-                //    System.Windows.Forms.MessageBox.Show("PATH DOESN'T EXIST --> CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT)" + Environment.NewLine + CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT));
             }
         }
 
@@ -402,10 +399,9 @@ namespace MB_Studio.Manager
         {
             base.Language_cbb_SelectedIndexChanged(sender, e);
 
-            int idx = CurrentTypeIndex - 1;
-            if (idx >= 0)
+            if (CurrentTypeIndex >= 0)
             {
-                GameMenu menu = (GameMenu)types[idx];
+                GameMenu menu = (GameMenu)types[CurrentTypeIndex];
 
                 if (language_cbb.SelectedIndex == LANGUAGE_EN_GZ && singleNameTranslation_txt.Text.Length == 0)
                     singleNameTranslation_txt.Text = menu.Text.Replace('_', ' ');

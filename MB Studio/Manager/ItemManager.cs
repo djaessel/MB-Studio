@@ -1353,8 +1353,7 @@ namespace MB_Studio.Manager
 
             OpenBrfManager.Clear();
 
-            int idx = CurrentTypeIndex - 1;
-            if (idx < 0) return;
+            if (CurrentTypeIndex < 0) return;
 
             for (int i = 0; i < curMeshs.Count; i++)
             {
