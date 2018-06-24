@@ -460,6 +460,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manager\minimumRequiredForManager.txt" />
+    <None Include="MB_Warband.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Manager\Scripts\InfoPage\InfoPage.Designer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

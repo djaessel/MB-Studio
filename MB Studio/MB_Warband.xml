@@ -1,0 +1,19 @@
+<ProjectModule Name="MB Warband" Type="Specific" >
+
+	<!-- <Types> -->
+	<!--    Classic:	Only for Mount and Blade versions before Warband and not creating purposes intended -->
+	<!--    Specific:	Only working with the specific gameversion (other versions with the same code base given) -->
+	<!--    Universal:	Works or should work with all Mount and Blade Versions (starting MB v1.011) -->
+	<!--    Code Base:	(WIP) create code which can be used for other games too if possible - like a library (WIP) -->
+	<!-- </Types> -->
+
+	<SourceGroup>
+		<Manager path="./Manager" />
+		<Settings path="./Settings" />
+		<Tools path="./Tools" />
+	</SourceGroup>
+	
+	<Author>J.SYS</Author>
+	<Version>1.0.0.0</Version>
+
+</ProjectModule>
