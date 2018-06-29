@@ -136,12 +136,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manager\InfoPageManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Manager\InfoPageManager.Designer.cs">
-      <DependentUpon>InfoPageManager.cs</DependentUpon>
-    </Compile>
     <Compile Include="Manager\QuestManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -311,9 +305,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main\MBOptions.resx">
       <DependentUpon>MBOptions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Manager\InfoPageManager.resx">
-      <DependentUpon>InfoPageManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\SkillManager.resx">
       <DependentUpon>SkillManager.cs</DependentUpon>
