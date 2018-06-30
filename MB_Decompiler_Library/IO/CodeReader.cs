@@ -828,7 +828,7 @@ namespace MB_Decompiler_Library.IO
             return objects;
         }
 
-        public MissionTemplate[] ReadMissionTemplate()
+        public List<MissionTemplate> ReadMissionTemplate()
         {
             string line;
             string[] scriptLines;
@@ -883,10 +883,10 @@ namespace MB_Decompiler_Library.IO
             if (missionTemplate != null)
                 missionTemplates.Add(missionTemplate);
             ObjectsRead += missionTemplates.Count;
-            return missionTemplates.ToArray();
+            return missionTemplates;
         }
 
-        public Presentation[] ReadPresentation()
+        public List<Presentation> ReadPresentation()
         {
             string line;
             string[] scriptLines;
@@ -921,10 +921,10 @@ namespace MB_Decompiler_Library.IO
             if (presentation != null)
                 presentations.Add(presentation);
             ObjectsRead += presentations.Count;
-            return presentations.ToArray();
+            return presentations;
         }
 
-        public GameMenu[] ReadGameMenu()
+        public List<GameMenu> ReadGameMenu()
         {
             string s;
             List<GameMenu> game_menus = new List<GameMenu>();
@@ -940,10 +940,10 @@ namespace MB_Decompiler_Library.IO
                 }
             }
             ObjectsRead += game_menus.Count;
-            return game_menus.ToArray();
+            return game_menus;
         }
 
-        public Script[] ReadScript()
+        public List<Script> ReadScript()
         {
             List<Script> scripts = new List<Script>();
             string[] script = null;
@@ -980,10 +980,10 @@ namespace MB_Decompiler_Library.IO
             if (script != null)
                 scripts.Add(new Script(script));
             ObjectsRead += scripts.Count;
-            return scripts.ToArray();
+            return scripts;
         }
 
-        public Troop[] ReadTroop()
+        public List<Troop> ReadTroop()
         {
             List<Troop> troops = new List<Troop>();
             using (StreamReader sr = new StreamReader(filepath))
@@ -1000,10 +1000,10 @@ namespace MB_Decompiler_Library.IO
                 }
             }
             ObjectsRead += troops.Count;
-            return troops.ToArray();
+            return troops;
         }
 
-        public Item[] ReadItem()
+        public List<Item> ReadItem()
         {
             int i = -1;
             string tempus;
@@ -1037,134 +1037,127 @@ namespace MB_Decompiler_Library.IO
             }
 
             ObjectsRead += items.Count;
-            return items.ToArray();
+            return items;
         }
 
-        public GameString[] ReadString()
+        public List<GameString> ReadString()
         {
-            GameString[] strings;
+            List<GameString> strings = new List<GameString>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                strings = new GameString[count];
-                for (int i = 0; i < strings.Length; i++)
-                    strings[i] = new GameString(sr.ReadLine().Substring(4).Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    strings.Add(new GameString(sr.ReadLine().Substring(4).Split()));
             }
-            ObjectsRead += strings.Length;
+            ObjectsRead += strings.Count;
             return strings;
         }
 
-        public SimpleTrigger[] ReadSimpleTrigger()
+        public List<SimpleTrigger> ReadSimpleTrigger()
         {
             string[] scriptLines;
-            SimpleTrigger[] simple_triggers;
+            List<SimpleTrigger> simple_triggers = new List<SimpleTrigger>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                simple_triggers = new SimpleTrigger[count];
-                for (int i = 0; i < simple_triggers.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     scriptLines = sr.ReadLine().Split();
-                    simple_triggers[i] = new SimpleTrigger(scriptLines[0]);
+                    simple_triggers.Add(new SimpleTrigger(scriptLines[0]));
                     string[] tmp = new string[int.Parse(scriptLines[2]) + 1];
                     tmp[0] = "SIMPLE_TRIGGER";
                     scriptLines = GetStringArrayStartFromIndex(scriptLines, 2, 1);
                     simple_triggers[i].ConsequencesBlock = GetStringArrayStartFromIndex(DecompileScriptCode(tmp, scriptLines), 1);
                 }
             }
-            ObjectsRead += simple_triggers.Length;
+            ObjectsRead += simple_triggers.Count;
             return simple_triggers;
         }
 
-        public Trigger[] ReadTrigger()
+        public List<Trigger> ReadTrigger()
         {
-            Trigger[] triggers;
+            List<Trigger> triggers = new List<Trigger>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                triggers = new Trigger[count];
-                for (int i = 0; i < triggers.Length; i++)
-                    triggers[i] = DecompileTrigger(sr.ReadLine().Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    triggers.Add(DecompileTrigger(sr.ReadLine().Split()));
             }
-            ObjectsRead += triggers.Length;
+            ObjectsRead += triggers.Count;
             return triggers;
         }
 
-        public InfoPage[] ReadInfoPage()
+        public List<InfoPage> ReadInfoPage()
         {
-            InfoPage[] info_pages;
+            List<InfoPage> info_pages = new List<InfoPage>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                info_pages = new InfoPage[count];
-                for (int i = 0; i < info_pages.Length; i++)
-                    info_pages[i] = new InfoPage(sr.ReadLine().Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    info_pages.Add(new InfoPage(sr.ReadLine().Split()));
             }
-            ObjectsRead += info_pages.Length;
+            ObjectsRead += info_pages.Count;
             return info_pages;
         }
 
-        public Mesh[] ReadMesh()
+        public List<Mesh> ReadMesh()
         {
-            Mesh[] meshes;
+            List<Mesh> meshes = new List<Mesh>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                meshes = new Mesh[count];
-                for (int i = 0; i < meshes.Length; i++)
-                    meshes[i] = new Mesh(sr.ReadLine().Substring(5).Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    meshes.Add(new Mesh(sr.ReadLine().Split()));
             }
-            ObjectsRead += meshes.Length;
+            ObjectsRead += meshes.Count;
             return meshes;
         }
 
-        public Music[] ReadMusic()
+        public List<Music> ReadMusic()
         {
-            Music[] musicTracks;
+            List<Music> musicTracks = new List<Music>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                musicTracks = new Music[count];
-                for (int i = 0; i < musicTracks.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     string[] sts = sr.ReadLine().Split();
-                    musicTracks[i] = new Music(new string[] { Tracks[i].Substring(6), sts[0], sts[1], sts[2] });
+                    musicTracks.Add(new Music(new string[] { Tracks[i], sts[0], sts[1], sts[2] }));
                 }
             }
-            ObjectsRead += musicTracks.Length;
+            ObjectsRead += musicTracks.Count;
             return musicTracks;
         }
 
-        public Quest[] ReadQuest()
+        public List<Quest> ReadQuest()
         {
-            Quest[] quests;
+            List<Quest> quests = new List<Quest>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                quests = new Quest[count];
-                for (int i = 0; i < quests.Length; i++)
-                    quests[i] = new Quest(sr.ReadLine().Substring(4).Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    quests.Add(new Quest(sr.ReadLine().Split()));
             }
-            ObjectsRead += quests.Length;
+            ObjectsRead += quests.Count;
             return quests;
         }
 
-        public Sound[] ReadSound()
+        public List<Sound> ReadSound()
         {
             string line;
-            Sound[] sounds;
+            List<Sound> sounds = new List<Sound>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
@@ -1172,27 +1165,25 @@ namespace MB_Decompiler_Library.IO
                 do { line = sr.ReadLine(); } while (!ImportantMethods.IsNumericFKZ2(line));
                 int count = int.Parse(line);
                 objectsExpected += count;
-                sounds = new Sound[count];
-                for (int i = 0; i < sounds.Length && !sr.EndOfStream; i++)
-                    sounds[i] = new Sound(sr.ReadLine().Substring(4).Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    sounds.Add(new Sound(sr.ReadLine().Split()));
             }
-            ObjectsRead += sounds.Length;
+            ObjectsRead += sounds.Count;
             return sounds;
         }
 
-        public Scene[] ReadScene()
+        public List<Scene> ReadScene()
         {
             string firstLine;
             string[] otherScenes, chestTroops, tmp;
-            Scene[] _scenes;
+            List<Scene> scenes = new List<Scene>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int tmpX;
                 int count = int.Parse(sr.ReadLine().TrimStart());
                 objectsExpected += count;
-                _scenes = new Scene[count];
-                for (int i = 0; i < _scenes.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     firstLine = sr.ReadLine();
                     tmp = sr.ReadLine().Substring(2).TrimEnd().Replace("  ", " ").Split();
@@ -1211,47 +1202,45 @@ namespace MB_Decompiler_Library.IO
                     chestTroops = new string[int.Parse(tmp[0])];
                     for (int j = 0; j < chestTroops.Length; j++)
                         chestTroops[j] = Troops[int.Parse(tmp[j + 1])];
-                    _scenes[i] = new Scene(firstLine.Split(), otherScenes, chestTroops, sr.ReadLine().Trim());
+                    scenes.Add(new Scene(firstLine.Split(), otherScenes, chestTroops, sr.ReadLine().Trim()));
                 }
             }
-            ObjectsRead += _scenes.Length;
-            return _scenes;
+            ObjectsRead += scenes.Count;
+            return scenes;
         }
 
-        public TableauMaterial[] ReadTableauMaterial()
+        public List<TableauMaterial> ReadTableauMaterial()
         {
-            TableauMaterial[] tableaus;
+            List<TableauMaterial> tableaus = new List<TableauMaterial>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                tableaus = new TableauMaterial[count];
-                for (int i = 0; i < tableaus.Length; i++)
-                    tableaus[i] = new TableauMaterial(sr.ReadLine().Substring(4).TrimEnd().Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    tableaus[i] = new TableauMaterial(sr.ReadLine().TrimEnd().Split());
             }
-            ObjectsRead += tableaus.Length;
+            ObjectsRead += tableaus.Count;
             return tableaus;
         }
 
-        public SceneProp[] ReadSceneProp()
+        public List<SceneProp> ReadSceneProp()
         {
             int tCount;
             string[] lines;
-            SceneProp[] sceneProps;
+            List<SceneProp> sceneProps = new List<SceneProp>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine().TrimStart());
                 objectsExpected += count;
-                sceneProps = new SceneProp[count];
-                for (int i = 0; i < sceneProps.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     string tmpSSS = sr.ReadLine().Replace("  ", " ").Replace('\t', ' ');
                     while (tmpSSS.Contains("  "))
                         tmpSSS = tmpSSS.Replace("  ", " ");
                     lines = tmpSSS.Split();
 
-                    sceneProps[i] = new SceneProp(lines);
+                    sceneProps.Add(new SceneProp(lines));
                     tCount = int.Parse(lines[lines.Length - 1]);
                     if (tCount > 0)
                     {
@@ -1271,23 +1260,22 @@ namespace MB_Decompiler_Library.IO
                     sr.ReadLine();
                 }
             }
-            ObjectsRead += sceneProps.Length;
+            ObjectsRead += sceneProps.Count;
             return sceneProps;
         }
 
-        public Faction[] ReadFaction()
+        public List<Faction> ReadFaction()
         {
             int c;
             string line;
-            Faction[] _factions;
+            List<Faction> factions = new List<Faction>();
             Faction.ResetIDs();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                _factions = new Faction[count];
-                for (int i = 0; i < _factions.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     do { c = sr.Read(); } while ((char)c != 'f');
                     //_factions[i] = new Faction(((char)c + sr.ReadLine().TrimEnd()).Split());
@@ -1319,29 +1307,28 @@ namespace MB_Decompiler_Library.IO
                     }
                     else
                         line = Char.ConvertFromUtf32(c);
-                    _factions[i] = new Faction(new string[] { firstLine, secondLine, line });
+                    factions.Add(new Faction(new string[] { firstLine, secondLine, line }));
                 }
             }
-            ObjectsRead += _factions.Length;
-            return _factions;
+            ObjectsRead += factions.Count;
+            return factions;
         }
 
-        public MapIcon[] ReadMapIcon()
+        public List<MapIcon> ReadMapIcon()
         {
             int tCount;
             string[] sp;
-            MapIcon[] mapIcons;
+            List<MapIcon> mapIcons = new List<MapIcon>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                mapIcons = new MapIcon[count];
-                for (int i = 0; i < mapIcons.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     sp = sr.ReadLine().Split();
                     tCount = int.Parse(sp[sp.Length - 1]);
-                    mapIcons[i] = new MapIcon(sp);
+                    mapIcons.Add(new MapIcon(sp));
                     if (tCount > 0)
                     {
                         SimpleTrigger[] s_triggers = new SimpleTrigger[tCount];
@@ -1356,133 +1343,126 @@ namespace MB_Decompiler_Library.IO
                         }
                         mapIcons[i].SimpleTriggers = s_triggers;
                     }
-                    sr.ReadLine();
-                    sr.ReadLine();
+                    sr.ReadLine();//are there some values here in other versions?
+                    sr.ReadLine();//are there some values here in other versions?
                 }
             }
-            ObjectsRead += mapIcons.Length;
+            ObjectsRead += mapIcons.Count;
             return mapIcons;
         }
 
-        public Animation[] ReadAnimation()
+        public List<Animation> ReadAnimation()
         {
             string[] sp;
-            Animation[] animations;
+            List<Animation> animations = new List<Animation>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                animations = new Animation[count];
-                for (int i = 0; i < animations.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     sp = sr.ReadLine().Substring(1).Replace("  ", " ").Split();
-                    animations[i] = new Animation(sp);
+                    animations.Add(new Animation(sp));
                     AnimationSequence[] sequences = new AnimationSequence[int.Parse(sp[sp.Length - 1])];
                     for (int j = 0; j < sequences.Length; j++)
                         sequences[j] = new AnimationSequence(sr.ReadLine().Trim().Replace("  ", " ").Split());
                     animations[i].Sequences = sequences;
                 }
             }
-            ObjectsRead += animations.Length;
+            ObjectsRead += animations.Count;
             return animations;
         }
 
-        public PartyTemplate[] ReadPartyTemplate()
+        public List<PartyTemplate> ReadPartyTemplate()
         {
-            PartyTemplate[] partyTemplates;
+            List<PartyTemplate> partyTemplates = new List<PartyTemplate>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                partyTemplates = new PartyTemplate[count];
-                for (int i = 0; i < partyTemplates.Length; i++)
-                    partyTemplates[i] = new PartyTemplate(sr.ReadLine().Substring(3).TrimEnd().Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    partyTemplates.Add(new PartyTemplate(sr.ReadLine().TrimEnd().Split()));
             }
-            ObjectsRead += partyTemplates.Length;
+            ObjectsRead += partyTemplates.Count;
             return partyTemplates;
         }
 
-        public Dialog[] ReadDialog()
+        public List<Dialog> ReadDialog()
         {
-            Dialog[] dialogs;
+            List<Dialog> dialogs = new List<Dialog>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                dialogs = new Dialog[count];
-                for (int i = 0; i < dialogs.Length; i++)
-                    dialogs[i] = new Dialog(sr.ReadLine().Substring(5).TrimEnd().Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    dialogs.Add(new Dialog(sr.ReadLine().TrimEnd().Split()));
             }
-            ObjectsRead += dialogs.Length;
+            ObjectsRead += dialogs.Count;
             return dialogs;
         }
 
-        public Party[] ReadParty()
+        public List<Party> ReadParty()
         {
             string line;
-            Party[] parties;
+            List<Party> parties = new List<Party>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine().Split()[0]);
                 objectsExpected += count;
-                parties = new Party[count];
-                for (int i = 0; i < parties.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     line = sr.ReadLine().Trim();
                     double degrees = double.Parse(Repl_DotWComma(sr.ReadLine()));
                     degrees = Math.Round(degrees / (3.1415926 / 180d), 4);
                     line += " " + degrees; // maybe check if values are still correct!
-                    parties[i] = new Party(line.Split());
+                    parties.Add(new Party(line.Split()));
                 }
             }
-            ObjectsRead += parties.Length;
+            ObjectsRead += parties.Count;
             return parties;
         }
 
-        public Skill[] ReadSkill()
+        public List<Skill> ReadSkill()
         {
-            Skill[] skills;
+            List<Skill> skills = new List<Skill>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 int count = int.Parse(sr.ReadLine().Split()[0]);
                 objectsExpected += count;
-                skills = new Skill[count];
-                for (int i = 0; i < skills.Length; i++)
-                    skills[i] = new Skill(sr.ReadLine().Substring(4).Split());
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    skills.Add(new Skill(sr.ReadLine().Split()));
             }
-            ObjectsRead += skills.Length;
+            ObjectsRead += skills.Count;
             return skills;
         }
 
-        public PostFX[] ReadPostFX()
+        public List<PostFX> ReadPostFX()
         {
-            PostFX[] postfxs;
+            List<PostFX> postfxs = new List<PostFX>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine().Split()[0]);
                 objectsExpected += count;
-                postfxs = new PostFX[count];
-                for (int i = 0; i < postfxs.Length; i++)
-                    postfxs[i] = new PostFX(sr.ReadLine().Substring(4));
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                    postfxs.Add(new PostFX(sr.ReadLine()));
             }
-            ObjectsRead += postfxs.Length;
+            ObjectsRead += postfxs.Count;
             return postfxs;
         }
 
-        public ParticleSystem[] ReadParticleSystem()
+        public List<ParticleSystem> ReadParticleSystem()
         {
-            ParticleSystem[] particleSystems;
+            List<ParticleSystem> particleSystems = new List<ParticleSystem>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                particleSystems = new ParticleSystem[count];
-                for (int i = 0; i < particleSystems.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     List<string[]> list = new List<string[]>
                     {
@@ -1495,23 +1475,22 @@ namespace MB_Decompiler_Library.IO
                         sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':'),
                         sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':')
                     };
-                    particleSystems[i] = new ParticleSystem(list);
+                    particleSystems.Add(new ParticleSystem(list));
                 }
             }
-            ObjectsRead += particleSystems.Length;
+            ObjectsRead += particleSystems.Count;
             return particleSystems;
         }
 
-        public Skin[] ReadSkin()
+        public List<Skin> ReadSkin()
         {
-            Skin[] skins;
+            List<Skin> skins = new List<Skin>();
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
-                skins = new Skin[count];
-                for (int i = 0; i < skins.Length; i++)
+                for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     List<string[]> list = new List<string[]>
                     {
@@ -1542,10 +1521,10 @@ namespace MB_Decompiler_Library.IO
                     }
                     else
                         list.Add(new string[] { "0" });
-                    skins[i] = new Skin(list);
+                    skins.Add(new Skin(list));
                 }
             }
-            ObjectsRead += skins.Length;
+            ObjectsRead += skins.Count;
             return skins;
         }
 

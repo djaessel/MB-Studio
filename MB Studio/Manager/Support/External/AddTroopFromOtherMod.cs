@@ -49,8 +49,8 @@ namespace MB_Studio.Manager.Support.External
 
             if (result == DialogResult.Yes)
             {
-                CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModulesPath.TrimEnd('\\') + "\\" + ToolForm.OpenBrfManager.ModName + "\\item_kinds1.txt");
-                Item[] itemsR = cr.ReadItem();
+                CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModulesPath.TrimEnd('\\') + '\\' + ToolForm.OpenBrfManager.ModName + "\\item_kinds1.txt");
+                List<Item> itemsR = cr.ReadItem();
                 //foreach (int itemIdx in troop.Items)
                 //    AddItemFromOtherMod.AddItemMeshesToMod(itemsR[itemIdx], originalModuleName);
             }
