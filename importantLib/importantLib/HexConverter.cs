@@ -33,11 +33,11 @@ namespace importantLib
             try
             {
                 string binaryString = string.Empty;
-                decimal input = decimal.Parse(decimalIn.ToString());
+                ulong input = ulong.Parse(decimalIn.ToString());
                 while (input != 0)
                 {
-                    ulong tmpX = (ulong)(input / 2);//Conversion.Int(input / 2M);
-                    decimal zeroOrOne = input - 2 * tmpX;
+                    ulong tmpX = input / 2ul;//Conversion.Int(input / 2M);
+                    ulong zeroOrOne = input - 2 * tmpX;
                     binaryString = zeroOrOne + binaryString;
                     input = tmpX;
                 }
@@ -85,6 +85,7 @@ namespace importantLib
                         binaryString += BIN_VALUES.Substring(singleHex, 4);
                     }
 
+                    uint constX = 49;
                     for (int i = 0; i < binaryString.Length; i++)
                     {
                         ulong power = (ulong)i;
@@ -92,7 +93,6 @@ namespace importantLib
                         binIndex--;//VB to C# Index from 1-based to 0-based
                         ulong adder = ulong.Parse(binaryString[binIndex].ToString());
 
-                        uint constX = 49;
                         if (i > constX)
                         {
                             power -= constX;

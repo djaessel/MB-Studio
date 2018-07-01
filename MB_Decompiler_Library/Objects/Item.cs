@@ -357,7 +357,7 @@ namespace MB_Decompiler_Library.Objects
                         if (tmp.Length > 2)
                         {
                             for (int j = 9; j < HeaderItemProperties.Count; j++)
-                                if (HeaderItemProperties[j].VariableValue.TrimStart('0').Length == value.Substring(curIdx, 1).Length)//== 1 ???
+                                if (HeaderItemProperties[j].VariableValue.TrimStart('0').Length == value.Substring(curIdx).Length)
                                     list.Add(HeaderItemProperties[j]);
                             list.Reverse();
                             foreach (HeaderVariable variable in list)
@@ -365,7 +365,8 @@ namespace MB_Decompiler_Library.Objects
                                 if (x_counter < x_tmp)
                                 {
                                     uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
-                                    if (x_tmp2 <= x_tmp && (x_tmp2 + x_counter) <= x_tmp)
+                                    uint tttt = x_tmp2 + x_counter;
+                                    if (x_tmp2 <= x_tmp && tttt <= x_tmp)
                                     {
                                         x_counter += x_tmp2;
                                         if (!retur.Contains(variable.VariableName))
@@ -444,7 +445,7 @@ namespace MB_Decompiler_Library.Objects
                             string varStart = variable.VariableValue.TrimStart('0');
                             string varXYZ = varStart.TrimEnd('0');
 
-                            if (varStart.Length == 9 && varXYZ.Equals("1") || varXYZ.Equals("8"))
+                            if (varStart.Length == 9 && (varXYZ.Equals("1") || varXYZ.Equals("8")))
                                 varStart += ".";
                             else if (varStart.Length == 8)
                                 varStart = "." + varStart;
@@ -453,11 +454,10 @@ namespace MB_Decompiler_Library.Objects
                             if (varStart.Contains("."))
                                 varStart = varStart.Replace('.', '0');
 
-                            while (varStart.Length < 8)
+                            while (varStart.Length < 8)//not necessary?
                                 varStart = "0" + varStart;
 
-                            string teeeee = HexConverter.Hex2Dec(varStart).ToString();
-                            ulong x_tmp2 = ulong.Parse(teeeee);
+                            ulong x_tmp2 = ulong.Parse(HexConverter.Hex2Dec(varStart).ToString());
                             varStart = varStart.TrimStart('0');
 
                             ulong tttt = x_tmp2 + x_counter;
@@ -470,7 +470,7 @@ namespace MB_Decompiler_Library.Objects
                                     (varStart[0] == value[7] || var1 == var2)))
                                 {
                                     x_counter += x_tmp2;
-                                    if (!retur.Contains(variable.VariableName))
+                                    if (!IsValueInValueString(retur, variable.VariableName))
                                         retur += "|" + variable.VariableName;
                                 }
                             }
@@ -487,15 +487,14 @@ namespace MB_Decompiler_Library.Objects
                     for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
                     {
                         holsterdVar = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                        if (HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).Equals(8) && holsterdVar.Length == 9)
+                        if (int.Parse(HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8 && holsterdVar.Length == 9)
                         {
                             holsterdVar = HeaderItemCapabilityFlags[i].VariableName;
                             i = HeaderItemCapabilityFlags.Count;
                         }
-                        if (holsterdVar.Length != 0)
-                            if (CapabilityFlagsContains(holsterdVar))
-                                retur += "|" + holsterdVar;
                     }
+                    if (holsterdVar.Length != 0)
+                        retur += "|" + holsterdVar;
                 }
             }
 
@@ -518,18 +517,14 @@ namespace MB_Decompiler_Library.Objects
             return retur;
         }
 
-        private static bool CapabilityFlagsContains(string value)
+        private static bool IsValueInValueString(string valueString, string value)
         {
-            bool listContains = false;
-            for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
-            {
-                if (HeaderItemCapabilityFlags[i].VariableValue.Equals(value))
-                {
-                    listContains = !listContains;//true
-                    i = HeaderItemCapabilityFlags.Count;
-                }
-            }
-            return listContains;
+            bool yes = false;
+            string[] sp = valueString.Trim().Split('|');
+            foreach (string s in sp)
+                if (s.Equals(value))
+                    yes = true;
+            return yes;
         }
 
         public static string GetItemModifiers_IMODBITS(string value, bool imodbits = false)
