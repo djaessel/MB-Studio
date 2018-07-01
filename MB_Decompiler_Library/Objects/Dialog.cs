@@ -4,36 +4,29 @@ namespace MB_Decompiler_Library.Objects
 {
     public class Dialog : Skriptum
     {
-        private int talkingPartnerCode;
-        private int startDialogStateID, endDialogStateID;
-        private string dialogText, voiceOverSoundFile;
-        private string startDialogState, endDialogState;
-        private string[] conditionBlock = new string[0];
-        private string[] consequenceBlock = new string[0];
-
         private static bool noErrorCode = true;
 
-        public Dialog(string[] raw_data) : base(raw_data[0], ObjectType.Dialog)
+        public Dialog(string[] rawData) : base(rawData[0], ObjectType.Dialog)
         {
             //try
             //{
             int xx = 0;
-            string[] tmp_array = raw_data[0].Split(':');
-            startDialogState = tmp_array[0];
-            endDialogState = tmp_array[1].Split('.')[0];
-            talkingPartnerCode = int.Parse(raw_data[1]);
-            startDialogStateID = int.Parse(raw_data[2]);
-            voiceOverSoundFile = raw_data[raw_data.Length - 1];
-            int tmp = int.Parse(raw_data[4].Trim());
+            string[] tmpArray = rawData[0].Split(':');
+            StartDialogState = RemoveCodePrefix(tmpArray[0]);
+            EndDialogState = tmpArray[1].Split('.')[0];
+            TalkingPartnerCode = int.Parse(rawData[1]);
+            StartDialogStateID = int.Parse(rawData[2]);
+            VoiceOverSoundFile = rawData[rawData.Length - 1];
+            int tmp = int.Parse(rawData[4].Trim());
             if (tmp > 0)
-                conditionBlock = processBlock(raw_data, tmp, 5);
+                ConditionBlock = ProcessBlock(rawData, tmp, 5);
             if (!noErrorCode)
                 xx++;
-            dialogText = raw_data[getEmptyStringArryBox(raw_data, 2 + xx) - 1];
-            endDialogStateID = int.Parse(raw_data[getEmptyStringArryBox(raw_data, 2 + xx) + 1]);
-            tmp = int.Parse(raw_data[getEmptyStringArryBox(raw_data, 3 + xx) + 1]);
+            DialogText = rawData[GetEmptyStringArryBox(rawData, 2 + xx) - 1];
+            EndDialogStateID = int.Parse(rawData[GetEmptyStringArryBox(rawData, 2 + xx) + 1]);
+            tmp = int.Parse(rawData[GetEmptyStringArryBox(rawData, 3 + xx) + 1]);
             if (tmp > 0)
-                consequenceBlock = processBlock(raw_data, tmp, getEmptyStringArryBox(raw_data, 3 + xx) + 2);
+                ConsequenceBlock = ProcessBlock(rawData, tmp, GetEmptyStringArryBox(rawData, 3 + xx) + 2);
             noErrorCode = true;
             /*}
             catch (Exception ex)
@@ -44,25 +37,25 @@ namespace MB_Decompiler_Library.Objects
             }*/
         }
 
-        public string DialogText { get { return dialogText; } }
+        public string DialogText { get; }
 
-        public string VoiceOverSoundFile { get { return voiceOverSoundFile; } }
+        public string VoiceOverSoundFile { get; }
 
-        public int StartDialogStateID { get { return startDialogStateID; } }//Name?
+        public int StartDialogStateID { get; }
 
-        public int EndDialogStateID { get { return endDialogStateID; } }
+        public int EndDialogStateID { get; }
 
-        public string StartDialogState { get { return startDialogState; } }
+        public string StartDialogState { get; }
 
-        public string EndDialogState { get { return endDialogState; } }
+        public string EndDialogState { get; }
 
-        public string[] ConditionBlock { get { return conditionBlock; } }
+        public string[] ConditionBlock { get; } = new string[0];
 
-        public string[] ConsequenceBlock { get { return consequenceBlock; } }
+        public string[] ConsequenceBlock { get; } = new string[0];
 
-        public int TalkingPartnerCode { get { return talkingPartnerCode; } }
+        public int TalkingPartnerCode { get; }
 
-        private static string[] processBlock(string[] raw_data, int tmp, int start_index)
+        private static string[] ProcessBlock(string[] raw_data, int tmp, int start_index)
         {
             int xx = 0;
             int x = -1;
@@ -86,7 +79,7 @@ namespace MB_Decompiler_Library.Objects
             return CodeReader.GetStringArrayStartFromIndex(CodeReader.DecompileScriptCode(resArray, tmpSX), 1);
         }
 
-        private static int getEmptyStringArryBox(string[] array, int maxCount = 1)
+        private static int GetEmptyStringArryBox(string[] array, int maxCount = 1)
         {
             int x = 0;
             for (int i = 0; i < array.Length; i++)

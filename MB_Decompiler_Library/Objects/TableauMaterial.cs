@@ -4,56 +4,51 @@ namespace MB_Decompiler_Library.Objects
 {
     public class TableauMaterial : Skriptum
     {
-        private ulong flagsGZ;
-        private int width, height, minX, minY, maxX, maxY;
-        private string sampleMaterialName, flags;
-        private string[] operationBlock;
-
         public TableauMaterial(string[] raw_data, bool source = false) : base(raw_data[0], ObjectType.TableauMaterial)
         {
-            flagsGZ = ulong.Parse(raw_data[1]);
-            flags = flagsGZ.ToString();//change if flags available
-            sampleMaterialName = raw_data[2];//change to name if good idea later
-            width = int.Parse(raw_data[3]);
-            height = int.Parse(raw_data[4]);
-            minX = int.Parse(raw_data[5]);
-            minY = int.Parse(raw_data[6]);
-            maxX = int.Parse(raw_data[7]);
-            maxY = int.Parse(raw_data[8]);
+            FlagsGZ = ulong.Parse(raw_data[1]);
+            Flags = FlagsGZ.ToString();//change if flags available
+            SampleMaterialName = raw_data[2];//change to name if good idea later
+            Width = int.Parse(raw_data[3]);
+            Height = int.Parse(raw_data[4]);
+            MinX = int.Parse(raw_data[5]);
+            MinY = int.Parse(raw_data[6]);
+            MaxX = int.Parse(raw_data[7]);
+            MaxY = int.Parse(raw_data[8]);
 
             if (!source)
             {
-                operationBlock = new string[int.Parse(raw_data[9]) + 1];
-                operationBlock[0] = ID;
-                operationBlock = CodeReader.GetStringArrayStartFromIndex(CodeReader.DecompileScriptCode(operationBlock, CodeReader.GetStringArrayStartFromIndex(raw_data, 9)), 1);
+                OperationBlock = new string[int.Parse(raw_data[9]) + 1];
+                OperationBlock[0] = ID;
+                OperationBlock = CodeReader.GetStringArrayStartFromIndex(CodeReader.DecompileScriptCode(OperationBlock, CodeReader.GetStringArrayStartFromIndex(raw_data, 9)), 1);
             }
             else
             {
-                operationBlock = new string[raw_data.Length - 9];
-                for (int i = 0; i < operationBlock.Length; i++)
-                    operationBlock[i] = raw_data[i + 9];
+                OperationBlock = new string[raw_data.Length - 9];
+                for (int i = 0; i < OperationBlock.Length; i++)
+                    OperationBlock[i] = raw_data[i + 9];
             }
         }
 
-        public ulong FlagsGZ { get { return flagsGZ; } }
+        public ulong FlagsGZ { get; }
 
-        public int Width { get { return width; } }
+        public int Width { get; }
 
-        public int Height { get { return height; } }
+        public int Height { get; }
 
-        public int MinX { get { return minX; } }
+        public int MinX { get; }
 
-        public int MinY { get { return minY; } }
+        public int MinY { get; }
 
-        public int MaxX { get { return maxX; } }
+        public int MaxX { get; }
 
-        public int MaxY { get { return maxY; } }
+        public int MaxY { get; }
 
-        public string SampleMaterialName { get { return sampleMaterialName; } }
+        public string SampleMaterialName { get; }
 
-        public string Flags { get { return flags; } }
+        public string Flags { get; }
 
-        public string[] OperationBlock { get { return operationBlock; } }
+        public string[] OperationBlock { get; }
 
     }
 }

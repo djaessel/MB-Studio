@@ -55,9 +55,9 @@ namespace MB_Decompiler_Library.Objects
 
         public int UpgradeTroop2 { get; set; }
 
-        public string UpgradeTroop1ErrorCode { get; private set; }
+        public string UpgradeTroop1ErrorCode { get; private set; } = string.Empty;
 
-        public string UpgradeTroop2ErrorCode { get; private set; }
+        public string UpgradeTroop2ErrorCode { get; private set; } = string.Empty;
 
         #endregion
 
@@ -585,7 +585,7 @@ namespace MB_Decompiler_Library.Objects
                 Proficiencies[0] == Proficiencies[3] &&
                 Proficiencies[0] == Proficiencies[4] &&
                 Proficiencies[0] == Proficiencies[5])
-                tmp = "wp(" + Proficiencies[0].ToString();
+                tmp = "wp(" + Proficiencies[0];
             else if (Proficiencies[0] == Proficiencies[1] &&
                      Proficiencies[0] == Proficiencies[2])
                 tmp = "wpe(" + Proficiencies[2] + ", " + Proficiencies[3] + ", " + Proficiencies[4] + ", " + Proficiencies[5];
@@ -597,15 +597,15 @@ namespace MB_Decompiler_Library.Objects
                 if (OneHanded > 0)
                     tmp += "wp_one_handed(" + Proficiencies[0];
                 if (TwoHanded > 0)
-                    tmp += "wp_two_handed(" + Proficiencies[1];
+                    tmp += ")|wp_two_handed(" + Proficiencies[1];
                 if (Polearm > 0)
-                    tmp += "wp_polearm(" + Proficiencies[2];
+                    tmp += ")|wp_polearm(" + Proficiencies[2];
                 if (Archery > 0)
-                    tmp += "wp_archery(" + Proficiencies[3];
+                    tmp += ")|wp_archery(" + Proficiencies[3];
                 if (Crossbow > 0)
-                    tmp += "wp_crossbow(" + Proficiencies[4];
+                    tmp += ")|wp_crossbow(" + Proficiencies[4];
                 if (Throwing > 0)
-                    tmp += "wp_throwing(" + Proficiencies[5];
+                    tmp += ")|wp_throwing(" + Proficiencies[5];
             }
             else
             {
@@ -619,7 +619,10 @@ namespace MB_Decompiler_Library.Objects
             if (Firearm > 0)
                 tmp += ")|wp_firearm(" + Proficiencies[6];
 
-            ProficienciesSC = (tmp.Length == 0) ? "0" : tmp.TrimStart(')','|') + ')';
+            if (tmp.Length != 0)
+                ProficienciesSC = tmp.TrimStart(')', '|') + ')';
+            else
+                ProficienciesSC = "0";
         }
 
         public void SetSkills(string knowledge)

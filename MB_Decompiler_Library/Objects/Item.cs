@@ -493,7 +493,8 @@ namespace MB_Decompiler_Library.Objects
                             i = HeaderItemCapabilityFlags.Count;
                         }
                         if (holsterdVar.Length != 0)
-                            retur += "|" + holsterdVar;
+                            if (CapabilityFlagsContains(holsterdVar))
+                                retur += "|" + holsterdVar;
                     }
                 }
             }
@@ -515,6 +516,20 @@ namespace MB_Decompiler_Library.Objects
                 retur = "0";
 
             return retur;
+        }
+
+        private static bool CapabilityFlagsContains(string value)
+        {
+            bool listContains = false;
+            for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
+            {
+                if (HeaderItemCapabilityFlags[i].VariableValue.Equals(value))
+                {
+                    listContains = !listContains;//true
+                    i = HeaderItemCapabilityFlags.Count;
+                }
+            }
+            return listContains;
         }
 
         public static string GetItemModifiers_IMODBITS(string value, bool imodbits = false)

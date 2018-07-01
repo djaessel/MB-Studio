@@ -388,7 +388,7 @@ namespace MB_Decompiler_Library.IO
         {
             string[] s;
             List<string> factions = new List<string>();
-            //factions.Add("fac_no_faction"); // Why was this used before???
+            //factions.Add("fac_no_faction"); // Why was this used before??? - is this needed if not existing?
             using (StreamReader sr = new StreamReader(ModPath + "factions.txt"))
             {
                 while (!sr.EndOfStream)
@@ -1217,7 +1217,7 @@ namespace MB_Decompiler_Library.IO
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
                 for (int i = 0; i < count && !sr.EndOfStream; i++)
-                    tableaus[i] = new TableauMaterial(sr.ReadLine().TrimEnd().Split());
+                    tableaus.Add(new TableauMaterial(sr.ReadLine().TrimEnd().Split()));
             }
             ObjectsRead += tableaus.Count;
             return tableaus;
@@ -1239,7 +1239,6 @@ namespace MB_Decompiler_Library.IO
                     while (tmpSSS.Contains("  "))
                         tmpSSS = tmpSSS.Replace("  ", " ");
                     lines = tmpSSS.Split();
-
                     sceneProps.Add(new SceneProp(lines));
                     tCount = int.Parse(lines[lines.Length - 1]);
                     if (tCount > 0)
@@ -1278,12 +1277,6 @@ namespace MB_Decompiler_Library.IO
                 for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     do { c = sr.Read(); } while ((char)c != 'f');
-                    //_factions[i] = new Faction(((char)c + sr.ReadLine().TrimEnd()).Split());
-                    //string[] sp = sr.ReadLine().Trim().Replace("  ", " ").Split();
-                    //double[] dd = new double[sp.Length];
-                    //for (int j = 0; j < sp.Length; j++)
-                    //    dd[j] = double.Parse(Repl_DotWComma(sp[j]));
-                    //_factions[i].Relations = dd;
                     string firstLine = Char.ConvertFromUtf32(c) + sr.ReadLine().TrimEnd();
                     string secondLine = sr.ReadLine().Trim().Replace("  ", " ");
                     c = sr.Read();

@@ -5,6 +5,9 @@
         public static readonly string[] Prefixes = {"script", "mt", "prsnt", "menu", "trp", "itm", "str", "simple_trigger", "trigger", "ip", "mesh", "track", "qst", "snd", "spr", "tableau", "icon",
                                                     "dialog", "fac", "anim", "pt", "p", "skl", "pfx", "skin", "psys", "scn"};
 
+        public static readonly string[] CodePrefixes = {"script", "mt", "prsnt", "menu", "trp", "itm", "str", "simple_trigger", "trigger", "ip", "mesh", "track", "qst", "snd", "spr", "tab", "icon",
+                                                    "dlga", "fac", "anim", "pt", "p", "skl", "pfx", "skin", "psys", "scn"};
+
         public enum ObjectType
         {
             Script,
@@ -44,15 +47,26 @@
 
         public string Prefix { get { return Prefixes[Typ] + '_'; } }
 
+        public string CodePrefix { get { return CodePrefixes[Typ] + '_'; } }
+
         public Skriptum(string sIdName, ObjectType type)
         {
             ObjectTyp = type;
-
-            sIdName = sIdName.Trim();
-            if (sIdName.StartsWith(Prefix))
-                sIdName = sIdName.Substring(Prefix.Length);
-            ID = sIdName;
+            ID = RemovePrefix(RemoveCodePrefix(sIdName.Trim()));
         }
 
+        protected string RemovePrefix(string sIdName)
+        {
+            if (sIdName.StartsWith(Prefix))
+                sIdName = sIdName.Substring(Prefix.Length);
+            return sIdName;
+        }
+
+        protected string RemoveCodePrefix(string sIdName)
+        {
+            if (sIdName.StartsWith(CodePrefix))
+                sIdName = sIdName.Substring(CodePrefix.Length);
+            return sIdName;
+        }
     }
 }

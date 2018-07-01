@@ -477,7 +477,7 @@ namespace MB_Decompiler_Library.IO
                         scnCode = troop.SceneCode;
 
                     //Troop.GetFlagsFromValue(HexConverter.Dec2Hex(troop.Flags)) --> troop.Flags
-                    wr.Write(Environment.NewLine + " [\"" + troop.ID.Substring(4) + "\",\"" + troop.Name + "\",\"" + troop.PluralName + "\"," + troop.Flags + "," + scnCode + ","
+                    wr.Write(Environment.NewLine + " [\"" + troop.ID + "\",\"" + troop.Name + "\",\"" + troop.PluralName + "\"," + troop.Flags + "," + scnCode + ","
                         + troop.Reserved + "," + CodeReader.Factions[troop.FactionID] + "," + Environment.NewLine + "  [");
 
                     for (int i = 0; i < troop.Items.Count; i++)
@@ -594,11 +594,11 @@ namespace MB_Decompiler_Library.IO
                 foreach (Troop troop in objects)
                 {
                     if (troop.UpgradeTroop1 > 0 && troop.UpgradeTroop2 <= 0)
-                        wr.WriteLine("upgrade(troops,\"" + troop.ID.Substring(4) + "\",\"" + CodeReader.Troops[troop.UpgradeTroop1].Substring(4) + "\"),");
+                        wr.WriteLine("upgrade(troops,\"" + troop.ID + "\",\"" + CodeReader.Troops[troop.UpgradeTroop1].Substring(4) + "\"),");
                     else if (troop.UpgradeTroop1ErrorCode.Length > 0)
                         wr.WriteLine("# " + troop.ID + " UPGRADEPATH - ERRORCODE1: " + troop.UpgradeTroop1ErrorCode);
                     if (troop.UpgradeTroop2 > 0)
-                            wr.WriteLine("upgrade2(troops,\"" + troop.ID.Substring(4) + "\",\"" + CodeReader.Troops[troop.UpgradeTroop1].Substring(4) + "\","
+                            wr.WriteLine("upgrade2(troops,\"" + troop.ID + "\",\"" + CodeReader.Troops[troop.UpgradeTroop1].Substring(4) + "\","
                                                                                          + "\"" + CodeReader.Troops[troop.UpgradeTroop2].Substring(4) + "\"),");
                     else if (troop.UpgradeTroop2ErrorCode.Length > 0)
                         wr.WriteLine("# " + troop.ID + " UPGRADEPATH - ERRORCODE2: " + troop.UpgradeTroop2ErrorCode);

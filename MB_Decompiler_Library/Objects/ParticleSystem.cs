@@ -68,7 +68,7 @@ namespace MB_Decompiler_Library.Objects
         }
 
         //place normalized version in Skriptum ? for every Skriptum Object and public
-        private void SetFlagsGZ()
+        private void SetFlags()
         {
             string flags = string.Empty;
             foreach (HeaderVariable headerVar in headerVariables)
@@ -83,11 +83,11 @@ namespace MB_Decompiler_Library.Objects
             else
                 flags = FlagsGZ.ToString();
 
-            this.Flags = flags;
+            Flags = flags;
         }
 
         //place normalized version in Skriptum ? for every Skriptum Object and public
-        private void SetFlags()
+        private void SetFlagsGZ()
         {
             ulong flagsGZ = 0;
             string[] sp = Flags.Split('|');
@@ -95,7 +95,7 @@ namespace MB_Decompiler_Library.Objects
                 foreach (string flag in sp)
                     if (headerVar.VariableName.Equals(flag))
                         flagsGZ |= ulong.Parse(headerVar.VariableValue);
-            this.FlagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         //place normalized version in Skriptum ? for every Skriptum Object and public
