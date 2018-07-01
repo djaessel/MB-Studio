@@ -609,7 +609,6 @@ namespace MB_Decompiler_Library.IO
 
         public int WriteItems(List<Skriptum> objects)
         {
-            //["winged_great_helmet","Winged Great Helmet",[("maciejowski_helmet_new",0)],itp_merchandise|itp_type_head_armor|itp_covers_head,0,1240,weight(2.75)|abundance(100)|head_armor(55)|body_armor(0)|leg_armor(0)|difficulty(10),imodbits_plate],
             using (StreamWriter wr = new StreamWriter(ITEMS_SOURCE))
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Item);
@@ -638,7 +637,7 @@ namespace MB_Decompiler_Library.IO
                     //}
                     //}
                     wr.Write(", " + item.ModBits); //string imodbits_SOMETHING = HexConverter.Dec2Hex_16CHARS(item.SpecialValues[item.SpecialValues.Length - 1]);
-                                                      //wr.Write(", " + Item.GetItemModifiers_IMODBITS(imodbits_SOMETHING, true));
+                                                   //wr.Write(", " + Item.GetItemModifiers_IMODBITS(imodbits_SOMETHING, true));
                     if (item.Triggers.Count != 0)
                     {
                         wr.Write(", [");
