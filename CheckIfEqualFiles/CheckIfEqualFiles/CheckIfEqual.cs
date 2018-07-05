@@ -1,4 +1,5 @@
 ﻿using importantLib;
+using MB_Decompiler;
 using MB_Decompiler_Library.IO;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,12 @@ namespace CheckIfEqualFiles
                     modulePath = args[1].TrimStart('-');
             }
             else
-                modulePath = @"F:\Program Files\Steam\steamapps\common\MountBlade Warband\Modules";
+            {
+                //modulePath = @"F:\Program Files\Steam\steamapps\common\MountBlade Warband\Modules";
+                modulePath = ProgramConsole.GetModuleInfoPath();
+                if (modulePath.IndexOf('%') >= 0)
+                    modulePath = modulePath.Remove(modulePath.IndexOf('%') - 1);
+            }
 
             Console.WriteLine("ModulePath set to: \"" + modulePath + "\"" + Environment.NewLine);
 
@@ -79,6 +85,8 @@ namespace CheckIfEqualFiles
             {
                 Console.WriteLine(Environment.NewLine + "No language file found!");
                 Console.WriteLine("Loading default language: [EN]" + Environment.NewLine);
+                languageAcceptLetter.Add('Y');
+                languageDeniedLetter.Add('N');
             }
 
             if (!debugMode)
