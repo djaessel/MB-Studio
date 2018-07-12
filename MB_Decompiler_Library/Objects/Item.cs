@@ -410,6 +410,125 @@ namespace MB_Decompiler_Library.Objects
 
             return retur;
         }
+        
+        private void NEW_METHOD(string valueX)
+        {
+            string tmp, retur = string.Empty;
+
+            if (HeaderItemCapabilityFlags.Count == 0)
+                InitializeHeaderItemCapabilityFlags();
+
+            for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
+            {
+                tmp = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
+                if (valueX[valueX.Length - tmp.Length] != '0')
+                {
+                    List<HeaderVariable> list = new List<HeaderVariable>();
+                    int x_tmp = int.Parse(HexConverter.Hex2Dec(valueX[valueX.Length - tmp.Length].ToString()).ToString());
+                    int x_counter = 0;
+
+                    if (tmp.Length == 9)
+                        x_tmp = (int)HexConverter.Hex2Dec(valueX.Substring(valueX.Length - tmp.Length, 2));
+
+                    string varValue;
+                    for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
+                    {
+                        varValue = HeaderItemCapabilityFlags[j].VariableValue.TrimStart('0');
+                        if (varValue.Length == valueX.Substring(valueX.Length - tmp.Length).Length)
+                            list.Add(HeaderItemCapabilityFlags[j]);
+                    }
+
+                    list.Reverse();
+
+                    foreach (HeaderVariable variable in list)
+                    {
+                        if (x_counter < x_tmp)
+                        {
+                            string varStart = variable.VariableValue.TrimStart('0');
+                            if (varStart.Length == 9 && (varStart.TrimEnd('0').Equals('1') || varStart.TrimEnd('0').Equals('8')))
+                                varStart += ".";
+                            else if (varStart.Length == 8)
+                                varStart = "." + varStart;
+
+                            varStart = varStart.Replace("0", string.Empty);
+                            if (varStart.Contains("."))
+                                varStart = varStart.Replace(".", "0");
+
+                            while (varStart.Length < 8)
+                                varStart = "0" + varStart;
+
+                            int xtert = (int)HexConverter.Hex2Dec(varStart);
+                            varStart = varStart.TrimStart('0');
+
+                        }
+                    }
+                }
+            }
+        }
+        
+        /*
+        For i = 0 To m_header_itemCapabilitiyFlags.Length - 1
+            tmp = m_header_itemCapabilitiyFlags(i).VariableValue.TrimStart("0")
+            If Not value.Chars(value.Length - tmp.Length) = "0"c Then
+                list.Reverse()
+                For Each variable As HeaderVariable In list
+                    If x_counter < x_tmp Then
+                        While varStart.Length < 8
+                            varStart = "0" + varStart
+                        End While
+                        Dim xtert As Integer = SkillHunter.Hex2Dec(varStart)
+                        varStart = varStart.TrimStart("0")
+                        Dim ttttt As Integer = xtert + x_counter
+                        If xtert <= x_tmp And ttttt <= x_tmp Then ' NOCHMAL ÜBERPRÜFEN
+                            If varStart.Length = 1 Then
+                                x_counter += xtert
+                                If Not IsValueInValueString(retur, variable.VariableName) Then 'If Not retur.Contains(variable.VariableName) Then
+                                    retur += "|" + variable.VariableName
+                                End If
+                            Else
+                                If varStart.Substring(1, 1).Equals(value.Chars(8)) And (varStart.Substring(0, 1).Equals(value.Chars(7)) Or SkillHunter.Hex2Dec(varStart.Substring(0, 1)) = (SkillHunter.Hex2Dec(value.Chars(7)) - 8)) Then
+                                    x_counter += xtert
+                                    If Not IsValueInValueString(retur, variable.VariableName) Then 'If Not retur.Contains(variable.VariableName) Then
+                                        retur += "|" + variable.VariableName
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                Next
+            End If
+        Next
+        If value.Length >= 8 Then
+            If SkillHunter.Hex2Dec(value.Chars(7)) >= 8 Then
+                Dim holsterdVar As String = String.Empty
+                For bbb = 0 To m_header_itemCapabilitiyFlags.Length - 1
+                    holsterdVar = m_header_itemCapabilitiyFlags(bbb).VariableValue.TrimStart("0")
+                    If SkillHunter.Hex2Dec(holsterdVar.TrimEnd("0")) = 8 And holsterdVar.Length = 9 Then
+                        holsterdVar = m_header_itemCapabilitiyFlags(bbb).VariableName
+                        bbb = m_header_itemCapabilitiyFlags.Length
+                    End If
+                Next
+                If Not holsterdVar.Equals(String.Empty) Then
+                    retur += "|" + holsterdVar
+                End If
+            End If
+        End If
+        If Not retur.Equals(String.Empty) Then
+            retur = retur.Substring(1)
+        End If
+        Dim tmpS As String() = SkillHunter.RemoveItemDoublesFromArray(retur.Split("|"))
+        retur = String.Empty
+        For i = 0 To tmpS.Length - 1
+            retur += tmpS(i)
+            If i < tmpS.Length - 1 Then
+                retur += "|"
+            End If
+        Next
+        If retur.Equals(String.Empty) Then
+            retur = "0"
+        End If
+        Return retur
+        */
 
         public static string GetItemCapabilityFlagsFromValue(string value)
         {
@@ -443,31 +562,19 @@ namespace MB_Decompiler_Library.Objects
                         if (x_counter < x_tmp)
                         {
                             string varStart = variable.VariableValue.TrimStart('0');
-                            string varXYZ = varStart.TrimEnd('0');
-
-                            if (varStart.Length == 9 && (varXYZ.Equals("1") || varXYZ.Equals("8")))
-                                varStart += ".";
-                            else if (varStart.Length == 8)
-                                varStart = "." + varStart;
-
-                            varStart = varStart.Replace("0", string.Empty);
-                            if (varStart.Contains("."))
-                                varStart = varStart.Replace('.', '0');
-
-                            while (varStart.Length < 8)//not necessary?
-                                varStart = "0" + varStart;
-
                             ulong x_tmp2 = ulong.Parse(HexConverter.Hex2Dec(varStart).ToString());
-                            varStart = varStart.TrimStart('0');
 
                             ulong tttt = x_tmp2 + x_counter;
                             if (x_tmp2 <= x_tmp && tttt <= x_tmp)
                             {
-                                ulong var1 = ulong.Parse(HexConverter.Hex2Dec(varStart.Substring(0, 1)).ToString());
-                                ulong var2 = ulong.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) - 8;
-                                if (varStart.Length == 1 ||
-                                    (varStart[1] == value[8] && 
-                                    (varStart[0] == value[7] || var1 == var2)))
+                                bool mega3f = (varStart.Length == 1);
+                                if (!mega3f) {
+                                    mega3f = (varStart.Substring(1, 1).Equals(value[8]) && 
+                                        (varStart.Substring(0, 1).Equals(value[7]) ||
+                                        (ulong)HexConverter.Hex2Dec(varStart.Substring(0, 1)) == ((ulong)HexConverter.Hex2Dec(value[7].ToString()) - 8)));
+                                }
+
+                                if (mega3f)
                                 {
                                     x_counter += x_tmp2;
                                     if (!IsValueInValueString(retur, variable.VariableName))
