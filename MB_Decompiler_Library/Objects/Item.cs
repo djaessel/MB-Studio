@@ -410,8 +410,8 @@ namespace MB_Decompiler_Library.Objects
 
             return retur;
         }
-        
-        private void NEW_METHOD(string valueX)
+
+        /*public static string GetItemCapabilityFlagsFromValue(string value)
         {
             string tmp, retur = string.Empty;
 
@@ -421,20 +421,20 @@ namespace MB_Decompiler_Library.Objects
             for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
             {
                 tmp = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                if (valueX[valueX.Length - tmp.Length] != '0')
+                if (value[value.Length - tmp.Length] != '0')
                 {
                     List<HeaderVariable> list = new List<HeaderVariable>();
-                    int x_tmp = int.Parse(HexConverter.Hex2Dec(valueX[valueX.Length - tmp.Length].ToString()).ToString());
+                    int x_tmp = int.Parse(HexConverter.Hex2Dec(value[value.Length - tmp.Length].ToString()).ToString());
                     int x_counter = 0;
 
                     if (tmp.Length == 9)
-                        x_tmp = (int)HexConverter.Hex2Dec(valueX.Substring(valueX.Length - tmp.Length, 2));
+                        x_tmp = int.Parse(HexConverter.Hex2Dec(value.Substring(value.Length - tmp.Length, 2)).ToString());
 
                     string varValue;
                     for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
                     {
                         varValue = HeaderItemCapabilityFlags[j].VariableValue.TrimStart('0');
-                        if (varValue.Length == valueX.Substring(valueX.Length - tmp.Length).Length)
+                        if (varValue.Length == value.Substring(value.Length - tmp.Length).Length)
                             list.Add(HeaderItemCapabilityFlags[j]);
                     }
 
@@ -457,78 +457,76 @@ namespace MB_Decompiler_Library.Objects
                             while (varStart.Length < 8)
                                 varStart = "0" + varStart;
 
-                            int xtert = (int)HexConverter.Hex2Dec(varStart);
+                            int xtert = int.Parse(HexConverter.Hex2Dec(varStart).ToString());
                             varStart = varStart.TrimStart('0');
 
+                            int ttttt = xtert + x_counter;
+                            if (xtert <= x_tmp && ttttt <= x_tmp)// NOCHMAL ÜBERPRÜFEN
+                            {
+                                if (varStart.Length == 1)
+                                {
+                                    x_counter += xtert;
+                                    if (IsValueInValueString(retur, variable.VariableName))
+                                        retur += "|" + variable.VariableName;
+                                }
+                                else
+                                {
+                                    string valS1 = varStart.Substring(0, 1);
+                                    string valS2 = value.Substring(7, 1);
+                                    ulong val1 = ulong.Parse(HexConverter.Hex2Dec(valS1).ToString());
+                                    ulong val2X = ulong.Parse(HexConverter.Hex2Dec(valS2).ToString()) - 8u;
+                                    if (varStart.Substring(1, 1).Equals(value.Substring(8, 1)) &&
+                                        (valS1.Equals(valS2) || val1 == val2X))
+                                    {
+                                        x_counter += xtert;
+                                        if (IsValueInValueString(retur, variable.VariableName))
+                                            retur += "|" + variable.VariableName;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-        
-        /*
-        For i = 0 To m_header_itemCapabilitiyFlags.Length - 1
-            tmp = m_header_itemCapabilitiyFlags(i).VariableValue.TrimStart("0")
-            If Not value.Chars(value.Length - tmp.Length) = "0"c Then
-                list.Reverse()
-                For Each variable As HeaderVariable In list
-                    If x_counter < x_tmp Then
-                        While varStart.Length < 8
-                            varStart = "0" + varStart
-                        End While
-                        Dim xtert As Integer = SkillHunter.Hex2Dec(varStart)
-                        varStart = varStart.TrimStart("0")
-                        Dim ttttt As Integer = xtert + x_counter
-                        If xtert <= x_tmp And ttttt <= x_tmp Then ' NOCHMAL ÜBERPRÜFEN
-                            If varStart.Length = 1 Then
-                                x_counter += xtert
-                                If Not IsValueInValueString(retur, variable.VariableName) Then 'If Not retur.Contains(variable.VariableName) Then
-                                    retur += "|" + variable.VariableName
-                                End If
-                            Else
-                                If varStart.Substring(1, 1).Equals(value.Chars(8)) And (varStart.Substring(0, 1).Equals(value.Chars(7)) Or SkillHunter.Hex2Dec(varStart.Substring(0, 1)) = (SkillHunter.Hex2Dec(value.Chars(7)) - 8)) Then
-                                    x_counter += xtert
-                                    If Not IsValueInValueString(retur, variable.VariableName) Then 'If Not retur.Contains(variable.VariableName) Then
-                                        retur += "|" + variable.VariableName
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-                Next
-            End If
-        Next
-        If value.Length >= 8 Then
-            If SkillHunter.Hex2Dec(value.Chars(7)) >= 8 Then
-                Dim holsterdVar As String = String.Empty
-                For bbb = 0 To m_header_itemCapabilitiyFlags.Length - 1
-                    holsterdVar = m_header_itemCapabilitiyFlags(bbb).VariableValue.TrimStart("0")
-                    If SkillHunter.Hex2Dec(holsterdVar.TrimEnd("0")) = 8 And holsterdVar.Length = 9 Then
-                        holsterdVar = m_header_itemCapabilitiyFlags(bbb).VariableName
-                        bbb = m_header_itemCapabilitiyFlags.Length
-                    End If
-                Next
-                If Not holsterdVar.Equals(String.Empty) Then
-                    retur += "|" + holsterdVar
-                End If
-            End If
-        End If
-        If Not retur.Equals(String.Empty) Then
-            retur = retur.Substring(1)
-        End If
-        Dim tmpS As String() = SkillHunter.RemoveItemDoublesFromArray(retur.Split("|"))
-        retur = String.Empty
-        For i = 0 To tmpS.Length - 1
-            retur += tmpS(i)
-            If i < tmpS.Length - 1 Then
-                retur += "|"
-            End If
-        Next
-        If retur.Equals(String.Empty) Then
-            retur = "0"
-        End If
-        Return retur
-        */
+
+            if (value.Length >= 8)
+            {
+                if (ulong.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) >= 8)
+                {
+                    string holsterdVar = string.Empty;
+                    for (int bbb = 0; bbb < HeaderItemCapabilityFlags.Count; bbb++)
+                    {
+                        holsterdVar = HeaderItemCapabilityFlags[bbb].VariableValue.TrimStart('0');
+                        if (ulong.Parse(HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8u &&
+                            holsterdVar.Length == 9)
+                        {
+                            holsterdVar = HeaderItemCapabilityFlags[bbb].VariableName;
+                            bbb = HeaderItemCapabilityFlags.Count;
+                        }
+                    }
+                    if (!holsterdVar.Equals(string.Empty))
+                        retur += "|" + holsterdVar;
+                }
+            }
+
+            if (!retur.Equals(string.Empty))
+                retur = retur.Substring(1);
+
+            string[] tmpS = retur.Split('|');
+            SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
+            retur = string.Empty;
+            for (int i = 0; i < tmpS.Length; i++)
+            {
+                retur += tmpS[i];
+                if (i < tmpS.Length - 1)
+                    retur += "|";
+            }
+
+            if (retur.Equals(string.Empty))
+                retur = "0";
+
+            return retur;
+        }*/
 
         public static string GetItemCapabilityFlagsFromValue(string value)
         {
