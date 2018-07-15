@@ -188,7 +188,7 @@ namespace MB_Studio.Manager
 
             #region GROUP1 - Flags & Guarantee
 
-            skins_lb.SelectedIndex = troop.FlagsGZ & 0xF;
+            skins_lb.SelectedIndex = (int)(troop.FlagsGZ & 0xF);
             if (troop.FlagsGZ > 0)
             {
                 foreach (string flag in troop.Flags.Split('|'))
@@ -652,7 +652,7 @@ namespace MB_Studio.Manager
                     Control num = groupBox_6_gb.Controls[j];
                     if (num.TabIndex == i && num.Name.Substring(num.Name.LastIndexOf('_') + 1).Equals("num"))
                     {
-                        tmp += HexConverter.Dec2Hex(((NumericUpDown)num).Value).Substring(7);
+                        tmp += HexConverter.Dec2Hex((ulong)((NumericUpDown)num).Value).Substring(7);
                         j = groupBox_6_gb.Controls.Count;
                     }
                 }

@@ -346,8 +346,8 @@ namespace MB_Studio.Manager
 
         private ushort GetPersonality()
         {
-            string aggresiveness = HexConverter.Dec2Hex(aggressiveness_num.Value).TrimStart('0');
-            string courage = HexConverter.Dec2Hex(courage_num.Value).TrimStart('0');
+            string aggresiveness = HexConverter.Dec2Hex((ulong)aggressiveness_num.Value).TrimStart('0');
+            string courage = HexConverter.Dec2Hex((ulong)courage_num.Value).TrimStart('0');
             byte bandit = 0;
             if (banditness_cb.Checked)
                 bandit++;

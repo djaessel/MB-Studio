@@ -31,7 +31,7 @@ namespace MB_Decompiler_Library.Objects
         public string PluralName { get; private set; }
 
         public string Flags { get; private set; }
-        public int FlagsGZ { get; private set; }
+        public ulong FlagsGZ { get; private set; }
 
         public string DialogImage { get; private set; }
         //public int DialogImageGZ { get; private set; }
@@ -452,7 +452,7 @@ namespace MB_Decompiler_Library.Objects
                 Flags = lineData[4].Trim();
                 if (ImportantMethods.IsNumericGZ(Flags))
                 {
-                    FlagsGZ = int.Parse(Flags);
+                    FlagsGZ = ulong.Parse(Flags);
                     Flags = GetFlagsFromValues(HexConverter.Dec2Hex(FlagsGZ));
                 }
                 else
@@ -708,9 +708,9 @@ namespace MB_Decompiler_Library.Objects
             return profs;
         }
 
-        private int GetFlagsGZFromString(string flags)
+        private ulong GetFlagsGZFromString(string flags)
         {
-            int flagsGZ = 0;
+            ulong flagsGZ = 0u;
 
             if (headerFlags == null)
                 InitializeHeaderFlags();
@@ -725,12 +725,12 @@ namespace MB_Decompiler_Library.Objects
                         string tmp = headerFlags[i].VariableName;
                         if (tmp.Contains("0x"))
                             tmp = HexConverter.Hex2Dec(tmp.Replace("0x", string.Empty)).ToString();
-                        flagsGZ |= int.Parse(tmp);
+                        flagsGZ |= ulong.Parse(tmp);
                         i = headerFlags.Count;
                     }
                 }
                 if (!foundX && ImportantMethods.IsNumericGZ(flag))
-                    flagsGZ |= int.Parse(flag);
+                    flagsGZ |= ulong.Parse(flag);
                 else
                     MessageBox.Show("ERROR 0x4943 - FLAG_NOT_FOUND " + flag);
             }

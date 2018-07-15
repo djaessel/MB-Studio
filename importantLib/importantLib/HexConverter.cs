@@ -27,19 +27,18 @@ namespace importantLib
 
         #region Hex Methods
 
-        public static string Dec2Hex(object decimalIn, bool use16Chars = false)
+        public static string Dec2Hex(ulong decimalIn, bool use16Chars = false)
         {
             string retur = string.Empty;
             try
             {
                 string binaryString = string.Empty;
-                ulong input = ulong.Parse(decimalIn.ToString());
-                while (input != 0)
+                while (decimalIn != 0)
                 {
-                    ulong tmpX = input / 2ul;//Conversion.Int(input / 2M);
-                    ulong zeroOrOne = input - 2 * tmpX;
+                    ulong tmpX = decimalIn / 2ul;//Conversion.Int(input / 2M);
+                    ulong zeroOrOne = decimalIn - 2 * tmpX;
                     binaryString = zeroOrOne + binaryString;
-                    input = tmpX;
+                    decimalIn = tmpX;
                 }
 
                 binaryString = new string('0', (4 - binaryString.Length % 4) % 4) + binaryString;
@@ -66,7 +65,7 @@ namespace importantLib
             return retur;
         }
 
-        public static object Hex2Dec(string hexString, bool use16Char = false)
+        public static ulong Hex2Dec(string hexString, bool use16Char = false)
         {
             ulong retur = 0;
             try
@@ -167,12 +166,27 @@ namespace importantLib
 
         #region Helper Methods
 
-        public static string Dec2Hex_16CHARS(object decimalIn)
+        public static string Dec2Hex(string decimalIn, bool use16Chars = false)
+        {
+            return Dec2Hex(ulong.Parse(decimalIn), use16Chars);
+        }
+
+        public static string Dec2Hex(int decimalIn, bool use16Chars = false)
+        {
+            return Dec2Hex((ulong)decimalIn, use16Chars);
+        }
+
+        public static string Dec2Hex_16CHARS(ulong decimalIn)
         {
             return Dec2Hex(decimalIn, true);
         }
 
-        public static object Hex2Dec_16CHARS(string hexString)
+        public static string Dec2Hex_16CHARS(string decimalIn)
+        {
+            return Dec2Hex_16CHARS(ulong.Parse(decimalIn));
+        }
+
+        public static ulong Hex2Dec_16CHARS(string hexString)
         {
             return Hex2Dec(hexString, true);
         }

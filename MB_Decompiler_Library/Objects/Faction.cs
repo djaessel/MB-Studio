@@ -25,7 +25,7 @@ namespace MB_Decompiler_Library.Objects
             }
 
             if (ImportantMethods.IsNumericGZ(tmp[3]))
-                ColorCode = HexConverter.Dec2Hex(int.Parse(tmp[3])).Substring(2);
+                ColorCode = HexConverter.Dec2Hex(ulong.Parse(tmp[3])).Substring(2);
             else if (tmp[3].StartsWith("0x"))
                 ColorCode = tmp[3].Substring(2);
             else

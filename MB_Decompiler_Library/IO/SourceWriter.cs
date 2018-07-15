@@ -1307,7 +1307,7 @@ namespace MB_Decompiler_Library.IO
         private string ConvertItemStats(int value, int index)
         {
             string retur = string.Empty;
-            string itemStat = HexConverter.Dec2Hex_16CHARS(value).TrimStart('0');
+            string itemStat = HexConverter.Dec2Hex_16CHARS((ulong)value).TrimStart('0');
             if (index > 9)
             {
                 if (itemStat[0] == '2' && itemStat.Length == 3)
