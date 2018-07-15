@@ -143,7 +143,7 @@ namespace MB_Decompiler_Library.Objects
         {
             get
             {
-                return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(SpecialValues[2]), true).TrimStart('|');
+                return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(SpecialValues[2])/*, true*/).TrimStart('|');
             }
         }
 
@@ -234,7 +234,7 @@ namespace MB_Decompiler_Library.Objects
                     if (s.Split('_')[0].Equals(flagMarker))
                     {
                         string[] sp = s.Replace(" ", string.Empty).Split('=');
-                        list.Add(new HeaderVariable((convToHex) ? HexConverter.Dec2Hex_16CHARS(sp[1]) : sp[1], sp[0]));
+                        list.Add(new HeaderVariable((convToHex) ? HexConverter.Dec2Hex_16CHARS(sp[1]).ToUpper() : sp[1], sp[0]));
                     }
                 }
             }
@@ -415,8 +415,7 @@ namespace MB_Decompiler_Library.Objects
         {
             if (varStart.Length == 9)
             {
-                ulong xxx = HexConverter.Hex2Dec(varStart.Remove(2));
-                if (xxx < 0x80)
+                if (varStart.TrimEnd('0').Length == 1)
                     varStart += ".";
             }
             else if (varStart.Length == 8)
@@ -432,24 +431,30 @@ namespace MB_Decompiler_Library.Objects
 
             if (varStart.Length == 0) return;
 
-            varStart = varStart.Replace(".", "0");
+            varStart = varStart.Replace('.', '0');
 
             ulong xtert = HexConverter.Hex2Dec(varStart);
             ulong ttttt = xtert + x_counter;
-            if (xtert <= x_tmp && ttttt <= x_tmp)// NOCHMAL ÜBERPRÜFEN
+            if (xtert <= x_tmp && ttttt <= x_tmp)
             {
                 bool isValid = (varStart.Length == 1);
                 if (!isValid)
                 {
-                    string specialValue = value.Substring(7, 2);
-                    string val2 = varStart.Substring(0, 2);
+                    string specialValue = value.Substring(7, 2).ToUpper();
+                    string val2 = varStart.Substring(0, 2).ToUpper();
                     isValid = specialValue.Equals(val2);
+
+                    if (!isValid)
+                    {
+                        ulong spec = HexConverter.Hex2Dec(specialValue);
+                        isValid = (spec > 0x80 && (specialValue[0] == val2[0] || specialValue[1] == val2[1]));
+                    }
                 }
 
                 if (isValid)
                 {
                     x_counter = ttttt;
-                    if (IsValueInValueString(retur, variable.VariableName))
+                    if (!IsValueInValueString(retur, variable.VariableName))
                         retur += "|" + variable.VariableName;
                 }
             }
@@ -459,14 +464,13 @@ namespace MB_Decompiler_Library.Objects
         {
             string retur = string.Empty;
 
-            int valueLength = 16;
-
             if (HeaderItemCapabilityFlags.Count == 0)
             {
                 InitializeHeaderItemCapabilityFlags();
                 HeaderItemCapabilityFlags.Reverse();
             }
 
+            int valueLength = 16;
             while (value.Length < valueLength)
                 value = "0" + value;
 
@@ -480,8 +484,9 @@ namespace MB_Decompiler_Library.Objects
                 if (i == 7)
                     subLength++;
 
-                ulong x_counter = 0;
                 int curLength = valueLength - i;
+
+                ulong x_counter = 0;
                 ulong x_tmp = HexConverter.Hex2Dec(value.Substring(i, subLength));
 
                 for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
@@ -513,80 +518,60 @@ namespace MB_Decompiler_Library.Objects
                 retur = "0";
 
             return retur;
-        }/**/
+        }
 
-        /*public static string GetItemCapabilityFlagsFromValue(string value)
+        private static bool IsValueInValueString(string valueString, string value)
         {
-            string retur = string.Empty, tmp;
+            bool yes = false;
+            string[] sp = valueString.Trim().Split('|');
+            foreach (string s in sp)
+                if (s.Equals(value))
+                    yes = true;
+            return yes;
+        }
 
-            if (HeaderItemCapabilityFlags.Count == 0)
-                InitializeHeaderItemCapabilityFlags();
-
-            for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
+        public static string GetItemModifiers_IMODBITS(string value/*, bool imodbits = false*/)
+        {
+            string retur = string.Empty;
+            if (HeaderIModBits.Count == 0)
             {
-                tmp = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                int curIdx = value.Length - tmp.Length;
-                if (value[curIdx] != '0')
-                {
-                    int hexValueLength = 1;
-                    if (tmp.Length == 9)
-                        hexValueLength++;
-
-                    List<HeaderVariable> list = new List<HeaderVariable>();
-                    ulong x_counter = 0;
-                    ulong x_tmp = ulong.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, hexValueLength)).ToString());
-                    for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
-                    {
-                        string varValue = HeaderItemCapabilityFlags[j].VariableValue.TrimStart('0');
-                        if (varValue.Length == value.Substring(curIdx).Length)
-                            list.Add(HeaderItemCapabilityFlags[j]);
-                    }
-                    list.Reverse();
-                    foreach (HeaderVariable variable in list)
-                    {
-                        if (x_counter < x_tmp)
-                        {
-                            string varStart = variable.VariableValue.TrimStart('0');
-                            ulong x_tmp2 = ulong.Parse(HexConverter.Hex2Dec(varStart).ToString());
-
-                            ulong tttt = x_tmp2 + x_counter;
-                            if (x_tmp2 <= x_tmp && tttt <= x_tmp)
-                            {
-                                bool mega3f = (varStart.Length == 1);
-                                if (!mega3f) {
-                                    mega3f = (varStart.Substring(1, 1).Equals(value[8]) && 
-                                        (varStart.Substring(0, 1).Equals(value[7]) ||
-                                        (ulong)HexConverter.Hex2Dec(varStart.Substring(0, 1)) == ((ulong)HexConverter.Hex2Dec(value[7].ToString()) - 8)));
-                                }
-
-                                if (mega3f)
-                                {
-                                    x_counter += x_tmp2;
-                                    if (!IsValueInValueString(retur, variable.VariableName))
-                                        retur += "|" + variable.VariableName;
-                                }
-                            }
-                        }
-                    }
-                }
+                InitializeHeaderIModBits();
+                HeaderIModBits.Reverse();
             }
 
-            if (value.Length >= 8)
+            int valueLength = 16;
+            while (value.Length < valueLength)
+                value = "0" + value;
+
+            for (int i = 0; i < valueLength; i++)
             {
-                if (int.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) >= 8)//Or Not value.Chars(7) = "0" Or Not value.Chars(7) = "1" Or Not value.Chars(7) = "2" Or Not value.Chars(7) = "3" Then
+                if (value[i] == '0') continue;
+
+                List<HeaderVariable> list = new List<HeaderVariable>();
+
+                int curLength = valueLength - i;
+
+                ulong x_counter = 0;
+                ulong x_tmp = HexConverter.Hex2Dec(value.Substring(i, 1));
+
+                for (int j = 0; j < HeaderIModBits.Count; j++)
                 {
-                    string holsterdVar = string.Empty;
-                    for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
+                    string varValue = HeaderIModBits[j].VariableValue.TrimStart('0');
+                    if (varValue.Length == curLength)
+                        list.Add(HeaderIModBits[j]);
+                }
+
+                foreach (HeaderVariable variable in list)
+                {
+                    string varStart = variable.VariableValue.Replace("0", string.Empty);
+                    ulong xtert = HexConverter.Hex2Dec(varStart);
+                    ulong ttttt = xtert + x_counter;
+                    if (xtert <= x_tmp && ttttt <= x_tmp)
                     {
-                        holsterdVar = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                        if (int.Parse(HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8 && holsterdVar.Length == 9)
-                        {
-                            holsterdVar = HeaderItemCapabilityFlags[i].VariableName;
-                            i = HeaderItemCapabilityFlags.Count;
-                        }
+                        x_counter = ttttt;
+                        if (!IsValueInValueString(retur, variable.VariableName))
+                            retur += "|" + variable.VariableName;
                     }
-                    if (holsterdVar.Length != 0)
-                        retur += "|" + holsterdVar;
                 }
             }
 
@@ -600,77 +585,10 @@ namespace MB_Decompiler_Library.Objects
             {
                 retur += tmpS[i];
                 if (i < tmpS.Length - 1)
-                    retur += '|';
+                    retur += "|";
             }
 
-            if (retur.Length == 0)
-                retur = "0";
-
-            return retur;
-        }*/
-
-        private static bool IsValueInValueString(string valueString, string value)
-        {
-            bool yes = false;
-            string[] sp = valueString.Trim().Split('|');
-            foreach (string s in sp)
-                if (s.Equals(value))
-                    yes = true;
-            return yes;
-        }
-
-        public static string GetItemModifiers_IMODBITS(string value, bool imodbits = false)
-        {
-            string retur = string.Empty;
-            if (HeaderIModBits.Count == 0)
-                InitializeHeaderIModBits();
-            for (int i = 0; i < HeaderIModBits.Count; i++)
-            {
-                string tmp = HeaderIModBits[i].VariableValue.TrimStart('0');
-                int curIdx = value.Length - tmp.Length;
-                if (tmp[0] == value[curIdx])
-                {
-                    retur += "|" + HeaderIModBits[i].VariableName;
-                    if (!imodbits)
-                        i = HeaderIModBits.Count;
-                }
-                else if (value[curIdx] != '0')
-                {
-                    List<HeaderVariable> list = new List<HeaderVariable>();
-                    uint x_counter = 0;
-                    uint x_tmp = uint.Parse(HexConverter.Hex2Dec(value.Substring(curIdx, 1)).ToString());
-                    for (int j = 0; j < HeaderIModBits.Count; j++)
-                        if (HeaderIModBits[j].VariableValue.TrimStart('0').Length == value.Substring(curIdx).Length)
-                            list.Add(HeaderIModBits[j]);
-                    list.Reverse();
-                    foreach (HeaderVariable variable in list)
-                    {
-                        if (x_counter < x_tmp)
-                        {
-                            uint x_tmp2 = uint.Parse(HexConverter.Hex2Dec(variable.VariableValue.Trim('0')).ToString());
-                            if (!retur.Contains(variable.VariableName))
-                                retur += "|" + variable.VariableName;
-                        }
-                    }
-                }
-            }
-
-            if (retur.Length != 0)
-            {
-                retur = retur.Substring(1);
-                string[] tmpS = retur.Split('|');
-                SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
-                retur = string.Empty;
-                for (int i = 0; i < tmpS.Length; i++)
-                {
-                    retur += tmpS[i];
-                    if (i < tmpS.Length - 1)
-                        retur += '|';
-                }
-                if (!imodbits)
-                    retur += "|" + retur;
-            }
-            else
+            if (retur.Equals(string.Empty))
                 retur = "imodbits_none";
 
             return retur;
@@ -712,7 +630,7 @@ namespace MB_Decompiler_Library.Objects
 
                 if (!value.Substring(1).Equals(ZERO_15_CHARS))
                 {
-                    retur += "|" + GetItemModifiers_IMODBITS(value, true);
+                    retur += "|" + GetItemModifiers_IMODBITS(value/*, true*/);
                     retur = retur.Trim('|');
                 }
             }
