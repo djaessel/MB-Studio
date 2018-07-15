@@ -411,102 +411,89 @@ namespace MB_Decompiler_Library.Objects
             return retur;
         }
 
-        /*public static string GetItemCapabilityFlagsFromValue(string value)
+        private static void Handle2SizeCFs(ref string varStart)
         {
-            string tmp, retur = string.Empty;
-
-            if (HeaderItemCapabilityFlags.Count == 0)
-                InitializeHeaderItemCapabilityFlags();
-
-            for (int i = 0; i < HeaderItemCapabilityFlags.Count; i++)
+            if (varStart.Length == 9)
             {
-                tmp = HeaderItemCapabilityFlags[i].VariableValue.TrimStart('0');
-                if (value[value.Length - tmp.Length] != '0')
+                ulong xxx = HexConverter.Hex2Dec(varStart.Remove(2));
+                if (xxx < 0x80)
+                    varStart += ".";
+            }
+            else if (varStart.Length == 8)
+                varStart = "." + varStart;
+        }
+
+        private static void HandleCFs(ref string retur, ref ulong x_tmp, ref ulong x_counter, ref string value, HeaderVariable variable)
+        {
+            string varStart = variable.VariableValue.TrimStart('0');
+            Handle2SizeCFs(ref varStart);
+
+            varStart = varStart.Replace("0", string.Empty);
+
+            if (varStart.Length == 0) return;
+
+            varStart = varStart.Replace(".", "0");
+
+            ulong xtert = HexConverter.Hex2Dec(varStart);
+            ulong ttttt = xtert + x_counter;
+            if (xtert <= x_tmp && ttttt <= x_tmp)// NOCHMAL ÜBERPRÜFEN
+            {
+                bool isValid = (varStart.Length == 1);
+                if (!isValid)
                 {
-                    List<HeaderVariable> list = new List<HeaderVariable>();
-                    int x_tmp = int.Parse(HexConverter.Hex2Dec(value[value.Length - tmp.Length].ToString()).ToString());
-                    int x_counter = 0;
+                    string specialValue = value.Substring(7, 2);
+                    string val2 = varStart.Substring(0, 2);
+                    isValid = specialValue.Equals(val2);
+                }
 
-                    if (tmp.Length == 9)
-                        x_tmp = int.Parse(HexConverter.Hex2Dec(value.Substring(value.Length - tmp.Length, 2)).ToString());
-
-                    string varValue;
-                    for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
-                    {
-                        varValue = HeaderItemCapabilityFlags[j].VariableValue.TrimStart('0');
-                        if (varValue.Length == value.Substring(value.Length - tmp.Length).Length)
-                            list.Add(HeaderItemCapabilityFlags[j]);
-                    }
-
-                    list.Reverse();
-
-                    foreach (HeaderVariable variable in list)
-                    {
-                        if (x_counter < x_tmp)
-                        {
-                            string varStart = variable.VariableValue.TrimStart('0');
-                            if (varStart.Length == 9 && (varStart.TrimEnd('0').Equals('1') || varStart.TrimEnd('0').Equals('8')))
-                                varStart += ".";
-                            else if (varStart.Length == 8)
-                                varStart = "." + varStart;
-
-                            varStart = varStart.Replace("0", string.Empty);
-                            if (varStart.Contains("."))
-                                varStart = varStart.Replace(".", "0");
-
-                            while (varStart.Length < 8)
-                                varStart = "0" + varStart;
-
-                            int xtert = int.Parse(HexConverter.Hex2Dec(varStart).ToString());
-                            varStart = varStart.TrimStart('0');
-
-                            int ttttt = xtert + x_counter;
-                            if (xtert <= x_tmp && ttttt <= x_tmp)// NOCHMAL ÜBERPRÜFEN
-                            {
-                                if (varStart.Length == 1)
-                                {
-                                    x_counter += xtert;
-                                    if (IsValueInValueString(retur, variable.VariableName))
-                                        retur += "|" + variable.VariableName;
-                                }
-                                else
-                                {
-                                    string valS1 = varStart.Substring(0, 1);
-                                    string valS2 = value.Substring(7, 1);
-                                    ulong val1 = ulong.Parse(HexConverter.Hex2Dec(valS1).ToString());
-                                    ulong val2X = ulong.Parse(HexConverter.Hex2Dec(valS2).ToString()) - 8u;
-                                    if (varStart.Substring(1, 1).Equals(value.Substring(8, 1)) &&
-                                        (valS1.Equals(valS2) || val1 == val2X))
-                                    {
-                                        x_counter += xtert;
-                                        if (IsValueInValueString(retur, variable.VariableName))
-                                            retur += "|" + variable.VariableName;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                if (isValid)
+                {
+                    x_counter = ttttt;
+                    if (IsValueInValueString(retur, variable.VariableName))
+                        retur += "|" + variable.VariableName;
                 }
             }
+        }
 
-            if (value.Length >= 8)
+        public static string GetItemCapabilityFlagsFromValue(string value)
+        {
+            string retur = string.Empty;
+
+            int valueLength = 16;
+
+            if (HeaderItemCapabilityFlags.Count == 0)
             {
-                if (ulong.Parse(HexConverter.Hex2Dec(value.Substring(7, 1)).ToString()) >= 8)
+                InitializeHeaderItemCapabilityFlags();
+                HeaderItemCapabilityFlags.Reverse();
+            }
+
+            while (value.Length < valueLength)
+                value = "0" + value;
+
+            for (int i = 0; i < valueLength; i++)
+            {
+                if (value[i] == '0') continue;
+
+                List<HeaderVariable> list = new List<HeaderVariable>();
+
+                int subLength = 1;
+                if (i == 7)
+                    subLength++;
+
+                ulong x_counter = 0;
+                int curLength = valueLength - i;
+                ulong x_tmp = HexConverter.Hex2Dec(value.Substring(i, subLength));
+
+                for (int j = 0; j < HeaderItemCapabilityFlags.Count; j++)
                 {
-                    string holsterdVar = string.Empty;
-                    for (int bbb = 0; bbb < HeaderItemCapabilityFlags.Count; bbb++)
-                    {
-                        holsterdVar = HeaderItemCapabilityFlags[bbb].VariableValue.TrimStart('0');
-                        if (ulong.Parse(HexConverter.Hex2Dec(holsterdVar.TrimEnd('0')).ToString()) == 8u &&
-                            holsterdVar.Length == 9)
-                        {
-                            holsterdVar = HeaderItemCapabilityFlags[bbb].VariableName;
-                            bbb = HeaderItemCapabilityFlags.Count;
-                        }
-                    }
-                    if (!holsterdVar.Equals(string.Empty))
-                        retur += "|" + holsterdVar;
+                    string varValue = HeaderItemCapabilityFlags[j].VariableValue.TrimStart('0');
+                    if (varValue.Length == curLength)
+                        list.Add(HeaderItemCapabilityFlags[j]);
                 }
+
+                foreach (HeaderVariable variable in list)
+                    if (x_counter < x_tmp)
+                        HandleCFs(ref retur, ref x_tmp , ref x_counter, ref value, variable);
             }
 
             if (!retur.Equals(string.Empty))
@@ -526,9 +513,9 @@ namespace MB_Decompiler_Library.Objects
                 retur = "0";
 
             return retur;
-        }*/
+        }/**/
 
-        public static string GetItemCapabilityFlagsFromValue(string value)
+        /*public static string GetItemCapabilityFlagsFromValue(string value)
         {
             string retur = string.Empty, tmp;
 
@@ -620,7 +607,7 @@ namespace MB_Decompiler_Library.Objects
                 retur = "0";
 
             return retur;
-        }
+        }*/
 
         private static bool IsValueInValueString(string valueString, string value)
         {
