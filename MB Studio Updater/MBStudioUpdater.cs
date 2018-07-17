@@ -13,13 +13,13 @@ namespace MB_Studio_Updater
         public const string MB_STUDIO_UPDATER = "MB Studio Updater.exe";
         public const string MB_STUDIO_UPDATER_TEMP = "mbstudioupdater_temp";
 
-        private bool startMBStudioAU;
+        private bool StartStudioAfterUpdate { get; }
 
         public static string ConsoleTitle = "MB Studio Updater [by JSYS]";//must be changeable for console
 
-        private string channel;
-        private string curFile;
-        private string folderPath;
+        private string Channel { get; }
+        private string CurFile { get; set; }
+        private string FolderPath { get; }
 
         private List<string> list;
 
@@ -27,11 +27,11 @@ namespace MB_Studio_Updater
 
         #endregion
 
-        public MBStudioUpdater(string channel = "stable", string folderPath = ".", bool startMBStudioAU = false)
+        public MBStudioUpdater(string channel = "stable", string folderPath = ".", bool startStudioAfterUpdate = false)
         {
-            this.channel = channel;
-            this.folderPath = Path.GetFullPath(folderPath);
-            this.startMBStudioAU = startMBStudioAU;
+            Channel = channel;
+            FolderPath = Path.GetFullPath(folderPath);
+            StartStudioAfterUpdate = startStudioAfterUpdate;
 
             SetIsConsole();
             CleanUpdaterTemp();
@@ -45,7 +45,9 @@ namespace MB_Studio_Updater
 
             List<FileVersionCode> downloadedFVCs = FileVersionCode.ConvertToFileVersions(File.ReadAllLines("index.mbi"));
             List<FileVersionCode> generatedFVCs = FileVersionCode.ConvertToFileVersions(list);
+
             list.Clear();
+
             foreach (FileVersionCode downloadedFVC in downloadedFVCs)
             {
                 for (int i = 0; i < generatedFVCs.Count; i++)
@@ -59,7 +61,7 @@ namespace MB_Studio_Updater
                 }
             }
 
-            File.WriteAllLines(channel + ".index.mbi", list);
+            File.WriteAllLines(Channel + ".index.mbi", list);
         }
 
         #endregion
@@ -87,7 +89,7 @@ namespace MB_Studio_Updater
                 {
                     string[] infoIndex = item.Split('|');
                     string[] newOrUpdated = new string[] { infoIndex[2], infoIndex[3] };
-                    if (!list.Contains(item))
+                    if (list.Contains(item))
                     {
                         for (int i = 0; i < list.Count; i++)
                         {
@@ -105,18 +107,18 @@ namespace MB_Studio_Updater
                         updateFiles.Add(newOrUpdated);
                 }
 
-                logInfo = " --> Es werden " + updateFiles.Count + " Dateien aktualisiert" + Environment.NewLine;
+                logInfo = " --> Es werden " + updateFiles.Count + " Dateien heruntergeladen und aktualisiert" + Environment.NewLine;
 
                 if (IsConsole)
                     Console.WriteLine(Environment.NewLine + logInfo);
 
                 wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
 
-                //if (IsUpdaterOutdated(updateFiles))
+                //if (IsUpdaterOutdated(updateFiles)) // Maybe reactive later if good working solution found
                 //{
                 //    wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update");
                 //    wr.WriteLine("[" + DateTime.Now + "] Please contact publisher!");
-                //    //SelfUpdate();
+                //    SelfUpdate();
                 //}
                 //else
                 //{
@@ -136,11 +138,11 @@ namespace MB_Studio_Updater
                             {
                                 string file = updateFiles[i][0].Substring(2);
                                 //file = file.Substring(file.LastIndexOf('\\') + 1);//if path not needed to show
-                                curFile = " Aktualisiere \"" + file + '\"';
-                                wr.WriteLine("[" + DateTime.Now + "]" + curFile);
+                                CurFile = " Updating \"" + file + '\"';
+                                wr.WriteLine("[" + DateTime.Now + "]" + CurFile);
                                 if (IsConsole)
-                                    Console.Write(curFile);
-                                file = folderPath + updateFiles[i][0].Substring(1);
+                                    Console.Write(CurFile);
+                                file = FolderPath + updateFiles[i][0].Substring(1);
                                 if (IsConsole)
                                     Console.WriteLine(" >> " + file);
                                 wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFiles[i][1]);
@@ -156,7 +158,7 @@ namespace MB_Studio_Updater
                         }
                     }
 
-                    if (startMBStudioAU)
+                    if (StartStudioAfterUpdate)
                     {
                         wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
                         Process.Start("MB Studio.exe");
@@ -205,15 +207,23 @@ namespace MB_Studio_Updater
             bool isTemp = Path.GetDirectoryName(path).Equals(MB_STUDIO_UPDATER_TEMP);
 
             if (IsConsole)
-                Console.WriteLine("PATH_X: " + Path.GetDirectoryName(path) + Environment.NewLine + "PATH_T: " + MB_STUDIO_UPDATER_TEMP
-                    + Environment.NewLine + "IsTemp: " + isTemp);
+            {
+                Console.WriteLine(
+                    "PATH_X: " + Path.GetDirectoryName(path)
+                    + Environment.NewLine + "PATH_T: " + MB_STUDIO_UPDATER_TEMP
+                    + Environment.NewLine + "IsTemp: " + isTemp
+                );
+            }
 
             if (!isTemp)//if (!path.Substring(path.LastIndexOf('\\') + 1).ToLower().Equals(MB_STUDIO_UPDATER_TEMP))
             {
                 string tempPath = path + '\\' + MB_STUDIO_UPDATER_TEMP;
+
                 Directory.CreateDirectory(tempPath);
+
                 File.Copy(path + '\\' + MB_STUDIO_UPDATER, tempPath + '\\' + MB_STUDIO_UPDATER);
                 File.WriteAllText(tempPath + "\\path.info", path);
+
                 Process.Start(tempPath + '\\' + MB_STUDIO_UPDATER);
             }
             else
@@ -224,8 +234,11 @@ namespace MB_Studio_Updater
                 else
                     downloadPart = "kc61q6vzrizxxrp";//update if changed!!!
                 path = File.ReadAllText("path.info");
+
                 System.Threading.Thread.Sleep(2500);//should be not needed!!!
+
                 File.Delete(path);
+
                 using (WebClient client = new WebClient())
                     client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", path);
             }
@@ -255,7 +268,7 @@ namespace MB_Studio_Updater
         {
             if (list != null && !forceLoading) return;
 
-            ConsoleTitle += " Channel: " + channel;
+            ConsoleTitle += " Channel: " + Channel;
 
             if (IsConsole)
                 Console.Title = ConsoleTitle;
@@ -263,20 +276,33 @@ namespace MB_Studio_Updater
             bool Is64Bit = Environment.Is64BitOperatingSystem;
 
             string pathExtra;
-            if (channel.Equals("dev"))
-                pathExtra = (Is64Bit) ? "3hb1y883a23520v" : "dd4c75fu8ap6klf";//change if invalid
-            else if (channel.Equals("beta"))
-                pathExtra = (Is64Bit) ? "h7fh3m5i0pi7zwl" : "6e63rtfhqdt2y6w";//change if invalid
-            else// if (channel.Equals("stable"))
-                pathExtra = (Is64Bit) ? "x6fznmxh99b1mgn" : "7q27bh2kzemz01k";//change if invalid
-
-            pathExtra += "/" + channel;
+            switch (Channel)
+            {
+                case "dev":
+                    pathExtra = (Is64Bit) ? "3hb1y883a23520v" : "dd4c75fu8ap6klf";//change if invalid
+                    break;
+                case "beta":
+                    pathExtra = (Is64Bit) ? "h7fh3m5i0pi7zwl" : "6e63rtfhqdt2y6w";//change if invalid
+                    break;
+                default://case "stable":
+                    pathExtra = (Is64Bit) ? "x6fznmxh99b1mgn" : "7q27bh2kzemz01k";//change if invalid
+                    break;
+            }
+            pathExtra += "/" + Channel;
 
             list = new List<string>();
-            List<FileInfo> files = GetAllFiles(folderPath);
+            List<FileInfo> files = GetAllFiles(FolderPath);
             foreach (FileInfo file in files)
+            {
                 if (!UnusedFile(file))
-                    list.Add(MD5Maker.CreateMD5ChecksumString(file.FullName) + "|" + file.LastWriteTimeUtc.ToFileTime() + "|." + file.FullName.Substring(folderPath.Length));
+                {
+                    string md5Checksum = MD5Maker.CreateMD5ChecksumString(file.FullName);
+                    long lastWriteTime = file.LastWriteTimeUtc.ToFileTime();
+                    string relativeFilePath = file.FullName.Substring(FolderPath.Length);
+
+                    list.Add(md5Checksum + "|" + lastWriteTime + "|." + relativeFilePath);
+                }
+            }
 
             using (WebClient client = new WebClient())
                 client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
@@ -284,11 +310,19 @@ namespace MB_Studio_Updater
 
         private static bool UnusedFile(FileInfo file)
         {
-            string ext = file.Extension.TrimStart('.');
-            bool unused = file.Name.Contains("skillhunter.xml");
+            bool unused = false;
 
-            if (!unused) unused = file.Name.Contains("module_info.path");
-            if (!unused) unused = (ext.Equals("pdb") || ext.Equals("mbi") || ext.Equals("config"));
+            if (!unused)
+            {
+                unused = (
+                    file.Extension.Equals(".pdb") || 
+                    file.Extension.Equals(".mbi") || 
+                    file.Extension.Equals(".config")
+                );
+            }
+
+            if (!unused) unused = file.Name.EndsWith("module_info.path");
+
             if (!unused) unused = file.DirectoryName.Contains(Path.GetFullPath(".\\Projects"));
             if (!unused) unused = file.DirectoryName.Contains(Path.GetFullPath(".\\Python"));
 

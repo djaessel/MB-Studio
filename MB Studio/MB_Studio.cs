@@ -59,8 +59,8 @@ namespace MB_Studio
         {
             StartLoadingForm();
 
-            //if (AutoUpdateActive)
-            CheckForUpdates();
+            //if (RunAutoUpdate) //activate if update function is available!
+                CheckForUpdates();
 
             InitializeComponent();
 
@@ -75,23 +75,21 @@ namespace MB_Studio
         private void CheckForUpdates()
         {
             string versionFile = "version.dat";
+            string dropboxBaseUrl = "https://www.dropbox.com/s/";
+            string updaterDownloadPart = "/MB%20Studio%20Updater.exe?dl=1";
             string startPath = MBStudioUpdater.MB_STUDIO_UPDATER;
-            //if (!File.Exists("version.dat") || Directory.Exists(startPath + MBStudioUpdater.MB_STUDIO_UPDATER_TEMP))
-            //{
-                //startPath = MBStudioUpdater.MB_STUDIO_UPDATER_TEMP + '\\' + startPath;
 
-                string downloadPart;
-                if (Environment.Is64BitOperatingSystem)
-                    downloadPart = "bz1wa88ptglc1st";//update if changed!!!
-                else
-                    downloadPart = "kc61q6vzrizxxrp";//update if changed!!!
+            string downloadToken;
+            if (Environment.Is64BitOperatingSystem)
+                downloadToken = "bz1wa88ptglc1st";//update if changed!!!
+            else
+                downloadToken = "kc61q6vzrizxxrp";//update if changed!!!
 
-                File.Delete(MBStudioUpdater.MB_STUDIO_UPDATER);
+            File.Delete(MBStudioUpdater.MB_STUDIO_UPDATER);
 
-                using (WebClient client = new WebClient())
-                    client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", MBStudioUpdater.MB_STUDIO_UPDATER);
-
-            //Directory.Delete(startPath.Remove(startPath.LastIndexOf('\\')), true);
+            string updaterFileUrl = dropboxBaseUrl + downloadToken + updaterDownloadPart;
+            using (WebClient client = new WebClient())
+                client.DownloadFile(updaterFileUrl, MBStudioUpdater.MB_STUDIO_UPDATER);
 
             bool fileExists = File.Exists(versionFile);
             if (fileExists) fileExists = File.ReadAllText(versionFile).Equals(ProductVersion);
@@ -99,23 +97,21 @@ namespace MB_Studio
             if (!fileExists)
                 File.WriteAllText(versionFile, Application.ProductVersion);
 
-            //    Application.Exit();//.Restart();
-            //}
-            //else
-            //{
-                startPath = Application.StartupPath + '\\' + startPath;
+            startPath = Application.StartupPath + '\\' + startPath;
 
-                Process process = new Process();
-                process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
-                //if (!ShowUpdaterConsole)//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
-                //{
-                //  process.StartInfo.CreateNoWindow = true;
-                //  process.StartInfo.UseShellExecute = false;
-                //}
-                process.StartInfo.FileName = startPath;
-                if (RunAutoUpdate)
-                    process.Start();///activate for release - deactivate for development
+            Process process = new Process();
+            process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
+
+            //if (!ShowUpdaterConsole)
+            //{ //will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
+            //  process.StartInfo.CreateNoWindow = true;
+            //  process.StartInfo.UseShellExecute = false;
             //}
+
+            process.StartInfo.FileName = startPath;
+
+            if (RunAutoUpdate)
+                process.Start();
         }
 
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)
