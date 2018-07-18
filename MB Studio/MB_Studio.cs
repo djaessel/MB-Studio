@@ -75,9 +75,10 @@ namespace MB_Studio
         private void CheckForUpdates()
         {
             string versionFile = "version.dat";
-            string dropboxBaseUrl = "https://www.dropbox.com/s/";
-            string updaterDownloadPart = "/MB%20Studio%20Updater.exe?dl=1";
             string startPath = MBStudioUpdater.MB_STUDIO_UPDATER;
+
+            /*string dropboxBaseUrl = "https://www.dropbox.com/s/";
+            string updaterDownloadPart = "/MB%20Studio%20Updater.exe?dl=1";
 
             string downloadToken;
             if (Environment.Is64BitOperatingSystem)
@@ -89,7 +90,7 @@ namespace MB_Studio
 
             string updaterFileUrl = dropboxBaseUrl + downloadToken + updaterDownloadPart;
             using (WebClient client = new WebClient())
-                client.DownloadFile(updaterFileUrl, MBStudioUpdater.MB_STUDIO_UPDATER);
+                client.DownloadFile(updaterFileUrl, MBStudioUpdater.MB_STUDIO_UPDATER);*/
 
             bool fileExists = File.Exists(versionFile);
             if (fileExists) fileExists = File.ReadAllText(versionFile).Equals(ProductVersion);

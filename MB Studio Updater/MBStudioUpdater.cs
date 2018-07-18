@@ -68,6 +68,15 @@ namespace MB_Studio_Updater
 
         #region CheckForUpdates
 
+        private bool IsInList(string[] indexBlocks)
+        {
+            bool found = false;
+            foreach (string item in list)
+                if (indexBlocks[2].Equals(item.Split('|')[2]))
+                    found = true;
+            return found;
+        }
+
         public void CheckForUpdates()
         {
             using (StreamWriter wr = new StreamWriter("update_log.mbi", true))
@@ -89,13 +98,15 @@ namespace MB_Studio_Updater
                 {
                     string[] infoIndex = item.Split('|');
                     string[] newOrUpdated = new string[] { infoIndex[2], infoIndex[3] };
-                    if (list.Contains(item))
+
+                    if (IsInList(infoIndex))
                     {
                         for (int i = 0; i < list.Count; i++)
                         {
                             string[] infoList = list[i].Split('|');
                             if (infoList[2].Equals(infoIndex[2])
-                                && (/*ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])//deactivated for now because of old files - replace with version later
+                                && (
+                                /*ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])//check differently later maybe
                                 && */!infoList[0].Equals(infoIndex[0])))//if (outdated)
                             {
                                 updateFiles.Add(newOrUpdated);
@@ -114,15 +125,22 @@ namespace MB_Studio_Updater
 
                 wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
 
-                //if (IsUpdaterOutdated(updateFiles)) // Maybe reactive later if good working solution found
-                //{
-                //    wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update");
-                //    wr.WriteLine("[" + DateTime.Now + "] Please contact publisher!");
-                //    SelfUpdate();
-                //}
+                string s;
+                do
+                {
+                    s = Console.ReadLine();
+                } while (!s.Equals("ok"));
+
+                if (IsUpdaterOutdated(updateFiles)) // Maybe reactive later if good working solution found
+                {
+                    wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update");
+                    //wr.WriteLine("[" + DateTime.Now + "]  Please contact publisher!");
+                    SelfUpdate();
+                    return;
+                }
                 //else
                 //{
-                //    wr.WriteLine("[" + DateTime.Now + "]  Updater up-to-date");
+                wr.WriteLine("[" + DateTime.Now + "]  Updater up-to-date");
 
                 if (updateFiles.Count != 0)
                 {
@@ -198,8 +216,11 @@ namespace MB_Studio_Updater
             }
         }
 
-        private void SelfUpdate()
+        public void SelfUpdate()
         {
+            Console.Write("TERMINUS? ");
+            Console.ReadLine();
+
             CloseMBStudioIfRunning();
 
             string path = Path.GetFullPath(".");
@@ -215,6 +236,9 @@ namespace MB_Studio_Updater
                 );
             }
 
+            Process updater = new Process();
+            updater.StartInfo.UseShellExecute = true;
+
             if (!isTemp)//if (!path.Substring(path.LastIndexOf('\\') + 1).ToLower().Equals(MB_STUDIO_UPDATER_TEMP))
             {
                 string tempPath = path + '\\' + MB_STUDIO_UPDATER_TEMP;
@@ -224,10 +248,14 @@ namespace MB_Studio_Updater
                 File.Copy(path + '\\' + MB_STUDIO_UPDATER, tempPath + '\\' + MB_STUDIO_UPDATER);
                 File.WriteAllText(tempPath + "\\path.info", path);
 
-                Process.Start(tempPath + '\\' + MB_STUDIO_UPDATER);
+                updater.StartInfo.FileName = tempPath + '\\' + MB_STUDIO_UPDATER;
+                updater.StartInfo.Arguments = "-su";
             }
             else
             {
+                Console.Write("TEST? ");
+                Console.ReadLine();
+
                 string downloadPart;
                 if (Environment.Is64BitOperatingSystem)
                     downloadPart = "bz1wa88ptglc1st";//update if changed!!!
@@ -241,7 +269,14 @@ namespace MB_Studio_Updater
 
                 using (WebClient client = new WebClient())
                     client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", path);
+
+                updater.StartInfo.FileName =  "..\\" + MB_STUDIO_UPDATER;
+                updater.StartInfo.Arguments = "-stable . -startOE";//add channel and path here (or more if needed) later
             }
+
+            updater.Start();
+
+            Environment.Exit(0);
         }
 
         #endregion
@@ -261,7 +296,7 @@ namespace MB_Studio_Updater
         private void CleanUpdaterTemp()
         {
             if (Directory.Exists(MB_STUDIO_UPDATER_TEMP))
-                Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);
+                Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);//bug wenn tmp updater eben gestartet wurde?
         }
 
         private void LoadData(bool forceLoading = false)

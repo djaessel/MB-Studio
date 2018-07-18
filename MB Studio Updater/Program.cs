@@ -14,7 +14,16 @@ namespace MB_Studio_Updater
             bool writeIndex = false;
             MBStudioUpdater updater;
 
-            if (args.Length != 0)
+            bool selfUpdate = false;
+            bool hasArguments = (args.Length != 0);
+
+            if (hasArguments)
+                selfUpdate = args[0].Equals("-su");
+
+            System.Console.Write("INFO X " + selfUpdate);
+            System.Console.ReadLine();
+
+            if (hasArguments && !selfUpdate)
             {
                 string channel = args[0].TrimStart('-');
                 string folderPath = ".";
@@ -36,14 +45,16 @@ namespace MB_Studio_Updater
                         writeIndex = (args[2].Equals("-index")) ? true : false;
                 }
 
-				folderPath = Path.GetFullPath(folderPath);
-				
+                folderPath = Path.GetFullPath(folderPath);
+
                 updater = new MBStudioUpdater(channel, folderPath, args[2].Equals("-startOE"));
             }
             else
                 updater = new MBStudioUpdater();
 
-            if (!writeIndex)
+            if (selfUpdate)
+                updater.SelfUpdate();
+            else if (!writeIndex)
                 updater.CheckForUpdates();
             else
                 updater.WriteIndexFile();
