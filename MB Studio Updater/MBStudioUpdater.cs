@@ -1,22 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace MB_Studio_Updater
 {
     public class MBStudioUpdater
     {
-        #region Attributes
+        #region Constants
 
         public const string MB_STUDIO_UPDATER = "MB Studio Updater.exe";
         public const string MB_STUDIO_UPDATER_TEMP = "mbstudioupdater_temp";
 
-        /// - - - CHANGE IF OUTDATED - - - ///
-        private const string UPDATER_64BIT_TOKEN = "bz1wa88ptglc1st";
-        private const string UPDATER_32BIT_TOKEN = "kc61q6vzrizxxrp";
+        #region UPDATE_DOWNLOAD_TOKENS
 
+        /// - - - CHANGE IF OUTDATED - - - ///
+        private const string UPDATER_STABLE_64BIT_TOKEN = "bz1wa88ptglc1st";
+        private const string UPDATER_STABLE_32BIT_TOKEN = "nsv3p53i1nf4my0";//old: kc61q6vzrizxxrp
+
+        private const string UPDATER_BETA_64BIT_TOKEN = "t8lcwxf0b1ppgfm";
+        private const string UPDATER_BETA_32BIT_TOKEN = "xa1dtzhci0866v4";
+
+        private const string UPDATER_DEV_64BIT_TOKEN = "gu0nu5zyb28z7kx";
+        private const string UPDATER_DEV_32BIT_TOKEN = "m6hobz4t927cy8m";
+        /// - - - CHANGE IF OUTDATED - - - ///
+
+        #endregion
+
+        #region INDEX_FILE_DOWNLOAD_TOKENS
+
+        /// - - - CHANGE IF OUTDATED - - - ///
         private const string INDEX_STABLE_64BIT_TOKEN = "x6fznmxh99b1mgn";
         private const string INDEX_STABLE_32BIT_TOKEN = "7q27bh2kzemz01k";
 
@@ -26,6 +41,12 @@ namespace MB_Studio_Updater
         private const string INDEX_DEV_64BIT_TOKEN = "3hb1y883a23520v";
         private const string INDEX_DEV_32BIT_TOKEN = "dd4c75fu8ap6klf";
         /// - - - CHANGE IF OUTDATED - - - ///
+
+        #endregion
+
+        #endregion
+
+        #region Attributes
 
         private bool StartStudioAfterUpdate { get; }
 
@@ -39,7 +60,7 @@ namespace MB_Studio_Updater
 
         public bool SelfUpdateActive { get; }
 
-        public bool IsConsole { get; private set; } = false;
+        public static bool IsConsole { get; private set; } = false;
 
         private bool IsTemp { get { return IsTempByCurDir(); } }
 
@@ -131,6 +152,7 @@ namespace MB_Studio_Updater
                                 /*ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])//check differently later maybe
                                 && */!infoList[0].Equals(infoIndex[0])))//if (outdated)
                             {
+                                Console.WriteLine(infoList[2] + " --> " + infoList[0] + " != " + infoIndex[0]);
                                 updateFiles.Add(newOrUpdated);
                                 i = list.Count;
                             }
@@ -169,12 +191,14 @@ namespace MB_Studio_Updater
                             foreach (string[] updateFile in updateFiles)
                             {
                                 string file = updateFile[0].Substring(2);
-                                //file = Path.GetFileName(file);;//if path not needed to be shown
+                                //file = Path.GetFileName(file);//if path not needed to be shown
                                 CurFile = " Updating \"" + file + '\"';
                                 wr.WriteLine("[" + DateTime.Now + "]" + CurFile);
                                 if (IsConsole)
                                     Console.Write(CurFile);
                                 file = FolderPath + updateFile[0].Substring(1);
+                                string folder = Path.GetDirectoryName(file);
+                                Directory.CreateDirectory(folder);
                                 if (IsConsole)
                                     Console.WriteLine(" >> " + file);
                                 wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFile[1]);
@@ -214,9 +238,13 @@ namespace MB_Studio_Updater
             {
                 string file = a[0].Substring(2);
                 file = file.Substring(file.LastIndexOf('\\') + 1);
-                if (!file.Equals(MB_STUDIO_UPDATER))
+                if (IsConsole)
+                    Console.WriteLine(file);
+                if (file.Equals(MB_STUDIO_UPDATER))
                     updaterOutdated = true;
             }
+            if (IsConsole)
+                Console.WriteLine("Updater outdated: " + updaterOutdated);
             return updaterOutdated;
         }
 
@@ -249,6 +277,8 @@ namespace MB_Studio_Updater
             Process updater = new Process();
             updater.StartInfo.UseShellExecute = true;
 
+            bool Is64Bit = Environment.Is64BitOperatingSystem;
+
             if (!IsTemp)
             {
                 Directory.CreateDirectory(MB_STUDIO_UPDATER_TEMP);
@@ -265,36 +295,58 @@ namespace MB_Studio_Updater
             else
             {
                 string downloadPart;
-                if (Environment.Is64BitOperatingSystem)
-                    downloadPart = UPDATER_64BIT_TOKEN;
-                else
-                    downloadPart = UPDATER_32BIT_TOKEN;
+                switch (Channel)
+                {
+                    case "dev":
+                        downloadPart = (Is64Bit) ? UPDATER_DEV_64BIT_TOKEN : UPDATER_DEV_32BIT_TOKEN;
+                        break;
+                    case "beta":
+                        downloadPart = (Is64Bit) ? UPDATER_BETA_64BIT_TOKEN : UPDATER_BETA_32BIT_TOKEN;
+                        break;
+                    default://case "stable":
+                        downloadPart = (Is64Bit) ? UPDATER_STABLE_64BIT_TOKEN : UPDATER_STABLE_32BIT_TOKEN;
+                        break;
+                }
 
                 currentPath = File.ReadAllText("path.info");
 
+                string fullRootPath = Path.GetFullPath(@"..\");
+                string updatedUpdaterPath = fullRootPath + MB_STUDIO_UPDATER;
+
                 if (IsConsole)
-                    Console.Write("Deleting '" + currentPath + "' ...");
+                    Console.Write("Deleting '" + currentPath + "' and '" + updatedUpdaterPath + "'...");
+
+                Thread.Sleep(1000);
 
                 File.Delete(currentPath);
+                File.Delete(updatedUpdaterPath);
+
+                if (IsConsole)
+                    Console.Write("Done.");
+
+                Thread.Sleep(1000);
 
                 using (WebClient client = new WebClient())
                     client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", currentPath);
 
-                updater.StartInfo.FileName =  @"..\" + MB_STUDIO_UPDATER;
+                updater.StartInfo.FileName = updatedUpdaterPath;
+                updater.StartInfo.WorkingDirectory = fullRootPath;
                 updater.StartInfo.Arguments = "-stable . -startOE";//add channel and path here (or more if needed) later
             }
 
             if (IsConsole)
-                Console.Write(Environment.NewLine + "Execute Updater...");
+                Console.Write(Environment.NewLine + "Executing Updater...");
 
             updater.Start();
+
+            Environment.Exit(0);
         }
 
         #endregion
 
         #region Helper Methods
 
-        private void SetIsConsole()
+        private static void SetIsConsole()
         {
             try
             {
@@ -315,7 +367,17 @@ namespace MB_Studio_Updater
         private void CleanUpdaterTemp()
         {
             if (Directory.Exists(MB_STUDIO_UPDATER_TEMP) && !IsTemp)
-                Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);
+            {
+                if (IsConsole)
+                    Console.Write("Deleting temporary files...");
+                Thread.Sleep(1000);
+                foreach (string file in Directory.GetFiles(MB_STUDIO_UPDATER_TEMP))
+                    File.Delete(file);
+                Directory.Delete(MB_STUDIO_UPDATER_TEMP);
+                Thread.Sleep(1000);
+                if (IsConsole)
+                    Console.WriteLine("Done.");
+            }
         }
 
         private void LoadData(bool forceLoading = false)

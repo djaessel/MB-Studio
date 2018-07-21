@@ -6,7 +6,6 @@ using MB_Studio_Updater;
 using MB_Decompiler_Library.IO;
 using System;
 using System.IO;
-using System.Net;
 using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
@@ -59,7 +58,7 @@ namespace MB_Studio
         {
             StartLoadingForm();
 
-            //if (RunAutoUpdate) //activate if update function is available!
+            if (RunAutoUpdate)
                 CheckForUpdates();
 
             InitializeComponent();
@@ -80,18 +79,18 @@ namespace MB_Studio
             /*string dropboxBaseUrl = "https://www.dropbox.com/s/";
             string updaterDownloadPart = "/MB%20Studio%20Updater.exe?dl=1";
 
-            string downloadToken;
+            string downloadToken;//get from MB Updater
             if (Environment.Is64BitOperatingSystem)
                 downloadToken = "bz1wa88ptglc1st";//update if changed!!!
             else
                 downloadToken = "kc61q6vzrizxxrp";//update if changed!!!
-
+            
             File.Delete(MBStudioUpdater.MB_STUDIO_UPDATER);
 
             string updaterFileUrl = dropboxBaseUrl + downloadToken + updaterDownloadPart;
             using (WebClient client = new WebClient())
                 client.DownloadFile(updaterFileUrl, MBStudioUpdater.MB_STUDIO_UPDATER);*/
-
+            
             bool fileExists = File.Exists(versionFile);
             if (fileExists) fileExists = File.ReadAllText(versionFile).Equals(ProductVersion);
 
@@ -104,7 +103,7 @@ namespace MB_Studio
             process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
 
             //if (!ShowUpdaterConsole)
-            //{ //will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
+            //{//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
             //  process.StartInfo.CreateNoWindow = true;
             //  process.StartInfo.UseShellExecute = false;
             //}
@@ -126,7 +125,7 @@ namespace MB_Studio
             tabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl.DrawItem += TabControl_DrawItem;
             tabControl.MouseClick += TabControl_MouseClick;
-            //file_cm.RenderMode = ToolStripRenderMode.Custom; // search for custom Renderer!!!
+            //file_cm.RenderMode = ToolStripRenderMode.Custom;//search for custom Renderer!!!
             name_lbl.Text = Text;
             InitializeTabControl();
 
@@ -192,7 +191,6 @@ namespace MB_Studio
 
         private void CloseLoadingForm()
         {
-
             Invoke((MethodInvoker)delegate {
                 UpdateUI(true);
             });
@@ -255,8 +253,8 @@ namespace MB_Studio
 
         private void ProjectObject_Click(object sender, EventArgs e)
         {
-            ProjectObject pObject = (ProjectObject)sender; //Button b = (Button)sender;
-            string path = pObject.ProjectPath; //b.Tag.ToString();
+            ProjectObject pObject = (ProjectObject)sender;//Button b = (Button)sender;
+            string path = pObject.ProjectPath;//b.Tag.ToString();
             if (Directory.Exists(path))
                 LoadProject(path);
             else
