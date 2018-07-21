@@ -20,9 +20,6 @@ namespace MB_Studio_Updater
             if (hasArguments)
                 selfUpdate = args[0].Equals("-su");
 
-            System.Console.Write("INFO X " + selfUpdate);
-            System.Console.ReadLine();
-
             if (hasArguments && !selfUpdate)
             {
                 string channel = args[0].TrimStart('-');
@@ -42,15 +39,15 @@ namespace MB_Studio_Updater
                     }
 
                     if (args.Length > 2)
-                        writeIndex = (args[2].Equals("-index")) ? true : false;
+                        writeIndex = args[2].Equals("-index");
                 }
 
                 folderPath = Path.GetFullPath(folderPath);
 
-                updater = new MBStudioUpdater(channel, folderPath, args[2].Equals("-startOE"));
+                updater = new MBStudioUpdater(selfUpdate, channel, folderPath, args[2].Equals("-startOE"));
             }
             else
-                updater = new MBStudioUpdater();
+                updater = new MBStudioUpdater(selfUpdate);
 
             if (selfUpdate)
                 updater.SelfUpdate();
