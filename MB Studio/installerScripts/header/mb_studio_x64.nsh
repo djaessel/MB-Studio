@@ -58,6 +58,8 @@
   File "x64\common\Qt5Xml.dll"
   File "x64\common\Qt5Core.dll"
   
+  File /r "universal\Manager"
+  
   File /r "universal\files"
   File /r "..\universal\files"
   
