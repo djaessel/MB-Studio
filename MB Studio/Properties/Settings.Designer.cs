@@ -174,5 +174,29 @@ namespace MB_Studio.Properties {
                 this["baseColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showUpdaterConsole {
+            get {
+                return ((bool)(this["showUpdaterConsole"]));
+            }
+            set {
+                this["showUpdaterConsole"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool runAutoUpdate {
+            get {
+                return ((bool)(this["runAutoUpdate"]));
+            }
+            set {
+                this["runAutoUpdate"] = value;
+            }
+        }
     }
 }

@@ -17,13 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler_GUI", "MB_Dec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB Studio", "MB Studio\MB Studio.csproj", "{7222FE26-50DD-4B50-9E7A-DB473B077081}"
 	ProjectSection(ProjectDependencies) = postProject
-		{40722579-F755-49F9-9EA7-7967EFB59B1D} = {40722579-F755-49F9-9EA7-7967EFB59B1D}
 		{7F48F8D5-100D-3065-9AB1-476973B61E07} = {7F48F8D5-100D-3065-9AB1-476973B61E07}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warband - Translator", "Warband - Translator\Warband - Translator\Warband - Translator.csproj", "{114F6AE7-9935-4D6A-8E17-49A48BA1C036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "importantLib", "importantLib\importantLib\importantLib.csproj", "{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "importantLib", "importantLib\importantLib\importantLib.csproj", "{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brfManager", "brfManager\brfManager.csproj", "{D941DD6A-1DAA-42E8-ACED-1BB2681EDBD3}"
 EndProject

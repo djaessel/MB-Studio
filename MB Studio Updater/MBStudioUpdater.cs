@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -66,18 +65,15 @@ namespace MB_Studio_Updater
 
         #endregion
 
-        public MBStudioUpdater(bool selfUpdate = false, string channel = "stable", string folderPath = ".", bool startStudioAfterUpdate = false)
+        public MBStudioUpdater(bool selfUpdate = false, string channel = "stable", string folderPath = ".", bool startOE = false)
         {
             SelfUpdateActive = selfUpdate;
 
             Channel = channel;
             FolderPath = Path.GetFullPath(folderPath);
-            StartStudioAfterUpdate = startStudioAfterUpdate;
+            StartStudioAfterUpdate = startOE;
 
             SetIsConsole();
-
-            if (!SelfUpdateActive)
-                CleanUpdaterTemp();
         }
 
         #region WriteIndexFile
@@ -275,71 +271,83 @@ namespace MB_Studio_Updater
             }
 
             Process updater = new Process();
-            updater.StartInfo.UseShellExecute = true;
-
-            bool Is64Bit = Environment.Is64BitOperatingSystem;
 
             if (!IsTemp)
-            {
-                Directory.CreateDirectory(MB_STUDIO_UPDATER_TEMP);
-
-                currentPath += "\\" + MB_STUDIO_UPDATER;
-                File.Copy(currentPath, MB_STUDIO_UPDATER_TEMP + '\\' + MB_STUDIO_UPDATER);
-                File.WriteAllText(MB_STUDIO_UPDATER_TEMP + "\\path.info", currentPath);
-
-                string fullTempPath = Path.GetFullPath(MB_STUDIO_UPDATER_TEMP);
-                updater.StartInfo.FileName = fullTempPath + '\\' + MB_STUDIO_UPDATER;
-                updater.StartInfo.WorkingDirectory = fullTempPath;
-                updater.StartInfo.Arguments = "-su";
-            }
+                SelfUpdateMoveToTemp(ref updater, currentPath);
             else
-            {
-                string downloadPart;
-                switch (Channel)
-                {
-                    case "dev":
-                        downloadPart = (Is64Bit) ? UPDATER_DEV_64BIT_TOKEN : UPDATER_DEV_32BIT_TOKEN;
-                        break;
-                    case "beta":
-                        downloadPart = (Is64Bit) ? UPDATER_BETA_64BIT_TOKEN : UPDATER_BETA_32BIT_TOKEN;
-                        break;
-                    default://case "stable":
-                        downloadPart = (Is64Bit) ? UPDATER_STABLE_64BIT_TOKEN : UPDATER_STABLE_32BIT_TOKEN;
-                        break;
-                }
-
-                currentPath = File.ReadAllText("path.info");
-
-                string fullRootPath = Path.GetFullPath(@"..\");
-                string updatedUpdaterPath = fullRootPath + MB_STUDIO_UPDATER;
-
-                if (IsConsole)
-                    Console.Write("Deleting '" + currentPath + "' and '" + updatedUpdaterPath + "'...");
-
-                Thread.Sleep(1000);
-
-                File.Delete(currentPath);
-                File.Delete(updatedUpdaterPath);
-
-                if (IsConsole)
-                    Console.Write("Done.");
-
-                Thread.Sleep(1000);
-
-                using (WebClient client = new WebClient())
-                    client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", currentPath);
-
-                updater.StartInfo.FileName = updatedUpdaterPath;
-                updater.StartInfo.WorkingDirectory = fullRootPath;
-                updater.StartInfo.Arguments = "-stable . -startOE";//add channel and path here (or more if needed) later
-            }
+                SelfUpdateDownloadNew(ref updater, currentPath);
 
             if (IsConsole)
                 Console.Write(Environment.NewLine + "Executing Updater...");
 
+            updater.StartInfo.UseShellExecute = true;
             updater.Start();
 
-            Environment.Exit(0);
+            Environment.Exit(0);//necessary?
+        }
+
+        private void SelfUpdateMoveToTemp(ref Process updater, string currentPath)
+        {
+            Directory.CreateDirectory(MB_STUDIO_UPDATER_TEMP);
+
+            currentPath += "\\" + MB_STUDIO_UPDATER;
+            File.Copy(currentPath, MB_STUDIO_UPDATER_TEMP + '\\' + MB_STUDIO_UPDATER, true);
+            File.WriteAllText(MB_STUDIO_UPDATER_TEMP + "\\path.info", currentPath);
+
+            string fullTempPath = Path.GetFullPath(MB_STUDIO_UPDATER_TEMP);
+            updater.StartInfo.FileName = fullTempPath + '\\' + MB_STUDIO_UPDATER;
+            updater.StartInfo.WorkingDirectory = fullTempPath;
+            updater.StartInfo.Arguments = "-su";
+        }
+
+        private void SelfUpdateDownloadNew(ref Process updater, string currentPath)
+        {
+            bool Is64Bit = Environment.Is64BitOperatingSystem;
+
+            string downloadPart;
+            switch (Channel)
+            {
+                case "dev":
+                    downloadPart = (Is64Bit) ? UPDATER_DEV_64BIT_TOKEN : UPDATER_DEV_32BIT_TOKEN;
+                    break;
+                case "beta":
+                    downloadPart = (Is64Bit) ? UPDATER_BETA_64BIT_TOKEN : UPDATER_BETA_32BIT_TOKEN;
+                    break;
+                default://case "stable":
+                    downloadPart = (Is64Bit) ? UPDATER_STABLE_64BIT_TOKEN : UPDATER_STABLE_32BIT_TOKEN;
+                    break;
+            }
+
+            currentPath = File.ReadAllText("path.info");
+
+            string fullRootPath = Path.GetFullPath(@"..\");
+            string updatedUpdaterPath = fullRootPath + MB_STUDIO_UPDATER;
+
+            if (IsConsole)
+            {
+                Console.WriteLine("Done");
+                Console.Write("Downloading new updater version...");
+            }
+
+            string downloadedFile = currentPath + ".tmp";
+            using (WebClient client = new WebClient())
+                client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", downloadedFile);
+
+            if (IsConsole)
+            {
+                Console.WriteLine("Done");
+                Console.Write("Replacing old with new version...");
+            }
+
+            string backupFile = currentPath + ".bak";
+            File.Replace(downloadedFile, currentPath, backupFile);//maybe copy later
+
+            if (IsConsole)
+                Console.WriteLine("Done");
+
+            updater.StartInfo.FileName = updatedUpdaterPath;
+            updater.StartInfo.WorkingDirectory = fullRootPath;
+            updater.StartInfo.Arguments = "-" + Channel + " . -startOE";//maybe change arguments later if needed
         }
 
         #endregion
@@ -370,13 +378,11 @@ namespace MB_Studio_Updater
             {
                 if (IsConsole)
                     Console.Write("Deleting temporary files...");
-                Thread.Sleep(1000);
-                foreach (string file in Directory.GetFiles(MB_STUDIO_UPDATER_TEMP))
-                    File.Delete(file);
-                Directory.Delete(MB_STUDIO_UPDATER_TEMP);
-                Thread.Sleep(1000);
+
+                Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);
+                
                 if (IsConsole)
-                    Console.WriteLine("Done.");
+                    Console.WriteLine("Done");
             }
         }
 

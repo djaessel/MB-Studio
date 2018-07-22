@@ -2,7 +2,6 @@
 using MB_Decompiler;
 using MB_Studio.Main;
 using MB_Studio.Manager;
-using MB_Studio_Updater;
 using MB_Decompiler_Library.IO;
 using System;
 using System.IO;
@@ -18,18 +17,25 @@ namespace MB_Studio
 {
     public partial class MB_Studio : SpecialForm
     {
-        public static bool RunAutoUpdate { get; private set; } = !File.Exists("debugMode.enabled");
-
-        #region Attributes
+        #region Constants
 
         private const int LEADING_SPACE = 12;
         private const int CLOSE_SPACE = 15;
         private const int CLOSE_AREA = CLOSE_SPACE;
 
+        private const int C_GRIP = 16;                      // Grip size
+        private const int C_CAPTION = 32;                   // Caption bar height;
+        private const int HT_BOTTOM_RIGHT = 17;             // Caption position
+        private const int WM_NCHITTEST = 0x84;              // Message Type
+
         public const string CSV_FORMAT = ".csv";
         public const string TEXT_FORMAT = ".txt";
 
         public const string EOF_TXT = "EOF";
+
+        #endregion
+
+        #region Attributes
 
         private bool FullScreen = true;
 
@@ -37,18 +43,23 @@ namespace MB_Studio
 
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
+
         // delegate for the UI updater
         private delegate void UpdateUIDelegate(bool IsDataLoaded);
+
         private Thread loadingThread;
 
-        private const int C_GRIP = 16;                      // Grip size
-        private const int C_CAPTION = 32;                   // Caption bar height;
-        private const int HT_BOTTOM_RIGHT = 17;             // Caption position
-        private const int WM_NCHITTEST = 0x84;              // Message Type
+        #endregion
+
+        #region Properties
 
         public static bool DebugMode = false;
 
+        public static bool RunAutoUpdate { get; private set; } = Properties.Settings.Default.runAutoUpdate;
+
         public static bool Show3DView { get { return Properties.Settings.Default.show3DView; } }
+
+        public static bool ShowUpdaterConsole { get { return Properties.Settings.Default.showUpdaterConsole; } }
 
         #endregion
 
@@ -57,6 +68,9 @@ namespace MB_Studio
         public MB_Studio()
         {
             StartLoadingForm();
+
+            if (RunAutoUpdate)
+                RunAutoUpdate = !File.Exists("debugMode.enabled");
 
             if (RunAutoUpdate)
                 CheckForUpdates();
@@ -74,22 +88,7 @@ namespace MB_Studio
         private void CheckForUpdates()
         {
             string versionFile = "version.dat";
-            string startPath = MBStudioUpdater.MB_STUDIO_UPDATER;
-
-            /*string dropboxBaseUrl = "https://www.dropbox.com/s/";
-            string updaterDownloadPart = "/MB%20Studio%20Updater.exe?dl=1";
-
-            string downloadToken;//get from MB Updater
-            if (Environment.Is64BitOperatingSystem)
-                downloadToken = "bz1wa88ptglc1st";//update if changed!!!
-            else
-                downloadToken = "kc61q6vzrizxxrp";//update if changed!!!
-            
-            File.Delete(MBStudioUpdater.MB_STUDIO_UPDATER);
-
-            string updaterFileUrl = dropboxBaseUrl + downloadToken + updaterDownloadPart;
-            using (WebClient client = new WebClient())
-                client.DownloadFile(updaterFileUrl, MBStudioUpdater.MB_STUDIO_UPDATER);*/
+            string startPath = Application.StartupPath + "\\MB Studio Updater.exe";
             
             bool fileExists = File.Exists(versionFile);
             if (fileExists) fileExists = File.ReadAllText(versionFile).Equals(ProductVersion);
@@ -97,16 +96,14 @@ namespace MB_Studio
             if (!fileExists)
                 File.WriteAllText(versionFile, Application.ProductVersion);
 
-            startPath = Application.StartupPath + '\\' + startPath;
-
             Process process = new Process();
             process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
 
-            //if (!ShowUpdaterConsole)
-            //{//will be an option later -> default will be not shown -> instead a loader should appear or a message which informs the user
-            //  process.StartInfo.CreateNoWindow = true;
-            //  process.StartInfo.UseShellExecute = false;
-            //}
+            if (!ShowUpdaterConsole)//change default to false later + add progressbar as alternative
+            {
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.UseShellExecute = false;
+            }
 
             process.StartInfo.FileName = startPath;
 
