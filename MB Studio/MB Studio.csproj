@@ -144,6 +144,8 @@
     </Compile>
     <Compile Include="Manager\ScriptCommander.cs" />
     <None Include="debugMode.enabled" />
+    <None Include="installerScripts\Compile x64.bat" />
+    <None Include="installerScripts\Compile x86.bat" />
     <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">
       <SubType>Form</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -446,6 +448,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="installerScripts\MB Studio.ico" />
     <Content Include="Manager\minimumRequiredForManager.txt" />
     <None Include="MB_Warband.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

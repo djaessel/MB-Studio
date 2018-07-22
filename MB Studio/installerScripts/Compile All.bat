@@ -1,5 +1,5 @@
 @echo off
-Call E:\NSIS\makensis.exe mb_studio_installer_universal.nsi
-Call E:\NSIS\makensis.exe mb_studio_installer_x64.nsi
-Call E:\NSIS\makensis.exe mb_studio_installer_x86.nsi
+Call F:\NSIS\makensis.exe mb_studio_installer_universal.nsi
+Call "Compile x64.bat"
+Call "Compile x86.bat"
 REM pause

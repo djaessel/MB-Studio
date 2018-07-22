@@ -28,14 +28,15 @@
   SetOutPath "$INSTDIR"
   
   File "x86\common\${PRODUCT_NAME}.exe"
-  File "universal\common\J.SYS.ico"
+  File "..\universal\common\J.SYS.ico"
   
   File "x86\common\MB_Decompiler.exe"
-  File "universal\common\MB_Decompiler -CONSOLE.lnk"
+  File "..\universal\common\MB_Decompiler -CONSOLE.lnk"
 ;  File "x86\common\MB_Decompiler_GUI.exe"
-  File "..\updater\x86\MB Studio Updater.exe"
+  
+  File "..\updater\stable\x86\MB Studio Updater.exe"
+  
   File "x86\common\MB_Decompiler_Library.dll"
-  File "x86\common\skillhunter.dll"
   File "x86\common\Warband - Translator.exe"
   
   File "x86\common\importantLib.dll"
@@ -43,10 +44,10 @@
   File "x86\common\brfManager.dll"
   File "x86\common\openBrf.dll"
   
-  File "universal\common\qt.conf"
-  File "universal\common\reference.brf"
-  File "universal\common\customPreviewShaders.xml"
-  File "universal\common\carry_positions.txt"
+  File "..\universal\common\qt.conf"
+  File "..\universal\common\reference.brf"
+  File "..\universal\common\customPreviewShaders.xml"
+  File "..\universal\common\carry_positions.txt"
   
   File /r "x86\imageformats"
   File /r "x86\platforms"
@@ -58,6 +59,7 @@
   File "x86\common\Qt5Core.dll"
   
   File /r "universal\files"
+  File /r "..\universal\files"
   
   CreateDirectory "$INSTDIR\Python"
   
