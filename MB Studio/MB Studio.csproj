@@ -143,7 +143,9 @@
       <DependentUpon>QuestManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\ScriptCommander.cs" />
-    <None Include="debugMode.enabled" />
+    <None Include="debugMode.enabled">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="installerScripts\Compile x64.bat" />
     <None Include="installerScripts\Compile x86.bat" />
     <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">
