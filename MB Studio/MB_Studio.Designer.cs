@@ -118,7 +118,7 @@
             this.edit_btn.Name = "edit_btn";
             this.edit_btn.Size = new System.Drawing.Size(66, 23);
             this.edit_btn.TabIndex = 9;
-            this.edit_btn.Text = "Bearbeiten";
+            this.edit_btn.Text = "Edit";
             this.edit_btn.UseVisualStyleBackColor = false;
             this.edit_btn.Click += new System.EventHandler(this.Edit_btn_Click);
             // 
@@ -135,7 +135,7 @@
             this.file_btn.Name = "file_btn";
             this.file_btn.Size = new System.Drawing.Size(50, 23);
             this.file_btn.TabIndex = 10;
-            this.file_btn.Text = "Datei";
+            this.file_btn.Text = "File";
             this.file_btn.UseVisualStyleBackColor = false;
             // 
             // file_cms
@@ -320,7 +320,7 @@
             this.startPage_tab.Padding = new System.Windows.Forms.Padding(3);
             this.startPage_tab.Size = new System.Drawing.Size(676, 416);
             this.startPage_tab.TabIndex = 1;
-            this.startPage_tab.Text = "Startseite";
+            this.startPage_tab.Text = "Start Page";
             // 
             // zuletztVerwendet_panel
             // 
@@ -339,9 +339,9 @@
             this.zuletztVerwendet_lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(254)))));
             this.zuletztVerwendet_lbl.Location = new System.Drawing.Point(13, 11);
             this.zuletztVerwendet_lbl.Name = "zuletztVerwendet_lbl";
-            this.zuletztVerwendet_lbl.Size = new System.Drawing.Size(249, 33);
+            this.zuletztVerwendet_lbl.Size = new System.Drawing.Size(107, 33);
             this.zuletztVerwendet_lbl.TabIndex = 6;
-            this.zuletztVerwendet_lbl.Text = "Zuletzt Verwendet";
+            this.zuletztVerwendet_lbl.Text = "Recent";
             // 
             // ersteSchritte_panel
             // 
@@ -369,6 +369,7 @@
             this.button2.TabIndex = 9;
             this.button2.Text = "Make mechanism to add new button if needed an add them to a layout or list";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Visible = false;
             // 
             // ersteSchritte_lbl
             // 
@@ -377,9 +378,9 @@
             this.ersteSchritte_lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(254)))));
             this.ersteSchritte_lbl.Location = new System.Drawing.Point(13, 12);
             this.ersteSchritte_lbl.Name = "ersteSchritte_lbl";
-            this.ersteSchritte_lbl.Size = new System.Drawing.Size(190, 33);
+            this.ersteSchritte_lbl.Size = new System.Drawing.Size(155, 33);
             this.ersteSchritte_lbl.TabIndex = 6;
-            this.ersteSchritte_lbl.Text = "Erste Schritte";
+            this.ersteSchritte_lbl.Text = "First Steps";
             // 
             // newProject_panel
             // 
@@ -418,7 +419,7 @@
             this.projectVorlagenSearch_txt.Name = "projectVorlagenSearch_txt";
             this.projectVorlagenSearch_txt.Size = new System.Drawing.Size(297, 20);
             this.projectVorlagenSearch_txt.TabIndex = 7;
-            this.projectVorlagenSearch_txt.Text = " Projektvorlagen suchen";
+            this.projectVorlagenSearch_txt.Text = " Search project template";
             // 
             // newProject_lbl
             // 
@@ -427,9 +428,9 @@
             this.newProject_lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(254)))));
             this.newProject_lbl.Location = new System.Drawing.Point(15, 15);
             this.newProject_lbl.Name = "newProject_lbl";
-            this.newProject_lbl.Size = new System.Drawing.Size(166, 29);
+            this.newProject_lbl.Size = new System.Drawing.Size(145, 29);
             this.newProject_lbl.TabIndex = 6;
-            this.newProject_lbl.Text = "Neues Projekt";
+            this.newProject_lbl.Text = "New Project";
             // 
             // createNewProject_btn
             // 
@@ -484,9 +485,9 @@
             this.open_lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(254)))));
             this.open_lbl.Location = new System.Drawing.Point(15, 16);
             this.open_lbl.Name = "open_lbl";
-            this.open_lbl.Size = new System.Drawing.Size(84, 29);
+            this.open_lbl.Size = new System.Drawing.Size(73, 29);
             this.open_lbl.TabIndex = 6;
-            this.open_lbl.Text = "Öffnen";
+            this.open_lbl.Text = "Open";
             // 
             // selectProject_lbl
             // 
@@ -577,7 +578,7 @@
             this.project_btn.Name = "project_btn";
             this.project_btn.Size = new System.Drawing.Size(52, 23);
             this.project_btn.TabIndex = 17;
-            this.project_btn.Text = "Projekt";
+            this.project_btn.Text = "Project";
             this.project_btn.UseVisualStyleBackColor = false;
             // 
             // project_cms
@@ -668,7 +669,7 @@
             this.help_btn.Name = "help_btn";
             this.help_btn.Size = new System.Drawing.Size(40, 23);
             this.help_btn.TabIndex = 19;
-            this.help_btn.Text = "Hilfe";
+            this.help_btn.Text = "Help";
             this.help_btn.UseVisualStyleBackColor = false;
             this.help_btn.Click += new System.EventHandler(this.Help_btn_Click);
             // 
@@ -705,7 +706,7 @@
             this.projectExplorer_group.Size = new System.Drawing.Size(238, 437);
             this.projectExplorer_group.TabIndex = 21;
             this.projectExplorer_group.TabStop = false;
-            this.projectExplorer_group.Text = "Projektmappen-Explorer";
+            this.projectExplorer_group.Text = "Project Explorer";
             // 
             // mbOptions_btn
             // 
@@ -749,7 +750,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MB_Studio";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MountBlade Studio";
+            this.Text = "Mount&Blade Studio";
             this.Load += new System.EventHandler(this.MB_Studio_Load);
             this.file_cms.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.company_icon_pb)).EndInit();
@@ -771,6 +772,7 @@
         }
 
         #endregion
+
         private System.Windows.Forms.Label toolbarAndHead_lbl;
         private System.Windows.Forms.Button edit_btn;
         private System.Windows.Forms.Button file_btn;

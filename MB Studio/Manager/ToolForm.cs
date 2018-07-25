@@ -989,8 +989,8 @@ namespace MB_Studio.Manager
             if (UnsavedDataAvailable)
             {
                 DialogResult result = MessageBox.Show(
-                    "Alle ungespeicherten Daten werden hiermit gelöscht!" + Environment.NewLine +
-                    "Möchten Sie trotzdem fortfahren?",
+                    "All unsaved data will be lost!" + Environment.NewLine +
+                    "Do you want to continue anyway?",
                     Name,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning,

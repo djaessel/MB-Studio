@@ -257,8 +257,8 @@ namespace MB_Studio
             else
             {
                 DialogResult result = MessageBox.Show(
-                    "Dieses Projekt konnte nicht gefunden werden!" + Environment.NewLine +
-                    "Soll der Eintrag entfernt werden?",
+                    "The selected project couldn't be found!" + Environment.NewLine +
+                    "Do you want to remove this entry?",
                     Application.ProductName,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information,
@@ -306,7 +306,7 @@ namespace MB_Studio
         private void ProjectVorlagenSearch_txt_LostFocus(object sender, EventArgs e)
         {
             if (projectVorlagenSearch_txt.Text.Length == 0)
-                projectVorlagenSearch_txt.Text = " Projektvorlagen suchen";
+                projectVorlagenSearch_txt.Text = " Search project template";
         }
 
         private void InitializeTabControl()
@@ -492,7 +492,7 @@ namespace MB_Studio
 
         private void FileNew_toolStrip_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Hier kann in Zukunft eine Datei erstellt werden, wenn nötig!");
+            MessageBox.Show("Here you will be able to create a new file, if needed!");
         }
 
         #endregion
