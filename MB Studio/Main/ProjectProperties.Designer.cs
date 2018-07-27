@@ -404,7 +404,7 @@ namespace MB_Studio.Main
             this.valueInfo_lbl.Name = "valueInfo_lbl";
             this.valueInfo_lbl.Size = new System.Drawing.Size(88, 13);
             this.valueInfo_lbl.TabIndex = 25;
-            this.valueInfo_lbl.Text = "(z.B: 5 oder 5-10)";
+            this.valueInfo_lbl.Text = "(e.g. 5 or 5-10)";
             // 
             // search_btn
             // 
@@ -484,7 +484,7 @@ namespace MB_Studio.Main
             this.swingDamage_lbl.Name = "swingDamage_lbl";
             this.swingDamage_lbl.Size = new System.Drawing.Size(89, 13);
             this.swingDamage_lbl.TabIndex = 9;
-            this.swingDamage_lbl.Text = "Schwingschaden";
+            this.swingDamage_lbl.Text = "Swing Damage";
             // 
             // swingDamage_txt
             // 
@@ -501,7 +501,7 @@ namespace MB_Studio.Main
             this.thrustDamage_lbl.Name = "thrustDamage_lbl";
             this.thrustDamage_lbl.Size = new System.Drawing.Size(70, 13);
             this.thrustDamage_lbl.TabIndex = 7;
-            this.thrustDamage_lbl.Text = "Stoßschaden";
+            this.thrustDamage_lbl.Text = "Thrust Damage";
             // 
             // thrustDamage_txt
             // 
@@ -518,7 +518,7 @@ namespace MB_Studio.Main
             this.legArmor_lbl.Name = "legArmor_lbl";
             this.legArmor_lbl.Size = new System.Drawing.Size(59, 13);
             this.legArmor_lbl.TabIndex = 5;
-            this.legArmor_lbl.Text = "Beinschutz";
+            this.legArmor_lbl.Text = "Leg Armor";
             // 
             // legArmor_txt
             // 
@@ -535,7 +535,7 @@ namespace MB_Studio.Main
             this.bodyArmor_lbl.Name = "bodyArmor_lbl";
             this.bodyArmor_lbl.Size = new System.Drawing.Size(69, 13);
             this.bodyArmor_lbl.TabIndex = 3;
-            this.bodyArmor_lbl.Text = "Körperschutz";
+            this.bodyArmor_lbl.Text = "Body Armor";
             // 
             // bodyArmor_txt
             // 
@@ -552,7 +552,7 @@ namespace MB_Studio.Main
             this.headArmor_lbl.Name = "headArmor_lbl";
             this.headArmor_lbl.Size = new System.Drawing.Size(60, 13);
             this.headArmor_lbl.TabIndex = 1;
-            this.headArmor_lbl.Text = "Kopfschutz";
+            this.headArmor_lbl.Text = "Head Armor";
             // 
             // headArmor_txt
             // 
@@ -798,6 +798,7 @@ namespace MB_Studio.Main
         }
 
         #endregion
+
         private System.Windows.Forms.Button min_btn;
         private System.Windows.Forms.Button maxnorm_btn;
         private System.Windows.Forms.Button exit_btn;

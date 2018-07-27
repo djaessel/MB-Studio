@@ -480,7 +480,7 @@ namespace MB_Studio.Main
                     File.Copy(originalModPath + vars, destPath + moduleSystem + vars, true);
                 else
                 {
-                    dlr = MessageBox.Show("Die Datei " + vars + " ist nicht verfügbar!" + Environment.NewLine + "Die Datei wird deshalb später automatisch generiert!",
+                    dlr = MessageBox.Show("The file " + vars + " isn't available!" + Environment.NewLine + "In this case, the file will be generated later!",
                                            Application.ProductName,
                                            MessageBoxButtons.AbortRetryIgnore,
                                            MessageBoxIcon.Warning);
@@ -510,11 +510,11 @@ namespace MB_Studio.Main
 
         private static DialogResult ShowErrorPathAlreadyExists(string path)
         {
-            return MessageBox.Show("Der Pfad:" + Environment.NewLine + path + Environment.NewLine + "existiert bereits!"
+            return MessageBox.Show("The path:" + Environment.NewLine + path + Environment.NewLine + "already exists!"
                     + Environment.NewLine
                     + Environment.NewLine
-                    + "Bereits existierende Daten werden überschrieben!"
-                    + Environment.NewLine + "Trotzdem fortfahren?",
+                    + "Existing data will be overwritten!"
+                    + Environment.NewLine + "Continue anyway?",
                     Application.ProductName,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);

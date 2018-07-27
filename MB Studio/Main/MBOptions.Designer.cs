@@ -322,6 +322,7 @@
         }
 
         #endregion
+
         private System.Windows.Forms.Button min_btn;
         private System.Windows.Forms.Button maxnorm_btn;
         private System.Windows.Forms.Button exit_btn;
