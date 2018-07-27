@@ -48,9 +48,11 @@ namespace MB_Studio_Updater
 
                         if (args.Length > 3)
                         {
-                            if (args[3].StartsWith("-arch:"))
+                            if (args[3].StartsWith("-f-arch=") ||
+                                args[3].StartsWith("--force-arch=") ||
+                                args[3].StartsWith("--force-architecture="))
                             {
-                                string architecture = args[3].Split(':')[1];
+                                string architecture = args[3].Split('=')[1];
                                 is32Bit = architecture.Equals("x86");
                                 is64Bit = architecture.Equals("x64");
                             }
