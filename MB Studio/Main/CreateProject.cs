@@ -66,12 +66,16 @@ namespace MB_Studio.Main
             this.exit_btn.FlatAppearance.BorderSize = 0;
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
-            this.exit_btn.Location = new System.Drawing.Point(404, 1);
+            this.exit_btn.Location = new System.Drawing.Point(404, 0);
             // 
             // title_lbl
             // 
+            this.title_lbl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.title_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.title_lbl.ForeColor = System.Drawing.Color.DarkGray;
             this.title_lbl.Size = new System.Drawing.Size(372, 24);
             this.title_lbl.Text = "";
+            this.title_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // destinationModul_txt
             // 
@@ -130,7 +134,7 @@ namespace MB_Studio.Main
             // 
             // destinationModul_lbl
             // 
-            this.destinationModul_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.destinationModul_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.destinationModul_lbl.AutoSize = true;
             this.destinationModul_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -144,7 +148,7 @@ namespace MB_Studio.Main
             // 
             // name_lbl
             // 
-            this.name_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.name_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.name_lbl.AutoSize = true;
             this.name_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -181,7 +185,7 @@ namespace MB_Studio.Main
             // 
             // path_lbl
             // 
-            this.path_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.path_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.path_lbl.AutoSize = true;
             this.path_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -195,7 +199,7 @@ namespace MB_Studio.Main
             // 
             // originalModule_lbl
             // 
-            this.originalModule_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.originalModule_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.originalModule_lbl.AutoSize = true;
             this.originalModule_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -261,7 +265,7 @@ namespace MB_Studio.Main
             this.Controls.Add(this.destinationModul_lbl);
             this.Controls.Add(this.name_lbl);
             this.Name = "CreateProject";
-            this.Text = "Create Project";
+            this.Text = " Create Project";
             this.Load += new System.EventHandler(this.CreateProject_Load);
             this.Controls.SetChildIndex(this.title_lbl, 0);
             this.Controls.SetChildIndex(this.exit_btn, 0);
