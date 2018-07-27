@@ -51,6 +51,10 @@ namespace MB_Studio_Updater
 
         public static string ConsoleTitle = "MB Studio Updater [by JSYS]";
 
+        private bool Force32BitBinaries { get; }
+
+        private bool Is64BitBinary { get { return Is64Bit(); } }
+
         private string Channel { get; }
         private string CurFile { get; set; }
         private string FolderPath { get; }
@@ -65,9 +69,11 @@ namespace MB_Studio_Updater
 
         #endregion
 
-        public MBStudioUpdater(bool selfUpdate = false, string channel = "stable", string folderPath = ".", bool startOE = false)
+        public MBStudioUpdater(bool selfUpdate = false, bool force32BitBinaries = false, string channel = "stable", string folderPath = ".", bool startOE = false)
         {
             SelfUpdateActive = selfUpdate;
+
+            Force32BitBinaries = force32BitBinaries;
 
             Channel = channel;
             FolderPath = Path.GetFullPath(folderPath);
@@ -302,19 +308,19 @@ namespace MB_Studio_Updater
 
         private void SelfUpdateDownloadNew(ref Process updater, string currentPath)
         {
-            bool Is64Bit = Environment.Is64BitOperatingSystem;
+            bool is64Bit = Is64BitBinary;
 
             string downloadPart;
             switch (Channel)
             {
                 case "dev":
-                    downloadPart = (Is64Bit) ? UPDATER_DEV_64BIT_TOKEN : UPDATER_DEV_32BIT_TOKEN;
+                    downloadPart = (is64Bit) ? UPDATER_DEV_64BIT_TOKEN : UPDATER_DEV_32BIT_TOKEN;
                     break;
                 case "beta":
-                    downloadPart = (Is64Bit) ? UPDATER_BETA_64BIT_TOKEN : UPDATER_BETA_32BIT_TOKEN;
+                    downloadPart = (is64Bit) ? UPDATER_BETA_64BIT_TOKEN : UPDATER_BETA_32BIT_TOKEN;
                     break;
                 default://case "stable":
-                    downloadPart = (Is64Bit) ? UPDATER_STABLE_64BIT_TOKEN : UPDATER_STABLE_32BIT_TOKEN;
+                    downloadPart = (is64Bit) ? UPDATER_STABLE_64BIT_TOKEN : UPDATER_STABLE_32BIT_TOKEN;
                     break;
             }
 
@@ -395,19 +401,19 @@ namespace MB_Studio_Updater
             if (IsConsole)
                 Console.Title = ConsoleTitle;
 
-            bool Is64Bit = Environment.Is64BitOperatingSystem;
+            bool is64Bit = Is64BitBinary;
 
             string pathExtra;
             switch (Channel)
             {
                 case "dev":
-                    pathExtra = (Is64Bit) ? INDEX_DEV_64BIT_TOKEN : INDEX_DEV_32BIT_TOKEN;
+                    pathExtra = (is64Bit) ? INDEX_DEV_64BIT_TOKEN : INDEX_DEV_32BIT_TOKEN;
                     break;
                 case "beta":
-                    pathExtra = (Is64Bit) ? INDEX_BETA_64BIT_TOKEN : INDEX_BETA_32BIT_TOKEN;
+                    pathExtra = (is64Bit) ? INDEX_BETA_64BIT_TOKEN : INDEX_BETA_32BIT_TOKEN;
                     break;
                 default://case "stable":
-                    pathExtra = (Is64Bit) ? INDEX_STABLE_64BIT_TOKEN : INDEX_STABLE_32BIT_TOKEN;
+                    pathExtra = (is64Bit) ? INDEX_STABLE_64BIT_TOKEN : INDEX_STABLE_32BIT_TOKEN;
                     break;
             }
             pathExtra += "/" + Channel;
@@ -464,6 +470,14 @@ namespace MB_Studio_Updater
                     allFiles.AddRange(GetAllFiles(dirs.FullName));
 
             return allFiles;
+        }
+
+        private bool Is64Bit()
+        {
+            bool is64Bit = Environment.Is64BitOperatingSystem;
+            if (Force32BitBinaries)
+                is64Bit = false;
+            return is64Bit;
         }
 
         #endregion

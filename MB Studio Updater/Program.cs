@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace MB_Studio_Updater
 {
@@ -13,6 +14,9 @@ namespace MB_Studio_Updater
         {
             bool writeIndex = false;
             MBStudioUpdater updater;
+
+            bool is64Bit = Environment.Is64BitOperatingSystem;
+            bool is32Bit = !is64Bit;
 
             bool selfUpdate = false;
             bool hasArguments = (args.Length != 0);
@@ -39,15 +43,27 @@ namespace MB_Studio_Updater
                     }
 
                     if (args.Length > 2)
+                    {
                         writeIndex = args[2].Equals("-index");
+
+                        if (args.Length > 3)
+                        {
+                            if (args[3].StartsWith("-arch:"))
+                            {
+                                string architecture = args[3].Split(':')[1];
+                                is32Bit = architecture.Equals("x86");
+                                is64Bit = architecture.Equals("x64");
+                            }
+                        }
+                    }
                 }
 
                 folderPath = Path.GetFullPath(folderPath);
 
-                updater = new MBStudioUpdater(selfUpdate, channel, folderPath, args[2].Equals("-startOE"));
+                updater = new MBStudioUpdater(selfUpdate, is32Bit, channel, folderPath, args[2].Equals("-startOE"));
             }
             else
-                updater = new MBStudioUpdater(selfUpdate);
+                updater = new MBStudioUpdater(selfUpdate, is32Bit);
 
             if (selfUpdate)
                 updater.SelfUpdate();
