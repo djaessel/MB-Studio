@@ -1,7 +1,7 @@
-﻿using MB_Decompiler_Library.Objects.Support;
+﻿using MB_Studio_Library.Objects.Support;
 using System.Collections.Generic;
 
-namespace MB_Decompiler_Library.Objects
+namespace MB_Studio_Library.Objects
 {
     public class MissionTemplate : Skriptum
     {

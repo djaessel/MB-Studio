@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler", "MB_Decompiler\MB_Decompiler.csproj", "{6E4A3036-1E9C-4539-B64F-1814A82DBD62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Studio_CLI", "MB_Decompiler\MB_Studio_CLI.csproj", "{6E4A3036-1E9C-4539-B64F-1814A82DBD62}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DCFF1576-1736-4BFD-9A3E-901246B7E8C9} = {DCFF1576-1736-4BFD-9A3E-901246B7E8C9}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler_Library", "MB_Decompiler_Library\MB_Decompiler_Library.csproj", "{FC643914-80E5-42FF-806B-C23E37DD9EC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Studio_Library", "MB_Decompiler_Library\MB_Studio_Library.csproj", "{FC643914-80E5-42FF-806B-C23E37DD9EC5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DCFF1576-1736-4BFD-9A3E-901246B7E8C9} = {DCFF1576-1736-4BFD-9A3E-901246B7E8C9}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB_Decompiler_GUI", "MB_Decompiler_GUI\MB_Decompiler_GUI.csproj", "{444019B9-229D-4FE1-B079-AABBCF8ECA01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MB Studio", "MB Studio\MB Studio.csproj", "{7222FE26-50DD-4B50-9E7A-DB473B077081}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -57,14 +55,6 @@ Global
 		{FC643914-80E5-42FF-806B-C23E37DD9EC5}.Release|x64.Build.0 = Release|x64
 		{FC643914-80E5-42FF-806B-C23E37DD9EC5}.Release|x86.ActiveCfg = Release|x86
 		{FC643914-80E5-42FF-806B-C23E37DD9EC5}.Release|x86.Build.0 = Release|x86
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Debug|x64.ActiveCfg = Debug|x64
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Debug|x64.Build.0 = Debug|x64
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Debug|x86.ActiveCfg = Debug|x86
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Debug|x86.Build.0 = Debug|x86
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Release|x64.ActiveCfg = Release|x64
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Release|x64.Build.0 = Release|x64
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Release|x86.ActiveCfg = Release|x86
-		{444019B9-229D-4FE1-B079-AABBCF8ECA01}.Release|x86.Build.0 = Release|x86
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Debug|x64.ActiveCfg = Debug|x64
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Debug|x64.Build.0 = Debug|x64
 		{7222FE26-50DD-4B50-9E7A-DB473B077081}.Debug|x86.ActiveCfg = Debug|x86

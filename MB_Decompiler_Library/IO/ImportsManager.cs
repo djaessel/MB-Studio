@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using static MB_Decompiler_Library.Objects.Skriptum;
+using static MB_Studio_Library.Objects.Skriptum;
 
-namespace MB_Decompiler_Library.IO
+namespace MB_Studio_Library.IO
 {
     public class ImportsManager
     {

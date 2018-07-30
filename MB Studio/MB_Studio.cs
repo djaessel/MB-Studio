@@ -1,8 +1,8 @@
 ﻿using importantLib;
-using MB_Decompiler;
+using MB_Studio_CLI;
 using MB_Studio.Main;
 using MB_Studio.Manager;
-using MB_Decompiler_Library.IO;
+using MB_Studio_Library.IO;
 using System;
 using System.IO;
 using System.Drawing;
@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects;
+using MB_Studio_Library.Objects;
 
 namespace MB_Studio
 {

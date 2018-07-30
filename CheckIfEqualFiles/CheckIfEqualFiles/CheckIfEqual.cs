@@ -1,6 +1,6 @@
 ﻿using importantLib;
-using MB_Decompiler;
-using MB_Decompiler_Library.IO;
+using MB_Studio_CLI;
+using MB_Studio_Library.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +22,7 @@ namespace CheckIfEqualFiles
 
         private static bool debugMode = false;
 
-        private static short languageCode = 0; // index for ini - NO REAL LANGUAGE CODE!!!
+        private static readonly short languageCode = 0; // index for ini - NO REAL LANGUAGE CODE!!!
 
         private static List<char> languageAcceptLetter = new List<char>();
         private static List<char> languageDeniedLetter = new List<char>();

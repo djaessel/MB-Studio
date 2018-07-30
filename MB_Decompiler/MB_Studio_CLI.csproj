@@ -7,8 +7,8 @@
     <ProjectGuid>{6E4A3036-1E9C-4539-B64F-1814A82DBD62}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MB_Decompiler</RootNamespace>
-    <AssemblyName>MB_Decompiler</AssemblyName>
+    <RootNamespace>MB_Studio_CLI</RootNamespace>
+    <AssemblyName>MB_Studio_CLI</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -110,7 +110,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MB_Decompiler.ProgramConsole</StartupObject>
+    <StartupObject>MB_Studio_CLI.ProgramConsole</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -155,9 +155,9 @@
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MB_Decompiler_Library\MB_Decompiler_Library.csproj">
+    <ProjectReference Include="..\MB_Decompiler_Library\MB_Studio_Library.csproj">
       <Project>{fc643914-80e5-42ff-806b-c23e37dd9ec5}</Project>
-      <Name>MB_Decompiler_Library</Name>
+      <Name>MB_Studio_Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

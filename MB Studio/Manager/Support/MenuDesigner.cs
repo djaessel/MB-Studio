@@ -1,6 +1,6 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.Objects;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.Objects;
+using MB_Studio_Library.Objects.Support;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

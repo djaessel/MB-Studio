@@ -1,5 +1,5 @@
 ﻿using importantLib;
-using MB_Decompiler;
+using MB_Studio_CLI;
 using MB_Studio.Support;
 using System;
 using System.Diagnostics;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using importantLib;
-using MB_Decompiler_Library.IO;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects.Support;
 
-namespace MB_Decompiler_Library.Objects
+namespace MB_Studio_Library.Objects
 {
     public class Party : Skriptum
     {

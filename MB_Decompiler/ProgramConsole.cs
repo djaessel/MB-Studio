@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
-using MB_Decompiler_Library.IO;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects.Support;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using importantLib;
-using MB_Decompiler_Library.Objects;
+using MB_Studio_Library.Objects;
 
-namespace MB_Decompiler
+namespace MB_Studio_CLI
 {
     public class ProgramConsole
     {
@@ -42,16 +42,7 @@ namespace MB_Decompiler
                 }
                 if (IsConsole || DebugMode)
                     ConsoleProgram();
-                else
-                    RunGUI();
             }
-            else
-                RunGUI();
-        }
-
-        private static void RunGUI()
-        {
-            Process.Start("MB_Decompiler_GUI.exe");
         }
 
         private static void ConsoleProgram()
@@ -208,9 +199,9 @@ namespace MB_Decompiler
 
         private static void SetWindow()
         {
-            Console.Title = "MB_Decompiler"; //Console.Write(Environment.NewLine + (Console.WindowWidth + 64) + "; " + (Console.BufferHeight + 512));
-            Console.WindowWidth = Console.LargestWindowWidth; //Console.WindowWidth += 64;
-            Console.BufferHeight = Console.LargestWindowHeight; //Console.BufferHeight += 512;
+            Console.Title = "MB_Studio_CLI";
+            Console.WindowWidth = Console.LargestWindowWidth;
+            Console.BufferHeight = Console.LargestWindowHeight;
         }
 
         public static void Initialize(string projectPath = null)

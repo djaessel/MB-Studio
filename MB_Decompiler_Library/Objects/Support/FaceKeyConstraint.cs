@@ -1,7 +1,7 @@
-﻿using MB_Decompiler_Library.IO;
+﻿using MB_Studio_Library.IO;
 using System.Windows.Forms;
 
-namespace MB_Decompiler_Library.Objects.Support
+namespace MB_Studio_Library.Objects.Support
 {
     public class FaceKeyConstraint
     {

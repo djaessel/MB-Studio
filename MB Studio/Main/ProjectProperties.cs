@@ -1,13 +1,13 @@
 ﻿using importantLib;
-using MB_Decompiler;
-using MB_Decompiler_Library.IO;
-using MB_Decompiler_Library.Objects;
+using MB_Studio_CLI;
+using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects;
 using MB_Studio.Support;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using static MB_Decompiler_Library.Objects.Skriptum;
+using static MB_Studio_Library.Objects.Skriptum;
 
 namespace MB_Studio.Main
 {

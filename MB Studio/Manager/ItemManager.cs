@@ -1,8 +1,8 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.IO;
-using MB_Decompiler_Library.Objects;
+using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects;
 using MB_Studio.Manager.Support.External;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.Objects.Support;
 using System;
 using System.IO;
 using System.Linq;

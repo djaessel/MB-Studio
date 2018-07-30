@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace MB_Decompiler_Library.IO
+namespace MB_Studio_Library.IO
 {
     public class CodeWriter
     {

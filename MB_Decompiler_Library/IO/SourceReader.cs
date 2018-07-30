@@ -1,12 +1,12 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.Objects;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.Objects;
+using MB_Studio_Library.Objects.Support;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using static MB_Decompiler_Library.Objects.Skriptum;
+using static MB_Studio_Library.Objects.Skriptum;
 
-namespace MB_Decompiler_Library.IO
+namespace MB_Studio_Library.IO
 {
     public class SourceReader
     {

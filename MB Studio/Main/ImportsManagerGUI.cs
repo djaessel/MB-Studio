@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using MB_Decompiler_Library.IO;
+using MB_Studio_Library.IO;
 using System.Collections.Generic;
 
 namespace MB_Studio.Main

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects;
-using MB_Decompiler_Library.Objects.Support;
-using static MB_Decompiler_Library.Objects.Skriptum;
+using MB_Studio_Library.Objects;
+using MB_Studio_Library.Objects.Support;
+using static MB_Studio_Library.Objects.Skriptum;
 using importantLib;
 
-namespace MB_Decompiler_Library.IO
+namespace MB_Studio_Library.IO
 {
     public class SourceWriter
     {

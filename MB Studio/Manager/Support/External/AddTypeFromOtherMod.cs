@@ -1,9 +1,9 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.IO;
+using MB_Studio_Library.IO;
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects;
+using MB_Studio_Library.Objects;
 
 namespace MB_Studio.Manager.Support.External
 {

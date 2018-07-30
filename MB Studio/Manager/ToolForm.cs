@@ -7,14 +7,14 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using brfManager;
 using importantLib;
-using MB_Decompiler;
+using MB_Studio_CLI;
 using MB_Studio.Main;
 using WarbandTranslator;
-using MB_Decompiler_Library.IO;
+using MB_Studio_Library.IO;
 using importantLib.ToolTipsListBox;
 using MB_Studio.Manager.Support.External;
-using static MB_Decompiler_Library.Objects.Skriptum;
-using MB_Decompiler_Library.Objects;
+using static MB_Studio_Library.Objects.Skriptum;
+using MB_Studio_Library.Objects;
 
 namespace MB_Studio.Manager
 {

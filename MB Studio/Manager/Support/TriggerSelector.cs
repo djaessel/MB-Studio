@@ -1,6 +1,6 @@
 ﻿using importantLib;
 using System;
-using static MB_Decompiler_Library.Objects.Skriptum;
+using static MB_Studio_Library.Objects.Skriptum;
 
 namespace MB_Studio
 {

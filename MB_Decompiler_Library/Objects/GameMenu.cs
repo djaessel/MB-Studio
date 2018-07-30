@@ -1,9 +1,9 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.IO;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects.Support;
 using System.Drawing;
 
-namespace MB_Decompiler_Library.Objects
+namespace MB_Studio_Library.Objects
 {
     public class GameMenu : Skriptum
     {

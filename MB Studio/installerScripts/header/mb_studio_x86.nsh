@@ -30,13 +30,12 @@
   File "x86\common\${PRODUCT_NAME}.exe"
   File "..\universal\common\J.SYS.ico"
   
-  File "x86\common\MB_Decompiler.exe"
-  File "..\universal\common\MB_Decompiler -CONSOLE.lnk"
-;  File "x86\common\MB_Decompiler_GUI.exe"
+  File "x86\common\MB_Studio_CLI.exe"
+;  File "..\universal\common\MB_Studio - CONSOLE.lnk"
   
   File "..\updater\stable\x86\MB Studio Updater.exe"
   
-  File "x86\common\MB_Decompiler_Library.dll"
+  File "x86\common\MB_Studio_Library.dll"
   File "x86\common\Warband - Translator.exe"
   
   File "x86\common\importantLib.dll"

@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using importantLib;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.Objects.Support;
 
-namespace MB_Decompiler_Library.Objects
+namespace MB_Studio_Library.Objects
 {
     public class SceneProp : Skriptum
     {

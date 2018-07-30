@@ -1,4 +1,4 @@
-﻿namespace MB_Decompiler_Library.Objects
+﻿namespace MB_Studio_Library.Objects
 {
     public class GameString : Skriptum
     {

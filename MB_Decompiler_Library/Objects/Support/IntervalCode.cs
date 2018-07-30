@@ -1,4 +1,4 @@
-﻿namespace MB_Decompiler_Library.Objects.Support
+﻿namespace MB_Studio_Library.Objects.Support
 {
     public class IntervalCode
     {

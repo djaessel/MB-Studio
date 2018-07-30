@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MB_Decompiler_Library.Objects;
+using MB_Studio_Library.Objects;
 
 namespace MB_Studio.Manager.Support.External
 {

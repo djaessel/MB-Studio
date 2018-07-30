@@ -1,7 +1,7 @@
 ﻿using importantLib;
 using System.Collections.Generic;
 
-namespace MB_Decompiler_Library.Objects.Support
+namespace MB_Studio_Library.Objects.Support
 {
     public class SkillHunter
     {

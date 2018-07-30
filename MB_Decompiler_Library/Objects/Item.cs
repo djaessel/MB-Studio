@@ -1,12 +1,12 @@
 ﻿using importantLib;
-using MB_Decompiler_Library.Objects.Support;
+using MB_Studio_Library.Objects.Support;
 using System;
 using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
-namespace MB_Decompiler_Library.Objects
+namespace MB_Studio_Library.Objects
 {
     public class Item : Skriptum
     {

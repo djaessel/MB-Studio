@@ -1,6 +1,6 @@
 ﻿using importantLib;
 
-namespace MB_Decompiler_Library.Objects.Support
+namespace MB_Studio_Library.Objects.Support
 {
     internal class ExchangeObject
     {

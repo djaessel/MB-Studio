@@ -1,5 +1,5 @@
-﻿using MB_Decompiler_Library.IO;
-using MB_Decompiler_Library.Objects;
+﻿using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
