@@ -159,13 +159,13 @@
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MB_Decompiler\MB_Studio_CLI.csproj">
+    <ProjectReference Include="..\MB Studio CLI\MB Studio CLI.csproj">
       <Project>{6e4a3036-1e9c-4539-b64f-1814a82dbd62}</Project>
-      <Name>MB_Studio_CLI</Name>
+      <Name>MB Studio CLI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MB_Decompiler_Library\MB_Decompiler_Library.csproj">
+    <ProjectReference Include="..\MB_Studio_Library\MB_Studio_Library.csproj">
       <Project>{fc643914-80e5-42ff-806b-c23e37dd9ec5}</Project>
-      <Name>MB_Decompiler_Library</Name>
+      <Name>MB_Studio_Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
