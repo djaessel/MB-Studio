@@ -41,7 +41,6 @@ namespace MB_Studio_Library.Objects
 
         private void InitializeHeaderVariables(string file = "header_music.py", List<HeaderVariable> listX = null)
         {
-            const string file2 = "header_mb_decompiler.py";
             List<HeaderVariable> list;
 
             if (listX == null)
@@ -49,7 +48,7 @@ namespace MB_Studio_Library.Objects
             else
                 list = listX;
 
-            if (!file.Equals(file2))
+            if (!file.Equals(ADDITIONAL_HEADER))
                 file = "moduleSystem\\" + file;
 
             if (File.Exists(SkillHunter.FilesPath + file))
@@ -75,8 +74,8 @@ namespace MB_Studio_Library.Objects
                 }
             }
 
-            if (!file2.Equals(file))
-                InitializeHeaderVariables(file2, list);
+            if (!file.Equals(ADDITIONAL_HEADER))
+                InitializeHeaderVariables(ADDITIONAL_HEADER, list);
             else
                 headerVariables = list.ToArray();
         }

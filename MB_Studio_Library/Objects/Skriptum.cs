@@ -2,6 +2,8 @@
 {
     public abstract class Skriptum
     {
+        public const string ADDITIONAL_HEADER = "header_mb_decompiler.py";
+
         public static readonly string[] Prefixes = {"script", "mt", "prsnt", "menu", "trp", "itm", "str", "simple_trigger", "trigger", "ip", "mesh", "track", "qst", "snd", "spr", "tableau", "icon",
                                                     "dialog", "fac", "anim", "pt", "p", "skl", "pfx", "skin", "psys", "scn"};
 
