@@ -104,12 +104,12 @@ namespace MB_Studio_Library.IO
                     if (ImportantMethods.ArrayContainsString(declarations, tmp[2]))
                         u += CodeReader.CodeValues[ImportantMethods.ArrayIndexOfString(declarations, tmp[2])];
                     else
-                        Console.WriteLine("FATAL ERROR! - 0x9913", "ERROR");
+                        Console.WriteLine("FATAL ERROR! - 0x9913");
                 }
                 else if (ImportantMethods.ArrayContainsString(declarations, tmp[1]))
                     u += CodeReader.CodeValues[ImportantMethods.ArrayIndexOfString(declarations, tmp[1])];
                 else
-                    Console.WriteLine("FATAL ERROR! - 0x9914", "ERROR");
+                    Console.WriteLine("FATAL ERROR! - 0x9914");
             }
 
             for (int i = 2; i < parts.Length; i++)
