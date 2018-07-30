@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-using MB_Studio_Library.IO;
-using MB_Studio_Library.Objects.Support;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using importantLib;
+using MB_Studio_Library.IO;
 using MB_Studio_Library.Objects;
+using MB_Studio_Library.Objects.Support;
 
 namespace MB_Studio_CLI
 {
@@ -18,7 +17,7 @@ namespace MB_Studio_CLI
         private static bool DebugMode = false;
         private static bool IsConsole = false;
 
-        private const string DEFAULT_STEAMPATH = "STEAMPATH";
+        private const string DEFAULT_STEAMPATH = @"path\to\mount&blade\Modules\%MODE_NAME%\";
 
         private static string currentProjectPath;
 
