@@ -483,7 +483,7 @@ namespace MB_Studio_Library.IO
                     for (int i = 0; i < troop.Items.Count; i++)
                     {
                         if (troop.ItemFlags[i] != 0)
-                            wr.Write("(" + CodeReader.Items[troop.Items[i]] + ", " + Item.GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(troop.ItemFlags[i])).Substring(1) + ")");//maybe as property as well - later
+                            wr.Write("(" + CodeReader.Items[troop.Items[i]] + ", " + Item.GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(troop.ItemFlags[i])) + ")");//maybe as property as well - later
                         else
                             wr.Write(CodeReader.Items[troop.Items[i]]);
                         if (i < troop.Items.Count - 1)

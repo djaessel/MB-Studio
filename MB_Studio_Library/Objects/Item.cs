@@ -576,7 +576,7 @@ namespace MB_Studio_Library.Objects
             }
 
             if (retur.Length != 0)
-                retur = retur.Substring(1);
+                retur = retur.Trim('|');
 
             string[] tmpS = retur.Split('|');
             SkillHunter.RemoveItemDuplicatesFromArray(ref tmpS);
