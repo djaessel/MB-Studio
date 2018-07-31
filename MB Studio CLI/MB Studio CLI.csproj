@@ -155,9 +155,9 @@
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MB_Studio_Library\MB_Studio_Library.csproj">
+    <ProjectReference Include="..\MB_Studio_Library\MB Studio Library.csproj">
       <Project>{fc643914-80e5-42ff-806b-c23e37dd9ec5}</Project>
-      <Name>MB_Studio_Library</Name>
+      <Name>MB Studio Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

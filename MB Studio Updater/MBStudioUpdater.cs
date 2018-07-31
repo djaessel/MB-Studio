@@ -113,13 +113,22 @@ namespace MB_Studio_Updater
 
         #region CheckForUpdates
 
-        private bool IsInList(string[] indexBlocks)
+        private bool IsInList(List<string> list, string fileName)
         {
             bool found = false;
             foreach (string item in list)
-                if (indexBlocks[2].Equals(item.Split('|')[2]))
+                if (fileName.Equals(item.Split('|')[2]))
                     found = true;
             return found;
+        }
+
+        private List<string> GetUnknownFiles(List<string> indexLines)
+        {
+            List<string> unknownFiles = new List<string>();
+            foreach (string item in list)
+                if (!IsInList(indexLines, item.Split('|')[2]))
+                    unknownFiles.Add(item);
+            return unknownFiles;
         }
 
         public void CheckForUpdates()
@@ -138,13 +147,13 @@ namespace MB_Studio_Updater
                     Console.Write(Environment.NewLine + logInfo);
 
                 List<string[]> updateFiles = new List<string[]>();
-                string[] indexList = File.ReadAllLines("index.mbi");
+                List<string> indexList = new List<string> (File.ReadAllLines("index.mbi"));
                 foreach (string item in indexList)
                 {
                     string[] infoIndex = item.Split('|');
                     string[] newOrUpdated = new string[] { infoIndex[2], infoIndex[3] };
 
-                    if (IsInList(infoIndex))
+                    if (IsInList(list, infoIndex[2]))
                     {
                         for (int i = 0; i < list.Count; i++)
                         {
@@ -163,6 +172,17 @@ namespace MB_Studio_Updater
                     else
                         updateFiles.Add(newOrUpdated);
                 }
+
+
+                logInfo = "Removing old binary files..." + Environment.NewLine;
+
+                wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
+
+                if (IsConsole)
+                    Console.Write(Environment.NewLine + logInfo);
+
+                RemoveUnknownBinaries(indexList);
+
 
                 logInfo = " --> Files to be updated: " + updateFiles.Count + " " + Environment.NewLine;
 
@@ -354,6 +374,20 @@ namespace MB_Studio_Updater
             updater.StartInfo.FileName = updatedUpdaterPath;
             updater.StartInfo.WorkingDirectory = fullRootPath;
             updater.StartInfo.Arguments = "-" + Channel + " . -startOE";//maybe change arguments later if needed
+        }
+
+        private void RemoveUnknownBinaries(List<string> unknownFiles)
+        {
+            List<string> delFileExtensions = new List<string>() {
+                ".dll", ".exe", ".bat", ".vbs"//, ...
+            };
+
+            foreach (string unknownFile in unknownFiles)
+            {
+                string ext = unknownFile.Substring(unknownFile.LastIndexOf('.'));
+                if (delFileExtensions.Contains(ext))
+                    File.Delete(unknownFile);
+            }
         }
 
         #endregion

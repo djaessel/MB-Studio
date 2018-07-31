@@ -426,11 +426,11 @@
     </ProjectReference>
     <ProjectReference Include="..\MB Studio CLI\MB Studio CLI.csproj">
       <Project>{6e4a3036-1e9c-4539-b64f-1814a82dbd62}</Project>
-      <Name>MB_Studio_CLI</Name>
+      <Name>MB Studio CLI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MB_Studio_Library\MB_Studio_Library.csproj">
+    <ProjectReference Include="..\MB_Studio_Library\MB Studio Library.csproj">
       <Project>{FC643914-80E5-42FF-806B-C23E37DD9EC5}</Project>
-      <Name>MB_Studio_Library</Name>
+      <Name>MB Studio Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warband - Translator\Warband - Translator\Warband - Translator.csproj">
       <Project>{114F6AE7-9935-4D6A-8E17-49A48BA1C036}</Project>
