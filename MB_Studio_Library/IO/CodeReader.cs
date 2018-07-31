@@ -1483,7 +1483,6 @@ namespace MB_Studio_Library.IO
                 sr.ReadLine();
                 int countSkin = int.Parse(sr.ReadLine());
                 objectsExpected += countSkin;
-                System.Windows.Forms.MessageBox.Show(filepath + Environment.NewLine + "COUNT: " + countSkin);
                 for (int i = 0; i < countSkin && !sr.EndOfStream; i++)
                 {
                     List<string[]> list = new List<string[]>
