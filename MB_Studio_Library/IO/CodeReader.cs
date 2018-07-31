@@ -1481,9 +1481,10 @@ namespace MB_Studio_Library.IO
             using (StreamReader sr = new StreamReader(filepath))
             {
                 sr.ReadLine();
-                int count = int.Parse(sr.ReadLine());
-                objectsExpected += count;
-                for (int i = 0; i < count && !sr.EndOfStream; i++)
+                int countSkin = int.Parse(sr.ReadLine());
+                objectsExpected += countSkin;
+                System.Windows.Forms.MessageBox.Show(filepath + Environment.NewLine + "COUNT: " + countSkin);
+                for (int i = 0; i < countSkin && !sr.EndOfStream; i++)
                 {
                     List<string[]> list = new List<string[]>
                     {
@@ -1504,7 +1505,7 @@ namespace MB_Studio_Library.IO
                     list.Add(sr.ReadLine().Replace("  ", ":").Trim().Split(':'));
                     list.Add(sr.ReadLine().Trim().Split());
                     list.Add(sr.ReadLine().Split());
-                    count = int.Parse(sr.ReadLine());
+                    int count = int.Parse(sr.ReadLine());
                     sr.ReadLine();
                     if (count > 0)
                     {

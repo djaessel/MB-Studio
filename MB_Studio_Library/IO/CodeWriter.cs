@@ -137,11 +137,11 @@ namespace MB_Studio_Library.IO
             string[] headerFiles = Directory.GetFiles(headerFilesPath);
             string[] moduleFiles = Directory.GetFiles(moduleFilesPath);
 
-            if (moduleFiles.Length <= DEFAULT_FILES)
-            {
+            //if (moduleFiles.Length <= DEFAULT_FILES)//MAKE OPTION FOR REWRITE LATER
+            //{
                 SourceWriter.WriteAllObjects();
                 moduleFiles = Directory.GetFiles(moduleFilesPath);
-            }
+            //}
 
             foreach (string file in headerFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
