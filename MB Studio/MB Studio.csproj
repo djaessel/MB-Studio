@@ -136,6 +136,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\CreateProject.Designer.cs">
+      <DependentUpon>CreateProject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\QuestManager.cs">
       <SubType>Form</SubType>
     </Compile>
