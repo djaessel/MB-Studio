@@ -278,7 +278,7 @@ namespace MB_Studio
         private void InitializeProject()
         {
             string s = ProgramConsole.GetModuleInfoPath();
-            if (s.Equals("STEAMPATH"))
+            if (s.Equals(ProgramConsole.DEFAULT_STEAMPATH))
                 ProgramConsole.SetModPath();
 
             projectVorlagenSearch_txt.Click += ProjectVorlagenSearch_txt_Click;
@@ -555,37 +555,43 @@ namespace MB_Studio
             }
         }*/
 
-        private void AddNewTab(Form frm)
+        private void AddNewTab(SpecialForm form)
         {
+            if (IsShownAsTab(form))
+            {
+                tabControl.SelectedIndex = tabControl.TabPages.IndexOfKey(form.Name);//TabControlGetIndexOf(form.Text);
+                return;
+            }
+
             bool specialForm = false;
-            TabPage tab = new TabPage(frm.Text) {
-                Name = frm.Name,//is the same name good idea?
+            TabPage tab = new TabPage(form.Text) {
+                Name = form.Name,//is the same name good idea?
                 //Parent = tabControl,
             };
-            Control[] ccc = frm.Controls.Find("title_lbl", false);
+            Control[] ccc = form.Controls.Find("title_lbl", false);
 
             if (ccc.Length != 0)
                 specialForm = !specialForm; // true
 
             tabControl.TabPages.Add(tab);
 
-            frm.TopLevel = false;
-            frm.Parent = tab;
+            form.TopLevel = false;
+            form.Parent = tab;
 
             //frm.Anchor = AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top;
             //frm.Dock = DockStyle.Left;
 
             tabControl.SelectedTab = tab;
 
-            tab.BackColor = frm.BackColor;//check for problems with baseColor here
+            tab.BackColor = form.BackColor;//check for problems with baseColor here
             tab.AutoScroll = true;
 
             if (!specialForm)
-                frm.FormBorderStyle = FormBorderStyle.None;
+                form.FormBorderStyle = FormBorderStyle.None;
             else
-                frm.Top = frm.Top - ccc[0].Height;
+                form.Top = form.Top - ccc[0].Height;
 
-            frm.Visible = true;
+            form.Visible = true;
         }
 
         public void AddFormToTab(Form frm, int index = 0, bool autoAdjust = false)
@@ -780,12 +786,7 @@ namespace MB_Studio
             }
 
             if (form != null)
-            {
-                if (!IsShownAsTab(form))
-                    AddNewTab(form);
-                else
-                    tabControl.SelectedIndex = tabControl.TabPages.IndexOfKey(form.Name);//TabControlGetIndexOf(form.Text);
-            }
+                AddNewTab(form);
         }
 
         private void PrepareToolBar(bool projectShown = true)

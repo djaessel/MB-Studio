@@ -23,6 +23,12 @@ namespace MB_Studio.Main
             projectsFolder_txt.Text = Path.GetFullPath(Properties.Settings.Default.projectsFolderPath);
             show3DView_cb.Checked = Properties.Settings.Default.show3DView;
             loadSavedObjects_cb.Checked = Properties.Settings.Default.loadSavedObjects;
+
+            int updateChannelIndex = updateChannel_cbb.Items.IndexOf(Properties.Settings.Default.updateChannel);
+            if (updateChannelIndex < 0)
+                updateChannelIndex = 0;
+            updateChannel_cbb.SelectedIndex = updateChannelIndex;
+
             options_tree.HideSelection = false;
             options_tree.SelectedNode = options_tree.Nodes[0];
         }
@@ -224,6 +230,13 @@ namespace MB_Studio.Main
                     Application.Exit();
                 }
             }
+        }
+
+        private void UpdateChannel_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.updateChannel = updateChannel_cbb.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Reload();
         }
     }
 }

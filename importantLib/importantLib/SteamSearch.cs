@@ -1,17 +1,22 @@
-﻿using Microsoft.Win32;
+﻿#if NET462
+using Microsoft.Win32;
+#endif
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace importantLib
 {
     public class SteamSearch
     {
-        private static string steamPath = string.Empty;
         private static List<string> libraryPaths = new List<string>();
 
-        public static bool SearchSteamPath(string errorInformationMessage = "Please edit the file \"module_info.py\" and set \"STEAMPATH\" to the real location!")
+        public static string SteamPath { get; private set; } = string.Empty;
+
+        public static string[] LibraryFolderPaths { get { return libraryPaths.ToArray(); } }
+
+        public static bool SearchSteamPath(string errorInformationMessage = "Please edit the file \".\\files\\module_info.path\" and change the example path to the real location!")
         {
             bool found_it = SearchSteamRegistryInstallPath();
             if (!found_it)
@@ -24,14 +29,14 @@ namespace importantLib
                     if (drinfo.IsReady)
                     {
                         if (Directory.Exists(v_name + "Program Files\\" + steamNeededFolders))
-                            steamPath = v_name + "Program Files";
+                            SteamPath = v_name + "Program Files";
                         else if (Directory.Exists(v_name + "Program Files (x86)\\" + steamNeededFolders))
-                            steamPath = v_name + "Program Files (x86)";
+                            SteamPath = v_name + "Program Files (x86)";
                         else if (Directory.Exists(v_name + steamNeededFolders))
-                            steamPath = v_name.Substring(0, v_name.Length - 1);
-                        if (steamPath.Length > 0)
+                            SteamPath = v_name.Substring(0, v_name.Length - 1);
+                        if (SteamPath.Length > 0)
                         {
-                            steamPath += "\\Steam";
+                            SteamPath += "\\Steam";
                             found_it = true;
                         }
                     }
@@ -66,7 +71,7 @@ namespace importantLib
                 string installPath = steamRegKey.GetValue("InstallPath", string.Empty).ToString();
                 if (!installPath.Equals(string.Empty))
                 {
-                    steamPath = installPath;
+                    SteamPath = installPath;
                     found_it = true;
                 }
             }
@@ -76,16 +81,14 @@ namespace importantLib
             return found_it;
         }
 
-        public static string SteamPath { get { return steamPath; } }
-
         public static bool HasLibraryFolders
         {
             get
             {
                 bool hasFolders = false;
-                if (!steamPath.Equals(string.Empty))
+                if (!SteamPath.Equals(string.Empty))
                 {
-                    string tmp = steamPath + "\\steamapps";
+                    string tmp = SteamPath + "\\steamapps";
                     if (Directory.Exists(tmp))
                     {
                         string filePath = tmp + "\\libraryfolders.vdf";
@@ -111,8 +114,5 @@ namespace importantLib
                 return hasFolders;
             }
         }
-
-        public static string[] LibraryFolderPaths { get { return libraryPaths.ToArray(); } }
-
     }
 }

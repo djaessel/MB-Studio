@@ -438,7 +438,7 @@ namespace MB_Studio.Manager
 
             // STUDIO LIBRARIES
             parameters.ReferencedAssemblies.Add("importantLib.dll");
-            parameters.ReferencedAssemblies.Add("MB_Studio_Library.dll");
+            parameters.ReferencedAssemblies.Add("MB Studio Library.dll");
             parameters.ReferencedAssemblies.Add(exeName);//parameters.ReferencedAssemblies.Add(typeof(ToolForm).Assembly.CodeBase);
 
             CompilerResults results = provider.CompileAssemblyFromFile(parameters, new string[] { genSourceFile });

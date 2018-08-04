@@ -18,7 +18,7 @@ namespace MB_Studio_CLI
         private static bool DebugMode = false;
         private static bool IsConsole = true;
 
-        private const string DEFAULT_STEAMPATH = @"path\to\mount&blade\Modules\%MODE_NAME%\";
+        public const string DEFAULT_STEAMPATH = @"path\to\game_directory\MountBlade Warband\Modules\%MOD_NAME%\";
 
         private static string currentProjectPath;
 
@@ -222,7 +222,7 @@ namespace MB_Studio_CLI
                 //if (!Directory.Exists(projectPath))
                 //    Directory.CreateDirectory(projectPath);
                 //ShowErrorMsg("Pfad des Projekts wurde in " + Path.GetFullPath(projectPath) + " geändert!");
-                ShowErrorMsg("Kein Projektpfad gefunden!");
+                ShowErrorMsg("No project found!");
                 return;
             }
 
@@ -244,7 +244,7 @@ namespace MB_Studio_CLI
 
             CodeReader.ProjectPath = projectPath;
             moduleFilesPath += '\\';
-            SourceWriter.ModuleFilesPath = projectPath + moduleFilesPath;
+            SourceWriter.ModuleFilesPath = moduleFilesPath;
 
             SetModPath();
 
@@ -264,7 +264,9 @@ namespace MB_Studio_CLI
             //string modPath = "/steamapps/common" + selectedMod.Replace('\\', '/') + '/';
             string modPath = @"\steamapps\common\MountBlade Warband\Modules\%MOD_NAME%\";
 
-            if (GetModuleInfoPath().Contains(DEFAULT_STEAMPATH))
+            string getMIP = GetModuleInfoPath();
+            Console.WriteLine(getMIP + ":" + DEFAULT_STEAMPATH);
+            if (getMIP.Equals(DEFAULT_STEAMPATH))
             {
                 found = SteamSearch.SearchSteamPath();
                 if (found)
@@ -285,7 +287,9 @@ namespace MB_Studio_CLI
 
             if (modPath != null)
             {
-                if (!GetModuleInfoPath().Equals(modPath)) /// TODO: Check if there could be a problem with libraries or Non-Steam installations!
+                getMIP = GetModuleInfoPath();
+                Console.WriteLine(getMIP + ":" + modPath);
+                if (!getMIP.Equals(modPath)) /// TODO: Check if there could be a problem with libraries or Non-Steam installations!
                 //{
                     //if (File.Exists(ModuleInfoPathFile)) // Make a backup just to be sure
                     //    File.Copy(ModuleInfoPathFile, ModuleInfoPathFile + ".bak", true);
@@ -390,7 +394,7 @@ namespace MB_Studio_CLI
         {
             string errorMessage = "ERRORCODE: 0x71 - No Modpath set!" + Environment.NewLine + "Current Modpath: " + modPath;
 
-            if (!GetModuleInfoPath().Contains(DEFAULT_STEAMPATH))
+            if (!GetModuleInfoPath().Equals(DEFAULT_STEAMPATH))
             {
                 string path;
                 /*using (StreamReader sr = new StreamReader(ModuleInfoRealFile))
@@ -602,7 +606,8 @@ namespace MB_Studio_CLI
         private static void CopyDefaultFiles()
         {
             string path = SourceWriter.ModuleFilesPath;
-            File.WriteAllText(path + "module_info.py", "export_dir = \"" + GetDestinationModPathFromVariable(GetModuleInfoPath()).Replace('\\', '/') + '\"'); //File.Copy(ModuleInfoRealFile, path + "module_info.py", true);
+            Console.WriteLine(path);
+            File.WriteAllText(path + "module_info.py", "export_dir = \"" + GetDestinationModPathFromVariable(GetModuleInfoPath()).Replace('\\', '/') + '\"');//File.Copy(ModuleInfoRealFile, path + "module_info.py", true);
             File.Copy(CodeReader.FILES_PATH + "module_constants.py", path + "module_constants.py", true);
             //File.Copy(CodeReader.FILES_PATH + "module_my_mod_set.py", path + "module_my_mod_set.py", true);//probably unused!
             File.Copy(CodeReader.FILES_PATH + "header_mb_decompiler.py", ImportantMethods.GetDirectoryPathOnly(path) + "\\headerFiles\\header_mb_decompiler.py", true);

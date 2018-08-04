@@ -26,7 +26,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        private new void InitializeComponent()
         {
             this.importsData_lb = new System.Windows.Forms.ListBox();
             this.imports_lb = new System.Windows.Forms.ListBox();

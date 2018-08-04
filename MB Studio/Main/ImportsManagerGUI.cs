@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Windows.Forms;
-using MB_Studio_Library.IO;
 using System.Collections.Generic;
+using importantLib;
+using MB_Studio_Library.IO;
 
 namespace MB_Studio.Main
 {
-    public partial class ImportsManagerGUI : Form
+    public partial class ImportsManagerGUI : SpecialForm
     {
         private DataBankList[] dataBanks;
         private ImportsManager impManager = new ImportsManager(CodeReader.FILES_PATH);

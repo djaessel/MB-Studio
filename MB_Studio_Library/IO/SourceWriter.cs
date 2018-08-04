@@ -14,7 +14,7 @@ namespace MB_Studio_Library.IO
     {
         private static DataBankList[] allDataBankObjects = new DataBankList[0];
 
-        public static string ModuleFilesPath = @".\moduleFiles\";
+        public static string ModuleFilesPath { get; set; } = @".\moduleFiles\";
 
         #region Konstanten
 
