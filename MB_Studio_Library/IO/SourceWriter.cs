@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using importantLib;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
 using static MB_Studio_Library.Objects.Skriptum;
-using importantLib;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 
 namespace MB_Studio_Library.IO
 {
@@ -73,82 +75,28 @@ namespace MB_Studio_Library.IO
                 }
         }
 
+        public static int ExecutePythonCode(string sourceCode)
+        {
+            ScriptEngine enginge = Python.CreateEngine();
+            ScriptSource script = enginge.CreateScriptSourceFromString(sourceCode);
+            return script.ExecuteProgram();
+        }
+
         public static int WriteAllObjects(List<List<Skriptum>> objects = null)
         {
             SourceWriter w = new SourceWriter();
             if (objects == null)
                 objects = CodeReader.ReadAllObjects();
             foreach (List<Skriptum> list in objects)
-            {
-                if (list.Count > 0)
-                {
-                    string sourceFile = ModuleFilesPath + SOURCES[list[0].Typ];
-                    if (sourceFile.Equals(SCRIPT_SOURCE))
-                        w.WriteScripts(list);
-                    else if (sourceFile.Equals(MISSION_TEMPLATE_SOURCE))
-                        w.WriteMissionTemplates(list);
-                    else if (sourceFile.Equals(PRESENTATION_SOURCE))
-                        w.WritePresentations(list);
-                    else if (sourceFile.Equals(GAME_MENU_SOURCE))
-                        w.WriteGameMenus(list);
-                    else if (sourceFile.Equals(GAME_STRING_SOURCE))
-                        w.WriteGameStrings(list);
-                    else if (sourceFile.Equals(SIMPLE_TRIGGER_SOURCE))
-                        w.WriteSimpleTriggers(list);
-                    else if (sourceFile.Equals(TRIGGER_SOURCE))
-                        w.WriteTriggers(list);
-                    else if (sourceFile.Equals(INFO_PAGE_SOURCE))
-                        w.WriteInfoPages(list);
-                    else if (sourceFile.Equals(MESH_SOURCE))
-                        w.WriteMeshes(list);
-                    else if (sourceFile.Equals(MUSIC_SOURCE))
-                        w.WriteMusic(list);
-                    else if (sourceFile.Equals(QUEST_SOURCE))
-                        w.WriteQuests(list);
-                    else if (sourceFile.Equals(SOUND_SOURCE))
-                        w.WriteSounds(list);
-                    else if (sourceFile.Equals(SCENE_PROP_SOURCE))
-                        w.WriteSceneProps(list);
-                    else if (sourceFile.Equals(TABLEAU_MATERIAL_SOURCE))
-                        w.WriteTableauMaterials(list);
-                    else if (sourceFile.Equals(MAP_ICON_SOURCE))
-                        w.WriteMapIcons(list);
-                    else if (sourceFile.Equals(DIALOG_SOURCE))
-                        w.WriteDialogs(list);
-                    else if (sourceFile.Equals(FACTION_SOURCE))
-                        w.WriteFactions(list);
-                    else if (sourceFile.Equals(ANIMATION_SOURCE))
-                        w.WriteAnimations(list);
-                    else if (sourceFile.Equals(PARTY_TEMPLATE_SOURCE))
-                        w.WritePartyTemplates(list);
-                    else if (sourceFile.Equals(PARTY_SOURCE))
-                        w.WriteParties(list);
-                    else if (sourceFile.Equals(SKILL_SOURCE))
-                        w.WriteSkills(list);
-                    else if (sourceFile.Equals(POST_FX_SOURCE))
-                        w.WritePostFXs(list);
-                    else if (sourceFile.Equals(SKIN_SOURCE))
-                        w.WriteSkins(list);
-                    else if (sourceFile.Equals(PARTICLE_SYSTEM_SOURCE))
-                        w.WriteParticleSystems(list);
-                    else if (sourceFile.Equals(SCENE_SOURCE))
-                        w.WriteScenes(list);
-                    else if (sourceFile.Equals(TROOPS_SOURCE))
-                        w.WriteTroops(list);
-                    else if (sourceFile.Equals(ITEMS_SOURCE))
-                        w.WriteItems(list);
-                    else
-                        Console.WriteLine("UNKNOWN: " + list[0].ObjectTyp.ToString() + ':' + list.Count);
-                }
-                else
-                    w.WriteObjectType(list, objects.IndexOf(list)); //Console.WriteLine("TYPE: " + list.GetType().ToString() + "; " + list.GetEnumerator().ToString());
-            }
+                if (!w.WriteObjectType(list, list[0].Typ))
+                    Console.WriteLine("UNKNOWN: " + list[0].ObjectTyp.ToString() + ':' + list.Count);
             return objects.Count;
         }
 
         public bool WriteObjectType(List<Skriptum> list, int type)
         {
             bool b = true;
+            if (list.Count == 0) return b;
             string sourceFile = ModuleFilesPath + SOURCES[type];
             if (sourceFile.Equals(SCRIPT_SOURCE))
                 WriteScripts(list);

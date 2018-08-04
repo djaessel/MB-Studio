@@ -6,6 +6,7 @@ using importantLib;
 using MB_Studio_Library.IO;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
+using System.Diagnostics;
 
 namespace MB_Studio_CLI
 {
@@ -15,7 +16,7 @@ namespace MB_Studio_CLI
         public static string DestinationMod { get; private set; }
 
         private static bool DebugMode = false;
-        private static bool IsConsole = false;
+        private static bool IsConsole = true;
 
         private const string DEFAULT_STEAMPATH = @"path\to\mount&blade\Modules\%MODE_NAME%\";
 
@@ -31,17 +32,20 @@ namespace MB_Studio_CLI
             if (args.Length > 0 || DebugMode)
             {
                 for (int i = 0; i < args.Length; i++)
-                    args[i] = args[i].Substring(1);
+                    args[i] = args[i].TrimStart('-');
                 foreach (string arg in args)
                 {
-                    if (arg.Equals("console"))
-                        IsConsole = true;
-                    else if (arg.Equals("debug"))
+                    //if (arg.Equals("console"))
+                    //    IsConsole = true;
+                    /*else */
+                    if (arg.Equals("debug"))
                         DebugMode = true;
                 }
                 if (IsConsole || DebugMode)
                     ConsoleProgram();
             }
+            else
+                Process.Start("MB Studio.exe");
         }
 
         private static void ConsoleProgram()
@@ -64,7 +68,7 @@ namespace MB_Studio_CLI
             } while (!s.Equals("exit")) ;
 
             Console.Write(Environment.NewLine + "Press ENTER to close the application...");
-            Console.ReadLine(); //END
+            Console.ReadLine();//END
         }
 
         #region OPTIONS
@@ -208,16 +212,18 @@ namespace MB_Studio_CLI
             //if (check)
             //    CheckFilesAndFolders();
 
-            string headerFiles = "\\headerFiles";
-            string moduleFiles = "\\moduleFiles";
-            string moduleSystem = "\\moduleSystem";
+            string headerFilesPath = "\\headerFiles";
+            string moduleFilesPath = "\\moduleFiles";
+            string moduleSystemPath = "\\moduleSystem";
 
             if (projectPath == null)
             {
-                projectPath = CodeReader.FILES_PATH + @"tmp";
-                if (!Directory.Exists(projectPath))
-                    Directory.CreateDirectory(projectPath);
-                ShowErrorMsg("Pfad des Projekts wurde in " + Path.GetFullPath(projectPath) + " geändert!");
+                //projectPath = CodeReader.FILES_PATH + @"tmp";
+                //if (!Directory.Exists(projectPath))
+                //    Directory.CreateDirectory(projectPath);
+                //ShowErrorMsg("Pfad des Projekts wurde in " + Path.GetFullPath(projectPath) + " geändert!");
+                ShowErrorMsg("Kein Projektpfad gefunden!");
+                return;
             }
 
             currentProjectPath = projectPath;
@@ -225,16 +231,20 @@ namespace MB_Studio_CLI
             if (!IsInLastOpenedProjectPaths(projectPath))
                 AddProjectPathToLastOpened(projectPath);
 
-            if (!Directory.Exists(projectPath + headerFiles))
-                Directory.CreateDirectory(projectPath + headerFiles);
-            if (!Directory.Exists(projectPath + moduleFiles))
-                Directory.CreateDirectory(projectPath + moduleFiles);
-            if (!Directory.Exists(projectPath + moduleSystem))
-                Directory.CreateDirectory(projectPath + moduleSystem);
+            headerFilesPath = projectPath + headerFilesPath;
+            moduleFilesPath = projectPath + moduleFilesPath;
+            moduleSystemPath = projectPath + moduleSystemPath;
+
+            if (!Directory.Exists(headerFilesPath))
+                Directory.CreateDirectory(headerFilesPath);
+            if (!Directory.Exists(moduleFilesPath))
+                Directory.CreateDirectory(moduleFilesPath);
+            if (!Directory.Exists(moduleSystemPath))
+                Directory.CreateDirectory(moduleSystemPath);
 
             CodeReader.ProjectPath = projectPath;
-            moduleFiles += '\\';
-            SourceWriter.ModuleFilesPath = projectPath + moduleFiles;
+            moduleFilesPath += '\\';
+            SourceWriter.ModuleFilesPath = projectPath + moduleFilesPath;
 
             SetModPath();
 

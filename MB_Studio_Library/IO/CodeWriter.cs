@@ -135,7 +135,7 @@ namespace MB_Studio_Library.IO
             string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";
 
             string[] headerFiles = Directory.GetFiles(headerFilesPath);
-            string[] moduleFiles = Directory.GetFiles(moduleFilesPath);
+            string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
 
             //if (moduleFiles.Length <= DEFAULT_FILES)//MAKE OPTION FOR REWRITE LATER
             //{
