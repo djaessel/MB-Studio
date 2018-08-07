@@ -10,6 +10,7 @@ namespace MB_Studio_Updater
             RunUpdater(args);
         }
 
+        // Put this in a handler class later - so no code is in Program
         private static void RunUpdater(string[] args)
         {
             bool writeIndex = false;

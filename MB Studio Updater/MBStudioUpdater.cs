@@ -194,6 +194,8 @@ namespace MB_Studio_Updater
                 if (IsUpdaterOutdated(updateFiles))
                 {
                     wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update...");
+                    wr.Close();
+                    //wr.Dispose(); // needed?
                     SelfUpdate();
                     return;
                 }
@@ -240,7 +242,21 @@ namespace MB_Studio_Updater
                     if (StartStudioAfterUpdate)
                     {
                         wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
-                        Process.Start("MB Studio.exe");
+
+                        string curPath = Path.GetFullPath(".");
+                        string filePath = curPath + "\\MB Studio.exe";
+
+                        ProcessStartInfo studioPsi = new ProcessStartInfo
+                        {
+                            FileName = filePath,
+                            WorkingDirectory = curPath,
+                            UseShellExecute = true,
+                            CreateNoWindow = true,
+                            Arguments = "-au"
+                        };
+
+                        Process.Start(studioPsi);
+                        
                         wr.WriteLine("Done");
                     }
 
