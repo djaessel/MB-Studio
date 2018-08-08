@@ -20,6 +20,7 @@ namespace MB_Studio_Updater
             bool is32Bit = !is64Bit;
 
             bool selfUpdate = false;
+            bool addNewFiles = false;
             bool hasArguments = (args.Length != 0);
 
             if (hasArguments)
@@ -57,23 +58,28 @@ namespace MB_Studio_Updater
                                 is32Bit = architecture.Equals("x86");
                                 is64Bit = architecture.Equals("x64");
                             }
+
+                            if (args.Length > 4)
+                            {
+                                addNewFiles = (args[4].Equals("-anf") || args[4].Equals("--add-new-files"));
+                            }
                         }
                     }
                 }
 
                 folderPath = Path.GetFullPath(folderPath);
 
-                updater = new MBStudioUpdater(selfUpdate, is32Bit, channel, folderPath, args[2].Equals("-startOE"));
+                updater = new MBStudioUpdater(selfUpdate, addNewFiles, is32Bit, channel, folderPath, args[2].Equals("-startOE"));
             }
             else
-                updater = new MBStudioUpdater(selfUpdate, is32Bit);
+                updater = new MBStudioUpdater(selfUpdate, addNewFiles, is32Bit);
 
             if (selfUpdate)
                 updater.SelfUpdate();
-            else if (!writeIndex)
-                updater.CheckForUpdates();
-            else
+            else if (writeIndex)
                 updater.WriteIndexFile();
+            else
+                updater.CheckForUpdates();
         }
     }
 }

@@ -61,6 +61,7 @@ namespace MB_Studio_Updater
 
         private List<string> list;
 
+        public bool AddNewFiles { get; }
         public bool SelfUpdateActive { get; }
 
         public static bool IsConsole { get; private set; } = false;
@@ -69,9 +70,10 @@ namespace MB_Studio_Updater
 
         #endregion
 
-        public MBStudioUpdater(bool selfUpdate = false, bool force32BitBinaries = false, string channel = "stable", string folderPath = ".", bool startOE = false)
+        public MBStudioUpdater(bool selfUpdate = false, bool addNewFiles = false, bool force32BitBinaries = false, string channel = "stable", string folderPath = ".", bool startOE = false)
         {
             SelfUpdateActive = selfUpdate;
+            AddNewFiles = addNewFiles;
 
             Force32BitBinaries = force32BitBinaries;
 
@@ -93,17 +95,23 @@ namespace MB_Studio_Updater
 
             list.Clear();
 
-            foreach (FileVersionCode downloadedFVC in downloadedFVCs)
+            foreach (FileVersionCode generatedFVC in generatedFVCs)
             {
-                for (int i = 0; i < generatedFVCs.Count; i++)
+                bool foundFile = false;
+
+                for (int i = 0; i < downloadedFVCs.Count; i++)
                 {
-                    if (generatedFVCs[i].FilePath.Equals(downloadedFVC.FilePath))
+                    foundFile = generatedFVC.FilePath.Equals(downloadedFVCs[i].FilePath);
+                    if (foundFile)
                     {
-                        FileVersionCode f = FileVersionCode.CombineFileVersionCodes(downloadedFVC, generatedFVCs[i]);
+                        FileVersionCode f = FileVersionCode.CombineFileVersionCodes(downloadedFVCs[i], generatedFVC);
                         list.Add(f.Code);
-                        i = generatedFVCs.Count;
+                        i = downloadedFVCs.Count;
                     }
                 }
+
+                if (!foundFile && AddNewFiles)
+                    list.Add(generatedFVC.Code);
             }
 
             File.WriteAllLines(Channel + ".index.mbi", list);
@@ -194,8 +202,10 @@ namespace MB_Studio_Updater
                 if (IsUpdaterOutdated(updateFiles))
                 {
                     wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update...");
+
+                    wr.Flush();//necessary?
                     wr.Close();
-                    //wr.Dispose(); // needed?
+
                     SelfUpdate();
                     return;
                 }
@@ -205,7 +215,7 @@ namespace MB_Studio_Updater
                 if (updateFiles.Count != 0)
                 {
                     wr.Write("[" + DateTime.Now + "]  Closing MB Studio (if open)...");
-                    CloseMBStudioIfRunning();
+                    CloseAllMBStudioIfRunning();
                     wr.WriteLine("Done" + Environment.NewLine);
 
                     using (WebClient client = new WebClient())
@@ -286,10 +296,10 @@ namespace MB_Studio_Updater
             return updaterOutdated;
         }
 
-        private static void CloseMBStudioIfRunning()
+        private static void CloseAllMBStudioIfRunning()
         {
             Process[] processes = Process.GetProcessesByName("MB Studio");
-            if (processes.Length != 0)
+            while (processes.Length != 0)
             {
                 Process p = processes[0];
                 p.CloseMainWindow();
@@ -299,7 +309,7 @@ namespace MB_Studio_Updater
 
         public void SelfUpdate()
         {
-            CloseMBStudioIfRunning();
+            CloseAllMBStudioIfRunning();
 
             string currentPath = Path.GetFullPath(".");
 
@@ -355,7 +365,8 @@ namespace MB_Studio_Updater
                 case "beta":
                     downloadPart = (is64Bit) ? UPDATER_BETA_64BIT_TOKEN : UPDATER_BETA_32BIT_TOKEN;
                     break;
-                default://case "stable":
+                //case "stable":
+                default:
                     downloadPart = (is64Bit) ? UPDATER_STABLE_64BIT_TOKEN : UPDATER_STABLE_32BIT_TOKEN;
                     break;
             }
@@ -462,7 +473,8 @@ namespace MB_Studio_Updater
                 case "beta":
                     pathExtra = (is64Bit) ? INDEX_BETA_64BIT_TOKEN : INDEX_BETA_32BIT_TOKEN;
                     break;
-                default://case "stable":
+                //case "stable":
+                default:
                     pathExtra = (is64Bit) ? INDEX_STABLE_64BIT_TOKEN : INDEX_STABLE_32BIT_TOKEN;
                     break;
             }
