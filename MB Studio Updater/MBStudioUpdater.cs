@@ -141,7 +141,19 @@ namespace MB_Studio_Updater
 
         public void CheckForUpdates()
         {
-            using (StreamWriter wr = new StreamWriter("update_log.mbi", true))
+            string logFileName = "update_log.mbi";
+            int maxLogSize = short.MaxValue * byte.MaxValue; // 8.355.585 Bytes -> ca. 8 MB
+
+            FileInfo logFileInfo = new FileInfo(logFileName);
+            if (logFileInfo.Length >= maxLogSize)
+            {
+                // zip logfile here
+                File.Copy(logFileName, logFileName + ".bak"); // replace this with zipping part later!
+
+                File.Delete(logFileName);
+            }
+
+            using (StreamWriter wr = new StreamWriter(logFileName, true))
             {
                 LoadData();
 
@@ -168,10 +180,10 @@ namespace MB_Studio_Updater
                             string[] infoList = list[i].Split('|');
                             if (infoList[2].Equals(infoIndex[2])
                                 && (
-                                /*ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])//check differently later maybe
-                                && */!infoList[0].Equals(infoIndex[0])))//if (outdated)
+                                /*ulong.Parse(infoList[1]) < ulong.Parse(infoIndex[1])// check version here later maybe
+                                && */!infoList[0].Equals(infoIndex[0])))
                             {
-                                Console.WriteLine(infoList[2] + " --> " + infoList[0] + " != " + infoIndex[0]);
+                                //Console.WriteLine(infoList[2] + " --> " + infoList[0] + " != " + infoIndex[0]);
                                 updateFiles.Add(newOrUpdated);
                                 i = list.Count;
                             }
