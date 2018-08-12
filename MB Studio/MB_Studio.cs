@@ -97,7 +97,7 @@ namespace MB_Studio
                 File.WriteAllText(versionFile, Application.ProductVersion);
 
             Process process = new Process();
-            process.StartInfo.Arguments = Properties.Settings.Default.updateChannel + " . -startOE";
+            process.StartInfo.Arguments = "-gui " + Properties.Settings.Default.updateChannel + " . -startOE";
 
             if (!ShowUpdaterConsole)//change default to false later + add progressbar as alternative
             {

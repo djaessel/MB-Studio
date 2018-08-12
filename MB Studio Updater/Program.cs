@@ -81,7 +81,7 @@ namespace MB_Studio_Updater
                     if (args.Length > 3)
                     {
                         writeIndex = args[3].Equals("-index");
-                        args[3].Equals("-startOE");
+                        startOE = args[3].Equals("-startOE");
 
                         if (args.Length > 4)
                         {
