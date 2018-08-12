@@ -62,7 +62,7 @@ namespace MB_Studio_Updater
         #endregion
 
         #endregion
-        
+
         #region Attributes
 
         public static string ConsoleTitle = DEFAULT_CONSOLE_TITLE;
@@ -104,6 +104,8 @@ namespace MB_Studio_Updater
             FolderPath = Path.GetFullPath(textArguments[1]);
 
             SetIsConsole();
+
+            CloseAllOtherInstances();
         }
 
         private void SetTextArguments(ref List<string> textArguments)
@@ -222,11 +224,10 @@ namespace MB_Studio_Updater
 
                 wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
 
-                //if (IsConsole)
-                    Console.WriteLine(logInfo);
+                Console.WriteLine(logInfo);
 
                 List<string[]> updateFiles = new List<string[]>();
-                List<string> indexList = new List<string> (File.ReadAllLines("index.mbi"));
+                List<string> indexList = new List<string>(File.ReadAllLines("index.mbi"));
                 foreach (string item in indexList)
                 {
                     string[] infoIndex = item.Split('|');
@@ -256,26 +257,28 @@ namespace MB_Studio_Updater
 
                 wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
 
-                //if (IsConsole)
-                    Console.WriteLine(logInfo);
+                Console.WriteLine(logInfo);
 
                 RemoveUnknownBinaries(indexList);
 
                 logInfo = " --> Files to be updated: " + updateFiles.Count + " " + Environment.NewLine;
 
-                //if (IsConsole)
-                    Console.WriteLine(Environment.NewLine + logInfo);
+                Console.WriteLine(Environment.NewLine + logInfo);
 
                 wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
 
                 if (IsUpdaterOutdated(updateFiles))
                 {
-                    wr.WriteLine("[" + DateTime.Now + "]  Executing Self Update...");
+                    logInfo = "Executing Self Update...";
+                    wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
 
-                    wr.Flush();//necessary?
+                    wr.Flush();
                     wr.Close();
 
+                    Console.WriteLine(Environment.NewLine + logInfo);
+
                     SelfUpdate();
+
                     return;
                 }
 
@@ -298,15 +301,13 @@ namespace MB_Studio_Updater
                                 CurFile = " Updating \"" + file + '\"';
                                 wr.WriteLine("[" + DateTime.Now + "]" + CurFile);
 
-                                //if (IsConsole)
-                                    Console.Write(CurFile);
+                                Console.Write(CurFile);
 
                                 file = FolderPath + updateFile[0].Substring(1);
 
                                 string folder = Path.GetDirectoryName(file);
                                 Directory.CreateDirectory(folder);
-                                //if (IsConsole)
-                                    Console.WriteLine(" >> " + file);
+                                Console.WriteLine(" >> " + file);
 
                                 wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFile[1]);
                                 wr.WriteLine("[" + DateTime.Now + "]  Destination: \"" + file + '\"');
@@ -318,8 +319,7 @@ namespace MB_Studio_Updater
                         {
                             string error = ex.ToString() + Environment.NewLine;
 
-                            //if (IsConsole)
-                                Console.WriteLine(error);
+                            Console.WriteLine(error);
 
                             wr.WriteLine("[" + DateTime.Now + "]  " + error);
                         }
@@ -342,7 +342,7 @@ namespace MB_Studio_Updater
                         };
 
                         Process.Start(studioPsi);
-                        
+
                         wr.WriteLine("Done");
                     }
 
@@ -350,8 +350,7 @@ namespace MB_Studio_Updater
 
                 wr.WriteLine(Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine);
 
-                //if (IsConsole)
-                    Console.Title = ConsoleTitle + " - Finished Updating";
+                Console.Title = ConsoleTitle + " - Finished Updating";
             }
         }
 
@@ -362,25 +361,62 @@ namespace MB_Studio_Updater
             {
                 string file = a[0].Substring(2);
                 file = file.Substring(file.LastIndexOf('\\') + 1);
-                //if (IsConsole)
-                    Console.WriteLine(file);
+                Console.WriteLine(file);
                 if (file.Equals(MB_STUDIO_UPDATER))
                     updaterOutdated = true;
             }
-            //if (IsConsole)
-                Console.WriteLine("Updater outdated: " + updaterOutdated);
+            Console.WriteLine("Updater outdated: " + updaterOutdated);
             return updaterOutdated;
+        }
+
+        private static void CloseAllOtherInstances()
+        {
+            Console.Write(Environment.NewLine + "Closing all MB Studio instances...");
+
+            Process curProc = Process.GetCurrentProcess();
+
+            string productName = Application.ProductName.Split('.')[0];
+            Process[] processes;
+            do
+            {
+                processes = Process.GetProcessesByName(productName);
+
+                if (processes.Length > 1)
+                {
+                    Console.WriteLine("Running Instances: " + processes.Length);
+
+                    Process p = processes[0];
+                    if (p.Id.Equals(curProc.Id))
+                        p = processes[1];
+
+                    p.CloseMainWindow();
+                    p.WaitForExit();
+                }
+            } while (processes.Length > 1);
+
+            Console.WriteLine("Done" + Environment.NewLine);
         }
 
         private static void CloseAllMBStudioIfRunning()
         {
-            Process[] processes = Process.GetProcessesByName("MB Studio");
-            while (processes.Length != 0)
+            Console.Write(Environment.NewLine + "Closing all MB Studio instances...");
+
+            Process[] processes;
+            do
             {
-                Process p = processes[0];
-                p.CloseMainWindow();
-                p.WaitForExit();
-            }
+                processes = Process.GetProcessesByName("MB Studio");
+
+                if (processes.Length != 0)
+                {
+                    Console.WriteLine("Running Instances: " + processes.Length);
+
+                    Process p = processes[0];
+                    p.CloseMainWindow();
+                    p.WaitForExit();
+                }
+            } while (processes.Length != 0);
+
+            Console.WriteLine("Done" + Environment.NewLine);
         }
 
         public void SelfUpdate()
@@ -389,14 +425,11 @@ namespace MB_Studio_Updater
 
             string currentPath = Path.GetFullPath(".");
 
-            //if (IsConsole)
-            //{
-                Console.WriteLine(
-                    "CurrentPath: " + currentPath + Environment.NewLine +
-                    "TempPath: " + MB_STUDIO_UPDATER_TEMP + Environment.NewLine +
-                    "IsTemp: " + IsTemp
-                );
-            //}
+            Console.WriteLine(
+                "CurrentPath: " + currentPath + Environment.NewLine +
+                "TempPath: " + MB_STUDIO_UPDATER_TEMP + Environment.NewLine +
+                "IsTemp: " + IsTemp
+            );
 
             Process updater = new Process();
 
@@ -405,8 +438,7 @@ namespace MB_Studio_Updater
             else
                 SelfUpdateDownloadNew(ref updater, currentPath);
 
-            //if (IsConsole)
-                Console.Write(Environment.NewLine + "Executing Updater...");
+            Console.Write(Environment.NewLine + "Executing Updater...");
 
             updater.StartInfo.UseShellExecute = true;
             updater.Start();
@@ -425,7 +457,7 @@ namespace MB_Studio_Updater
             string fullTempPath = Path.GetFullPath(MB_STUDIO_UPDATER_TEMP);
             updater.StartInfo.FileName = fullTempPath + '\\' + MB_STUDIO_UPDATER;
             updater.StartInfo.WorkingDirectory = fullTempPath;
-            updater.StartInfo.Arguments = "-su";
+            updater.StartInfo.Arguments = "-gui -su";
         }
 
         private void SelfUpdateDownloadNew(ref Process updater, string currentPath)
@@ -452,31 +484,24 @@ namespace MB_Studio_Updater
             string fullRootPath = Path.GetFullPath(@"..\");
             string updatedUpdaterPath = fullRootPath + MB_STUDIO_UPDATER;
 
-            //if (IsConsole)
-            //{
-                Console.WriteLine("Done");
-                Console.Write("Downloading new updater version...");
-            //}
+            Console.WriteLine("Done");
+            Console.Write("Downloading new updater version...");
 
             string downloadedFile = currentPath + ".tmp";
             using (WebClient client = new WebClient())
                 client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", downloadedFile);
 
-            //if (IsConsole)
-            //{
-                Console.WriteLine("Done");
-                Console.Write("Replacing old with new version...");
-            //}
+            Console.WriteLine("Done");
+            Console.Write("Replacing old with new version...");
 
             string backupFile = currentPath + ".bak";
             File.Replace(downloadedFile, currentPath, backupFile);//maybe copy later
 
-            //if (IsConsole)
-                Console.WriteLine("Done");
+            Console.WriteLine("Done");
 
             updater.StartInfo.FileName = updatedUpdaterPath;
             updater.StartInfo.WorkingDirectory = fullRootPath;
-            updater.StartInfo.Arguments = "-" + Channel + " . -startOE";//maybe change arguments later if needed
+            updater.StartInfo.Arguments = "-gui -" + Channel + " . -startOE";//maybe change arguments later if needed
         }
 
         private void RemoveUnknownBinaries(List<string> unknownFiles)
@@ -526,13 +551,11 @@ namespace MB_Studio_Updater
         {
             if (Directory.Exists(MB_STUDIO_UPDATER_TEMP) && !IsTemp)
             {
-                //if (IsConsole)
-                    Console.Write("Deleting temporary files...");
+                Console.Write("Deleting temporary files...");
 
                 Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);
-                
-                //if (IsConsole)
-                    Console.WriteLine("Done");
+
+                Console.WriteLine("Done");
             }
         }
 
@@ -594,7 +617,6 @@ namespace MB_Studio_Updater
                 ".pdb",
                 ".mbi",
                 ".config",
-                ".cs",
                 ".path",
             };
 

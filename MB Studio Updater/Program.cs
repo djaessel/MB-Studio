@@ -19,6 +19,9 @@ namespace MB_Studio_Updater
         {
             MBStudioUpdater updater = HandleArguments(args);
 
+            if (Directory.Exists(MB_STUDIO_UPDATER_TEMP))
+                Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);
+
             if (updater.UseGUI)
             {
                 Application.EnableVisualStyles();

@@ -110,7 +110,10 @@ namespace MB_Studio_Library.IO
                     parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
                     parameters[1] = ModuleSystem + parameters[1];
 
-                    ImportantMethods.ExecuteCommandSync("\"\"" + parameters[0] + "\" \"" + parameters[1] + "\"\"", ModuleSystem);
+                    string code = File.ReadAllText(parameters[1]);
+
+                    //ImportantMethods.ExecuteCommandSync("\"\"" + parameters[0] + "\" \"" + parameters[1] + "\"\"", ModuleSystem);
+                    SourceWriter.ExecutePythonCode(code);
                 }
             }
 
