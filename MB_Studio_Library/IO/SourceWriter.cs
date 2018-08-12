@@ -5,8 +5,6 @@ using importantLib;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
 using static MB_Studio_Library.Objects.Skriptum;
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
 
 namespace MB_Studio_Library.IO
 {
@@ -73,13 +71,6 @@ namespace MB_Studio_Library.IO
                         File.Delete(sourceBACKUP);
                     File.Copy(source, sourceBACKUP);
                 }
-        }
-
-        public static int ExecutePythonCode(string sourceCode)
-        {
-            ScriptEngine enginge = Python.CreateEngine();
-            ScriptSource script = enginge.CreateScriptSourceFromString(sourceCode);
-            return script.ExecuteProgram();
         }
 
         public static int WriteAllObjects(List<List<Skriptum>> objects = null)

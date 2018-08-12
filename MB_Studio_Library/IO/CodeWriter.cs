@@ -1,4 +1,6 @@
 ﻿using importantLib;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 using System;
 using System.IO;
 using System.Threading;
@@ -11,6 +13,8 @@ namespace MB_Studio_Library.IO
         public static bool IsFinished { get; private set; }
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
+
+        private static ScriptEngine pyEngine = Python.CreateEngine();
 
         //private string sourcePath, destinationPath;
 
@@ -102,6 +106,15 @@ namespace MB_Studio_Library.IO
 
         private static void ReadProcessAndBuild()
         {
+            var scope = pyEngine.CreateScope();
+            var libs = new string[] {
+                ModuleSystem.TrimEnd('\\'),
+                Application.StartupPath,
+                /// MAKE DYNAMIC LATER - ADD NECESSARY FILES TO PROJECT LATER!!!
+                @"F:\WORKINGAREA\Visual Studio Projects\MB Studio\packages\IronPython.StdLib.2.7.8.1\contentFiles\any\any\Lib",
+            };
+            pyEngine.SetSearchPaths(libs);
+
             using (StreamReader sr = new StreamReader(ModuleSystem + "build_module.bat.list"))
             {
                 while (!sr.EndOfStream)
@@ -110,10 +123,7 @@ namespace MB_Studio_Library.IO
                     parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
                     parameters[1] = ModuleSystem + parameters[1];
 
-                    string code = File.ReadAllText(parameters[1]);
-
-                    //ImportantMethods.ExecuteCommandSync("\"\"" + parameters[0] + "\" \"" + parameters[1] + "\"\"", ModuleSystem);
-                    SourceWriter.ExecutePythonCode(code);
+                    pyEngine.ExecuteFile(parameters[1]);
                 }
             }
 
