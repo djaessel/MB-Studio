@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.Diagnostics;
 using System.Collections.Generic;
+using importantLib;
+using System.Windows.Forms;
 
 namespace MB_Studio_Updater
 {
@@ -10,8 +12,24 @@ namespace MB_Studio_Updater
     {
         #region Constants
 
+        public const string IMPORTANT_LIB = "importantLib.dll";
+
         public const string MB_STUDIO_UPDATER = "MB Studio Updater.exe";
         public const string MB_STUDIO_UPDATER_TEMP = "mbstudioupdater_temp";
+
+        private const string DEFAULT_CONSOLE_TITLE = "MB Studio Updater [by JSYS]";
+
+        public enum MB_UPDATER_MODE : byte
+        {
+            USE_GUI = 1,
+            START_STUDIO_ON_EXIT = 2,
+            WRITE_INDEX = 4,
+            SELF_UPDATE = 8,
+            ADD_NEW_FILES = 16,
+            FORCE_32_BIT = 32,
+            //RESERVED_2 = 64,
+            //RESERVED_1 = 128,
+        }
 
         #region UPDATE_DOWNLOAD_TOKENS
 
@@ -44,25 +62,25 @@ namespace MB_Studio_Updater
         #endregion
 
         #endregion
-
+        
         #region Attributes
 
-        private bool StartStudioAfterUpdate { get; }
+        public static string ConsoleTitle = DEFAULT_CONSOLE_TITLE;
 
-        public static string ConsoleTitle = "MB Studio Updater [by JSYS]";
-
-        private bool Force32BitBinaries { get; }
-
-        private bool Is64BitBinary { get { return Is64Bit(); } }
-
-        private string Channel { get; }
-        private string CurFile { get; set; }
-        private string FolderPath { get; }
+        public string Channel { get; private set; }
+        public string CurFile { get; private set; }
+        public string FolderPath { get; private set; }
 
         private List<string> list;
 
-        public bool AddNewFiles { get; }
+        public bool UseGUI { get; }
+        public bool StartStudioOnExit { get; }
+        public bool WriteIndexActive { get; }
         public bool SelfUpdateActive { get; }
+        public bool AddNewFiles { get; }
+
+        private bool Forced32Bit { get; }
+        public bool Is64BitBinary { get { return Is64Bit(); } }
 
         public static bool IsConsole { get; private set; } = false;
 
@@ -70,18 +88,49 @@ namespace MB_Studio_Updater
 
         #endregion
 
-        public MBStudioUpdater(bool selfUpdate = false, bool addNewFiles = false, bool force32BitBinaries = false, string channel = "stable", string folderPath = ".", bool startOE = false)
+        //public MBStudioUpdater(bool selfUpdate = false, bool addNewFiles = false, bool force32BitBinaries = false, string channel = "stable", string folderPath = ".", bool startOE = false)
+        public MBStudioUpdater(MB_UPDATER_MODE mode = 0, List<string> textArguments = null)
         {
-            SelfUpdateActive = selfUpdate;
-            AddNewFiles = addNewFiles;
+            UseGUI = ((mode & MB_UPDATER_MODE.USE_GUI) == MB_UPDATER_MODE.USE_GUI);
+            StartStudioOnExit = ((mode & MB_UPDATER_MODE.START_STUDIO_ON_EXIT) == MB_UPDATER_MODE.START_STUDIO_ON_EXIT);
+            WriteIndexActive = ((mode & MB_UPDATER_MODE.WRITE_INDEX) == MB_UPDATER_MODE.WRITE_INDEX);
+            SelfUpdateActive = ((mode & MB_UPDATER_MODE.SELF_UPDATE) == MB_UPDATER_MODE.SELF_UPDATE);
+            AddNewFiles = ((mode & MB_UPDATER_MODE.ADD_NEW_FILES) == MB_UPDATER_MODE.ADD_NEW_FILES);
+            Forced32Bit = ((mode & MB_UPDATER_MODE.FORCE_32_BIT) == MB_UPDATER_MODE.FORCE_32_BIT);
 
-            Force32BitBinaries = force32BitBinaries;
+            SetTextArguments(ref textArguments);
 
-            Channel = channel;
-            FolderPath = Path.GetFullPath(folderPath);
-            StartStudioAfterUpdate = startOE;
+            Channel = textArguments[0];
+            FolderPath = Path.GetFullPath(textArguments[1]);
 
             SetIsConsole();
+        }
+
+        private void SetTextArguments(ref List<string> textArguments)
+        {
+            string channel = "stable";
+            string folderPath = Path.GetFullPath(".");
+
+            if (textArguments == null)
+                textArguments = new List<string>();
+
+            switch (textArguments.Count)
+            {
+                case 0:
+                    textArguments = new List<string>() { channel, folderPath };
+                    break;
+                case 1:
+                    textArguments.Add(folderPath);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void SetGuiConsole(Control console)
+        {
+            ControlWriter writer = new ControlWriter(console, console.FindForm());
+            Console.SetOut(writer);
         }
 
         #region WriteIndexFile
@@ -94,6 +143,8 @@ namespace MB_Studio_Updater
             List<FileVersionCode> generatedFVCs = FileVersionCode.ConvertToFileVersions(list);
 
             list.Clear();
+
+            Console.WriteLine("Writing " + Channel + " index file..." + Environment.NewLine);
 
             foreach (FileVersionCode generatedFVC in generatedFVCs)
             {
@@ -111,10 +162,15 @@ namespace MB_Studio_Updater
                 }
 
                 if (!foundFile && AddNewFiles)
+                {
                     list.Add(generatedFVC.Code);
+                    Console.WriteLine("Added new file: " + generatedFVC.Code);
+                }
             }
 
             File.WriteAllLines(Channel + ".index.mbi", list);
+
+            Console.WriteLine(Environment.NewLine + "Finished." + Environment.NewLine);
         }
 
         #endregion
@@ -144,13 +200,16 @@ namespace MB_Studio_Updater
             string logFileName = "update_log.mbi";
             int maxLogSize = short.MaxValue * byte.MaxValue; // 8.355.585 Bytes -> ca. 8 MB
 
-            FileInfo logFileInfo = new FileInfo(logFileName);
-            if (logFileInfo.Length >= maxLogSize)
+            if (File.Exists(logFileName))
             {
-                // zip logfile here
-                File.Copy(logFileName, logFileName + ".bak"); // replace this with zipping part later!
+                FileInfo logFileInfo = new FileInfo(logFileName);
+                if (logFileInfo.Length >= maxLogSize)
+                {
+                    // zip logfile here
+                    File.Copy(logFileName, logFileName + ".bak"); // replace this with zipping part later!
 
-                File.Delete(logFileName);
+                    File.Delete(logFileName);
+                }
             }
 
             using (StreamWriter wr = new StreamWriter(logFileName, true))
@@ -159,12 +218,12 @@ namespace MB_Studio_Updater
 
                 wr.WriteLine("[" + DateTime.Now + "]  Data loadad." + Environment.NewLine);
 
-                string logInfo = "Check " + list.Count + " for Updates..." + Environment.NewLine;
+                string logInfo = "Check " + list.Count + " files for Updates..." + Environment.NewLine;
 
                 wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
 
-                if (IsConsole)
-                    Console.Write(Environment.NewLine + logInfo);
+                //if (IsConsole)
+                    Console.WriteLine(logInfo);
 
                 List<string[]> updateFiles = new List<string[]>();
                 List<string> indexList = new List<string> (File.ReadAllLines("index.mbi"));
@@ -193,20 +252,18 @@ namespace MB_Studio_Updater
                         updateFiles.Add(newOrUpdated);
                 }
 
-
                 logInfo = "Removing old binary files..." + Environment.NewLine;
 
                 wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
 
-                if (IsConsole)
-                    Console.Write(Environment.NewLine + logInfo);
+                //if (IsConsole)
+                    Console.WriteLine(logInfo);
 
                 RemoveUnknownBinaries(indexList);
 
-
                 logInfo = " --> Files to be updated: " + updateFiles.Count + " " + Environment.NewLine;
 
-                if (IsConsole)
+                //if (IsConsole)
                     Console.WriteLine(Environment.NewLine + logInfo);
 
                 wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
@@ -240,28 +297,35 @@ namespace MB_Studio_Updater
                                 //file = Path.GetFileName(file);//if path not needed to be shown
                                 CurFile = " Updating \"" + file + '\"';
                                 wr.WriteLine("[" + DateTime.Now + "]" + CurFile);
-                                if (IsConsole)
+
+                                //if (IsConsole)
                                     Console.Write(CurFile);
+
                                 file = FolderPath + updateFile[0].Substring(1);
+
                                 string folder = Path.GetDirectoryName(file);
                                 Directory.CreateDirectory(folder);
-                                if (IsConsole)
+                                //if (IsConsole)
                                     Console.WriteLine(" >> " + file);
+
                                 wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFile[1]);
                                 wr.WriteLine("[" + DateTime.Now + "]  Destination: \"" + file + '\"');
+
                                 client.DownloadFile("https://www.dropbox.com/s/" + updateFile[1] + "?dl=1", file);
                             }
                         }
                         catch (Exception ex)
                         {
                             string error = ex.ToString() + Environment.NewLine;
-                            if (IsConsole)
+
+                            //if (IsConsole)
                                 Console.WriteLine(error);
+
                             wr.WriteLine("[" + DateTime.Now + "]  " + error);
                         }
                     }
 
-                    if (StartStudioAfterUpdate)
+                    if (StartStudioOnExit)
                     {
                         wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
 
@@ -286,7 +350,7 @@ namespace MB_Studio_Updater
 
                 wr.WriteLine(Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine);
 
-                if (IsConsole)
+                //if (IsConsole)
                     Console.Title = ConsoleTitle + " - Finished Updating";
             }
         }
@@ -298,12 +362,12 @@ namespace MB_Studio_Updater
             {
                 string file = a[0].Substring(2);
                 file = file.Substring(file.LastIndexOf('\\') + 1);
-                if (IsConsole)
+                //if (IsConsole)
                     Console.WriteLine(file);
                 if (file.Equals(MB_STUDIO_UPDATER))
                     updaterOutdated = true;
             }
-            if (IsConsole)
+            //if (IsConsole)
                 Console.WriteLine("Updater outdated: " + updaterOutdated);
             return updaterOutdated;
         }
@@ -325,14 +389,14 @@ namespace MB_Studio_Updater
 
             string currentPath = Path.GetFullPath(".");
 
-            if (IsConsole)
-            {
+            //if (IsConsole)
+            //{
                 Console.WriteLine(
                     "CurrentPath: " + currentPath + Environment.NewLine +
                     "TempPath: " + MB_STUDIO_UPDATER_TEMP + Environment.NewLine +
                     "IsTemp: " + IsTemp
                 );
-            }
+            //}
 
             Process updater = new Process();
 
@@ -341,7 +405,7 @@ namespace MB_Studio_Updater
             else
                 SelfUpdateDownloadNew(ref updater, currentPath);
 
-            if (IsConsole)
+            //if (IsConsole)
                 Console.Write(Environment.NewLine + "Executing Updater...");
 
             updater.StartInfo.UseShellExecute = true;
@@ -354,8 +418,8 @@ namespace MB_Studio_Updater
         {
             Directory.CreateDirectory(MB_STUDIO_UPDATER_TEMP);
 
-            currentPath += "\\" + MB_STUDIO_UPDATER;
-            File.Copy(currentPath, MB_STUDIO_UPDATER_TEMP + '\\' + MB_STUDIO_UPDATER, true);
+            File.Copy(currentPath + '\\' + MB_STUDIO_UPDATER, MB_STUDIO_UPDATER_TEMP + '\\' + MB_STUDIO_UPDATER, true);
+            File.Copy(currentPath + '\\' + IMPORTANT_LIB, MB_STUDIO_UPDATER_TEMP + '\\' + IMPORTANT_LIB, true);
             File.WriteAllText(MB_STUDIO_UPDATER_TEMP + "\\path.info", currentPath);
 
             string fullTempPath = Path.GetFullPath(MB_STUDIO_UPDATER_TEMP);
@@ -388,26 +452,26 @@ namespace MB_Studio_Updater
             string fullRootPath = Path.GetFullPath(@"..\");
             string updatedUpdaterPath = fullRootPath + MB_STUDIO_UPDATER;
 
-            if (IsConsole)
-            {
+            //if (IsConsole)
+            //{
                 Console.WriteLine("Done");
                 Console.Write("Downloading new updater version...");
-            }
+            //}
 
             string downloadedFile = currentPath + ".tmp";
             using (WebClient client = new WebClient())
                 client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", downloadedFile);
 
-            if (IsConsole)
-            {
+            //if (IsConsole)
+            //{
                 Console.WriteLine("Done");
                 Console.Write("Replacing old with new version...");
-            }
+            //}
 
             string backupFile = currentPath + ".bak";
             File.Replace(downloadedFile, currentPath, backupFile);//maybe copy later
 
-            if (IsConsole)
+            //if (IsConsole)
                 Console.WriteLine("Done");
 
             updater.StartInfo.FileName = updatedUpdaterPath;
@@ -423,9 +487,16 @@ namespace MB_Studio_Updater
 
             foreach (string unknownFile in unknownFiles)
             {
-                string ext = unknownFile.Substring(unknownFile.LastIndexOf('.'));
-                if (delFileExtensions.Contains(ext))
-                    File.Delete(unknownFile);
+                try
+                {
+                    string ext = unknownFile.Substring(unknownFile.LastIndexOf('.'));
+                    if (delFileExtensions.Contains(ext))
+                        Console.WriteLine(unknownFile);// File.Delete(unknownFile);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.ToString());
+                }
             }
         }
 
@@ -455,12 +526,12 @@ namespace MB_Studio_Updater
         {
             if (Directory.Exists(MB_STUDIO_UPDATER_TEMP) && !IsTemp)
             {
-                if (IsConsole)
+                //if (IsConsole)
                     Console.Write("Deleting temporary files...");
 
                 Directory.Delete(MB_STUDIO_UPDATER_TEMP, true);
                 
-                if (IsConsole)
+                //if (IsConsole)
                     Console.WriteLine("Done");
             }
         }
@@ -492,6 +563,8 @@ namespace MB_Studio_Updater
             }
             pathExtra += "/" + Channel;
 
+            Console.Write(Environment.NewLine + "Indexing local files...");
+
             list = new List<string>();
             List<FileInfo> files = GetAllFiles(FolderPath);
             foreach (FileInfo file in files)
@@ -506,28 +579,37 @@ namespace MB_Studio_Updater
                 }
             }
 
+            Console.WriteLine("Done.");
+            Console.Write("Downloading current index file...");
+
             using (WebClient client = new WebClient())
                 client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
+
+            Console.WriteLine("Done." + Environment.NewLine);
         }
 
         private static bool UnusedFile(FileInfo file)
         {
-            bool unused = false;
+            List<string> unusedFileExtensions = new List<string>() {
+                ".pdb",
+                ".mbi",
+                ".config",
+                ".cs",
+                ".path",
+            };
 
+            List<string> unusedDirectories = new List<string>() {
+                Path.GetFullPath(@".\Projects"),
+                Path.GetFullPath(@".\Python"),
+            };
+
+            bool unused = unusedFileExtensions.Contains(file.Extension);
             if (!unused)
             {
-                unused = (
-                    file.Extension.Equals(".pdb") || 
-                    file.Extension.Equals(".mbi") || 
-                    file.Extension.Equals(".config")
-                );
+                foreach (string unusedDir in unusedDirectories)
+                    if (file.DirectoryName.Contains(unusedDir))
+                        unused = true;
             }
-
-            if (!unused) unused = file.Name.EndsWith("module_info.path");
-
-            if (!unused) unused = file.DirectoryName.Contains(Path.GetFullPath(@".\Projects"));
-            if (!unused) unused = file.DirectoryName.Contains(Path.GetFullPath(@".\Python"));
-
             return unused;
         }
 
@@ -549,7 +631,7 @@ namespace MB_Studio_Updater
         private bool Is64Bit()
         {
             bool is64Bit = Environment.Is64BitOperatingSystem;
-            if (Force32BitBinaries)
+            if (Forced32Bit)
                 is64Bit = false;
             return is64Bit;
         }
