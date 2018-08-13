@@ -27,7 +27,7 @@
         /// </summary>
         private new void InitializeComponent()
         {
-            this.console_richtxt = new System.Windows.Forms.TextBox();
+            this.console_richtxt = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // min_btn
@@ -62,7 +62,7 @@
             this.console_richtxt.Multiline = true;
             this.console_richtxt.Name = "console_richtxt";
             this.console_richtxt.ReadOnly = true;
-            this.console_richtxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.console_richtxt.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.console_richtxt.Size = new System.Drawing.Size(744, 464);
             this.console_richtxt.TabIndex = 0;
             this.console_richtxt.TabStop = false;
@@ -87,6 +87,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox console_richtxt;
+        private System.Windows.Forms.RichTextBox console_richtxt;
     }
 }

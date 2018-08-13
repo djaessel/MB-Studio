@@ -48,7 +48,7 @@ namespace MB_Studio_Library.IO
 
             PrepareAndProcessFiles();
 
-            Control consoleOutput = (Control)param;
+            RichTextBox consoleOutput = (RichTextBox)param;
             Form parentForm = consoleOutput.FindForm();
             ControlWriter controlTextWriter = new ControlWriter(consoleOutput, parentForm);
 
@@ -111,7 +111,8 @@ namespace MB_Studio_Library.IO
                 ModuleSystem.TrimEnd('\\'),
                 Application.StartupPath,
                 /// MAKE DYNAMIC LATER - ADD NECESSARY FILES TO PROJECT LATER!!!
-                @"F:\WORKINGAREA\Visual Studio Projects\MB Studio\packages\IronPython.StdLib.2.7.8.1\contentFiles\any\any\Lib",
+                @"..\..\..\..\..\MB Studio\packages\IronPython.StdLib.2.7.8.1\contentFiles\any\any\Lib",
+
             };
             pyEngine.SetSearchPaths(libs);
 

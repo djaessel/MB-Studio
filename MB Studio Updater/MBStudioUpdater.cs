@@ -129,7 +129,7 @@ namespace MB_Studio_Updater
             }
         }
 
-        public void SetGuiConsole(Control console)
+        public void SetGuiConsole(RichTextBox console)
         {
             ControlWriter writer = new ControlWriter(console, console.FindForm());
             Console.SetOut(writer);
