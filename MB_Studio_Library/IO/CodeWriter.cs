@@ -106,14 +106,18 @@ namespace MB_Studio_Library.IO
 
         private static void ReadProcessAndBuild()
         {
-            var scope = pyEngine.CreateScope();
-            var libs = new string[] {
+            //var scope = pyEngine.CreateScope();
+            string[] libs = new string[] {
                 ModuleSystem.TrimEnd('\\'),
                 Application.StartupPath,
-                /// MAKE DYNAMIC LATER - ADD NECESSARY FILES TO PROJECT LATER!!!
+                /// ADD NECESSARY FILES TO PROJECT LATER AND CHANGE PATH AGAIN!!!
                 @"..\..\..\..\..\MB Studio\packages\IronPython.StdLib.2.7.8.1\contentFiles\any\any\Lib",
-
             };
+
+            foreach (var option in pyEngine.Setup.Options)
+                Console.WriteLine(option.Key + ": " + option.Value);
+            Console.WriteLine(" - - - TOTAL " + pyEngine.Setup.Options.Count + " - - - ");
+
             pyEngine.SetSearchPaths(libs);
 
             using (StreamReader sr = new StreamReader(ModuleSystem + "build_module.bat.list"))
@@ -124,7 +128,7 @@ namespace MB_Studio_Library.IO
                     parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
                     parameters[1] = ModuleSystem + parameters[1];
 
-                    pyEngine.ExecuteFile(parameters[1]);
+                    //pyEngine.ExecuteFile(parameters[1]);
                 }
             }
 
