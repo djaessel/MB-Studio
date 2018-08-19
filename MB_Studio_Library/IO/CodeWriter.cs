@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using MB_Studio_Library.Objects.Support;
 
 namespace MB_Studio_Library.IO
 {
@@ -13,6 +14,12 @@ namespace MB_Studio_Library.IO
         public static bool IsFinished { get; private set; }
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
+
+        private static List<object> lhsOperations = new List<object>();
+        private static List<object> globalLhsOperations = new List<object>();
+
+        // GET REAL MODULE VARIABLES IF NEEDED !!!
+        private static List<string> reservedVariables = new List<string>();
 
         //private string sourcePath, destinationPath;
 
@@ -38,8 +45,9 @@ namespace MB_Studio_Library.IO
         public static void WriteAllCode(Control consoleOutput, string exportDir)
         {
             CheckPaths();
+            var paras = new object[] { consoleOutput, exportDir };
             Thread t = new Thread(new ParameterizedThreadStart(WriteCode)) { IsBackground = true };
-            t.Start(new object[] { consoleOutput, exportDir });
+            t.Start(paras);
         }
 
         private static void WriteCode(object param)
@@ -76,7 +84,7 @@ namespace MB_Studio_Library.IO
             int countFiles = CodeReader.Elements.Length - 2;
             for (int i = 0; i < countFiles; i++) // OHNE QUICKSTRINGS UND GLOABLAVARIABLES
             {
-                if (i == 7 || i == 15 || i == 21)
+                if (i == 7 || i == 15 || i == 21)// CHECK IF ALL CORRECT!!!
                 {
                     sourceIndex++;
                     if (i == 7)
@@ -145,10 +153,258 @@ namespace MB_Studio_Library.IO
             List<List<string[]>> allTypesCodes = new List<List<string[]>>();
 
             ProcessInit(exportDir);
-
+            ProcessGlobalVariables(exportDir);
 
             
             /// USE SavePseudoCodeByType code and SourceReader to create code here
+        }
+
+        private static void CompileGlobalVars(string[] statementBlock, List<string> variableList, List<int> variableUses)
+        {
+            foreach (string statement in statementBlock)
+                CompileGlobalVarsInStatement(statement, variableList, variableUses);
+        }
+
+        public static bool IsGenericList(object o)
+        {
+            var oType = o.GetType();
+            return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(List<>)));
+        }
+
+        private static bool IsLhsOperationForGlobalVars(object opcode)
+        {
+            return lhsOperations.Contains(opcode) ||
+                globalLhsOperations.Contains(opcode);
+        }
+
+        private static void CompileGlobalVarsInStatement(object statement, List<string> variableList, List<int> variableUses)
+        {
+            object opcode = 0;
+            if (!IsGenericList(statement) && !statement.GetType().Equals(typeof(string[])))
+                opcode = statement;
+            else
+            {
+                // check this part again because list and array are incompatible in C#
+                string[] statementA = (string[])statement;
+                opcode = statementA[0];
+                if (IsLhsOperationForGlobalVars(opcode))
+                {
+                    if (statementA.Length > 1)
+                    {
+                        //object param = statementA[1];
+                        //if (param.GetType().Equals(typeof(string))) // not necessary if string array/list is proven!
+                        if (statementA[1][0] == '$')
+                            AddVariable(statementA[1].Substring(1), variableList, variableUses);
+                    }
+                }
+            }
+        }
+
+        private static void AddVariable(string variableString, List<string> variableList, List<int> variableUses)
+        {
+            bool found = false;
+            for (int i = 0; i < variableList.Count; i++)
+            {
+                if (variableString.Equals(variableList[i]))
+                {
+                    found = true;
+                    variableUses[i]--;
+                    i = variableList.Count;//break;
+                }
+            }
+            if (!found)
+            {
+                variableList.Add(variableString);
+                variableUses.Add(-1);
+            }
+        }
+
+        private static void CompileAllGlobalVars(
+            List<string> variableList,
+            List<int> variableUses,
+            List<Trigger> triggers,
+            List<Dialog> senctences,
+            List<GameMenu> gameMenus,
+            List<MissionTemplate> missionTemplates,
+            List<SceneProp> sceneProps,
+            List<Presentation> presentations,
+            List<Script> scripts,
+            List<SimpleTrigger> simpleTriggers
+        ) {
+            List<object> tempList = new List<object>();
+            var listType = tempList.GetType(); // not necessary later because is always (generic) IList
+
+            foreach (string variable in reservedVariables)
+            {
+                try
+                {
+                    AddVariable(variable, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in variable: " + variable);
+                }
+            }
+
+            foreach (Trigger trigger in triggers)
+            {
+                try
+                {
+                    CompileGlobalVars(trigger.ConditionBlock, variableList, variableUses);
+                    CompileGlobalVars(trigger.ConsequencesBlock, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in trigger: " + trigger.ID);//code?
+                }
+            }
+
+            foreach (SceneProp sceneProp in sceneProps)
+            {
+                try
+                {
+                    SimpleTrigger[] spTriggers = sceneProp.SimpleTriggers;
+                    foreach (SimpleTrigger spTrigger in spTriggers)
+                        CompileGlobalVars(spTrigger.ConsequencesBlock, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in scene prop: " + sceneProp.ID);//code?
+                }
+            }
+
+            foreach (Dialog dialog in senctences)//code?
+            {
+                try
+                {
+                    CompileGlobalVars(dialog.ConditionBlock, variableList, variableUses);
+                    CompileGlobalVars(dialog.ConsequenceBlock, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in dialog line: " + dialog.ID);//code?
+                }
+            }
+
+            foreach (GameMenu gameMenu in gameMenus)
+            {
+                try
+                {
+                    CompileGlobalVars(gameMenu.OperationBlock, variableList, variableUses);
+                    foreach (GameMenuOption menuOption in gameMenu.MenuOptions)
+                    {
+                        CompileGlobalVars(menuOption.ConditionBlock, variableList, variableUses);
+                        CompileGlobalVars(menuOption.ConsequenceBlock, variableList, variableUses);
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in game menu: " + gameMenu.ID);//code?
+                }
+            }
+
+            foreach (MissionTemplate missionTemplate in missionTemplates)
+            {
+                try
+                {
+                    foreach (Trigger trigger in missionTemplate.Triggers)
+                    {
+                        CompileGlobalVars(trigger.ConditionBlock, variableList, variableUses);
+                        CompileGlobalVars(trigger.ConsequencesBlock, variableList, variableUses);
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in mission template: " + missionTemplate.ID);//code?
+                }
+            }
+            
+            foreach (Presentation presentation in presentations)
+            {
+                try
+                {
+                    foreach (SimpleTrigger trigger in presentation.SimpleTriggers)
+                        CompileGlobalVars(trigger.ConsequencesBlock, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in presentation: " + presentation.ID);//code?
+                }
+            }
+            
+            foreach (Script script in scripts)
+            {
+                try
+                {
+                    CompileGlobalVars(script.Code, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in script: " + script.ID);//code?
+                }
+            }
+
+            foreach (SimpleTrigger simpleTrigger in simpleTriggers)
+            {
+                try
+                {
+                    CompileGlobalVars(simpleTrigger.ConsequencesBlock, variableList, variableUses);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error in simple trigger: " + simpleTrigger.ID);//code?
+                }
+            }
+        }
+
+        private static void ProcessGlobalVariables(string exportDir)
+        {
+            Console.WriteLine("Compiling all global variables...");
+
+            List<string> variables = LoadVariables(exportDir, out List<int> variablesUses);
+
+            // SET NULL TO LIST LATER !!!
+            CompileAllGlobalVars(variables, variablesUses, null, null, null, null, null, null, null, null);
+
+            SaveVariables(exportDir, variables, variablesUses);
+        }
+
+        private static List<string> LoadVariables(string exportDir, out List<int> variableUses)
+        {
+            List<string> variables = new List<string>();
+            variableUses = new List<int>();
+
+            try
+            {
+                string[] varList = File.ReadAllLines(exportDir + "variables.txt");
+                foreach (string v in varList)
+                {
+                    string vv = v.Trim();
+                    if (vv.Length != 0)
+                        variables.Add(vv);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("variables.txt not found. Creating new variables.txt file");
+            }
+
+            try
+            {
+                string[] varList = File.ReadAllLines(exportDir + "variable_uses.txt");
+                foreach (string v in varList)
+                {
+                    string vv = v.Trim();
+                    if (vv.Length != 0)
+                        variableUses.Add(int.Parse(vv));
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("variable_uses.txt not found. Creating new variable_uses.txt file");
+            }
+
+            return variables;
         }
 
         private static void TryFileDelete(string exportDir, string fileName, string ext = ".txt")

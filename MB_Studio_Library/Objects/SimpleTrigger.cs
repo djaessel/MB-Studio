@@ -1,16 +1,13 @@
 ﻿using importantLib;
 using MB_Studio_Library.IO;
 using MB_Studio_Library.Objects.Support;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 
 namespace MB_Studio_Library.Objects
 {
     public class SimpleTrigger : Skriptum
     {
-        private string checkInterval;
-        private string[] consquencesBlock;
-
         protected static List<IntervalCode> intervalCodes = new List<IntervalCode>();
 
         public SimpleTrigger(string checkInterval, ObjectType objectType = ObjectType.SimpleTrigger) : base("SIMPLE_TRIGGER", objectType)
@@ -18,18 +15,14 @@ namespace MB_Studio_Library.Objects
             if (intervalCodes.Count == 0)
                 InitializeIntervalCodes();
             if (ImportantMethods.IsNumeric(checkInterval, true))
-                this.checkInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(checkInterval)));
+                CheckInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(checkInterval)));
             else
-                this.checkInterval = checkInterval;
+                CheckInterval = checkInterval;
         }
 
-        public string CheckInterval { get { return checkInterval; } }
+        public string CheckInterval { get; }
 
-        public string[] ConsequencesBlock
-        {
-            set { consquencesBlock = value; }
-            get { return consquencesBlock; }
-        }
+        public string[] ConsequencesBlock { set; get; }
 
         protected static string ReplaceIntervalWithCode(double interval)
         {
@@ -45,7 +38,6 @@ namespace MB_Studio_Library.Objects
             }
             if (ret.Length == 0/* && tmp >= 0 && tmp < 100000000*/)
                 ret = interval.ToString().Replace(',', '.');
-            //System.Windows.Forms.MessageBox.Show("TEST:" + interval + ":" + tmp + ":" + ret);
             return ret;
         }
 

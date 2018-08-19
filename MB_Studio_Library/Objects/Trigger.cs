@@ -5,30 +5,23 @@ namespace MB_Studio_Library.Objects
 {
     public class Trigger : SimpleTrigger
     {
-        private string delayInterval, rearmInterval;
-        private string[] conditionBlock;
-
         public Trigger(string checkInterval, string delayInterval, string rearmInterval) : base(checkInterval, ObjectType.Trigger)
         {
             if (ImportantMethods.IsNumeric(delayInterval, true))
-                this.delayInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(delayInterval)));
+                DelayInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(delayInterval)));
             else
-                this.delayInterval = delayInterval;
+                DelayInterval = delayInterval;
             if (ImportantMethods.IsNumeric(rearmInterval, true))
-                this.rearmInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(rearmInterval)));
+                ReArmInterval = ReplaceIntervalWithCode(double.Parse(CodeReader.Repl_DotWComma(rearmInterval)));
             else
-                this.rearmInterval = rearmInterval;
+                ReArmInterval = rearmInterval;
         }
 
-        public string DelayInterval { get { return delayInterval; } }
+        public string DelayInterval { get; }
 
-        public string ReArmInterval { get { return rearmInterval; } }
+        public string ReArmInterval { get; }
 
-        public string[] ConditionBlock
-        {
-            set { conditionBlock = value; }
-            get { return conditionBlock; }
-        }
+        public string[] ConditionBlock { set; get; }
 
     }
 }

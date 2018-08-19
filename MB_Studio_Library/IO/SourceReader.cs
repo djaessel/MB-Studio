@@ -24,7 +24,7 @@ namespace MB_Studio_Library.IO
             this.filePath = filePath;
         }
 
-        public static void SetModPath(string modPath) { SourceReader.ModPath = modPath; }
+        public static void SetModPath(string modPath) { ModPath = modPath; }
 
         public static string ModPath { get; private set; } = string.Empty;
 
