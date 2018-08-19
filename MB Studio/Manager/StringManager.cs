@@ -2,6 +2,7 @@
 using MB_Studio.Manager.Support.External;
 using System;
 using System.Collections.Generic;
+using MB_Studio_Library.IO;
 
 namespace MB_Studio.Manager
 {
@@ -61,7 +62,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             GameString s = new GameString(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(s, valuesX);
+            CodeWriter.SavePseudoCodeByType(s, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }

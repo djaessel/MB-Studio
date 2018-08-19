@@ -602,13 +602,13 @@ namespace MB_Studio_Updater
                 }
             }
 
-            Console.WriteLine("Done.");
+            Console.WriteLine("Done");
             Console.Write("Downloading current index file...");
 
             using (WebClient client = new WebClient())
                 client.DownloadFile("https://www.dropbox.com/s/" + pathExtra + ".index.mbi?dl=1", "index.mbi");
 
-            Console.WriteLine("Done." + Environment.NewLine);
+            Console.WriteLine("Done" + Environment.NewLine);
         }
 
         private static bool UnusedFile(FileInfo file)

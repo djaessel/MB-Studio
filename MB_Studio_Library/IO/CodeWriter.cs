@@ -1,10 +1,10 @@
 ﻿using importantLib;
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
+using MB_Studio_Library.Objects;
 using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace MB_Studio_Library.IO
 {
@@ -14,9 +14,11 @@ namespace MB_Studio_Library.IO
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
 
-        private static ScriptEngine pyEngine = Python.CreateEngine();
+        //private static ScriptEngine pyEngine = Python.CreateEngine();
 
         //private string sourcePath, destinationPath;
+
+        public const string EOF_TXT = "EOF";
 
         public const byte DEFAULT_FILES = 4;
 
@@ -89,7 +91,7 @@ namespace MB_Studio_Library.IO
                 sourceIndex++;
             }
 
-            Console.WriteLine("Done!");
+            Console.WriteLine("Done");
         }
 
         private static string GetIDFileNameByIndex(int index)
@@ -106,7 +108,7 @@ namespace MB_Studio_Library.IO
 
         private static void ReadProcessAndBuild()
         {
-            //var scope = pyEngine.CreateScope();
+            /*var scope = pyEngine.CreateScope();
             string[] libs = new string[] {
                 ModuleSystem.TrimEnd('\\'),
                 Application.StartupPath,
@@ -119,8 +121,11 @@ namespace MB_Studio_Library.IO
             Console.WriteLine(" - - - TOTAL " + pyEngine.Setup.Options.Count + " - - - ");
 
             pyEngine.SetSearchPaths(libs);
+            */
 
-            using (StreamReader sr = new StreamReader(ModuleSystem + "build_module.bat.list"))
+            SaveAllCodes();
+
+            /*using (StreamReader sr = new StreamReader(ModuleSystem + "build_module.bat.list"))
             {
                 while (!sr.EndOfStream)
                 {
@@ -128,9 +133,10 @@ namespace MB_Studio_Library.IO
                     parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
                     parameters[1] = ModuleSystem + parameters[1];
 
+                    //ImportantMethods.ExecuteCommandSync();
                     //pyEngine.ExecuteFile(parameters[1]);
                 }
-            }
+            }*/
 
             Console.Write("__________________________________________________" + Environment.NewLine
                         + " Finished compiling!" + Environment.NewLine + Environment.NewLine
@@ -144,7 +150,117 @@ namespace MB_Studio_Library.IO
                     File.Delete(file);
             }
 
-            Console.WriteLine("Done!" + Environment.NewLine);
+            Console.WriteLine("Done" + Environment.NewLine);
+        }
+
+        private static void SaveAllCodes()
+        {
+            /// USE SavePseudoCodeByType code and SourceReader to create code here
+
+            List<List<Skriptum>> allTypes = new List<List<Skriptum>>();
+            List<List<string[]>> allTypesCodes = new List<List<string[]>>();
+
+            //for (int i = 0; i < allTypes.Count; i++)
+            //    for (int j = 0; j < allTypes[i].Count; j++)
+            //        SavePseudoCodeByType(allTypes[i][j], allTypesCodes[i][j]); // just example code !!!
+            
+            /// USE SavePseudoCodeByType code and SourceReader to create code here
+        }
+
+        public static void SavePseudoCodeByType(Skriptum type, string[] code)
+        {
+            bool found = false;
+            string id = ":";
+            List<List<string>> typesCodes;
+            //bool isTroop = (type.ObjectTyp == Skriptum.ObjectType.TROOP);
+            string pseudoCodeFile = CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[type.Typ].Split('.')[0] + ".mbpc";
+            string directory = Path.GetDirectoryName(pseudoCodeFile);
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            //if (!isTroop)
+            id += type.ID;
+            //else
+            //    id += ((Troop)type).ID;
+
+            List<string> typeCode = new List<string> { id };
+            for (int i = 0; i < code.Length; i++)
+                typeCode.Add(code[i]);
+
+            if (File.Exists(pseudoCodeFile))
+            {
+                typesCodes = LoadAllPseudoCodeByFile(pseudoCodeFile);
+                for (int i = 0; i < typesCodes.Count; i++)
+                {
+                    string tmp = typesCodes[i][0].Substring(1);
+                    bool b;
+                    //if (!isTroop)
+                    b = tmp.Equals(type.ID);
+                    //else
+                    //    b = tmp.Equals(((Troop)type).ID);
+                    if (b)
+                        typesCodes[i] = typeCode;
+                    found = b;
+                    if (found)
+                        i = typesCodes.Count;
+                }
+            }
+            else
+                typesCodes = new List<List<string>>();
+
+            if (!found)
+                typesCodes.Add(typeCode);
+
+            using (StreamWriter wr = new StreamWriter(pseudoCodeFile))
+            {
+                foreach (List<string> typeCodeX in typesCodes)
+                    foreach (string line in typeCodeX)
+                        wr.WriteLine(line);
+                wr.Write(EOF_TXT);
+            }
+        }
+
+        public static List<List<string>> LoadAllPseudoCodeByFile(string pseudoCodeFile)
+        {
+            List<List<string>> typesCodes = new List<List<string>>();
+            if (File.Exists(pseudoCodeFile))
+            {
+                using (StreamReader sr = new StreamReader(pseudoCodeFile))
+                {
+                    string line = string.Empty;
+                    while (!sr.EndOfStream)
+                    {
+                        if (IsNewPseudoCode(line))
+                        {
+                            List<string> typeCodeX = new List<string>();
+                            do
+                            {
+                                typeCodeX.Add(line);
+                                line = sr.ReadLine();
+                            } while (!IsNewPseudoCode(line) && !line.Equals(EOF_TXT));
+                            typesCodes.Add(typeCodeX);
+                        }
+                        else
+                            line = sr.ReadLine();
+                    }
+                }
+            }
+            return typesCodes;
+        }
+
+        public static List<List<string>> LoadAllPseudoCodeByObjectTypeID(int objectTypeID)
+        {
+            return LoadAllPseudoCodeByFile(CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[objectTypeID].Split('.')[0] + ".mbpc");
+        }
+
+        private static bool IsNewPseudoCode(string s)
+        {
+            bool b = false;
+            if (s.Length > 1)
+                if (s.Substring(0, 1).Equals(":") && !s.Contains(" "))
+                    b = true;
+            return b;
         }
 
         private static void PrepareAndProcessFiles()

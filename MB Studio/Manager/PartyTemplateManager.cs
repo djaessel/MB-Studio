@@ -340,7 +340,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             PartyTemplate p = new PartyTemplate(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(p, valuesX);
+            CodeWriter.SavePseudoCodeByType(p, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, p);
         }

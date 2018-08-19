@@ -82,7 +82,7 @@ namespace MB_Studio.Manager
 
             string[] valuesX = values.ToArray();
             MyClass obj = new MyClass(valuesX);
-            MB_Studio.SavePseudoCodeByType(obj, valuesX);
+            CodeWriter.SavePseudoCodeByType(obj, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }

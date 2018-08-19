@@ -173,7 +173,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             GameMenu m = new GameMenu(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(m, valuesX);
+            CodeWriter.SavePseudoCodeByType(m, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, m);
         }

@@ -585,7 +585,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             Item i = new Item(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(i, valuesX);
+            CodeWriter.SavePseudoCodeByType(i, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, i);
         }

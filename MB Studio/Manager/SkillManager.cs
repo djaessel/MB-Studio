@@ -105,7 +105,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             Skill s = new Skill(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(s, valuesX);
+            CodeWriter.SavePseudoCodeByType(s, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }

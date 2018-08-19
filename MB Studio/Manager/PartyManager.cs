@@ -337,7 +337,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             Party p = new Party(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(p, valuesX);
+            CodeWriter.SavePseudoCodeByType(p, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, p);
         }

@@ -2,6 +2,7 @@
 using MB_Studio.Manager.Support.External;
 using System;
 using System.Collections.Generic;
+using MB_Studio_Library.IO;
 
 namespace MB_Studio.Manager
 {
@@ -74,7 +75,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             Quest q = new Quest(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(q, valuesX);
+            CodeWriter.SavePseudoCodeByType(q, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, changed);
         }

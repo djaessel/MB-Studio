@@ -280,7 +280,7 @@ namespace MB_Studio.Manager
             if (Properties.Settings.Default.loadSavedObjects)//maybe change the access way later
             {
                 List<Skriptum> savedTypes = new List<Skriptum>();
-                List<List<string>> savedTypesDatas = MB_Studio.LoadAllPseudoCodeByObjectTypeID(ObjectTypeID);
+                List<List<string>> savedTypesDatas = CodeWriter.LoadAllPseudoCodeByObjectTypeID(ObjectTypeID);
 
                 foreach (List<string> savedTroopData in savedTypesDatas)
                     savedTypes.Add(GetNewTypeFromClass(CodeReader.GetStringArrayStartFromIndex(savedTroopData.ToArray(), 1)));

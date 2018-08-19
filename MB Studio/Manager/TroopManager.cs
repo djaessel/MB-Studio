@@ -566,7 +566,7 @@ namespace MB_Studio.Manager
             string[] valuesX = values.ToArray();
             Troop t = new Troop(valuesX);
 
-            MB_Studio.SavePseudoCodeByType(t, valuesX);
+            CodeWriter.SavePseudoCodeByType(t, valuesX);
 
             base.SaveTypeByIndex(values, selectedIndex, t);
         }

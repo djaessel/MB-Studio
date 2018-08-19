@@ -31,8 +31,6 @@ namespace MB_Studio
         public const string CSV_FORMAT = ".csv";
         public const string TEXT_FORMAT = ".txt";
 
-        public const string EOF_TXT = "EOF";
-
         #endregion
 
         #region Attributes
@@ -844,102 +842,6 @@ namespace MB_Studio
             CreateProject cp = new CreateProject();
             cp.ShowDialog();
             return cp;
-        }
-
-        public static List<List<string>> LoadAllPseudoCodeByFile(string pseudoCodeFile)
-        {
-            List<List<string>> typesCodes = new List<List<string>>();
-            if (File.Exists(pseudoCodeFile))
-            {
-                using (StreamReader sr = new StreamReader(pseudoCodeFile))
-                {
-                    string line = string.Empty;
-                    while (!sr.EndOfStream)
-                    {
-                        if (IsNewPseudoCode(line))
-                        {
-                            List<string> typeCodeX = new List<string>();
-                            do
-                            {
-                                typeCodeX.Add(line);
-                                line = sr.ReadLine();
-                            } while (!IsNewPseudoCode(line) && !line.Equals(EOF_TXT));
-                            typesCodes.Add(typeCodeX);
-                        }
-                        else
-                            line = sr.ReadLine();
-                    }
-                }
-            }
-            return typesCodes;
-        }
-
-        public static List<List<string>> LoadAllPseudoCodeByObjectTypeID(int objectTypeID)
-        {
-            return LoadAllPseudoCodeByFile(CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[objectTypeID].Split('.')[0] + ".mbpc");
-        }
-
-        public static void SavePseudoCodeByType(Skriptum type, string[] code)
-        {
-            bool found = false;
-            string id = ":";
-            List<List<string>> typesCodes;
-            //bool isTroop = (type.ObjectTyp == Skriptum.ObjectType.TROOP);
-            string pseudoCodeFile = CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[type.Typ].Split('.')[0] + ".mbpc";
-            string directory = Path.GetDirectoryName(pseudoCodeFile);
-
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            //if (!isTroop)
-                id += type.ID;
-            //else
-            //    id += ((Troop)type).ID;
-
-            List<string> typeCode = new List<string> { id };
-            for (int i = 0; i < code.Length; i++)
-                typeCode.Add(code[i]);
-
-            if (File.Exists(pseudoCodeFile))
-            {
-                typesCodes = LoadAllPseudoCodeByFile(pseudoCodeFile);
-                for (int i = 0; i < typesCodes.Count; i++)
-                {
-                    string tmp = typesCodes[i][0].Substring(1);
-                    bool b;
-                    //if (!isTroop)
-                        b = tmp.Equals(type.ID);
-                    //else
-                    //    b = tmp.Equals(((Troop)type).ID);
-                    if (b)
-                        typesCodes[i] = typeCode;
-                    found = b;
-                    if (found)
-                        i = typesCodes.Count;
-                }
-            }
-            else
-                typesCodes = new List<List<string>>();
-
-            if (!found)
-                typesCodes.Add(typeCode);
-
-            using (StreamWriter wr = new StreamWriter(pseudoCodeFile))
-            {
-                foreach (List<string> typeCodeX in typesCodes)
-                    foreach (string line in typeCodeX)
-                        wr.WriteLine(line);
-                wr.Write(EOF_TXT);
-            }
-        }
-
-        private static bool IsNewPseudoCode(string s)
-        {
-            bool b = false;
-            if (s.Length > 1)
-                if (s.Substring(0, 1).Equals(":") && !s.Contains(" "))
-                    b = true;
-            return b;
         }
 
         #endregion
