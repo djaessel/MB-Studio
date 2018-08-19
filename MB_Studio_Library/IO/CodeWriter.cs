@@ -14,8 +14,6 @@ namespace MB_Studio_Library.IO
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
 
-        //private static ScriptEngine pyEngine = Python.CreateEngine();
-
         //private string sourcePath, destinationPath;
 
         public const string EOF_TXT = "EOF";
@@ -37,11 +35,11 @@ namespace MB_Studio_Library.IO
                 ModuleSystem = Path.GetFullPath(CodeReader.ProjectPath + "\\moduleSystem\\");
         }
 
-        public static void WriteAllCode(Control consoleOutput)
+        public static void WriteAllCode(Control consoleOutput, string exportDir)
         {
             CheckPaths();
             Thread t = new Thread(new ParameterizedThreadStart(WriteCode)) { IsBackground = true };
-            t.Start(consoleOutput);
+            t.Start(new object[] { consoleOutput, exportDir });
         }
 
         private static void WriteCode(object param)
@@ -50,7 +48,9 @@ namespace MB_Studio_Library.IO
 
             PrepareAndProcessFiles();
 
-            RichTextBox consoleOutput = (RichTextBox)param;
+            object[] paras = (object[])param;
+
+            RichTextBox consoleOutput = (RichTextBox)paras[0];
             Form parentForm = consoleOutput.FindForm();
             ControlWriter controlTextWriter = new ControlWriter(consoleOutput, parentForm);
 
@@ -60,7 +60,7 @@ namespace MB_Studio_Library.IO
 
             WriteIDFiles();
 
-            ReadProcessAndBuild();
+            ReadProcessAndBuild((string)paras[1]);
 
             IsFinished = true;
 
@@ -106,25 +106,8 @@ namespace MB_Studio_Library.IO
             return idFile;
         }
 
-        private static void ReadProcessAndBuild()
+        private static void ReadProcessAndBuild(string exportDir)
         {
-            /*var scope = pyEngine.CreateScope();
-            string[] libs = new string[] {
-                ModuleSystem.TrimEnd('\\'),
-                Application.StartupPath,
-                /// ADD NECESSARY FILES TO PROJECT LATER AND CHANGE PATH AGAIN!!!
-                @"..\..\..\..\..\MB Studio\packages\IronPython.StdLib.2.7.8.1\contentFiles\any\any\Lib",
-            };
-
-            foreach (var option in pyEngine.Setup.Options)
-                Console.WriteLine(option.Key + ": " + option.Value);
-            Console.WriteLine(" - - - TOTAL " + pyEngine.Setup.Options.Count + " - - - ");
-
-            pyEngine.SetSearchPaths(libs);
-            */
-
-            SaveAllCodes();
-
             /*using (StreamReader sr = new StreamReader(ModuleSystem + "build_module.bat.list"))
             {
                 while (!sr.EndOfStream)
@@ -133,10 +116,11 @@ namespace MB_Studio_Library.IO
                     parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
                     parameters[1] = ModuleSystem + parameters[1];
 
-                    //ImportantMethods.ExecuteCommandSync();
-                    //pyEngine.ExecuteFile(parameters[1]);
+                    //ImportantMethods.ExecuteCommandSync(parameters[0], parameters[1]);
                 }
             }*/
+
+            SaveAllCodes(exportDir);
 
             Console.Write("__________________________________________________" + Environment.NewLine
                         + " Finished compiling!" + Environment.NewLine + Environment.NewLine
@@ -153,18 +137,71 @@ namespace MB_Studio_Library.IO
             Console.WriteLine("Done" + Environment.NewLine);
         }
 
-        private static void SaveAllCodes()
+        private static void SaveAllCodes(string exportDir)
         {
             /// USE SavePseudoCodeByType code and SourceReader to create code here
 
             List<List<Skriptum>> allTypes = new List<List<Skriptum>>();
             List<List<string[]>> allTypesCodes = new List<List<string[]>>();
 
-            //for (int i = 0; i < allTypes.Count; i++)
-            //    for (int j = 0; j < allTypes[i].Count; j++)
-            //        SavePseudoCodeByType(allTypes[i][j], allTypesCodes[i][j]); // just example code !!!
+            ProcessInit(exportDir);
+
+
             
             /// USE SavePseudoCodeByType code and SourceReader to create code here
+        }
+
+        private static void TryFileDelete(string exportDir, string fileName, string ext = ".txt")
+        {
+            try
+            {
+                File.Delete(exportDir + fileName + ext);
+            }
+            catch (Exception) { }
+        }
+
+        private static void ProcessInit(string exportDir)
+        {
+            Console.Write("Initializing...");
+
+            TryFileDelete(exportDir, "tag_uses");
+            TryFileDelete(exportDir, "quick_strings");
+            TryFileDelete(exportDir, "variables");
+            TryFileDelete(exportDir, "variable_uses");
+
+            List<string> variables = new List<string>();
+            List<int> variableUses = new List<int>();
+
+            try
+            {
+                string[] varList = File.ReadAllLines(ModuleSystem + "variables.txt");
+                foreach (string v in varList)
+                {
+                    string vv = v.Trim();
+                    if (vv.Length != 0)
+                    {
+                        variables.Add(vv);
+                        variableUses.Add(1);
+                    }
+                }
+                SaveVariables(exportDir, variables, variableUses);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("variables.txt not found.Creating new variables.txt file");
+            }
+
+            Console.WriteLine("Done");
+        }
+
+        private static void SaveVariables(string exportDir, List<string> variables, List<int> variableUses)
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "variables.txt"))
+                foreach (string variable in variables)
+                    writer.WriteLine(variable);
+            using (StreamWriter writer = new StreamWriter(exportDir + "variable_uses.txt"))
+                foreach (int variableUse in variableUses)
+                    writer.WriteLine(variableUse);
         }
 
         public static void SavePseudoCodeByType(Skriptum type, string[] code)

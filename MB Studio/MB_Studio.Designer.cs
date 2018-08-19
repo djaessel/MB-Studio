@@ -560,6 +560,7 @@
             this.console_richTxt.ForeColor = System.Drawing.Color.LimeGreen;
             this.console_richTxt.Location = new System.Drawing.Point(3, 3);
             this.console_richTxt.Name = "console_richTxt";
+            this.console_richTxt.ReadOnly = true;
             this.console_richTxt.Size = new System.Drawing.Size(670, 410);
             this.console_richTxt.TabIndex = 0;
             this.console_richTxt.Text = "";

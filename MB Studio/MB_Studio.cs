@@ -387,7 +387,7 @@ namespace MB_Studio
             if (dlr == DialogResult.Yes)
             {
                 tabControl.SelectedIndex = 0;
-                CodeWriter.WriteAllCode(console_richTxt);
+                CodeWriter.WriteAllCode(console_richTxt, ProgramConsole.DestinationModPath);
                 /*Thread t = new Thread(new ThreadStart((MethodInvoker)delegate
                 {
                     while (!CodeWriter.IsFinished) ;
