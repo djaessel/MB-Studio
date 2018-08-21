@@ -145,6 +145,30 @@ namespace MB_Studio_Library.IO
             Console.WriteLine("Done" + Environment.NewLine);
         }
 
+        private static void PrepareAndProcessFiles()
+        {
+            string headerFilesPath = CodeReader.ProjectPath + "\\headerFiles";
+            string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";
+
+            string[] headerFiles = Directory.GetFiles(headerFilesPath);
+            string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
+
+            //if (moduleFiles.Length <= DEFAULT_FILES)//MAKE OPTION FOR REWRITE LATER
+            //{
+            SourceWriter.WriteAllObjects();
+            moduleFiles = Directory.GetFiles(moduleFilesPath);
+            //}
+
+            foreach (string file in headerFiles)
+                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
+
+            foreach (string file in moduleFiles)
+                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
+
+            //string module_info = ModuleSystem + "module_info.py";
+            //File.WriteAllText(module_info, File.ReadAllText(module_info).Replace("%MOD_NAME%", objs[1].ToString()));
+        }
+
         private static void SaveAllCodes(string exportDir)
         {
             /// USE SavePseudoCodeByType code and SourceReader to create code here
@@ -152,11 +176,386 @@ namespace MB_Studio_Library.IO
             List<List<Skriptum>> allTypes = new List<List<Skriptum>>();
             List<List<string[]>> allTypesCodes = new List<List<string[]>>();
 
+            /// USE PseudoCode and SourceReader to create object lists here or in methods themselves
+
             ProcessInit(exportDir);
             ProcessGlobalVariables(exportDir);
+            ProcessStrings(exportDir);
+            ProcessSkills(exportDir);
+            ProcessMusic(exportDir);
+            ProcessAnimations(exportDir);
+            ProcessMeshes(exportDir);
+            ProcessSounds(exportDir);
+            ProcessSkins(exportDir);
 
-            
-            /// USE SavePseudoCodeByType code and SourceReader to create code here
+        }
+
+        #region Process Methods
+
+        private static void ProcessInit(string exportDir)
+        {
+            Console.Write("Initializing...");
+
+            TryFileDelete(exportDir, "tag_uses");
+            TryFileDelete(exportDir, "quick_strings");
+            TryFileDelete(exportDir, "variables");
+            TryFileDelete(exportDir, "variable_uses");
+
+            List<string> variables = new List<string>();
+            List<int> variableUses = new List<int>();
+
+            try
+            {
+                string[] varList = File.ReadAllLines(ModuleSystem + "variables.txt");
+                foreach (string v in varList)
+                {
+                    string vv = v.Trim();
+                    if (vv.Length != 0)
+                    {
+                        variables.Add(vv);
+                        variableUses.Add(1);
+                    }
+                }
+                SaveVariables(exportDir, variables, variableUses);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("variables.txt not found.Creating new variables.txt file");
+            }
+
+            Console.WriteLine("Done");
+        }
+
+        private static void ProcessGlobalVariables(string exportDir)
+        {
+            Console.WriteLine("Compiling all global variables...");
+
+            List<string> variables = LoadVariables(exportDir, out List<int> variablesUses);
+
+            // SET NULL TO LIST LATER !!!
+            CompileAllGlobalVars(variables, variablesUses, null, null, null, null, null, null, null, null);
+
+            SaveVariables(exportDir, variables, variablesUses);
+        }
+
+        private static void ProcessStrings(string exportDir)
+        {
+            Console.WriteLine("Exporting strings...");
+
+            // LOAD GAME STRINGS HERE
+            List<GameString> gameStrings = new List<GameString>();
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_strings.py"))
+            {
+                for (int i = 0; i < gameStrings.Count; i++)
+                    writer.WriteLine("str_" + ConvertToIdentifier(gameStrings[i].ID) + " = " + i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            // save game string
+            using (StreamWriter writer = new StreamWriter(exportDir + "string.txt"))
+            {
+                writer.WriteLine("stringsfile version 1");//change version if needed
+                writer.WriteLine(gameStrings.Count);
+                for (int i = 0; i < gameStrings.Count; i++)
+                    writer.WriteLine("str_%s %s", ConvertToIdentifier(gameStrings[0].ID), ReplaceSpaces(gameStrings[0].Text));
+            }
+        }
+
+        private static void ProcessSkills(string exportDir)
+        {
+            Console.WriteLine("Exporting skills...");
+
+            // LOAD SKILLS HERE
+            List<Skill> skills = new List<Skill>();
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_skills.py"))
+            {
+                for (int i = 0; i < skills.Count; i++)
+                    writer.WriteLine("skl_" + ConvertToIdentifier(skills[i].ID) + " = " + i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            // save skills
+            using (StreamWriter writer = new StreamWriter(exportDir + "skills.txt"))
+            {
+                writer.WriteLine(skills.Count);
+                foreach (Skill skill in skills)
+                {
+                    writer.Write("skl_%s %s", ConvertToIdentifier(skill.ID), ReplaceSpaces(skill.Name));
+                    writer.WriteLine("%d %d %s", skill.FlagsGZ, skill.MaxLevel, skill.Description.Replace(' ', '_'));
+                }
+            }
+        }
+
+        private static void ProcessMusic(string exportDir)
+        {
+            Console.WriteLine("Exporting tracks...");
+
+            // LOAD MUSIC HERE
+            List<Music> tracks = new List<Music>();
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_music.py"))
+            {
+                for (int i = 0; i < tracks.Count; i++)
+                    writer.WriteLine("track_%s = %d", tracks[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            // save tracks
+            using (StreamWriter writer = new StreamWriter(exportDir + "music.txt"))
+            {
+                writer.WriteLine(tracks.Count);
+                foreach (Music track in tracks)
+                {
+                    writer.WriteLine(
+                        "%s %d %d",
+                        track.TrackFile,
+                        track.TrackFlagsGZ,
+                        (track.TrackFlagsGZ | track.ContinueTrackFlagsGZ)
+                    );
+                }
+            }
+        }
+
+        private static void ProcessAnimations(string exportDir)
+        {
+            Console.WriteLine("Exporting animations...");
+
+            // LOAD ANIMATIONS HRE
+            List<Animation> animations = new List<Animation>();
+            List<int> animationIndices = new List<int>();
+
+            // compile/filter action sets
+            List<Animation> actionCodes = new List<Animation>();
+            foreach (Animation action in animations)
+            {
+                int index = -1;
+                for (int i = 0; i < actionCodes.Count; i++)
+                {
+                    if (actionCodes[i].ID == action.ID)
+                    {
+                        index = i;
+                        i = actionCodes.Count;//break;
+                    }
+                }
+                if (index < 0)
+                {
+                    int pos = actionCodes.Count;
+                    actionCodes.Add(action);
+                    animationIndices.Add(pos);//action[0] = pos;
+                }
+                else
+                    animationIndices.Add(index);//action[0] = index;
+            }
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_actions.py"))
+            {
+                for (int i = 0; i < animations.Count; i++)
+                    writer.WriteLine("anim_%s = %d", animations[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            // save animations
+            using (StreamWriter writer = new StreamWriter(exportDir + "actions.txt"))
+            {
+                writer.WriteLine(actionCodes.Count);
+                foreach (Animation action in actionCodes)
+                {
+                    writer.Write(" %s %d %d ", action.ID, action.FlagsGZ, action.MasterFlagsGZ); //print flags
+                    writer.WriteLine(" %d", action.Sequences.Length);
+                    foreach (AnimationSequence sequence in action.Sequences)
+                    {
+                        writer.Write("  %f %s %d %d %d ", new object[] {
+                                sequence.Duration,
+                                sequence.ResourceName,
+                                sequence.BeginFrame,
+                                sequence.EndFrame,
+                                sequence.FlagsGZ
+                            }
+                        );
+                        writer.Write("%d ", sequence.LastNumberGZ);
+                        writer.Write("%f %f %f %f ", sequence.LastNumbersFKZ);
+                    }
+                }
+            }
+            /*
+def write_actions(action_set,num_action_codes,action_codes,file_name):
+  file = open(export_dir + file_name,"w")
+  file.write("%d\n"%num_action_codes)
+  for i_action_code in xrange(num_action_codes):
+    action_found = 0
+    for action in action_set:
+      if action[0] == i_action_code:
+        file.write(" %s %d %d "%(action_codes[i_action_code],action[1], action[2])) #print flags
+        file.write(" %d\n"%(len(action)-3))
+        for elem in action[3:]:
+          file.write("  %f %s %d %d %d "%(elem[0],elem[1],elem[2],elem[3],elem[4]))
+          if (len(elem) > 5):
+            file.write("%d "%elem[5])
+          else:
+            file.write("0 ")
+          if (len(elem) > 6):
+            file.write("%f %f %f  "%elem[6])
+          else:
+            file.write("0.0 0.0 0.0 ")
+          if (len(elem) > 7):
+            file.write("%f \n"%(elem[7]))
+          else:
+            file.write("0.0 \n")
+        action_found = 1
+        break
+    if not action_found:
+      file.write(" none 0 0\n") #oops
+            */
+        }
+
+        private static void ProcessMeshes(string exportDir)
+        {
+            Console.WriteLine("Exporting meshes...");
+
+            // LOAD MESHES HERE
+            List<Mesh> meshes = new List<Mesh>();
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_meshes.py"))
+            {
+                for (int i = 0; i < meshes.Count; i++)
+                    writer.WriteLine("mesh_%s = %d", meshes[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            // save meshes
+            using (StreamWriter writer = new StreamWriter(exportDir + "meshes.txt"))
+            {
+                writer.WriteLine(meshes.Count);
+                foreach (Mesh mesh in meshes)
+                {
+                    writer.WriteLine("mesh_%s %d %s %f %f %f %f %f %f %f %f %f", new object[] {
+                            mesh.ID,
+                            mesh.Flags,
+                            ReplaceSpaces(mesh.ResourceName),
+                            mesh.AxisTranslation[0],//x
+                            mesh.AxisTranslation[1],//y
+                            mesh.AxisTranslation[2],//z
+                            mesh.RotationAngle[0],//x
+                            mesh.RotationAngle[1],//y
+                            mesh.RotationAngle[2],//z
+                            mesh.Scale[0],//x
+                            mesh.Scale[1],//y
+                            mesh.Scale[2],//z
+                        }
+                    );
+                }
+            }
+        }
+
+        private static void ProcessSounds(string exportDir)
+        {
+            Console.WriteLine("Exporting sounds...");
+
+            // LOAD SOUNDS HERE
+            List<Sound> sounds = new List<Sound>();
+            List<List<object[]>> soundsArray = new List<List<object[]>>();
+
+            // compile/filter sounds
+            List<object[]> allSounds = new List<object[]>();
+            foreach (Sound sound in sounds)
+            {
+                object[] soundFiles = sound.SoundFiles;
+                ulong soundFlags = sound.FlagsGZ;
+                for (int i = 0; i < sound.SoundFiles.Length; i++)
+                {
+                    bool found = false;
+                    int soundNo = 0;
+                    object[] soundFile = soundFiles[i].ToString().Split();
+                    if (soundFile.Length == 1)
+                        soundFile = new object[] { soundFile[0], 0 };
+                    while (soundNo < allSounds.Count && !found)
+                    {
+                        if (allSounds[soundNo][0].Equals(soundFile[0].ToString()))//.ToString() necessary?
+                            found = true;
+                        else
+                            soundNo++;
+                    }
+                    if (!found)
+                    {
+                        soundNo = allSounds.Count;
+                        allSounds.Add(new object[] { soundFile[0], soundFlags });
+                    }
+                    soundFiles[i] = new object[] { soundNo, soundFile[1] };
+                }
+                List<object[]> vs = new List<object[]>();
+                foreach (object[] v in soundFiles)
+                    vs.Add(v);
+                soundsArray.Add(vs);
+            }
+
+            // save sounds
+            using (StreamWriter writer = new StreamWriter(exportDir + "sounds.txt"))
+            {
+                writer.WriteLine("soundsfile version 3");//change version if necessary
+
+                writer.WriteLine(allSounds.Count);
+                foreach (var soundSample in allSounds)
+                    writer.WriteLine(" %s %d", soundSample);
+
+                writer.WriteLine(sounds.Count);
+                for (int i = 0; i < sounds.Count; i++)
+                {
+                    writer.Write("snd_%s %d %d ", sounds[i].ID, sounds[i].FlagsGZ, sounds[i].SoundFiles.Length);
+                    foreach (object[] sample in soundsArray[i])
+                        writer.Write("%d %d ", sample);
+                    writer.WriteLine();
+                }
+            }
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_sounds.py"))
+            {
+                for (int i = 0; i < sounds.Count; i++)
+                    writer.WriteLine("snd_%s = %d", sounds[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+        }
+
+        private static void ProcessSkins(string exportDir)
+        {
+            Console.WriteLine("Exporting skins...");
+
+            // save python header
+
+
+            // save skins
+
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private static string ConvertToIdentifier(string idText)
+        {
+            idText = idText.Replace(' ', '_');
+            idText = idText.Replace("'", "_");
+            idText = idText.Replace('`', '_');
+            idText = idText.Replace('(', '_');
+            idText = idText.Replace(')', '_');
+            idText = idText.Replace('-', '_');
+            idText = idText.Replace(',', '_');
+            idText = idText.Replace('|', '_');
+            idText = idText.Replace('\t', '_');// Tab
+            idText = idText.ToLower();
+            return idText;
+        }
+
+        private static string ReplaceSpaces(string text)
+        {
+            return text.Replace('\t', '_').Replace(' ', '_');
         }
 
         private static void CompileGlobalVars(string[] statementBlock, List<string> variableList, List<int> variableUses)
@@ -357,18 +756,6 @@ namespace MB_Studio_Library.IO
             }
         }
 
-        private static void ProcessGlobalVariables(string exportDir)
-        {
-            Console.WriteLine("Compiling all global variables...");
-
-            List<string> variables = LoadVariables(exportDir, out List<int> variablesUses);
-
-            // SET NULL TO LIST LATER !!!
-            CompileAllGlobalVars(variables, variablesUses, null, null, null, null, null, null, null, null);
-
-            SaveVariables(exportDir, variables, variablesUses);
-        }
-
         private static List<string> LoadVariables(string exportDir, out List<int> variableUses)
         {
             List<string> variables = new List<string>();
@@ -416,40 +803,6 @@ namespace MB_Studio_Library.IO
             catch (Exception) { }
         }
 
-        private static void ProcessInit(string exportDir)
-        {
-            Console.Write("Initializing...");
-
-            TryFileDelete(exportDir, "tag_uses");
-            TryFileDelete(exportDir, "quick_strings");
-            TryFileDelete(exportDir, "variables");
-            TryFileDelete(exportDir, "variable_uses");
-
-            List<string> variables = new List<string>();
-            List<int> variableUses = new List<int>();
-
-            try
-            {
-                string[] varList = File.ReadAllLines(ModuleSystem + "variables.txt");
-                foreach (string v in varList)
-                {
-                    string vv = v.Trim();
-                    if (vv.Length != 0)
-                    {
-                        variables.Add(vv);
-                        variableUses.Add(1);
-                    }
-                }
-                SaveVariables(exportDir, variables, variableUses);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("variables.txt not found.Creating new variables.txt file");
-            }
-
-            Console.WriteLine("Done");
-        }
-
         private static void SaveVariables(string exportDir, List<string> variables, List<int> variableUses)
         {
             using (StreamWriter writer = new StreamWriter(exportDir + "variables.txt"))
@@ -459,6 +812,10 @@ namespace MB_Studio_Library.IO
                 foreach (int variableUse in variableUses)
                     writer.WriteLine(variableUse);
         }
+
+        #endregion
+
+        #region Pseudo Code
 
         public static void SavePseudoCodeByType(Skriptum type, string[] code)
         {
@@ -556,28 +913,6 @@ namespace MB_Studio_Library.IO
             return b;
         }
 
-        private static void PrepareAndProcessFiles()
-        {
-            string headerFilesPath = CodeReader.ProjectPath + "\\headerFiles";
-            string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";
-
-            string[] headerFiles = Directory.GetFiles(headerFilesPath);
-            string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
-
-            //if (moduleFiles.Length <= DEFAULT_FILES)//MAKE OPTION FOR REWRITE LATER
-            //{
-                SourceWriter.WriteAllObjects();
-                moduleFiles = Directory.GetFiles(moduleFilesPath);
-            //}
-
-            foreach (string file in headerFiles)
-                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
-
-            foreach (string file in moduleFiles)
-                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
-
-            //string module_info = ModuleSystem + "module_info.py";
-            //File.WriteAllText(module_info, File.ReadAllText(module_info).Replace("%MOD_NAME%", objs[1].ToString()));
-        }
+        #endregion
     }
 }
