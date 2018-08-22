@@ -1150,18 +1150,18 @@ namespace MB_Studio_Library.IO
                     wr.WriteLine("\t[");
                     foreach (FaceTexture faceTexture in skin.FaceTextures)
                     {
-                        wr.Write("\t (\"" + faceTexture.Name + "\",0x" + HexConverter.Dec2Hex_16CHARS(faceTexture.PrimaryHexValue).ToLower().TrimStart('0') + ",[");
-                        for (int i = 0; i < faceTexture.Textures.Length; i++)
+                        wr.Write("\t (\"" + faceTexture.Name + "\",0x" + HexConverter.Dec2Hex(faceTexture.Color).ToLower().TrimStart('0') + ",[");
+                        for (int i = 0; i < faceTexture.HairMaterials.Length; i++)
                         {
-                            wr.Write('\"' + faceTexture.Textures[i] + '\"');
-                            if (i < faceTexture.Textures.Length - 1)
+                            wr.Write('\"' + faceTexture.HairMaterials[i] + '\"');
+                            if (i < faceTexture.HairMaterials.Length - 1)
                                 wr.Write(",");
                         }
                         wr.Write("],[");
-                        for (int i = 0; i < faceTexture.TextureHexValues.Length; i++)
+                        for (int i = 0; i < faceTexture.HairColors.Length; i++)
                         {
-                            wr.Write("0x" + HexConverter.Dec2Hex_16CHARS(faceTexture.TextureHexValues[i]).ToLower().TrimStart('0'));
-                            if (i < faceTexture.TextureHexValues.Length - 1)
+                            wr.Write("0x" + HexConverter.Dec2Hex(faceTexture.HairColors[i]).ToLower().TrimStart('0'));
+                            if (i < faceTexture.HairColors.Length - 1)
                                 wr.Write(",");
                         }
                         wr.WriteLine("]),");

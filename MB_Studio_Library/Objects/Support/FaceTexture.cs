@@ -2,25 +2,21 @@
 {
     public class FaceTexture
     {
-        private string name;
-        private ulong primaryHexValue;
-        private string[] textures, textureHexValues;
-
-        public FaceTexture(string name, ulong primaryHexValue, string[] textures, string[] textureHexValues)
+        public FaceTexture(string name, uint primaryHexValue, string[] hairMaterials, uint[] textureHexValues)
         {
-            this.name = name;
-            this.primaryHexValue = primaryHexValue;
-            this.textures = textures;
-            this.textureHexValues = textureHexValues;
+            Name = name;
+            Color = primaryHexValue;
+            HairMaterials = hairMaterials;
+            HairColors = textureHexValues;
         }
 
-        public string Name { get { return name; } }
+        public string Name { get; }
 
-        public ulong PrimaryHexValue { get { return primaryHexValue; } }
+        public uint Color { get; }
 
-        public string[] Textures { get { return textures; } }
+        public string[] HairMaterials { get; }
 
-        public string[] TextureHexValues { get { return textureHexValues; } }
+        public uint[] HairColors { get; }
 
     }
 }

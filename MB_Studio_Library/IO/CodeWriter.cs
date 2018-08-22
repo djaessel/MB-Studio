@@ -187,6 +187,7 @@ namespace MB_Studio_Library.IO
             ProcessMeshes(exportDir);
             ProcessSounds(exportDir);
             ProcessSkins(exportDir);
+            ProcessFactions(exportDir);
 
         }
 
@@ -370,13 +371,12 @@ namespace MB_Studio_Library.IO
                     writer.WriteLine(" %d", action.Sequences.Length);
                     foreach (AnimationSequence sequence in action.Sequences)
                     {
-                        writer.Write("  %f %s %d %d %d ", new object[] {
-                                sequence.Duration,
-                                sequence.ResourceName,
-                                sequence.BeginFrame,
-                                sequence.EndFrame,
-                                sequence.FlagsGZ
-                            }
+                        writer.Write("  %f %s %d %d %d ",
+                            sequence.Duration,
+                            sequence.ResourceName,
+                            sequence.BeginFrame,
+                            sequence.EndFrame,
+                            sequence.FlagsGZ
                         );
                         writer.Write("%d ", sequence.LastNumberGZ);
                         writer.Write("%f %f %f %f ", sequence.LastNumbersFKZ);
@@ -435,20 +435,19 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
                 writer.WriteLine(meshes.Count);
                 foreach (Mesh mesh in meshes)
                 {
-                    writer.WriteLine("mesh_%s %d %s %f %f %f %f %f %f %f %f %f", new object[] {
-                            mesh.ID,
-                            mesh.Flags,
-                            ReplaceSpaces(mesh.ResourceName),
-                            mesh.AxisTranslation[0],//x
-                            mesh.AxisTranslation[1],//y
-                            mesh.AxisTranslation[2],//z
-                            mesh.RotationAngle[0],//x
-                            mesh.RotationAngle[1],//y
-                            mesh.RotationAngle[2],//z
-                            mesh.Scale[0],//x
-                            mesh.Scale[1],//y
-                            mesh.Scale[2],//z
-                        }
+                    writer.WriteLine("mesh_%s %d %s %f %f %f %f %f %f %f %f %f",
+                        mesh.ID,
+                        mesh.Flags,
+                        ReplaceSpaces(mesh.ResourceName),
+                        mesh.AxisTranslation[0],//x
+                        mesh.AxisTranslation[1],//y
+                        mesh.AxisTranslation[2],//z
+                        mesh.RotationAngle[0],//x
+                        mesh.RotationAngle[1],//y
+                        mesh.RotationAngle[2],//z
+                        mesh.Scale[0],//x
+                        mesh.Scale[1],//y
+                        mesh.Scale[2]//z
                     );
                 }
             }
@@ -525,18 +524,172 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
 
         private static void ProcessSkins(string exportDir)
         {
+            int maxSkinCount = 16;//change if higher for bannerlord or other versions
+
             Console.WriteLine("Exporting skins...");
 
-            // save python header
-
+            // LOAD SKINS HERE
+            List<Skin> skins = new List<Skin>();
 
             // save skins
+            using (StreamWriter writer = new StreamWriter(exportDir + "skins.txt"))
+            {
+                writer.WriteLine("skins_file version 1");//change version if necessary
+                if (skins.Count > maxSkinCount)
+                    skins.RemoveRange(maxSkinCount, skins.Count - maxSkinCount);
+                writer.WriteLine(skins.Count);
 
+                foreach (Skin skin in skins)
+                {
+                    writer.WriteLine("%s %d\n %s %s %s", skin.ID, skin.Flags, skin.BodyMesh, skin.CalfMesh, skin.HandMesh);
+                    writer.Write(" %s %d ", skin.HeadMesh, skin.FaceKeys.Length);
+
+                    foreach (FaceKey faceKey in skin.FaceKeys)
+                    {
+                        writer.Write("skinkey_%s %d %d %f %f %s ", 
+                            ConvertToIdentifier(faceKey.ID),
+                            faceKey.Width,
+                            faceKey.Height,
+                            faceKey.CorX,
+                            faceKey.CorY,
+                            ReplaceSpaces(faceKey.Text)
+                        );
+                    }
+
+                    writer.WriteLine(Environment.NewLine + skin.HairMeshes.Length);
+                    foreach (string hairMeshName in skin.HairMeshes)
+                        writer.Write(" %s ", hairMeshName);
+
+                    writer.WriteLine(Environment.NewLine + " " + skin.BeardMeshes.Length);
+                    foreach (string beardMeshName in skin.BeardMeshes)
+                        writer.WriteLine("  %s", beardMeshName);
+                    writer.WriteLine();
+
+                    WriteTextures(writer, skin.HairTextures);
+                    WriteTextures(writer, skin.BeardTextures);
+                    WriteFaceTex(writer, skin.FaceTextures);
+                    WriteVoices(writer, skin.Voices);
+
+                    writer.Write(" %s %f ", skin.SkeletonName, skin.Scale);
+                    writer.WriteLine(Environment.NewLine + "%d %d", skin.BloodParticle1GZ, skin.BloodParticle2GZ);
+
+                    writer.WriteLine(skin.FaceKeyConstraints.Length);
+                    foreach (var constraint in skin.FaceKeyConstraints)
+                    {
+                        writer.Write(Environment.NewLine + "%f %d %d ", constraint.Number, constraint.CompMode, constraint.ValuesINT.Length);
+                        for (int i = 0; i < constraint.ValuesINT.Length; i++)
+                            writer.Write(" %f %d", constraint.ValuesDOUBLE[i], constraint.ValuesINT[i]);
+                    }
+                    writer.WriteLine();
+                }
+            }
+        }
+
+        private static void ProcessFactions(string exportDir)
+        {
+            Console.WriteLine("Exporting faction data...");
+
+            // LOAD FACTIONS HERE
+            List<Faction> factions = new List<Faction>();
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_factions.py"))
+            {
+                for (int i = 0; i < factions.Count; i++)
+                    writer.WriteLine("fac_%s = %d", factions[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            List<double[]> relations = CompileRelations(factions);
+
+            // save faction data
+            using (StreamWriter writer = new StreamWriter(exportDir + "factions.txt"))
+            {
+                writer.WriteLine("factionsfile version 1");//change version if necessary
+                writer.WriteLine(factions.Count);
+                for (int i = 0; i < factions.Count; i++)
+                {
+                    writer.WriteLine("fac_%s %s %d %d ",
+                        ConvertToIdentifier(factions[i].ID),
+                        ReplaceSpaces(factions[i].Name),
+                        factions[i].FlagsGZ,
+                        HexConverter.Hex2Dec(factions[i].ColorCode.Replace("0x", string.Empty))
+                    );
+
+                    foreach (double relation in relations[i])
+                        writer.Write(" %f ", relation);
+                    writer.WriteLine();
+
+                    writer.Write("%d ", factions[i].Ranks.Length);
+                    foreach (string rank in factions[i].Ranks)
+                        writer.Write(" %s ", ReplaceSpaces(rank));
+                }
+            }
         }
 
         #endregion
 
         #region Helper Methods
+
+        private static List<double[]> CompileRelations(List<Faction> factions)
+        {
+            List<double[]> relations = new List<double[]>();
+            for (int i = 0; i < factions.Count; i++)
+                relations.Add(new double[factions.Count]);//r = [0.0 for j in range(len(factions))]; relations.append(r);
+
+            for (int i = 0; i < factions.Count; i++)
+            {
+                relations[i][i] = factions[i].FactionCoherence;
+                double[] rels = factions[i].Relations;
+                for (int j = 0; j < rels.Length; j++)
+                {
+                    int otherPos = -1;
+                    string relName = factions[i].Ranks[j];
+                    for (int k = 0; k < factions.Count; k++)
+                        if (factions[k].Name.Equals(relName))
+                            otherPos = k;
+                    if (otherPos >= 0)
+                    {
+                        relations[otherPos][i] = rels[i];
+                        relations[i][otherPos] = rels[i];
+                    }
+                    else
+                        Console.WriteLine("ERROR faction not found: " + relName);
+                }
+            }
+
+            return relations;
+        }
+
+        private static void WriteTextures(StreamWriter writer, string[] textures)
+        {
+            writer.Write(" %d ", textures.Length);
+            foreach (string texture in textures)
+                writer.Write(" %s ", texture);
+            writer.WriteLine();
+        }
+
+        private static void WriteVoices(StreamWriter writer, Variable[] voices)
+        {
+            writer.Write(" %d ", voices.Length);
+            foreach (var voice in voices)
+                writer.Write(" %d %s ", voice.Value, voice.Name);
+            writer.WriteLine();
+        }
+
+        private static void WriteFaceTex(StreamWriter writer, FaceTexture[] faceTextures)
+        {
+            writer.Write(" %d ", faceTextures.Length);
+            foreach (FaceTexture texture in faceTextures)
+            {
+                writer.Write(" %s %d %d %d ", texture.Name, texture.Color, texture.HairMaterials.Length, texture.HairColors.Length);
+                foreach (string material in texture.HairMaterials)
+                    writer.Write(" %s ", ReplaceSpaces(material));
+                foreach (uint color in texture.HairColors)
+                    writer.Write(" %d ", color);
+                writer.WriteLine();
+            }
+        }
 
         private static string ConvertToIdentifier(string idText)
         {
