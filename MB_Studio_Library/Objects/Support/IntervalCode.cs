@@ -2,18 +2,15 @@
 {
     public class IntervalCode
     {
-        private string code;
-        private int value;
-
         public IntervalCode(string code, int value)
         {
-            this.code = code;
-            this.value = value;
+            Code = code;
+            Value = value;
         }
 
-        public string Code { get { return code; } }
+        public string Code { get; }
 
-        public int Value { get { return value; } }
+        public int Value { get; }
 
     }
 }

@@ -112,7 +112,7 @@ namespace MB_Studio_Library.Objects
                 }
             }
 
-            this.FlagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
@@ -141,7 +141,7 @@ namespace MB_Studio_Library.Objects
             else
                 flags = FlagsGZ.ToString();
 
-            this.Flags = flags;
+            Flags = flags;
         }
 
         public ulong FlagsGZ { get; private set; }

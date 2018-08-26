@@ -15,11 +15,105 @@ namespace MB_Studio_Library.IO
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
 
-        private static List<object> lhsOperations = new List<object>();
-        private static List<object> globalLhsOperations = new List<object>();
+        private static List<string> canFailOperations = new List<string>();
+        private static List<string> lhsOperations = new List<string>();
+        private static List<string> globalLhsOperations = new List<string>();
 
-        // GET REAL MODULE VARIABLES IF NEEDED !!!
-        private static List<string> reservedVariables = new List<string>();
+        #region MODULE TYPE LISTS
+
+        private static List<string> reservedVariables = new List<string>();// MODULE VARIABLES
+
+        private static List<string> globalVarsList = new List<string>();
+        private static List<int> globalVarsUses = new List<int>();
+
+        private static List<Skriptum> strings = new List<Skriptum>();
+
+        private static List<Skriptum> skills = new List<Skriptum>();
+
+        private static List<Skriptum> tracks = new List<Skriptum>();
+
+        private static List<Skriptum> animations = new List<Skriptum>();
+        private static List<int> animationIndices = new List<int>();
+
+        private static List<Skriptum> meshes = new List<Skriptum>();
+
+        private static List<Skriptum> sounds = new List<Skriptum>();
+        private static List<List<object[]>> soundsArray = new List<List<object[]>>();
+
+        private static List<Skriptum> skins = new List<Skriptum>();
+
+        private static List<Skriptum> factions = new List<Skriptum>();
+
+        private static List<Skriptum> scenes = new List<Skriptum>();
+
+        private static List<Skriptum> particleSystems = new List<Skriptum>();
+
+        private static List<Skriptum> sceneProps = new List<Skriptum>();
+
+        private static List<Skriptum> troops = new List<Skriptum>();
+
+        private static List<Skriptum> tableaus = new List<Skriptum>();
+
+        private static List<Skriptum> scripts = new List<Skriptum>();
+
+        private static List<Skriptum> quests = new List<Skriptum>();
+
+        private static List<Skriptum> presentations = new List<Skriptum>();
+
+        private static List<Skriptum> missionTemplates = new List<Skriptum>();
+
+        private static List<Skriptum> menus = new List<Skriptum>();
+
+        private static List<Skriptum> mapIcons = new List<Skriptum>();
+
+        private static List<Skriptum> items = new List<Skriptum>();
+
+        private static List<Skriptum> partyTemplates = new List<Skriptum>();
+
+        private static List<Skriptum> parties = new List<Skriptum>();
+
+        //private static List<Skriptum> s = new List<Skriptum>();
+
+        #endregion
+
+        enum TagType : int
+        {
+            Register,
+            Variable,
+            String,
+            Item,
+            Troop,
+            Faction,
+            Quest,
+            PartyTemplate,
+            Party,
+            Scene,
+            MissionTemplate,
+            Menu,
+            Script,
+            ParticleSystem,
+            SceneProp,
+            Sound,
+            LocalVariable,
+            MapIcon,
+            Skill,
+            Mesh,
+            Presentation,
+            QuickString,
+            Track,
+            Tableau,
+            Animation,
+            // ...
+            End
+        }
+
+        private const int OP_NUM_VALUE_BITS = 24 + 32;
+
+        private const int OP_MASK_REGISTER = ((int)TagType.Register) << OP_NUM_VALUE_BITS;
+        private const int OP_MASK_VARIABLE = ((int)TagType.Variable) << OP_NUM_VALUE_BITS;
+        private const int OP_MASK_QUEST_INDEX = ((int)TagType.Quest) << OP_NUM_VALUE_BITS;
+        private const int OP_MASK_LOCAL_VARIABLE = ((int)TagType.LocalVariable) << OP_NUM_VALUE_BITS;
+        private const int OP_MASK_QUICK_STRING = ((int)TagType.QuickString) << OP_NUM_VALUE_BITS;
 
         //private string sourcePath, destinationPath;
 
@@ -116,18 +210,6 @@ namespace MB_Studio_Library.IO
 
         private static void ReadProcessAndBuild(string exportDir)
         {
-            /*using (StreamReader sr = new StreamReader(ModuleSystem + "build_module.bat.list"))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string[] parameters = sr.ReadLine().Trim().Split();
-                    parameters[0] = parameters[0].Replace(".\\", ModuleSystem);
-                    parameters[1] = ModuleSystem + parameters[1];
-
-                    //ImportantMethods.ExecuteCommandSync(parameters[0], parameters[1]);
-                }
-            }*/
-
             SaveAllCodes(exportDir);
 
             Console.Write("__________________________________________________" + Environment.NewLine
@@ -153,11 +235,8 @@ namespace MB_Studio_Library.IO
             string[] headerFiles = Directory.GetFiles(headerFilesPath);
             string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
 
-            //if (moduleFiles.Length <= DEFAULT_FILES)//MAKE OPTION FOR REWRITE LATER
-            //{
             SourceWriter.WriteAllObjects();
             moduleFiles = Directory.GetFiles(moduleFilesPath);
-            //}
 
             foreach (string file in headerFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
@@ -188,6 +267,24 @@ namespace MB_Studio_Library.IO
             ProcessSounds(exportDir);
             ProcessSkins(exportDir);
             ProcessFactions(exportDir);
+            ProcessScenes(exportDir);
+            ProcessParticleSys(exportDir);
+            ProcessSceneProps(exportDir);
+            ProcessQuests(exportDir);
+            ProcessInfoPages(exportDir);
+            ProcessSimpleTriggers(exportDir);
+            ProcessA(exportDir);
+            ProcessB(exportDir);
+            ProcessC(exportDir);
+            ProcessD(exportDir);
+            ProcessE(exportDir);
+            ProcessF(exportDir);
+            ProcessG(exportDir);
+            ProcessH(exportDir);
+            ProcessI(exportDir);
+            ProcessJ(exportDir);
+            ProcessK(exportDir);
+            ProcessL(exportDir);
 
         }
 
@@ -243,14 +340,11 @@ namespace MB_Studio_Library.IO
         {
             Console.WriteLine("Exporting strings...");
 
-            // LOAD GAME STRINGS HERE
-            List<GameString> gameStrings = new List<GameString>();
-
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_strings.py"))
             {
-                for (int i = 0; i < gameStrings.Count; i++)
-                    writer.WriteLine("str_" + ConvertToIdentifier(gameStrings[i].ID) + " = " + i);
+                for (int i = 0; i < strings.Count; i++)
+                    writer.WriteLine("str_" + ConvertToIdentifier(strings[i].ID) + " = " + i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -258,18 +352,15 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "string.txt"))
             {
                 writer.WriteLine("stringsfile version 1");//change version if needed
-                writer.WriteLine(gameStrings.Count);
-                for (int i = 0; i < gameStrings.Count; i++)
-                    writer.WriteLine("str_%s %s", ConvertToIdentifier(gameStrings[0].ID), ReplaceSpaces(gameStrings[0].Text));
+                writer.WriteLine(strings.Count);
+                foreach (GameString gameString in strings)
+                    writer.WriteLine("str_%s %s", ConvertToIdentifier(gameString.ID), ReplaceSpaces(gameString.Text));
             }
         }
 
         private static void ProcessSkills(string exportDir)
         {
             Console.WriteLine("Exporting skills...");
-
-            // LOAD SKILLS HERE
-            List<Skill> skills = new List<Skill>();
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_skills.py"))
@@ -294,9 +385,6 @@ namespace MB_Studio_Library.IO
         private static void ProcessMusic(string exportDir)
         {
             Console.WriteLine("Exporting tracks...");
-
-            // LOAD MUSIC HERE
-            List<Music> tracks = new List<Music>();
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_music.py"))
@@ -325,10 +413,6 @@ namespace MB_Studio_Library.IO
         private static void ProcessAnimations(string exportDir)
         {
             Console.WriteLine("Exporting animations...");
-
-            // LOAD ANIMATIONS HRE
-            List<Animation> animations = new List<Animation>();
-            List<int> animationIndices = new List<int>();
 
             // compile/filter action sets
             List<Animation> actionCodes = new List<Animation>();
@@ -367,7 +451,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(actionCodes.Count);
                 foreach (Animation action in actionCodes)
                 {
-                    writer.Write(" %s %d %d ", action.ID, action.FlagsGZ, action.MasterFlagsGZ); //print flags
+                    writer.Write(" %s %d %d ", action.ID, action.FlagsGZ, action.MasterFlagsGZ);//print flags
                     writer.WriteLine(" %d", action.Sequences.Length);
                     foreach (AnimationSequence sequence in action.Sequences)
                     {
@@ -383,43 +467,11 @@ namespace MB_Studio_Library.IO
                     }
                 }
             }
-            /*
-def write_actions(action_set,num_action_codes,action_codes,file_name):
-  file = open(export_dir + file_name,"w")
-  file.write("%d\n"%num_action_codes)
-  for i_action_code in xrange(num_action_codes):
-    action_found = 0
-    for action in action_set:
-      if action[0] == i_action_code:
-        file.write(" %s %d %d "%(action_codes[i_action_code],action[1], action[2])) #print flags
-        file.write(" %d\n"%(len(action)-3))
-        for elem in action[3:]:
-          file.write("  %f %s %d %d %d "%(elem[0],elem[1],elem[2],elem[3],elem[4]))
-          if (len(elem) > 5):
-            file.write("%d "%elem[5])
-          else:
-            file.write("0 ")
-          if (len(elem) > 6):
-            file.write("%f %f %f  "%elem[6])
-          else:
-            file.write("0.0 0.0 0.0 ")
-          if (len(elem) > 7):
-            file.write("%f \n"%(elem[7]))
-          else:
-            file.write("0.0 \n")
-        action_found = 1
-        break
-    if not action_found:
-      file.write(" none 0 0\n") #oops
-            */
         }
 
         private static void ProcessMeshes(string exportDir)
         {
             Console.WriteLine("Exporting meshes...");
-
-            // LOAD MESHES HERE
-            List<Mesh> meshes = new List<Mesh>();
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_meshes.py"))
@@ -456,10 +508,6 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
         private static void ProcessSounds(string exportDir)
         {
             Console.WriteLine("Exporting sounds...");
-
-            // LOAD SOUNDS HERE
-            List<Sound> sounds = new List<Sound>();
-            List<List<object[]>> soundsArray = new List<List<object[]>>();
 
             // compile/filter sounds
             List<object[]> allSounds = new List<object[]>();
@@ -506,7 +554,8 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
                 writer.WriteLine(sounds.Count);
                 for (int i = 0; i < sounds.Count; i++)
                 {
-                    writer.Write("snd_%s %d %d ", sounds[i].ID, sounds[i].FlagsGZ, sounds[i].SoundFiles.Length);
+                    Sound sound = (Sound)sounds[i];
+                    writer.Write("snd_%s %d %d ", sound.ID, sound.FlagsGZ, sound.SoundFiles.Length);
                     foreach (object[] sample in soundsArray[i])
                         writer.Write("%d %d ", sample);
                     writer.WriteLine();
@@ -527,9 +576,6 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
             int maxSkinCount = 16;//change if higher for bannerlord or other versions
 
             Console.WriteLine("Exporting skins...");
-
-            // LOAD SKINS HERE
-            List<Skin> skins = new List<Skin>();
 
             // save skins
             using (StreamWriter writer = new StreamWriter(exportDir + "skins.txt"))
@@ -589,9 +635,6 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
         {
             Console.WriteLine("Exporting faction data...");
 
-            // LOAD FACTIONS HERE
-            List<Faction> factions = new List<Faction>();
-
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_factions.py"))
             {
@@ -609,29 +652,918 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
                 writer.WriteLine(factions.Count);
                 for (int i = 0; i < factions.Count; i++)
                 {
+                    Faction faction = (Faction)factions[i];
+
                     writer.WriteLine("fac_%s %s %d %d ",
-                        ConvertToIdentifier(factions[i].ID),
-                        ReplaceSpaces(factions[i].Name),
-                        factions[i].FlagsGZ,
-                        HexConverter.Hex2Dec(factions[i].ColorCode.Replace("0x", string.Empty))
+                        ConvertToIdentifier(faction.ID),
+                        ReplaceSpaces(faction.Name),
+                        faction.FlagsGZ,
+                        HexConverter.Hex2Dec(faction.ColorCode.Replace("0x", string.Empty))
                     );
 
                     foreach (double relation in relations[i])
                         writer.Write(" %f ", relation);
                     writer.WriteLine();
 
-                    writer.Write("%d ", factions[i].Ranks.Length);
-                    foreach (string rank in factions[i].Ranks)
+                    writer.Write("%d ", faction.Ranks.Length);
+                    foreach (string rank in faction.Ranks)
                         writer.Write(" %s ", ReplaceSpaces(rank));
                 }
             }
+        }
+
+        private static void ProcessScenes(string exportDir)
+        {
+            Console.WriteLine("Exporting scene data...");
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_scenes.py"))
+            {
+                for (int i = 0; i < scenes.Count; i++)
+                    writer.WriteLine("scn_%s = %d", scenes[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
+
+            // save scenes
+            using (StreamWriter writer = new StreamWriter(exportDir + "scenes.txt"))
+            {
+                writer.WriteLine("scenesfile version 1");//change version if necessary
+                writer.WriteLine(" %d", scenes.Count);
+                foreach (Scene scene in scenes)
+                {
+                    writer.WriteLine("scn_%s %s %d %s %s %f %f %f %f %f %s ",
+                        ConvertToIdentifier(scene.ID),
+                        ReplaceSpaces(scene.ID),
+                        scene.FlagsGZ,
+                        scene.MeshName,
+                        scene.BodyName,
+                        scene.MinPosition[0],
+                        scene.MinPosition[1],
+                        scene.MaxPosition[0],
+                        scene.MaxPosition[1],
+                        scene.WaterLevel,
+                        scene.TerrainCode
+                    );
+
+                    writer.Write("  %d ", scene.OtherScenes.Length);
+                    foreach (string passage in scene.OtherScenes)
+                        WritePassage(writer, scenes, passage);
+                    writer.WriteLine();
+
+                    writer.Write("  %d ", scene.ChestTroops.Length);
+                    foreach (string chestTroop in scene.ChestTroops)
+                    {
+                        int troopNo = FindObject(troops, chestTroop);//FindTroop(troops, chestTroop);
+                        if (troopNo < 0)
+                        {
+                            Console.WriteLine("Error unable to find chest-troop: " + chestTroop);
+                            troopNo = 0;
+                        }
+                        else
+                            AddTagUse(tagUses, TagType.Troop, troopNo);
+                        writer.Write(" %d ", troopNo);
+                    }
+                    writer.WriteLine();
+
+                    writer.WriteLine(" %s ", scene.TerrainBase);
+                }
+            }
+
+            SaveVariables(exportDir, variables, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
+        }
+
+        private static void ProcessParticleSys(string exportDir)
+        {
+            Console.WriteLine("Exporting particle data...");
+
+            // save particle systems
+            using (StreamWriter writer = new StreamWriter(exportDir + "particle_systems.txt"))
+            {
+                writer.WriteLine("particle_systemsfile version 1");//change version if necessary
+                writer.WriteLine(particleSystems.Count);
+                foreach (ParticleSystem psys in particleSystems)
+                {
+                    writer.Write("psys_%s %d %s  ", psys.ID, psys.FlagsGZ, psys.MeshName);
+                    writer.WriteLine("%d %f %f %f %f %f ",
+                        psys.ParticlesPerSecond,
+                        psys.ParticleLifeTime,
+                        psys.Damping,
+                        psys.GravityStrength,
+                        psys.TurbulanceSize,
+                        psys.TurbulanceStrength
+                    );
+
+                    SavePsysKey(writer, psys.AlphaKeys);
+                    SavePsysKey(writer, psys.RedKeys);
+                    SavePsysKey(writer, psys.GreenKeys);
+                    SavePsysKey(writer, psys.BlueKeys);
+                    SavePsysKey(writer, psys.ScaleKeys);
+
+                    writer.Write("%f %f %f   ", psys.EmitBoxScale[0], psys.EmitBoxScale[1], psys.EmitBoxScale[2]);
+                    writer.Write("%f %f %f   ", psys.EmitVelocity[0], psys.EmitVelocity[1], psys.EmitVelocity[2]);
+                    writer.WriteLine("%f ", psys.EmitDirectionRandomness);
+                    writer.WriteLine("%f %f ", psys.ParticleRotationSpeed, psys.ParticleRotationDamping);
+                }
+            }
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_particle_systems.py"))
+            {
+                for (int i = 0; i < particleSystems.Count; i++)
+                    writer.WriteLine("psys_%s = %d", particleSystems[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+        }
+
+        private static void ProcessSceneProps(string exportDir)
+        {
+            Console.WriteLine("Exporting scene props...");
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_scene_props.py"))
+            {
+                for (int i = 0; i < sceneProps.Count; i++)
+                    writer.WriteLine("spr_%s = %d", sceneProps[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
+
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
+
+            // save scene props
+            using (StreamWriter writer = new StreamWriter(exportDir + "scene_props.txt"))
+            {
+                writer.WriteLine("scene_propsfile version 1");//change version if necessary
+                writer.WriteLine(" %d", sceneProps.Count);
+                foreach (SceneProp sceneProp in sceneProps)
+                {
+                    writer.Write("spr_%s %d %d %s %s ", sceneProp.ID, sceneProp.FlagsGZ, sceneProp.HitPoints, sceneProp.MeshName, sceneProp.PhysicsObjectName);
+                    SaveSimpleTriggers(writer, sceneProp.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
+                    writer.WriteLine();
+                }
+            }
+
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
+        }
+
+        private static void ProcessQuests(string exportDir)
+        {
+            Console.WriteLine("Exporting quest data...");
+
+            // 
+
+
+            // 
+
+        }
+
+        private static void ProcessInfoPages(string exportDir)
+        {
+            Console.WriteLine("Exporting info_page data...");
+
+            // 
+
+
+            // 
+
+        }
+
+        private static void ProcessSimpleTriggers(string exportDir)
+        {
+            Console.WriteLine("Exporting simple triggers...");
+
+            // 
+
+
+            //
+
+        }
+
+        private static void ProcessA(string exportDir)
+        {
+            Console.WriteLine("Exporting a...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessB(string exportDir)
+        {
+            Console.WriteLine("Exporting b...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessC(string exportDir)
+        {
+            Console.WriteLine("Exporting c...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessD(string exportDir)
+        {
+            Console.WriteLine("Exporting d...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessE(string exportDir)
+        {
+            Console.WriteLine("Exporting e...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessF(string exportDir)
+        {
+            Console.WriteLine("Exporting f...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessG(string exportDir)
+        {
+            Console.WriteLine("Exporting g...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessH(string exportDir)
+        {
+            Console.WriteLine("Exporting h...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessI(string exportDir)
+        {
+            Console.WriteLine("Exporting i...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessJ(string exportDir)
+        {
+            Console.WriteLine("Exporting j...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessK(string exportDir)
+        {
+            Console.WriteLine("Exporting k...");
+
+            // 
+
+
+            //
+
+        }
+        
+        private static void ProcessL(string exportDir)
+        {
+            Console.WriteLine("Exporting l...");
+
+            // 
+
+
+            //
+
         }
 
         #endregion
 
         #region Helper Methods
 
-        private static List<double[]> CompileRelations(List<Faction> factions)
+        private static void SaveSimpleTriggers(
+            StreamWriter writer,
+            SimpleTrigger[] simpleTriggers,
+            List<string> variableList,
+            List<int> variableUses,
+            List<List<int>> tagUses,
+            List<string[]> quickStrings
+            )
+        {
+            writer.WriteLine(simpleTriggers.Length);
+            foreach (SimpleTrigger trigger in simpleTriggers)
+            {
+                writer.Write("%f ", trigger.CheckInterval);
+                SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
+                writer.WriteLine();
+            }
+            writer.WriteLine();
+        }
+
+        private static void SaveStatementBlock(StreamWriter writer, object statementName, bool canFailStatement, string[] statementBlock, List<string> variableList, List<int> variableUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        {
+            List<string> localVars = new List<string>();
+            List<int> localVarsUses = new List<int>();
+            writer.Write(" %d ", statementBlock.Length);
+
+            int storeScriptParam1Uses = 0;
+            int storeScriptParam2Uses = 0;
+            int currentDepth = 0;
+            //bool canFail = false;
+
+            List<string> tryOpcodes = new List<string>()
+            {
+                "try_begin",
+                "try_for_range",
+                "try_for_range_backwards",
+                "try_for_parties",
+                "try_for_agents"
+            };
+
+            for (int i = 0; i < statementBlock.Length; i++)
+            {
+                string[] statementSp = statementBlock[i].Split();
+                string opcode = statementSp[0];
+                bool noVariables = (statementSp.Length == 1);
+
+                if (tryOpcodes.Contains(opcode))
+                    currentDepth++;
+                else if (opcode.Equals("try_end"))
+                    currentDepth--;
+                else if (opcode.Equals("store_script_param_1") || (opcode.Equals("store_script_param") && statementSp[2].Equals("1")))
+                    storeScriptParam1Uses++;
+                else if (opcode.Equals("store_script_param_2") || (opcode.Equals("store_script_param") && statementSp[2].Equals("2")))
+                    storeScriptParam2Uses++;
+                else if (!canFailStatement && currentDepth == 0 &&
+                    (IsCanFailOperation(opcode) ||
+                    (opcode.Equals("call_script") && statementSp[1].TrimStart()/*.Substring(7)*/.StartsWith("cf_"))) &&
+                    !statementName.ToString().StartsWith("cf_"))
+                    Console.WriteLine("WARNING: Script can fail at operation #" + i + ". Use cf_ at the beginning of its name: " + statementName);
+
+                SaveStatement(writer, opcode, noVariables, statementSp, variableList, variableUses, localVars, localVarsUses, tagUses, quickStrings);
+            }
+
+            if (storeScriptParam1Uses > 1)
+                Console.WriteLine("WARNING: store_script_param_1 is used more than once:" + statementName);
+            if (storeScriptParam2Uses > 1)
+                Console.WriteLine("WARNING: store_script_param_2 is used more than once:" + statementName);
+
+            for (int i = 0; i < localVars.Count; i++)
+                if (localVarsUses[i] == 0 && !localVars[i].StartsWith("unused"))//make output optional
+                    Console.WriteLine("WARNING: Local variable never used: " + localVars[i] + ", at: " + statementName);
+
+            if (localVars.Count > 128)
+                Console.WriteLine("WARNING: Script uses more than 128 local wariables: " + statementName + " --> variables count:" + localVars.Count);
+        }
+
+        private static void SaveStatement(StreamWriter writer, string opcode, bool noVariables, string[] statementSp, List<string> variableList, List<int> variableUses, List<string> localVars, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        {
+            int lenStatement = 0;
+            if (!noVariables)
+            {
+                lenStatement = statementSp.Length - 1;
+                if (IsLhsOperation(opcode))
+                {
+                    if (lenStatement > 0)
+                    {
+                        string param = statementSp[1];
+                        if (param[0] == ':')
+                            AddVariable(param.Substring(1), localVars, localVarsUses);
+                    }
+                }
+            }
+
+            writer.Write("%d %d ", opcode, lenStatement);
+
+            for (int i = 0; i < lenStatement; i++)
+            {
+                int operand = ProcessParam(statementSp[i + 1], variableList, variableUses, localVars, localVarsUses, tagUses, quickStrings);
+                writer.Write("%d ", operand);
+            }
+        }
+
+        private static int ProcessParam(object param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        {
+            int result = 0;
+            if (param.GetType().Equals(typeof(string)))
+            {
+                string paramS = (string)param;
+                if (paramS[0] == '$')
+                {
+                    CheckVariableNotDefined(paramS.Substring(1), localVarList);
+                    result = GetVariable(paramS, globalVarsList, globalVarsUses);
+                    result |= OP_MASK_VARIABLE;
+                }
+                else if (paramS[0] == ':')
+                {
+                    CheckVariableNotDefined(paramS.Substring(1), globalVarsList);
+                    result = GetVariable(paramS, localVarList, localVarsUses);
+                    result |= OP_MASK_LOCAL_VARIABLE;
+                }
+                else if (paramS[0] == '@')
+                {
+                    result = InsertQuickStringWithAutoId(paramS.Substring(1), quickStrings);
+                    result |= OP_MASK_QUICK_STRING;
+                }
+                else
+                {
+                    result = GetIdentifierValue(paramS.ToLower(), tagUses);
+                    if (result < 0)
+                        Console.WriteLine("ERROR: Illegal Identifier:" + param);
+                }
+            }
+            else
+                result = (int)param;
+            return result;
+        }
+
+        private static int GetIdentifierValue(string str, List<List<int>> tagUses)
+        {
+            int underscorePos = str.IndexOf('_');
+            int result = -1;
+
+            if (underscorePos > 0)
+            {
+                string tagStr = str.Remove(underscorePos);
+                string idStr = str.Substring(underscorePos + 1);
+                int idNo = GetIdValue(tagStr, idStr, tagUses, out TagType tagType);
+                if (tagType > 0 && tagType < TagType.End)
+                {
+                    if (idNo < 0)
+                        Console.WriteLine("Error: Unable to find object: " + str);
+                    else
+                        result = idNo | ((int)tagType << OP_NUM_VALUE_BITS);
+                }
+                else
+                    Console.WriteLine("Error: Unrecognized tag: " + tagStr + "in object: " + str);
+            }
+            else
+                Console.WriteLine("Error: Invalid object: " + str + ". Variables should start with $ sign and references should start with a tag");
+
+            return result;
+        }
+
+        private static int GetIdValue(string tag, string identifier, List<List<int>> tagUses, out TagType tagType)
+        {
+            tagType = TagType.End;
+            int idNo = -1;
+
+            switch (tag)
+            {
+                case "str":
+                    idNo = FindObject(strings, identifier);
+                    tagType = TagType.String;
+                    break;
+                case "itm":
+                    idNo = FindObject(items, identifier);
+                    tagType = TagType.Item;
+                    break;
+                case "trp":
+                    idNo = FindObject(troops, identifier);
+                    tagType = TagType.Troop;
+                    break;
+                case "fac":
+                    idNo = FindObject(factions, identifier);
+                    tagType = TagType.Faction;
+                    break;
+                case "qst":
+                    idNo = FindObject(quests, identifier);
+                    tagType = TagType.Quest;
+                    break;
+                case "pt":
+                    idNo = FindObject(partyTemplates, identifier);
+                    tagType = TagType.PartyTemplate;
+                    break;
+                case "p":
+                    idNo = FindObject(parties, identifier);
+                    tagType = TagType.Party;
+                    break;
+                case "scn":
+                    idNo = FindObject(scenes, identifier);
+                    tagType = TagType.Scene;
+                    break;
+                case "mt":
+                    idNo = FindObject(missionTemplates, identifier);
+                    tagType = TagType.MissionTemplate;
+                    break;
+                case "mnu":
+                    idNo = FindObject(menus, identifier);
+                    tagType = TagType.Menu;
+                    break;
+                case "script":
+                    idNo = FindObject(scripts, identifier);
+                    tagType = TagType.Script;
+                    break;
+                case "psys":
+                    idNo = FindObject(particleSystems, identifier);
+                    tagType = TagType.ParticleSystem;
+                    break;
+                case "spr":
+                    idNo = FindObject(sceneProps, identifier);
+                    tagType = TagType.SceneProp;
+                    break;
+                case "prsnt":
+                    idNo = FindObject(presentations, identifier);
+                    tagType = TagType.Presentation;
+                    break;
+                case "snd":
+                    idNo = FindObject(sounds, identifier);
+                    tagType = TagType.Sound;
+                    break;
+                case "icon":
+                    idNo = FindObject(mapIcons, identifier);
+                    tagType = TagType.MapIcon;
+                    break;
+                case "skl":
+                    idNo = FindObject(skills, identifier);
+                    tagType = TagType.Skill;
+                    break;
+                case "track":
+                    idNo = FindObject(tracks, identifier);
+                    tagType = TagType.Track;
+                    break;
+                case "mesh":
+                    idNo = FindObject(meshes, identifier);
+                    tagType = TagType.Mesh;
+                    break;
+                case "anim":
+                    idNo = FindObject(animations, identifier);
+                    tagType = TagType.Animation;
+                    break;
+                case "tableua":
+                    idNo = FindObject(tableaus, identifier);
+                    tagType = TagType.Tableau;
+                    break;
+                default:
+                    break;
+            }
+
+            if (tagType != TagType.End && idNo > -1)
+                AddTagUse(tagUses, tagType, idNo);
+
+            return idNo;
+        }
+
+        private static int FindObject(List<Skriptum> skripta, string id)
+        {
+            int result = -1;
+            id = id.ToLower();
+            for (int i = 0; i < skripta.Count; i++)
+                if (skripta[i].ID.ToLower().Equals(id))
+                    result = i;
+            return result;
+        }
+
+        private static int InsertQuickStringWithAutoId(string sentence, List<string[]> quickStrings)
+        {
+            bool done = false;
+            string text = ConvertToIdentifierWithNoLowerCase(sentence);
+
+            int i = 20;
+            int lt = text.Length;
+
+            if (i > lt)
+                i = lt;
+
+            string autoId = "qstr_" + text.Substring(0, i);
+            sentence = ReplaceSpaces(sentence);
+
+            int index = SearchQuickStringKeys(autoId, quickStrings);
+            if (index >= 0 && quickStrings[index][1].Equals(sentence))
+                done = true;
+
+            while (i <= lt && !done)
+            {
+                autoId = "qstr_" + text.Substring(0, i);
+                index = SearchQuickStringKeys(autoId, quickStrings);
+                if (index >= 0)
+                {
+                    if (quickStrings[index][1].Equals(sentence))
+                        done = true;
+                    else
+                        i++;
+                }
+                else
+                {
+                    done = true;
+                    index = quickStrings.Count;
+                    quickStrings.Add(new string[] { autoId, sentence});
+                }
+            }
+
+            if (!done)
+            {
+                int number = 0;
+                string newAutoId;
+                do
+                {
+                    number++;
+                    newAutoId = autoId + number;
+                } while (QuickStringsHasKey(newAutoId, quickStrings));
+                autoId = newAutoId;
+                index = quickStrings.Count;
+                quickStrings.Add(new string[] { autoId, sentence });
+            }
+
+            return index;
+        }
+
+        private static int SearchQuickStringKeys(string key, List<string[]> quickStrings)
+        {
+            int index = -1;
+            for (int i = 0; i < quickStrings.Count; i++)
+            {
+                if (quickStrings[i][0].Equals(key))
+                {
+                    index = i;
+                    i = quickStrings.Count;
+                }
+            }
+            return index;
+        }
+
+        private static bool QuickStringsHasKey(string key, List<string[]> quickStrings)
+        {
+            bool found = false;
+            for (int i = 0; i < quickStrings.Count; i++)
+            {
+                if (quickStrings[i][0].Equals(key))
+                {
+                    found = true;
+                    i = quickStrings.Count;
+                }
+            }
+            return found;
+        }
+
+        private static int GetVariable(string param, List<string> varList, List<int> varUses)
+        {
+            bool found = false;
+            int result = -1;
+            string varString = param.Substring(1);
+
+            for (int i = 0; i < varList.Count; i++)
+            {
+                if (varString.Equals(varList[i]))
+                {
+                    found = true;
+                    result = i;
+                    varUses[i]++;
+                    i = varList.Count;
+                }
+            }
+
+            if (!found)
+            {
+                if (param[0] == '$')
+                {
+                    varList.Add(varString);
+                    varUses.Add(0);
+                    result = varList.Count - 1;
+                    Console.WriteLine("WARNING: Usage of unassigned global variable: " + varString);
+                }
+                else
+                    Console.WriteLine("ERROR: Usage of unassigned local variable: " + varString);
+            }
+
+            return result;
+        }
+
+        private static void CheckVariableNotDefined(string varString, List<string> varList)
+        {
+            for (int i = 0; i < varList.Count; i++)
+            {
+                if (varString.Equals(varList[i]))
+                {
+                    Console.WriteLine("WARNING: Variable name used for both local and global contexts:" + varString);
+                    i = varList.Count;
+                }
+            }
+        }
+
+        private static bool IsLhsOperation(string opcode)
+        {
+            if (lhsOperations.Count == 0)
+                lhsOperations = GetHeaderOperationsList("lhs_operations");
+            return lhsOperations.Contains(opcode);
+        }
+
+        private static bool IsCanFailOperation(string opcode)
+        {
+            if (canFailOperations.Count == 0)
+                canFailOperations = GetHeaderOperationsList("can_fail_operations");
+            return canFailOperations.Contains(opcode);
+        }
+
+        private static List<string> GetHeaderOperationsList(string listName)
+        {
+            List<string> list = new List<string>();
+            using (StreamReader reader = new StreamReader(ModuleSystem + "header_common.py"))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine().Split('#')[0];
+                    if (line.StartsWith(listName))
+                    {
+                        line = line.Replace('\t', ' ').Replace(" ", string.Empty);
+                        string curOpcode = line.Split('=')[1].TrimStart('[').TrimEnd(',').Trim();
+                        if (curOpcode.Length != 0)
+                            list.Add(curOpcode);
+                        while (!reader.EndOfStream && curOpcode.EndsWith("]"))
+                        {
+                            curOpcode = reader.ReadLine().Split('#')[0];
+                            curOpcode = curOpcode.Trim(' ', '\t').TrimEnd(',');
+                            if (!curOpcode.Equals("]"))
+                                list.Add(curOpcode.TrimEnd(']'));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        private static void SavePsysKey(StreamWriter writer, double[] keys12)
+        {
+            writer.WriteLine("%f %f   %f %f", keys12[0], keys12[1], keys12[2], keys12[3]);
+        }
+
+        private static void SaveQuickStrings(string exportDir, List<string[]> quickStrings)
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "quick_strings.txt"))
+            {
+                writer.WriteLine("%d", quickStrings.Count);
+                foreach (string[] quickString in quickStrings)
+                    writer.WriteLine("%s %s", quickString[0], ReplaceSpaces(quickString[1]));
+            }
+        }
+
+        private static void SaveTagUses(string exportDir, List<List<int>> tagUses)
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "tag_uses.txt"))
+            {
+                for (int i = 0; i < tagUses.Count; i++)
+                    for (int j = 0; j < tagUses[i].Count; j++)
+                        writer.Write("%d %d %d;", i, j, tagUses[i][j]);
+                writer.WriteLine();
+            }
+        }
+
+        private static void AddTagUse(List<List<int>> tagUses, TagType tagType, int objectNo)
+        {
+            // TODO: Uncomment to make build_module_check_tags work
+            //EnsureTagUse(tagUses, tagNo, objectNo);
+            //tagUses[tagNo][objectNo]++;
+            //pass
+        }
+
+        /*private static int FindTroop(List<Troop> troops, string chestTroop)
+        {
+            int result = -1;
+            for (int i = 0; i < troops.Count; i++)
+            {
+                if (troops[i].ID.Equals(chestTroop))
+                {
+                    result = i;
+                    i = troops.Count;
+                }
+            }
+            return result;
+        }*/
+
+        private static List<string[]> LoadQuickStrings(string exportDir)
+        {
+            List<string[]> quickStrings = new List<string[]>();
+            try
+            {
+                string[] strList = File.ReadAllLines(exportDir + "quick_strings.txt");
+                foreach (string s in strList)
+                {
+                    string[] sp = s.Trim().Split();
+                    if (sp.Length == 2)
+                        quickStrings.Add(sp);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Creating new quick_strings.txt file...");
+            }
+            return quickStrings;
+        }
+
+        private static List<List<int>> LoadTagUses(string exportDir)
+        {
+            int tagsEnd = 26;//header_common.py
+            List<List<int>> tagUses = new List<List<int>>();
+            for (int i = 0; i < tagsEnd; i++)
+                tagUses.Add(new List<int>());//subTagUses
+
+            try
+            {
+                string[] varList = File.ReadAllLines(exportDir + "tag_uses.txt");
+                foreach (string v in varList)
+                {
+                    string[] vv = v.Trim().Split(';');
+                    foreach (string v2 in vv)
+                    {
+                        string[] vvv = v2.Split();
+                        if (vvv.Length >= 3)
+                        {
+                            int tagNo = int.Parse(vvv[0]);
+                            int objectNo = int.Parse(vvv[1]);
+                            EnsureTagUse(tagUses, tagNo, objectNo);
+                            tagUses[tagNo][objectNo] = int.Parse(vvv[2]);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Creating new tag_uses.txt file...");
+            }
+
+            return tagUses;
+        }
+
+        private static void EnsureTagUse(List<List<int>> tagUses, int tagNo, int objectNo)
+        {
+            if (tagUses[tagNo].Count <= objectNo)
+            {
+                int numToAdd = objectNo - tagUses[tagNo].Count;
+                numToAdd++;
+                for (int i = 0; i < numToAdd; i++)
+                    tagUses[tagNo].Add(0);
+            }
+        }
+
+        private static void WritePassage(StreamWriter writer, List<Skriptum> scenes, string passage)
+        {
+            int sceneIdx = 0;
+            bool found = false;
+            while (!found && sceneIdx < scenes.Count)
+            {
+                if (scenes[sceneIdx].ID.Equals(passage))
+                    found = true;
+                else
+                    sceneIdx++;
+            }
+
+            if (passage.Equals("exit"))
+                sceneIdx = 100000;
+            else if (passage.Equals(string.Empty))
+                sceneIdx = 0;
+            else if (!found)
+            {
+                Console.WriteLine("Error passage not found: " + passage);
+                //do_error(); // ?
+            }
+
+            writer.Write(" %d ", sceneIdx);
+        }
+
+        private static List<double[]> CompileRelations(List<Skriptum> factions)
         {
             List<double[]> relations = new List<double[]>();
             for (int i = 0; i < factions.Count; i++)
@@ -639,14 +1571,15 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
 
             for (int i = 0; i < factions.Count; i++)
             {
-                relations[i][i] = factions[i].FactionCoherence;
-                double[] rels = factions[i].Relations;
+                Faction faction = (Faction)factions[i];
+                relations[i][i] = faction.FactionCoherence;
+                double[] rels = faction.Relations;
                 for (int j = 0; j < rels.Length; j++)
                 {
                     int otherPos = -1;
-                    string relName = factions[i].Ranks[j];
+                    string relName = faction.Ranks[j];
                     for (int k = 0; k < factions.Count; k++)
-                        if (factions[k].Name.Equals(relName))
+                        if (((Faction)factions[k]).Name.Equals(relName))
                             otherPos = k;
                     if (otherPos >= 0)
                     {
@@ -693,6 +1626,11 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
 
         private static string ConvertToIdentifier(string idText)
         {
+            return ConvertToIdentifierWithNoLowerCase(idText).ToLower();
+        }
+
+        private static string ConvertToIdentifierWithNoLowerCase(string idText)
+        {
             idText = idText.Replace(' ', '_');
             idText = idText.Replace("'", "_");
             idText = idText.Replace('`', '_');
@@ -702,7 +1640,6 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
             idText = idText.Replace(',', '_');
             idText = idText.Replace('|', '_');
             idText = idText.Replace('\t', '_');// Tab
-            idText = idText.ToLower();
             return idText;
         }
 
@@ -723,9 +1660,11 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
             return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(List<>)));
         }
 
-        private static bool IsLhsOperationForGlobalVars(object opcode)
+        private static bool IsLhsOperationForGlobalVars(string opcode)
         {
-            return lhsOperations.Contains(opcode) ||
+            if (globalLhsOperations.Count == 0)
+                globalLhsOperations = GetHeaderOperationsList("global_lhs_operations");
+            return IsLhsOperation(opcode) ||
                 globalLhsOperations.Contains(opcode);
         }
 
@@ -739,7 +1678,7 @@ def write_actions(action_set,num_action_codes,action_codes,file_name):
                 // check this part again because list and array are incompatible in C#
                 string[] statementA = (string[])statement;
                 opcode = statementA[0];
-                if (IsLhsOperationForGlobalVars(opcode))
+                if (IsLhsOperationForGlobalVars(opcode.ToString()))
                 {
                     if (statementA.Length > 1)
                     {

@@ -2,10 +2,6 @@
 {
     public class FaceKey
     {
-        private int width, height;
-        private double corX, corY;
-        private string text, id;
-
         public FaceKey(string id, int width, int height, double corX, double corY, string text) //string[] raw_data
         {
             #region OLD
@@ -19,25 +15,25 @@
 
             #endregion
 
-            this.id = id;
-            this.width = width;
-            this.height = height;
-            this.corX = corX;
-            this.corY = corY;
-            this.text = text.Replace('_', ' ');
+            ID = id;
+            Width = width;
+            Height = height;
+            CorX = corX;
+            CorY = corY;
+            Text = text.Replace('_', ' ');
         }
 
-        public string ID { get { return id; } }
+        public string ID { get; }
 
-        public string Text { get { return text; } }
+        public string Text { get; }
 
-        public int Width { get { return width; } }
+        public int Width { get; }
 
-        public int Height { get { return height; } }
+        public int Height { get; }
 
-        public double CorX { get { return corX; } }
+        public double CorX { get; }
 
-        public double CorY { get { return corY; } }
+        public double CorY { get; }
 
     }
 }

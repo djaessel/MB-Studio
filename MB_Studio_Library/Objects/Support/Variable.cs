@@ -2,18 +2,15 @@
 {
     public class Variable
     {
-        private decimal value;
-        private string name;
-
         public Variable(string name, decimal value)
         {
-            this.name = name;
-            this.value = value;
+            Name = name;
+            Value = value;
         }
 
-        public string Name { get { return name; } }
+        public string Name { get; }
 
-        public decimal Value { get { return value; } }
+        public decimal Value { get; }
 
     }
 }
