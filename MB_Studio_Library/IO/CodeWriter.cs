@@ -72,6 +72,12 @@ namespace MB_Studio_Library.IO
 
         private static List<Skriptum> parties = new List<Skriptum>();
 
+        private static List<Skriptum> dialogs = new List<Skriptum>();
+
+        private static List<Skriptum> simpleTriggers = new List<Skriptum>();
+
+        private static List<Skriptum> triggers = new List<Skriptum>();
+
         //private static List<Skriptum> s = new List<Skriptum>();
 
         #endregion
@@ -330,8 +336,7 @@ namespace MB_Studio_Library.IO
 
             List<string> variables = LoadVariables(exportDir, out List<int> variablesUses);
 
-            // SET NULL TO LIST LATER !!!
-            CompileAllGlobalVars(variables, variablesUses, null, null, null, null, null, null, null, null);
+            CompileAllGlobalVars(variables, variablesUses);
 
             SaveVariables(exportDir, variables, variablesUses);
         }
@@ -1710,18 +1715,8 @@ namespace MB_Studio_Library.IO
             }
         }
 
-        private static void CompileAllGlobalVars(
-            List<string> variableList,
-            List<int> variableUses,
-            List<Trigger> triggers,
-            List<Dialog> senctences,
-            List<GameMenu> gameMenus,
-            List<MissionTemplate> missionTemplates,
-            List<SceneProp> sceneProps,
-            List<Presentation> presentations,
-            List<Script> scripts,
-            List<SimpleTrigger> simpleTriggers
-        ) {
+        private static void CompileAllGlobalVars(List<string> variableList, List<int> variableUses)
+        {
             List<object> tempList = new List<object>();
             var listType = tempList.GetType(); // not necessary later because is always (generic) IList
 
@@ -1764,7 +1759,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (Dialog dialog in senctences)//code?
+            foreach (Dialog dialog in dialogs)
             {
                 try
                 {
@@ -1777,7 +1772,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (GameMenu gameMenu in gameMenus)
+            foreach (GameMenu gameMenu in menus)
             {
                 try
                 {

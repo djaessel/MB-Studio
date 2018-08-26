@@ -2,7 +2,7 @@
 {
     public class FaceTexture
     {
-        public FaceTexture(string name, uint primaryHexValue, string[] hairMaterials, uint[] textureHexValues)
+        public FaceTexture(string name, uint primaryHexValue, string[] hairMaterials, ulong[] textureHexValues)
         {
             Name = name;
             Color = primaryHexValue;
@@ -16,7 +16,7 @@
 
         public string[] HairMaterials { get; }
 
-        public uint[] HairColors { get; }
+        public ulong[] HairColors { get; }
 
     }
 }

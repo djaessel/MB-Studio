@@ -135,10 +135,10 @@ namespace MB_Studio_Library.Objects
                     textures[j] = s[y + x + 4];
                     x++;
                 }
-                uint[] texHV = new uint[int.Parse(s[y + 3])];
+                ulong[] texHV = new ulong[int.Parse(s[y + 3])];
                 for (int j = 0; j < texHV.Length; j++)
                 {
-                    texHV[j] = uint.Parse(s[y + x + 4]);
+                    texHV[j] = ulong.Parse(s[y + x + 4]);
                     x++;
                 }
                 FaceTextures[i] = new FaceTexture(s[y], uint.Parse(s[y + 1]), textures, texHV);
