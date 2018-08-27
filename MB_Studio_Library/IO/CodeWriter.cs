@@ -78,6 +78,10 @@ namespace MB_Studio_Library.IO
 
         private static List<Skriptum> triggers = new List<Skriptum>();
 
+        private static List<Skriptum> infoPages = new List<Skriptum>();
+
+        //private static List<Skriptum> s = new List<Skriptum>();
+        
         //private static List<Skriptum> s = new List<Skriptum>();
 
         #endregion
@@ -279,8 +283,8 @@ namespace MB_Studio_Library.IO
             ProcessQuests(exportDir);
             ProcessInfoPages(exportDir);
             ProcessSimpleTriggers(exportDir);
-            ProcessA(exportDir);
-            ProcessB(exportDir);
+            ProcessTriggers(exportDir);
+            ProcessDialogs(exportDir);
             ProcessC(exportDir);
             ProcessD(exportDir);
             ProcessE(exportDir);
@@ -824,57 +828,112 @@ namespace MB_Studio_Library.IO
         {
             Console.WriteLine("Exporting quest data...");
 
-            // 
+            // save quest
+            using (StreamWriter writer = new StreamWriter(exportDir + "quest.txt"))
+            {
+                writer.WriteLine("questsfile version 1");//change version if necessary
+                writer.WriteLine(quests.Count);
+                foreach (Quest quest in quests)
+                {
+                    writer.Write("qst_%s %s %d ", quest.ID, quest.Name.Replace(' ', '_'), quest.FlagsGZ);
+                    writer.WriteLine("%s ", quest.Description.Replace(' ', '_'));
+                }
+            }
 
-
-            // 
-
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_quests.py"))
+            {
+                for (int i = 0; i < quests.Count; i++)
+                    writer.WriteLine("qst_%s = %d", quests[i].ID, i);
+                for (int i = 0; i < quests.Count; i++)
+                    writer.WriteLine("qsttag_%s = %d", quests[i].ID, OP_MASK_QUEST_INDEX | i);
+                writer.WriteLine(Environment.NewLine);
+            }
         }
 
         private static void ProcessInfoPages(string exportDir)
         {
             Console.WriteLine("Exporting info_page data...");
 
-            // 
+            // save info pages
+            using (StreamWriter writer = new StreamWriter(exportDir + "info_pages.txt"))
+            {
+                writer.WriteLine("infopagesfile version 1");//change version if necessary
+                writer.WriteLine(infoPages.Count);
+                foreach (InfoPage infoPage in infoPages)
+                    writer.WriteLine("ip_%s %s %s", infoPage.ID, infoPage.Name.Replace(' ', '_'), infoPage.Text.Replace(' ', '_'));
+            }
 
-
-            // 
-
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_info_pages.py"))
+            {
+                for (int i = 0; i < infoPages.Count; i++)
+                    writer.WriteLine("ip_%s = %d", infoPages[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
         }
 
         private static void ProcessSimpleTriggers(string exportDir)
         {
             Console.WriteLine("Exporting simple triggers...");
 
-            // 
+            List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
+            using (StreamWriter writer = new StreamWriter(exportDir + "simple_triggers.txt"))
+            {
+                writer.WriteLine("simple_triggers_file version 1");//change version if necessary
+                SaveSimpleTriggers(writer, (SimpleTrigger[])simpleTriggers.ToArray(), variables, variableUses, tagUses, quickStrings);
+            }
 
-            //
-
+            SaveVariables(exportDir, variables, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
 
-        private static void ProcessA(string exportDir)
+        private static void ProcessTriggers(string exportDir)
         {
-            Console.WriteLine("Exporting a...");
+            Console.WriteLine("Exporting triggers...");
 
-            // 
+            List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
+            using (StreamWriter writer = new StreamWriter(exportDir + "triggers.txt"))
+            {
+                writer.WriteLine("triggersfile version 1");//change version if necessary
+                writer.WriteLine(triggers.Count);
+                foreach (Trigger trigger in triggers)
+                {
+                    writer.Write("%f %f %f ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
+                    SaveStatementBlock(writer, 0, true, trigger.ConditionBlock, variables, variableUses, tagUses, quickStrings);
+                    SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variables, variableUses, tagUses, quickStrings);
+                    writer.WriteLine();
+                }
+            }
 
-            //
-
+            SaveVariables(exportDir, variables, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
-        
-        private static void ProcessB(string exportDir)
+
+        private static void ProcessDialogs(string exportDir)
         {
-            Console.WriteLine("Exporting b...");
+            Console.WriteLine("Exporting dialogs...");
 
-            // 
+            List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
+            List<int> outputStates = CompileSentenceTokens(exportDir, dialogs, out List<int> inputStates);
+            SaveSentence(exportDir, variables, variableUses, dialogs, tagUses, quickStrings, inputStates, outputStates);
 
-            //
-
+            SaveVariables(exportDir, variables, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
-        
+
         private static void ProcessC(string exportDir)
         {
             Console.WriteLine("Exporting c...");
@@ -988,6 +1047,221 @@ namespace MB_Studio_Library.IO
         #endregion
 
         #region Helper Methods
+
+        private static void SaveSentence(
+            string exportDir,
+            List<string> variables,
+            List<int> variableUses,
+            List<Skriptum> dialogs,
+            List<List<int>> tagUses,
+            List<string[]> quickStrings,
+            List<int> inputStates,
+            List<int> outputStates
+            )
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "conversation.txt"))
+            {
+                writer.WriteLine("dialogsfile version 2");//change version if necessary
+                writer.WriteLine(dialogs.Count);
+
+                List<string[]> autoIds = new List<string[]>();
+
+                for (int i = 0; i < dialogs.Count; i++)
+                {
+                    Dialog dialog = (Dialog)dialogs[i];
+                    try
+                    {
+                        string dialogId = CreateAutoId2(dialog, autoIds);
+                        writer.Write("%s %d %d ", dialogId, dialog.TalkingPartnerCode, inputStates[i]);
+                        SaveStatementBlock(writer, 0, true, dialog.ConditionBlock, variables, variableUses, tagUses, quickStrings);
+
+                        writer.Write("%s ", dialog.DialogText.Replace(' ', '_'));
+                        if (dialog.DialogText.Length == 0)
+                            writer.Write("NO_TEXT ");
+                        writer.Write(" %d ", outputStates[i]);
+                        SaveStatementBlock(writer, 0, true, dialog.ConsequenceBlock, variables, variableUses, tagUses, quickStrings);
+
+                        if (dialog.VoiceOverSoundFile.Length > 0)
+                            writer.WriteLine("%s ", dialog.VoiceOverSoundFile);
+                        else
+                            writer.WriteLine("NO_VOICEOVER ");
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Error in dialog line:");
+                        Console.WriteLine(dialog.ID + " " + dialog.StartDialogState + " " + dialog.EndDialogState + " " + dialog.DialogText);
+                    }
+                }
+            }
+        }
+
+        private static string CreateAutoId2(Dialog dialog, List<string[]> autoIds)
+        {
+            string text = dialog.DialogText;
+            string tokenInput = ConvertToIdentifier(dialog.StartDialogState);
+            string tokenOutput = ConvertToIdentifier(dialog.EndDialogState);
+            string autoId = "dlga_" + tokenInput + ":" + tokenOutput;
+
+            bool done = false;
+
+            bool autoIdsHasKey = AutoIdsHasKey(autoIds, autoId);
+            if (!autoIdsHasKey || (autoIdsHasKey && AutoIdsGetValue(autoIds, autoId).Equals(text)))
+                done = true;
+
+            if (!done)
+            {
+                string newAutoId;
+                int number = 0;
+                do
+                {
+                    number++;
+                    newAutoId = autoId + "." + number;
+                } while (AutoIdsHasKey(autoIds, newAutoId));
+                autoId = newAutoId;
+            }
+
+            AutoIdsSetValue(autoIds, autoId, text);
+
+            return autoId;
+        }
+
+        private static bool AutoIdsHasKey(List<string[]> autoIds, string key)
+        {
+            bool found = false;
+            for (int i = 0; i < autoIds.Count; i++)
+            {
+                if (autoIds[i][0].Equals(key))
+                {
+                    found = true;
+                    i = autoIds.Count;
+                }
+            }
+            return found;
+        }
+
+        private static string AutoIdsGetValue(List<string[]> autoIds, string key)
+        {
+            string val = null;
+            for (int i = 0; i < autoIds.Count; i++)
+            {
+                if (autoIds[i][0].Equals(key))
+                {
+                    val = autoIds[i][1];
+                    i = autoIds.Count;
+                }
+            }
+            return val;
+        }
+
+        private static void AutoIdsSetValue(List<string[]> autoIds, string key, string val)
+        {
+            for (int i = 0; i < autoIds.Count; i++)
+            {
+                if (autoIds[i][0].Equals(key))
+                {
+                    autoIds[i][1] = val;
+                    i = autoIds.Count;
+                }
+            }
+        }
+
+        private static List<int> CompileSentenceTokens(string exportDir, List<Skriptum> dialogs, out List<int> inputTokens)
+        {
+            inputTokens = new List<int>();
+            List<int> outputTokens = new List<int>();
+            List<string> dialogStates = new List<string>() {
+                "start",
+                "party_encounter",
+                "prisoner_liberated",
+                "enemy_defeated",
+                "party_relieved",
+                "event_triggered",
+                "close_window",
+                "trade",
+                "exchange_members",
+                "trade_prisoners",
+                "buy_mercenaries",
+                "view_char",
+                "training",
+                "member_chat",
+                "prisoner_chat"
+            };
+            List<int> dialogStateUsages = new List<int>() {
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+            };
+
+            foreach (Dialog dialog in dialogs)
+            {
+                bool found = false;
+                int outputTokenId = -1;
+                string outputToken = dialog.EndDialogState;
+
+                for (int i = 0; i < dialogStates.Count; i++)
+                {
+                    if (outputToken.Equals(dialogStates[i]))
+                    {
+                        outputTokenId = i;
+                        found = true;
+                        i = dialogStates.Count;
+                    }
+                }
+
+                if (!found)
+                {
+                    outputTokenId = dialogStates.Count;
+                    dialogStates.Add(outputToken);
+                    dialogStateUsages.Add(0);
+                }
+
+                outputTokens.Add(outputTokenId);
+            }
+
+            foreach (Dialog dialog in dialogs)
+            {
+                bool found = false;
+                int inputTokenId = -1;
+                string inputToken = dialog.StartDialogState;
+
+                for (int i = 0; i < dialogStates.Count; i++)
+                {
+                    if (inputToken.Equals(dialogStates[i]))
+                    {
+                        inputTokenId = i;
+                        dialogStateUsages[i]++;
+                        found = true;
+                        i = dialogStates.Count;
+                    }
+                }
+
+                if (!found)
+                {
+                    Console.WriteLine(dialog.StartDialogState);
+                    Console.WriteLine(dialog.DialogText);
+                    Console.WriteLine(dialog.EndDialogState);
+                    Console.WriteLine("**********************************************************************************");
+                    Console.WriteLine("ERROR: INPUT TOKEN NOT FOUND:" + inputToken);
+                    Console.WriteLine("**********************************************************************************");
+                    Console.WriteLine("**********************************************************************************");
+                }
+
+                inputTokens.Add(inputTokenId);
+            }
+
+            SaveDialogStates(exportDir, dialogStates);
+
+            for (int i = 0; i < dialogStates.Count; i++)
+                if (dialogStateUsages[i] == 0)
+                    Console.WriteLine("ERROR: Output token not found: " + dialogStates[i]);
+
+            return outputTokens;
+        }
+
+        private static void SaveDialogStates(string exportDir, List<string> dialogStates)
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "dialog_states.txt"))
+                foreach (string dialogState in dialogStates)
+                    writer.WriteLine(dialogState);
+        }
 
         private static void SaveSimpleTriggers(
             StreamWriter writer,
