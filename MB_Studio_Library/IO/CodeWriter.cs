@@ -884,7 +884,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "simple_triggers.txt"))
             {
                 writer.WriteLine("simple_triggers_file version 1");//change version if necessary
-                SaveSimpleTriggers(writer, (SimpleTrigger[])simpleTriggers.ToArray(), variables, variableUses, tagUses, quickStrings);
+                SaveSimpleTriggers(writer, simpleTriggers.ToArray(), variables, variableUses, tagUses, quickStrings);
             }
 
             SaveVariables(exportDir, variables, variableUses);
@@ -1265,7 +1265,7 @@ namespace MB_Studio_Library.IO
 
         private static void SaveSimpleTriggers(
             StreamWriter writer,
-            SimpleTrigger[] simpleTriggers,
+            Skriptum[] simpleTriggers,
             List<string> variableList,
             List<int> variableUses,
             List<List<int>> tagUses,
