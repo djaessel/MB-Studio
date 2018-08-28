@@ -80,9 +80,7 @@ namespace MB_Studio_Library.IO
 
         private static List<Skriptum> infoPages = new List<Skriptum>();
 
-        //private static List<Skriptum> s = new List<Skriptum>();
-        
-        //private static List<Skriptum> s = new List<Skriptum>();
+        private static List<Skriptum> postfxParams = new List<Skriptum>();
 
         #endregion
 
@@ -285,16 +283,20 @@ namespace MB_Studio_Library.IO
             ProcessSimpleTriggers(exportDir);
             ProcessTriggers(exportDir);
             ProcessDialogs(exportDir);
-            ProcessC(exportDir);
-            ProcessD(exportDir);
-            ProcessE(exportDir);
-            ProcessF(exportDir);
-            ProcessG(exportDir);
-            ProcessH(exportDir);
-            ProcessI(exportDir);
-            ProcessJ(exportDir);
-            ProcessK(exportDir);
-            ProcessL(exportDir);
+            ProcessPostfxParams(exportDir);
+            ProcessItems(exportDir);
+            ProcessMapIcons(exportDir);
+            
+            ProcessTroops(exportDir);
+            ProcessTableauMaterials(exportDir);
+            ProcessPresentations(exportDir);
+            ProcessScripts(exportDir);
+            ProcessMenus(exportDir);
+            ProcessMissionTemplates(exportDir);
+            ProcessPartyTemplates(exportDir);
+            ProcessParties(exportDir);
+
+            ProcessGlobalVariablesUnused(exportDir);
 
         }
 
@@ -934,40 +936,131 @@ namespace MB_Studio_Library.IO
             SaveQuickStrings(exportDir, quickStrings);
         }
 
-        private static void ProcessC(string exportDir)
+        private static void ProcessPostfxParams(string exportDir)
         {
-            Console.WriteLine("Exporting c...");
+            Console.WriteLine("Exporting postfx_params...");
 
-            // 
+            // save postfx_params
+            using (StreamWriter writer = new StreamWriter(exportDir + "postfx.txt"))
+            {
+                writer.WriteLine("postfx_paramsfile version 1");//change version if necessary
+                writer.WriteLine(postfxParams.Count);
+                foreach (PostFX postFX in postfxParams)
+                {
+                    writer.Write("pfx_%s %d %d", postFX.ID, postFX.FlagsGZ, postFX.TonemapOperatorType);
 
+                    writer.Write("  %f %f %f %f",
+                        postFX.ShaderParameter1[0],
+                        postFX.ShaderParameter1[1],
+                        postFX.ShaderParameter1[2],
+                        postFX.ShaderParameter1[3]
+                    );
 
-            //
+                    writer.Write("  %f %f %f %f",
+                        postFX.ShaderParameter2[0],
+                        postFX.ShaderParameter2[1],
+                        postFX.ShaderParameter2[2],
+                        postFX.ShaderParameter2[3]
+                    );
 
+                    writer.Write("  %f %f %f %f",
+                        postFX.ShaderParameter3[0],
+                        postFX.ShaderParameter3[1],
+                        postFX.ShaderParameter3[2],
+                        postFX.ShaderParameter3[3]
+                    );
+
+                    writer.WriteLine();
+                }
+            }
+
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_postfx_params.py"))
+            {
+                for (int i = 0; i < postfxParams.Count; i++)
+                    writer.WriteLine("pfx_%s = %d", postfxParams[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
         }
-        
-        private static void ProcessD(string exportDir)
+
+        private static void ProcessItems(string exportDir)
         {
-            Console.WriteLine("Exporting d...");
+            Console.WriteLine("Exporting item data...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_items.py"))
+            {
+                for (int i = 0; i < items.Count; i++)
+                    writer.WriteLine("itm_%s = %d", ConvertToIdentifier(items[i].ID), i);
+                writer.WriteLine(Environment.NewLine);
+            }
 
+            // save items
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
-            //
+            WriteItems(exportDir, variableList, variableUses, tagUses, quickStrings);
 
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
-        
-        private static void ProcessE(string exportDir)
+
+        private static void ProcessMapIcons(string exportDir)
         {
-            Console.WriteLine("Exporting e...");
+            Console.WriteLine("Exporting map icons...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_map_icons.py"))
+            {
+                for (int i = 0; i < mapIcons.Count; i++)
+                    writer.WriteLine("icon_%s = %d", mapIcons[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
 
+            // save map icons
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
-            //
+            SaveMapIcons(exportDir, variableList, variableUses, tagUses, quickStrings);
 
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
-        
-        private static void ProcessF(string exportDir)
+
+        private static void SaveMapIcons(string exportDir, List<string> variableList, List<int> variableUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "map_icons.txt"))
+            {
+                writer.WriteLine("map_icons_file version 1");//change version if necessary
+                writer.WriteLine(mapIcons.Count);
+
+                throw new NotImplementedException();
+
+                foreach (MapIcon mapIcon in mapIcons)
+                {
+                    writer.Write("%s %d %s %f %d %f %f %f ",
+                        mapIcon.ID,
+                        mapIcon.FlagsGZ,
+                        mapIcon.MapIconName,
+                        mapIcon.Scale,
+                        mapIcon.Sound,//GET NUMBER!!!
+                        mapIcon.OffsetX,
+                        mapIcon.OffsetY,
+                        mapIcon.OffsetZ
+                    );
+
+                    SaveSimpleTriggers(writer, mapIcon.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
+
+                    writer.WriteLine();
+                }
+            }
+        }
+
+        private static void ProcessTroops(string exportDir)
         {
             Console.WriteLine("Exporting f...");
 
@@ -978,7 +1071,7 @@ namespace MB_Studio_Library.IO
 
         }
         
-        private static void ProcessG(string exportDir)
+        private static void ProcessTableauMaterials(string exportDir)
         {
             Console.WriteLine("Exporting g...");
 
@@ -989,7 +1082,7 @@ namespace MB_Studio_Library.IO
 
         }
         
-        private static void ProcessH(string exportDir)
+        private static void ProcessPresentations(string exportDir)
         {
             Console.WriteLine("Exporting h...");
 
@@ -1000,7 +1093,7 @@ namespace MB_Studio_Library.IO
 
         }
         
-        private static void ProcessI(string exportDir)
+        private static void ProcessScripts(string exportDir)
         {
             Console.WriteLine("Exporting i...");
 
@@ -1011,7 +1104,7 @@ namespace MB_Studio_Library.IO
 
         }
         
-        private static void ProcessJ(string exportDir)
+        private static void ProcessMenus(string exportDir)
         {
             Console.WriteLine("Exporting j...");
 
@@ -1022,7 +1115,7 @@ namespace MB_Studio_Library.IO
 
         }
         
-        private static void ProcessK(string exportDir)
+        private static void ProcessMissionTemplates(string exportDir)
         {
             Console.WriteLine("Exporting k...");
 
@@ -1033,7 +1126,7 @@ namespace MB_Studio_Library.IO
 
         }
         
-        private static void ProcessL(string exportDir)
+        private static void ProcessPartyTemplates(string exportDir)
         {
             Console.WriteLine("Exporting l...");
 
@@ -1044,9 +1137,103 @@ namespace MB_Studio_Library.IO
 
         }
 
+        private static void ProcessParties(string exportDir)
+        {
+            Console.WriteLine("Exporting m...");
+
+            // 
+
+
+            //
+
+        }
+
+        private static void ProcessGlobalVariablesUnused(string exportDir)
+        {
+            Console.WriteLine("Checking global variable usages...");
+            List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
+            for (int i = 0; i < variables.Count; i++)
+                if (variableUses[i] == 0)
+                    Console.WriteLine("WARNING: Global variable never used: " + variables[i]);
+        }
+
         #endregion
 
         #region Helper Methods
+
+        private static void WriteItems(
+            string exportDir,
+            List<string> variableList,
+            List<int> variableUses,
+            List<List<int>> tagUses,
+            List<string[]> quickStrings
+            )
+        {
+            using (StreamWriter writer = new StreamWriter(exportDir + "item_kinds1.txt"))
+            {
+                writer.WriteLine("itemsfile version 3");//change version if necessary
+                writer.WriteLine(items.Count);
+
+                foreach (Item item in items)
+                {
+                    if (item.ItemProperties.Contains("itp_merchandise"))
+                    {
+                        int idNo = FindObject(items, ConvertToIdentifier(item.ID));
+                        AddTagUse(tagUses, TagType.Item, idNo);
+                    }
+
+                    writer.Write(" itm_%s %s %s %d ",
+                        ConvertToIdentifier(item.ID),
+                        ReplaceSpaces(item.Name),
+                        ReplaceSpaces(item.PluralName),
+                        item.Meshes.Count
+                    );
+
+                    foreach (string mesh in item.Meshes)
+                    {
+                        string[] meshVals = mesh.Split();
+                        writer.Write(" %s %d ", meshVals[0], meshVals[1]);
+                    }
+
+                    throw new NotImplementedException();
+
+                    writer.WriteLine(" %d %d %d %d %f %d %d %d %d %d %d %d %d %d %d %d %d",
+                        item.ItemProperties,//GET NUMBER!!!
+                        item.CapabilityFlags,//GET NUMBER!!!
+                        item.Price,
+                        item.ModBits,//GET NUMBER!!!
+                        item.Weight,
+                        item.Abundance,
+                        item.HeadArmor,
+                        item.BodyArmor,
+                        item.LegArmor,
+                        item.Difficulty,
+                        item.HitPoints,
+                        item.SpeedRating,
+                        item.MissileSpeed,
+                        item.WeaponLength,
+                        item.MaxAmmo,
+                        item.ThrustDamage,
+                        item.SwingDamage
+                    );
+
+                    writer.WriteLine(" %d", item.Factions.Count);
+                    foreach (int faction in item.Factions)
+                        writer.Write(" %d", faction);
+                    if (item.Factions.Count > 0)
+                        writer.WriteLine();
+
+                    List<string> triggerList = item.Triggers;
+
+                    /// JUST FOR TESTING!!!
+                    foreach (string trigger in triggerList)
+                        Console.WriteLine(trigger);
+                    /// JUST FOR TESTING!!!
+
+                    //SaveSimpleTriggers(writer, triggerList, variableList, variableUses, tagUses, quickStrings);
+                }
+            }
+        }
 
         private static void SaveSentence(
             string exportDir,

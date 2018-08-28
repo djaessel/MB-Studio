@@ -1364,12 +1364,12 @@ namespace MB_Studio_Library.IO
             wr.WriteLine("\t]),");
         }
 
-        private void WriteAShaderParameter(StreamWriter wr, string[] s)
+        private void WriteAShaderParameter(StreamWriter wr, float[] s)
         {
             wr.Write("[");
             for (int i = 0; i < s.Length; i++)
             {
-                wr.Write(CodeReader.Repl_CommaWDot(s[i]));
+                wr.Write(CodeReader.Repl_CommaWDot(s[i].ToString()));
                 if (i < s.Length - 1)
                     wr.Write(", ");
             }
