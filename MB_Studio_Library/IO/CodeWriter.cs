@@ -1062,90 +1062,407 @@ namespace MB_Studio_Library.IO
 
         private static void ProcessTroops(string exportDir)
         {
-            Console.WriteLine("Exporting f...");
+            Console.WriteLine("Exporting troops data...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_troops.py"))
+            {
+                for (int i = 0; i < troops.Count; i++)
+                    writer.WriteLine("trp_%s = %d", troops[i].ID, i);
+                writer.WriteLine(Environment.NewLine);
+            }
 
+            // save troops
+            using (StreamWriter writer = new StreamWriter(exportDir + "troops.txt"))
+            {
+                writer.WriteLine("troopsfile version 2");//change version if necessary
+                writer.WriteLine(troops.Count);
 
-            //
+                foreach (Troop troop in troops)
+                {
+                    if (troop.SceneCodeGZ > 0)
+                    {
+                        //ulong TSF_SIZE_ID_MASK = 0x0000ffff;
+                        //AddTagUse(tagUses, TagType.Scene, troop.SceneCodeGZ & TSF_SIZE_ID_MASK);
+                        int idNo = FindObject(troops, ConvertToIdentifier(troop.ID));
+                        //if (idNo >= 0)
+                        //    AddTagUse(tagUses, TagType.Troop, idNo);
+                        //if (troop.FactionID > 0)
+                        //    AddTagUse(tagUses, TagType.Faction, troop.FactionID);
+                    }
 
+                    writer.WriteLine(Environment.NewLine + "trp_%s %s %s %s %d %d %d %d %d %d",
+                        ConvertToIdentifier(troop.ID),
+                        ReplaceSpaces(troop.Name),
+                        ReplaceSpaces(troop.PluralName),
+                        troop.DialogImage,
+                        troop.FlagsGZ,
+                        troop.SceneCodeGZ,
+                        troop.ReservedGZ,
+                        troop.UpgradeTroop1,
+                        troop.UpgradeTroop2
+                    );
+
+                    for (int i = 0; i < troop.Items.Count; i++)
+                    {
+                        //AddTagUse(tagUses, TagType.Item, item);
+                        writer.Write("%d %d ", troop.Items[i], troop.ItemFlags[i] << 24);//check if 24 is done before
+                    }
+
+                    int maxItemCount = 64;// is 64 enough or maybe later more?
+                    int leftOver = maxItemCount - troop.Items.Count;
+                    for (int i = 0; i < leftOver; i++)
+                        writer.Write("-1 0 ");
+                    writer.Write(Environment.NewLine + " ");
+
+                    writer.WriteLine(" %d %d %d %d %d", troop.Strength, troop.Intelligence, troop.Charisma, troop.Level);
+
+                    foreach (int wp in troop.Proficiencies)
+                        writer.Write(" %d", wp);
+                    writer.WriteLine();
+
+                    foreach (int skill in troop.Skills)
+                        writer.Write("%d ", skill);
+                    writer.Write(Environment.NewLine + "  ");
+
+                    int numFaceNumericKeys = 4;
+                    string[] faces = new string[] { troop.Face1, troop.Face2 };
+                    foreach (string face in faces)
+                    {
+                        if (face.StartsWith("0x"))
+                        {
+                            string faceTmp = face.Substring(2);
+                            if (faceTmp.Length == (numFaceNumericKeys * 16))
+                            {
+                                ulong[] wordKeys = new ulong[numFaceNumericKeys];
+                                for (int i = 0; i < wordKeys.Length; i++)
+                                    wordKeys[i] = HexConverter.Hex2Dec_16CHARS(faceTmp.Substring(i * 16, 16));
+                                for (int i = 0; i < wordKeys.Length; i++)
+                                    writer.Write("%d ", wordKeys[(wordKeys.Length - 1) - i]);
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < numFaceNumericKeys; i++)
+                                writer.Write("%d ", 0);
+                            Console.WriteLine("FACE_FORMAT_ERROR: " + face);
+                        }
+                    }
+
+                    writer.WriteLine();
+                }
+            }
         }
-        
+
         private static void ProcessTableauMaterials(string exportDir)
         {
-            Console.WriteLine("Exporting g...");
+            Console.WriteLine("Exporting tableau materials data...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_tableau_materials.py"))
+            {
+                for (int i = 0; i < tableaus.Count; i++)
+                    writer.WriteLine("tableau_%s = %d", tableaus[i].ID, i);
+            }
 
+            // save tableaus
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
-            //
+            using (StreamWriter writer = new StreamWriter(exportDir + "tableau_materials.txt"))
+            {
+                writer.WriteLine(tableaus.Count);
+                foreach (TableauMaterial tableau in tableaus)
+                {
+                    writer.Write("tab_%s %d %s %d %d %d %d %d %d",
+                        tableau.ID,
+                        tableau.FlagsGZ,
+                        tableau.SampleMaterialName,
+                        tableau.Width,
+                        tableau.Height,
+                        tableau.MinX,
+                        tableau.MinY,
+                        tableau.MaxX,
+                        tableau.MaxY
+                    );
+                    SaveStatementBlock(writer, 0, true, tableau.OperationBlock, variableList, variableUses, tagUses, quickStrings);
+                    writer.WriteLine();
+                }
+            }
 
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
         
         private static void ProcessPresentations(string exportDir)
         {
-            Console.WriteLine("Exporting h...");
+            Console.WriteLine("Exporting presentations...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_presentations.py"))
+            {
+                for (int i = 0; i < presentations.Count; i++)
+                    writer.WriteLine("prsnt_%s = %d", presentations[i].ID, i);
+            }
 
+            // save presentations
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
-            //
+            using (StreamWriter writer = new StreamWriter(exportDir + "presentations.txt"))
+            {
+                writer.WriteLine("presentationsfile version 1");//change version if necessary
+                writer.WriteLine(" %d", presentations.Count);
+                foreach (Presentation presentation in presentations)
+                {
+                    writer.Write("prsnt_%s %d %s %d %d %d %d %d %d", presentation.ID, presentation.Flags, presentation.MeshID);
+                    SaveSimpleTriggers(writer, presentation.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
+                    writer.WriteLine();
+                }
+            }
 
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
         
         private static void ProcessScripts(string exportDir)
         {
-            Console.WriteLine("Exporting i...");
+            Console.WriteLine("Exporting scripts...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_scripts.py"))
+                for (int i = 0; i < scripts.Count; i++)
+                    writer.WriteLine("script_%s = %d", scripts[i].ID, i);
 
+            // save presentations
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
-            //
+            using (StreamWriter writer = new StreamWriter(exportDir + "scripts.txt"))
+            {
+                writer.WriteLine("scriptsfile version 1");//change version if necessary
+                writer.WriteLine(scripts.Count);
+                foreach (Script script in scripts)
+                {
+                    float unknownValue = -1;
+                    string scriptId = ConvertToIdentifier(script.ID);
+                    writer.WriteLine("%s %f", scriptId, unknownValue);
+                    SaveStatementBlock(writer, scriptId, false, script.Code, variableList, variableUses, tagUses, quickStrings);
+                    /*
+    if (type(func[1]) == list_type):
+      file.write("%s -1\n"%(convert_to_identifier(func[0])))
+      save_statement_block(file,convert_to_identifier(func[0]), 0,func[1], variable_list,variable_uses,tag_uses,quick_strings)
+    else:
+      file.write("%s %f\n"%(convert_to_identifier(func[0]), func[1]))
+      save_statement_block(file,convert_to_identifier(func[0]), 0,func[2], variable_list,variable_uses,tag_uses,quick_strings)
+                    */
+                    writer.WriteLine();
+                }
+            }
 
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
         
         private static void ProcessMenus(string exportDir)
         {
             Console.WriteLine("Exporting j...");
 
-            // 
 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_menus.py"))
+            {
+                for (int i = 0; i < presentations.Count; i++)
+                    writer.WriteLine("menu_%s = %d", presentations[i].ID, i);
+            }
 
-            //
+            // save menus
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
+            using (StreamWriter writer = new StreamWriter(exportDir + "menus.txt"))
+            {
+                writer.WriteLine("menusfile version 1");//change version if necessary
+                writer.WriteLine(" %d", menus.Count);
+                foreach (GameMenu menu in menus)
+                {
+                    writer.Write("menu_%s %d %s %s", menu.ID, menu.FlagsGZ, menu.Text.Replace(' ', '_'), menu.MeshName);
+                    SaveStatementBlock(writer, 0, true, menu.OperationBlock, variableList, variableUses, tagUses, quickStrings);
+                    writer.WriteLine(menu.MenuOptions.Length);
+
+                    foreach (GameMenuOption option in menu.MenuOptions)
+                    {
+                        writer.Write(" mno_%s ", option.Name);
+                        SaveStatementBlock(writer, 0, true, option.ConditionBlock, variableList, variableUses, tagUses, quickStrings);
+                        writer.Write(" %s ", option.Text.Replace(' ', '_'));
+                        SaveStatementBlock(writer, 0, true, option.ConsequenceBlock, variableList, variableUses, tagUses, quickStrings);
+                        writer.Write(" %s ", option.DoorText.Replace(' ', '_'));
+                    }
+
+                    writer.WriteLine();
+                }
+            }
+
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
         
         private static void ProcessMissionTemplates(string exportDir)
         {
-            Console.WriteLine("Exporting k...");
+            Console.WriteLine("Exporting mission_template data...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_mission_templates.py"))
+            {
+                for (int i = 0; i < missionTemplates.Count; i++)
+                    writer.WriteLine("mst_%s = %d", missionTemplates[i].ID, i);
+            }
 
+            throw new NotImplementedException();
 
-            //
+            // save mission templates
+            List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
+            List<List<int>> tagUses = LoadTagUses(exportDir);
+            List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
+            using (StreamWriter writer = new StreamWriter(exportDir + "scripts.txt"))
+            {
+                writer.WriteLine("missionsfile version 1");//change version if necessary
+                writer.WriteLine(" %d", missionTemplates.Count);
+                foreach (MissionTemplate missionTemplate in missionTemplates)
+                {
+                    writer.Write("mst_%s %s %d ",
+                        ConvertToIdentifier(missionTemplate.ID),
+                        ConvertToIdentifier(missionTemplate.ID),
+                        missionTemplate.Flags//GET NUMBER!!!
+                    );
+
+                    writer.WriteLine(" %d", missionTemplate.MissionType);//GET NUMBER!!!
+                    writer.WriteLine("%s ", missionTemplate.Description.Replace(' ', '_'));
+                    writer.Write(Environment.NewLine + "%d ", missionTemplate.HeaderInfo.Length);
+
+                    foreach (string group in missionTemplate.HeaderInfo)
+                        SaveMissionTemplateGroup(writer, group);
+
+                    SaveTriggers(writer, missionTemplate.Triggers, variableList, variableUses, tagUses, quickStrings);
+
+                    writer.WriteLine();
+                }
+            }
+
+            SaveVariables(exportDir, variableList, variableUses);
+            SaveTagUses(exportDir, tagUses);
+            SaveQuickStrings(exportDir, quickStrings);
         }
-        
+
         private static void ProcessPartyTemplates(string exportDir)
         {
-            Console.WriteLine("Exporting l...");
+            Console.WriteLine("Exporting party_template data...");
 
-            // 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_party_templates.py"))
+                for (int i = 0; i < partyTemplates.Count; i++)
+                    writer.WriteLine("pt_%s = %d", partyTemplates[i].ID, i);
 
+            // save party template
+            using (StreamWriter writer = new StreamWriter(exportDir + "party_templates.txt"))
+            {
+                writer.WriteLine("partytemplatesfile version 1");//change version if necessary
+                writer.WriteLine(partyTemplates.Count);
+                foreach (PartyTemplate partyTemplate in partyTemplates)
+                {
+                    //AddTagUse(tagUses, TagType.Faction, partyTemplate.FactionID);
+                    writer.Write("pt_%s %s %d %d %d %d ",
+                        ConvertToIdentifier(partyTemplate.ID),
+                        ReplaceSpaces(partyTemplate.Name),
+                        partyTemplate.FlagsGZ,
+                        partyTemplate.MenuID,
+                        partyTemplate.FactionID,
+                        partyTemplate.Personality
+                    );
 
-            //
+                    foreach (PMember member in partyTemplate.Members)
+                        SavePartyTemplateTroop(writer, member);
 
+                    int maxMembers = 6;
+                    for (int i = 0; i < maxMembers - partyTemplate.Members.Length; i++)
+                        SavePartyTemplateTroop(writer, PMember.DEFAULT_MEMBER);
+
+                    writer.WriteLine();
+                }
+            }
         }
 
         private static void ProcessParties(string exportDir)
         {
-            Console.WriteLine("Exporting m...");
+            Console.WriteLine("Exporting parties...");
 
-            // 
+            List<List<int>> tagUses = LoadTagUses(exportDir);
 
+            // save python header
+            using (StreamWriter writer = new StreamWriter(".\\ID_parties.py"))
+                for (int i = 0; i < parties.Count; i++)
+                    writer.WriteLine("p_%s = %d", parties[i].ID, i);
 
-            //
+            // save parties
+            using (StreamWriter writer = new StreamWriter(exportDir + "parties.txt"))
+            {
+                writer.WriteLine("partiesfile version 1");//change version if necessary
+                writer.WriteLine(parties.Count);
 
+                for (int i = 0; i < parties.Count; i++)
+                {
+                    Party party = (Party)parties[i];
+
+                    if (party.FactionID >= 0)
+                        AddTagUse(tagUses, TagType.Faction, party.FactionID);
+
+                    writer.Write(" 1 %d %d ", i, i);
+                    //writer.Write(" 1 %d ", i);
+                    writer.Write("p_%s %s %d ", ConvertToIdentifier(party.ID), ReplaceSpaces(party.Name), party.FlagsGZ);
+
+                    //int menuNo = FindObject(menus, party.Menu);
+                    //if (menuNo < 0)
+                    //    Console.WriteLine("Error: Unable to find menu-id: " + party.Menu);
+
+                    writer.Write("%d ", party.MenuID);
+
+                    writer.Write("%d %d %d %d %d ",
+                        party.PartyTemplateID,
+                        party.FactionID,
+                        party.Personality,
+                        party.Personality,
+                        party.AIBehavior
+                    );
+
+                    writer.Write("%d %d ", party.AITargetParty, party.AITargetParty);
+
+                    double[] defaultBehaviorLocation = party.InitialCoordinates;
+                    writer.Write("%f %f ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
+                    writer.Write("%f %f ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
+                    writer.Write("%f %f 0.0 ", party.InitialCoordinates);
+
+                    writer.Write("%d ", party.Members.Length);
+                    foreach (PMember member in party.Members)
+                    {
+                        AddTagUse(tagUses, TagType.Troop, member.Troop);//GET NUMBER!!!
+                        writer.Write("%d %d 0 %d ", member.Troop, member.Flags, member.MaximumTroops);//GET NUMBER!!!
+                    }
+
+                    double bearing = (3.1415926 / 180d) * party.PartyDirectionInDegrees;
+                    writer.WriteLine(Environment.NewLine + "%f", bearing);
+                }
+            }
+
+            SaveTagUses(exportDir, tagUses);
         }
 
         private static void ProcessGlobalVariablesUnused(string exportDir)
@@ -1160,6 +1477,56 @@ namespace MB_Studio_Library.IO
         #endregion
 
         #region Helper Methods
+
+        private static void SavePartyTemplateTroop(StreamWriter writer, PMember member)
+        {
+            throw new NotImplementedException();
+            if (member != null)
+            {
+                //AddTagUse(tagUses, TagType.Troop, member.Troop);
+                //GET NUMBER!!!
+                writer.Write("%d %d %d %d ", member.Troop, member.Flags, member.MinimumTroops, member.MaximumTroops);
+            }
+            else
+                writer.Write("-1 ");
+        }
+
+        private static void SaveMissionTemplateGroup(StreamWriter writer, string group)
+        {
+            string[] groupSp = group.Split();
+            Console.WriteLine("SaveMissionTemplateGroup: " + group + " (" + groupSp.Length + ")");
+            /*
+def save_mission_template_group(file,entry):
+  if (len(entry[5]) > 8):
+    print "ERROR: Too many item_overrides!"
+    error()
+  file.write("%d %d %d %d %d %d  "%(entry[0],entry[1],entry[2],entry[3],entry[4], len(entry[5])))
+  for item_override in entry[5]:
+    add_tag_use(tag_uses,tag_item,item_override)
+    file.write("%d "%(item_override))
+  file.write("\n")
+            */
+        }
+
+        private static void SaveTriggers(
+            StreamWriter writer,
+            Trigger[] triggers,
+            List<string> variableList,
+            List<int> variableUses,
+            List<List<int>> tagUses,
+            List<string[]> quickStrings
+            )
+        {
+            writer.WriteLine(triggers.Length);
+            foreach (Trigger trigger in triggers)
+            {
+                writer.Write("%f %f %f ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
+                SaveStatementBlock(writer, 0, true, trigger.ConditionBlock, variableList, variableUses, tagUses, quickStrings);
+                SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
+                writer.WriteLine();
+            }
+            writer.WriteLine();
+        }
 
         private static void WriteItems(
             string exportDir,
