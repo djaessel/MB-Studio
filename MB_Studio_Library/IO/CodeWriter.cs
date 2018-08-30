@@ -929,7 +929,40 @@ namespace MB_Studio_Library.IO
             List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
             List<int> outputStates = CompileSentenceTokens(exportDir, dialogs, out List<int> inputStates);
-            SaveSentence(exportDir, variables, variableUses, dialogs, tagUses, quickStrings, inputStates, outputStates);
+            using (StreamWriter writer = new StreamWriter(exportDir + "conversation.txt"))
+            {
+                writer.WriteLine("dialogsfile version 2");//change version if necessary
+                writer.WriteLine(dialogs.Count);
+
+                List<string[]> autoIds = new List<string[]>();
+
+                for (int i = 0; i < dialogs.Count; i++)
+                {
+                    Dialog dialog = (Dialog)dialogs[i];
+                    try
+                    {
+                        string dialogId = CreateAutoId2(dialog, autoIds);
+                        writer.Write("%s %d %d ", dialogId, dialog.TalkingPartnerCode, inputStates[i]);
+                        SaveStatementBlock(writer, 0, true, dialog.ConditionBlock, variables, variableUses, tagUses, quickStrings);
+
+                        writer.Write("%s ", dialog.DialogText.Replace(' ', '_'));
+                        if (dialog.DialogText.Length == 0)
+                            writer.Write("NO_TEXT ");
+                        writer.Write(" %d ", outputStates[i]);
+                        SaveStatementBlock(writer, 0, true, dialog.ConsequenceBlock, variables, variableUses, tagUses, quickStrings);
+
+                        if (dialog.VoiceOverSoundFile.Length > 0)
+                            writer.WriteLine("%s ", dialog.VoiceOverSoundFile);
+                        else
+                            writer.WriteLine("NO_VOICEOVER ");
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Error in dialog line:");
+                        Console.WriteLine(dialog.ID + " " + dialog.StartDialogState + " " + dialog.EndDialogState + " " + dialog.DialogText);
+                    }
+                }
+            }
 
             SaveVariables(exportDir, variables, variableUses);
             SaveTagUses(exportDir, tagUses);
@@ -1450,11 +1483,16 @@ namespace MB_Studio_Library.IO
                     writer.Write("%f %f ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
                     writer.Write("%f %f 0.0 ", party.InitialCoordinates);
 
+                    string troopTag = "trp_";
                     writer.Write("%d ", party.Members.Length);
                     foreach (PMember member in party.Members)
                     {
-                        AddTagUse(tagUses, TagType.Troop, member.Troop);//GET NUMBER!!!
-                        writer.Write("%d %d 0 %d ", member.Troop, member.Flags, member.MaximumTroops);//GET NUMBER!!!
+                        string troopS = member.Troop;
+                        if (troopS.StartsWith(troopTag))
+                            troopS = troopTag + troopS;
+                        int troopNo = CodeReader.Troops.IndexOf(troopS);
+                        AddTagUse(tagUses, TagType.Troop, troopNo);
+                        writer.Write("%d %d 0 %d ", troopNo, member.Flags, member.MaximumTroops);
                     }
 
                     double bearing = (3.1415926 / 180d) * party.PartyDirectionInDegrees;
@@ -1480,12 +1518,15 @@ namespace MB_Studio_Library.IO
 
         private static void SavePartyTemplateTroop(StreamWriter writer, PMember member)
         {
-            throw new NotImplementedException();
             if (member != null)
             {
-                //AddTagUse(tagUses, TagType.Troop, member.Troop);
-                //GET NUMBER!!!
-                writer.Write("%d %d %d %d ", member.Troop, member.Flags, member.MinimumTroops, member.MaximumTroops);
+                string troopTag = "trp_";
+                string troopS = member.Troop;
+                if (troopS.StartsWith(troopTag))
+                    troopS = troopTag + troopS;
+                int troopNo = CodeReader.Troops.IndexOf(troopS);
+                //AddTagUse(tagUses, TagType.Troop, troopNo);
+                writer.Write("%d %d %d %d ", troopNo, member.Flags, member.MinimumTroops, member.MaximumTroops);
             }
             else
                 writer.Write("-1 ");
@@ -1598,53 +1639,6 @@ def save_mission_template_group(file,entry):
                     /// JUST FOR TESTING!!!
 
                     //SaveSimpleTriggers(writer, triggerList, variableList, variableUses, tagUses, quickStrings);
-                }
-            }
-        }
-
-        private static void SaveSentence(
-            string exportDir,
-            List<string> variables,
-            List<int> variableUses,
-            List<Skriptum> dialogs,
-            List<List<int>> tagUses,
-            List<string[]> quickStrings,
-            List<int> inputStates,
-            List<int> outputStates
-            )
-        {
-            using (StreamWriter writer = new StreamWriter(exportDir + "conversation.txt"))
-            {
-                writer.WriteLine("dialogsfile version 2");//change version if necessary
-                writer.WriteLine(dialogs.Count);
-
-                List<string[]> autoIds = new List<string[]>();
-
-                for (int i = 0; i < dialogs.Count; i++)
-                {
-                    Dialog dialog = (Dialog)dialogs[i];
-                    try
-                    {
-                        string dialogId = CreateAutoId2(dialog, autoIds);
-                        writer.Write("%s %d %d ", dialogId, dialog.TalkingPartnerCode, inputStates[i]);
-                        SaveStatementBlock(writer, 0, true, dialog.ConditionBlock, variables, variableUses, tagUses, quickStrings);
-
-                        writer.Write("%s ", dialog.DialogText.Replace(' ', '_'));
-                        if (dialog.DialogText.Length == 0)
-                            writer.Write("NO_TEXT ");
-                        writer.Write(" %d ", outputStates[i]);
-                        SaveStatementBlock(writer, 0, true, dialog.ConsequenceBlock, variables, variableUses, tagUses, quickStrings);
-
-                        if (dialog.VoiceOverSoundFile.Length > 0)
-                            writer.WriteLine("%s ", dialog.VoiceOverSoundFile);
-                        else
-                            writer.WriteLine("NO_VOICEOVER ");
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Error in dialog line:");
-                        Console.WriteLine(dialog.ID + " " + dialog.StartDialogState + " " + dialog.EndDialogState + " " + dialog.DialogText);
-                    }
                 }
             }
         }
