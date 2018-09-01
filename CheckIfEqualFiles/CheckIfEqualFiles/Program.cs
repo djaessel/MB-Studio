@@ -7,11 +7,6 @@ namespace CheckIfEqualFiles
         static void Main(string[] args)
         {
             CheckIfEqual.RunCheck(args);
-            EndConsole();
-        }
-
-        private static void EndConsole()
-        {
             Console.Write(Environment.NewLine + "Press any key to close the application...");
             Console.CursorVisible = false;
             Console.ReadKey();

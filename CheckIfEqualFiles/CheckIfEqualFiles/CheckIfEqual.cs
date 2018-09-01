@@ -196,20 +196,35 @@ namespace CheckIfEqualFiles
 
         private static void AnalyseAllTXTFiles()
         {
+            int failCount = 0;
             int matchCount = 0;
             List<string> failFiles = new List<string>();
+            List<string> matchFiles = new List<string>();
             foreach (string file in CodeReader.Files)
+            {
                 if (AnalyseSingleFile(file))
+                {
+                    matchFiles.Add(file);
                     matchCount++;
+                }
                 else
                     failFiles.Add(file);
+            }
             int filesCount = CodeReader.Files.Count;
+            failCount = filesCount - matchCount;
             Console.WriteLine(Environment.NewLine + "Files Analysed: " + filesCount);
-            Console.WriteLine(Environment.NewLine + "Matches: " + matchCount);
-            Console.WriteLine("Fails: " + (filesCount - matchCount));
-            Console.WriteLine(Environment.NewLine + "Files Failed:");
+            //Console.WriteLine(Environment.NewLine + "Matches: " + matchCount);
+            //Console.WriteLine("Fails: " + failCount);
+
+            Console.WriteLine(Environment.NewLine + "Files Matched (" + matchCount + ") [");
+            foreach (string file in matchFiles)
+                Console.WriteLine("  " + file + ',');
+            Console.WriteLine("]" + Environment.NewLine);
+
+            Console.WriteLine(Environment.NewLine + "Files Failed (" + failCount + ") [");
             foreach (string file in failFiles)
-                Console.WriteLine(file);
+                Console.WriteLine("  " + file + ',');
+            Console.WriteLine("]" + Environment.NewLine);
         }
 
         private static bool AnalyseSingleFile(string fileName = null)
@@ -259,6 +274,7 @@ namespace CheckIfEqualFiles
         private static bool AnalyseMethod(ref List<string[]> orgLines, ref List<string[]> genLines, ref List<int[]> idxs)
         {
             bool fileMatch = true;
+
             for (int i = 0; i < Math.Min(orgLines.Count, genLines.Count); i++)
             {
                 for (int j = 0; j < Math.Min(orgLines[i].Length, genLines[i].Length); j++)
@@ -282,7 +298,28 @@ namespace CheckIfEqualFiles
                     }
                 }
             }
+
+            if (fileMatch)
+            {
+                string orgCode = GetLineCode(orgLines);
+                string genCode = GetLineCode(genLines);
+                fileMatch = ((orgCode.Equals(genCode)) && (orgCode.Length == genCode.Length));
+            }
+
+            if (!fileMatch && genLines.Count < 5)
+                Console.WriteLine("Warning: Generated file is probably empty!");
+
             return fileMatch;
+        }
+
+        private static string GetLineCode(List<string[]> lineValues)
+        {
+            string code = string.Empty;
+            foreach (string[] line in lineValues)
+                foreach (string lineVal in line)
+                    code += lineVal;
+            code = code.Replace('\t', ' ').Replace(" ", string.Empty);
+            return code;
         }
 
         /*private static void Fix(string filePath, ref List<string[]> genLines, ref List<int[]> idxs)
