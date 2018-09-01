@@ -307,20 +307,13 @@ namespace MB_Studio.Manager
             condition_cbb.Items.Clear();
             condition_cbb.Text = "None";
 
-            string[] trigger = item.Triggers.ToArray();
-            if (trigger.Length > 0)
+            if (item.SimpleTriggers.Count > 0)
             {
-                foreach (string t in trigger)
+                foreach (SimpleTrigger simpleTrigger in item.SimpleTriggers)
                 {
-                    string[] scriptLines = t.Split();
-                    SimpleTrigger simpleTrigger = new SimpleTrigger(scriptLines[0]);
-                    string[] tmp = new string[int.Parse(scriptLines[1]) + 1];
-                    tmp[0] = "SIMPLE_TRIGGER";
-                    scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 1);
-                    simpleTrigger.ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(CodeReader.DecompileScriptCode(tmp, scriptLines), 1);
-
                     itemTrigger.Add(simpleTrigger);
 
+                    // add checkInterval value as extra field
                     string cond = simpleTrigger.CheckInterval;
                     if (!ImportantMethods.IsNumeric(cond, true))
                         condition_cbb.Items.Add(ImportantMethods.ToUpperAfterBlank(cond.Substring(cond.IndexOf('_') + 1).Replace('_', ' ')));

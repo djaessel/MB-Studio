@@ -576,22 +576,14 @@ namespace MB_Studio_Library.IO
                     //}
                     wr.Write(", " + item.ModBits); //string imodbits_SOMETHING = HexConverter.Dec2Hex_16CHARS(item.SpecialValues[item.SpecialValues.Length - 1]);
                                                    //wr.Write(", " + Item.GetItemModifiers_IMODBITS(imodbits_SOMETHING, true));
-                    if (item.Triggers.Count != 0)
+                    if (item.SimpleTriggers.Count != 0)
                     {
                         wr.Write(", [");
-                        for (int i = 0; i < item.Triggers.Count; i++)
-                        {
-                            string[] scriptLines = item.Triggers[i].Split();
-                            SimpleTrigger sTrigger = new SimpleTrigger(scriptLines[0]);
-                            string[] tmp = new string[int.Parse(scriptLines[1]) + 1];
-                            scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 1);
-                            tmp[0] = "SIMPLE_TRIGGER";
-                            sTrigger.ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(CodeReader.DecompileScriptCode(tmp, scriptLines), 1);
+                        foreach (SimpleTrigger sTrigger in item.SimpleTriggers)
                             WriteASimpleTrigger(wr, sTrigger);
-                        }
                         wr.Write("]");
                     }
-                    else if (item.Triggers.Count == 0 && item.Factions.Count != 0)
+                    else if (item.SimpleTriggers.Count == 0 && item.Factions.Count != 0)
                         wr.Write(", []");
                     if (item.Factions.Count != 0)
                     {

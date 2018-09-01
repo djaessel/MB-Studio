@@ -364,7 +364,7 @@ namespace MB_Studio_Library.IO
             }
 
             // save game string
-            using (StreamWriter writer = new StreamWriter(exportDir + "string.txt"))
+            using (StreamWriter writer = new StreamWriter(exportDir + "strings.txt"))
             {
                 writer.WriteLine("stringsfile version 1");//change version if needed
                 writer.WriteLine(strings.Count);
@@ -857,7 +857,7 @@ namespace MB_Studio_Library.IO
             Console.Write("Exporting quest data...");
 
             // save quest
-            using (StreamWriter writer = new StreamWriter(exportDir + "quest.txt"))
+            using (StreamWriter writer = new StreamWriter(exportDir + "quests.txt"))
             {
                 writer.WriteLine("questsfile version 1");//change version if necessary
                 writer.WriteLine(quests.Count);
@@ -1120,14 +1120,7 @@ namespace MB_Studio_Library.IO
                     if (item.Factions.Count > 0)
                         writer.WriteLine();
 
-                    List<string> triggerList = item.Triggers;
-
-                    /// JUST FOR TESTING!!!
-                    foreach (string trigger in triggerList)
-                        Console.WriteLine(trigger);
-                    /// JUST FOR TESTING!!!
-
-                    //SaveSimpleTriggers(writer, triggerList, variableList, variableUses, tagUses, quickStrings);//activate if working!!!
+                    SaveSimpleTriggers(writer, item.SimpleTriggers.ToArray(), variableList, variableUses, tagUses, quickStrings);//activate if working!!!
                 }
             }
 
@@ -1467,7 +1460,7 @@ namespace MB_Studio_Library.IO
             List<List<int>> tagUses = LoadTagUses(exportDir);
             List<string[]> quickStrings = LoadQuickStrings(exportDir);
 
-            using (StreamWriter writer = new StreamWriter(exportDir + "scripts.txt"))
+            using (StreamWriter writer = new StreamWriter(exportDir + "mission_templates.txt"))
             {
                 writer.WriteLine("missionsfile version 1");//change version if necessary
                 writer.WriteLine(" %d", missionTemplates.Count);

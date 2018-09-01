@@ -5,6 +5,7 @@ using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using MB_Studio_Library.IO;
 
 namespace MB_Studio_Library.Objects
 {
@@ -35,7 +36,7 @@ namespace MB_Studio_Library.Objects
         public double Weight { get; private set; } = 0d;
 
         public string[] SpecialValues { get; set; } = new string[3];
-        public List<string> Triggers { get; set; } = new List<string>();
+        public List<Skriptum> SimpleTriggers { get; set; } = new List<Skriptum>();
         public List<int> Factions { get; set; } = new List<int>();
         public List<Variable> Meshes { get; set; } = new List<Variable>();
 
@@ -157,7 +158,7 @@ namespace MB_Studio_Library.Objects
             Price = 0;
             Weight = 0d;
 
-            Triggers.Clear();
+            SimpleTriggers.Clear();
             Factions.Clear();
             Meshes.Clear();
 
@@ -284,23 +285,16 @@ namespace MB_Studio_Library.Objects
                     tmpS = values[2].Split();
                     for (int i = 0; i < tmpS.Length; i++)
                         Factions.Add(int.Parse(tmpS[i]));
+
                     x = int.Parse(values[3].Trim());
                     if (HasTriggers(x))
-                    {
-                        int ix = 4;
-                        int endI = x + ix;
-                        for (int i = ix; i < endI; i++)
-                            Triggers.Add(values[i]);
-                    }
+                        AddTriggers(values, 4, x);
                 }
                 else
                 {
-                    int ix = 3;
                     int x2 = int.Parse(values[2].Trim());
-                    int endI = x2 + ix;
                     if (x == 0 && HasTriggers(x2))
-                        for (int i = ix; i < endI; i++)
-                            Triggers.Add(values[i]);
+                        AddTriggers(values, 3, x2);
                     else if (HasTriggers(x2))
                         ErrorMsg(x, 1);
                 }
@@ -308,6 +302,25 @@ namespace MB_Studio_Library.Objects
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
+            }
+        }
+
+        private void AddTriggers(string[] values, int ix, int x2)
+        {
+            int endI = ix + x2;
+            List<string> triggerCodes = new List<string>();
+            for (int i = ix; i < endI; i++)
+                triggerCodes.Add(values[i]);
+
+            foreach (string triggerCode in triggerCodes)
+            {
+                string[] scriptLines = triggerCode.Split();
+                SimpleTrigger simpleTrigger = new SimpleTrigger(scriptLines[0]);
+                string[] tmpS = new string[int.Parse(scriptLines[1]) + 1];
+                tmpS[0] = "SIMPLE_TRIGGER";
+                scriptLines = CodeReader.GetStringArrayStartFromIndex(scriptLines, 1);
+                simpleTrigger.ConsequencesBlock = CodeReader.GetStringArrayStartFromIndex(CodeReader.DecompileScriptCode(tmpS, scriptLines), 1);
+                SimpleTriggers.Add(simpleTrigger);
             }
         }
 
