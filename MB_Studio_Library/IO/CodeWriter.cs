@@ -335,7 +335,7 @@ namespace MB_Studio_Library.IO
                 Console.WriteLine("variables.txt not found.Creating new variables.txt file");
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessGlobalVariables(string exportDir)
@@ -348,7 +348,7 @@ namespace MB_Studio_Library.IO
 
             SaveVariables(exportDir, variables, variablesUses);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessStrings(string exportDir)
@@ -359,7 +359,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_strings.py"))
             {
                 for (int i = 0; i < strings.Count; i++)
-                    writer.WriteLine("str_" + ConvertToIdentifier(strings[i].ID) + " = " + i);
+                    writer.WriteLine("str_{0} = {1}", ConvertToIdentifier(strings[i].ID), i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -369,10 +369,10 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine("stringsfile version 1");//change version if needed
                 writer.WriteLine(strings.Count);
                 foreach (GameString gameString in strings)
-                    writer.WriteLine("str_%s %s", ConvertToIdentifier(gameString.ID), ReplaceSpaces(gameString.Text));
+                    writer.WriteLine("str_{0} {1}", ConvertToIdentifier(gameString.ID), ReplaceSpaces(gameString.Text));
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSkills(string exportDir)
@@ -383,7 +383,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_skills.py"))
             {
                 for (int i = 0; i < skills.Count; i++)
-                    writer.WriteLine("skl_" + ConvertToIdentifier(skills[i].ID) + " = " + i);
+                    writer.WriteLine("skl_{0} = {1}", ConvertToIdentifier(skills[i].ID), i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -393,12 +393,12 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(skills.Count);
                 foreach (Skill skill in skills)
                 {
-                    writer.Write("skl_%s %s", ConvertToIdentifier(skill.ID), ReplaceSpaces(skill.Name));
-                    writer.WriteLine("%d %d %s", skill.FlagsGZ, skill.MaxLevel, skill.Description.Replace(' ', '_'));
+                    writer.Write("skl_{0} {1}", ConvertToIdentifier(skill.ID), ReplaceSpaces(skill.Name));
+                    writer.WriteLine("{0} {1} {2}", skill.FlagsGZ, skill.MaxLevel, skill.Description.Replace(' ', '_'));
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessMusic(string exportDir)
@@ -409,7 +409,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_music.py"))
             {
                 for (int i = 0; i < tracks.Count; i++)
-                    writer.WriteLine("track_%s = %d", tracks[i].ID, i);
+                    writer.WriteLine("track_{0} = {1}", tracks[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -420,7 +420,7 @@ namespace MB_Studio_Library.IO
                 foreach (Music track in tracks)
                 {
                     writer.WriteLine(
-                        "%s %d %d",
+                        "{0} {1} {2}",
                         track.TrackFile,
                         track.TrackFlagsGZ,
                         (track.TrackFlagsGZ | track.ContinueTrackFlagsGZ)
@@ -428,7 +428,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessAnimations(string exportDir)
@@ -462,7 +462,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_actions.py"))
             {
                 for (int i = 0; i < animations.Count; i++)
-                    writer.WriteLine("anim_%s = %d", animations[i].ID, i);
+                    writer.WriteLine("anim_{0} = {1}", animations[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -472,24 +472,24 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(actionCodes.Count);
                 foreach (Animation action in actionCodes)
                 {
-                    writer.Write(" %s %d %d ", action.ID, action.FlagsGZ, action.MasterFlagsGZ);//print flags
-                    writer.WriteLine(" %d", action.Sequences.Length);
+                    writer.Write(" {0} {1} {2} ", action.ID, action.FlagsGZ, action.MasterFlagsGZ);//print flags
+                    writer.WriteLine(" {0}", action.Sequences.Length);
                     foreach (AnimationSequence sequence in action.Sequences)
                     {
-                        writer.Write("  %f %s %d %d %d ",
+                        writer.Write("  {0:F6} {1} {2} {3} {4} ",
                             sequence.Duration,
                             sequence.ResourceName,
                             sequence.BeginFrame,
                             sequence.EndFrame,
                             sequence.FlagsGZ
                         );
-                        writer.Write("%d ", sequence.LastNumberGZ);
-                        writer.Write("%f %f %f %f ", sequence.LastNumbersFKZ);
+                        writer.Write("{0} ", sequence.LastNumberGZ);
+                        writer.Write("{0:F6} {1:F6} {2:F6} {3:F6} ", sequence.LastNumbersFKZ);
                     }
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessMeshes(string exportDir)
@@ -500,7 +500,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_meshes.py"))
             {
                 for (int i = 0; i < meshes.Count; i++)
-                    writer.WriteLine("mesh_%s = %d", meshes[i].ID, i);
+                    writer.WriteLine("mesh_{0} = {1}", meshes[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -510,7 +510,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(meshes.Count);
                 foreach (Mesh mesh in meshes)
                 {
-                    writer.WriteLine("mesh_%s %d %s %f %f %f %f %f %f %f %f %f",
+                    writer.WriteLine("mesh_{0} {1} {2} {3:F6} {4:F6} {5:F6} {6:F6} {7:F6} {8:F6} {9:F6} {10:F6} {11:F6}",
                         mesh.ID,
                         mesh.Flags,
                         ReplaceSpaces(mesh.ResourceName),
@@ -527,7 +527,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSounds(string exportDir)
@@ -549,7 +549,7 @@ namespace MB_Studio_Library.IO
                         soundFile = new object[] { soundFile[0], 0 };
                     while (soundNo < allSounds.Count && !found)
                     {
-                        if (allSounds[soundNo][0].Equals(soundFile[0].ToString()))//.ToString() necessary?
+                        if (allSounds[soundNo][0].Equals(soundFile[0]))
                             found = true;
                         else
                             soundNo++;
@@ -574,15 +574,15 @@ namespace MB_Studio_Library.IO
 
                 writer.WriteLine(allSounds.Count);
                 foreach (var soundSample in allSounds)
-                    writer.WriteLine(" %s %d", soundSample);
+                    writer.WriteLine(" {0} {1}", soundSample);
 
                 writer.WriteLine(sounds.Count);
                 for (int i = 0; i < sounds.Count; i++)
                 {
                     Sound sound = (Sound)sounds[i];
-                    writer.Write("snd_%s %d %d ", sound.ID, sound.FlagsGZ, sound.SoundFiles.Length);
+                    writer.Write("snd_{0} {2} {3} ", sound.ID, sound.FlagsGZ, sound.SoundFiles.Length);
                     foreach (object[] sample in soundsArray[i])
-                        writer.Write("%d %d ", sample);
+                        writer.Write("{0} {1} ", sample);
                     writer.WriteLine();
                 }
             }
@@ -591,11 +591,11 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_sounds.py"))
             {
                 for (int i = 0; i < sounds.Count; i++)
-                    writer.WriteLine("snd_%s = %d", sounds[i].ID, i);
+                    writer.WriteLine("snd_{0} = {1}", sounds[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSkins(string exportDir)
@@ -614,12 +614,12 @@ namespace MB_Studio_Library.IO
 
                 foreach (Skin skin in skins)
                 {
-                    writer.WriteLine("%s %d\n %s %s %s", skin.ID, skin.Flags, skin.BodyMesh, skin.CalfMesh, skin.HandMesh);
-                    writer.Write(" %s %d ", skin.HeadMesh, skin.FaceKeys.Length);
+                    writer.WriteLine("{0} {1}" + Environment.NewLine + " {2} {3} {4}", skin.ID, skin.Flags, skin.BodyMesh, skin.CalfMesh, skin.HandMesh);
+                    writer.Write(" {0} {1} ", skin.HeadMesh, skin.FaceKeys.Length);
 
                     foreach (FaceKey faceKey in skin.FaceKeys)
                     {
-                        writer.Write("skinkey_%s %d %d %f %f %s ", 
+                        writer.Write("skinkey_{0} {1} {2} {3:F6} {4:F6} {5} ", 
                             ConvertToIdentifier(faceKey.ID),
                             faceKey.Width,
                             faceKey.Height,
@@ -631,11 +631,11 @@ namespace MB_Studio_Library.IO
 
                     writer.WriteLine(Environment.NewLine + skin.HairMeshes.Length);
                     foreach (string hairMeshName in skin.HairMeshes)
-                        writer.Write(" %s ", hairMeshName);
+                        writer.Write(" {0} ", hairMeshName);
 
                     writer.WriteLine(Environment.NewLine + " " + skin.BeardMeshes.Length);
                     foreach (string beardMeshName in skin.BeardMeshes)
-                        writer.WriteLine("  %s", beardMeshName);
+                        writer.WriteLine("  {0}", beardMeshName);
                     writer.WriteLine();
 
                     WriteTextures(writer, skin.HairTextures);
@@ -643,21 +643,21 @@ namespace MB_Studio_Library.IO
                     WriteFaceTex(writer, skin.FaceTextures);
                     WriteVoices(writer, skin.Voices);
 
-                    writer.Write(" %s %f ", skin.SkeletonName, skin.Scale);
-                    writer.WriteLine(Environment.NewLine + "%d %d", skin.BloodParticle1GZ, skin.BloodParticle2GZ);
+                    writer.Write(" {0} {1:F6} ", skin.SkeletonName, skin.Scale);
+                    writer.WriteLine(Environment.NewLine + "{0} {1}", skin.BloodParticle1GZ, skin.BloodParticle2GZ);
 
                     writer.WriteLine(skin.FaceKeyConstraints.Length);
                     foreach (var constraint in skin.FaceKeyConstraints)
                     {
-                        writer.Write(Environment.NewLine + "%f %d %d ", constraint.Number, constraint.CompMode, constraint.ValuesINT.Length);
+                        writer.Write(Environment.NewLine + "{0:F6} {1} {2} ", constraint.Number, constraint.CompMode, constraint.ValuesINT.Length);
                         for (int i = 0; i < constraint.ValuesINT.Length; i++)
-                            writer.Write(" %f %d", constraint.ValuesDOUBLE[i], constraint.ValuesINT[i]);
+                            writer.Write(" {0:F6} {1}", constraint.ValuesDOUBLE[i], constraint.ValuesINT[i]);
                     }
                     writer.WriteLine();
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessFactions(string exportDir)
@@ -668,7 +668,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_factions.py"))
             {
                 for (int i = 0; i < factions.Count; i++)
-                    writer.WriteLine("fac_%s = %d", factions[i].ID, i);
+                    writer.WriteLine("fac_{0} = {1}", factions[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -683,7 +683,7 @@ namespace MB_Studio_Library.IO
                 {
                     Faction faction = (Faction)factions[i];
 
-                    writer.WriteLine("fac_%s %s %d %d ",
+                    writer.WriteLine("fac_{0} {1} {2} {3} ",
                         ConvertToIdentifier(faction.ID),
                         ReplaceSpaces(faction.Name),
                         faction.FlagsGZ,
@@ -691,16 +691,16 @@ namespace MB_Studio_Library.IO
                     );
 
                     foreach (double relation in relations[i])
-                        writer.Write(" %f ", relation);
+                        writer.Write(" {0:F6} ", relation);
                     writer.WriteLine();
 
-                    writer.Write("%d ", faction.Ranks.Length);
+                    writer.Write("{0} ", faction.Ranks.Length);
                     foreach (string rank in faction.Ranks)
-                        writer.Write(" %s ", ReplaceSpaces(rank));
+                        writer.Write(" {0} ", ReplaceSpaces(rank));
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessScenes(string exportDir)
@@ -711,7 +711,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_scenes.py"))
             {
                 for (int i = 0; i < scenes.Count; i++)
-                    writer.WriteLine("scn_%s = %d", scenes[i].ID, i);
+                    writer.WriteLine("scn_{0} = {1}", scenes[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -723,10 +723,10 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "scenes.txt"))
             {
                 writer.WriteLine("scenesfile version 1");//change version if necessary
-                writer.WriteLine(" %d", scenes.Count);
+                writer.WriteLine(" {0}", scenes.Count);
                 foreach (Scene scene in scenes)
                 {
-                    writer.WriteLine("scn_%s %s %d %s %s %f %f %f %f %f %s ",
+                    writer.WriteLine("scn_{0} {1} {2} {3} {4} {5:F6} {6:F6} {7:F6} {8:F6} {9:F6} {10} ",
                         ConvertToIdentifier(scene.ID),
                         ReplaceSpaces(scene.ID),
                         scene.FlagsGZ,
@@ -740,12 +740,12 @@ namespace MB_Studio_Library.IO
                         scene.TerrainCode
                     );
 
-                    writer.Write("  %d ", scene.OtherScenes.Length);
+                    writer.Write("  {0} ", scene.OtherScenes.Length);
                     foreach (string passage in scene.OtherScenes)
                         WritePassage(writer, scenes, passage);
                     writer.WriteLine();
 
-                    writer.Write("  %d ", scene.ChestTroops.Length);
+                    writer.Write("  {0} ", scene.ChestTroops.Length);
                     foreach (string chestTroop in scene.ChestTroops)
                     {
                         int troopNo = FindObject(troops, chestTroop);//FindTroop(troops, chestTroop);
@@ -756,11 +756,11 @@ namespace MB_Studio_Library.IO
                         }
                         else
                             AddTagUse(tagUses, TagType.Troop, troopNo);
-                        writer.Write(" %d ", troopNo);
+                        writer.Write(" {0} ", troopNo);
                     }
                     writer.WriteLine();
 
-                    writer.WriteLine(" %s ", scene.TerrainBase);
+                    writer.WriteLine(" {0} ", scene.TerrainBase);
                 }
             }
 
@@ -768,7 +768,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessParticleSys(string exportDir)
@@ -782,8 +782,8 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(particleSystems.Count);
                 foreach (ParticleSystem psys in particleSystems)
                 {
-                    writer.Write("psys_%s %d %s  ", psys.ID, psys.FlagsGZ, psys.MeshName);
-                    writer.WriteLine("%d %f %f %f %f %f ",
+                    writer.Write("psys_{0} {1} {2}  ", psys.ID, psys.FlagsGZ, psys.MeshName);
+                    writer.WriteLine("{0} {1:F6} {2:F6} {3:F6} {4:F6} {5:F6} ",
                         psys.ParticlesPerSecond,
                         psys.ParticleLifeTime,
                         psys.Damping,
@@ -798,10 +798,10 @@ namespace MB_Studio_Library.IO
                     SavePsysKey(writer, psys.BlueKeys);
                     SavePsysKey(writer, psys.ScaleKeys);
 
-                    writer.Write("%f %f %f   ", psys.EmitBoxScale[0], psys.EmitBoxScale[1], psys.EmitBoxScale[2]);
-                    writer.Write("%f %f %f   ", psys.EmitVelocity[0], psys.EmitVelocity[1], psys.EmitVelocity[2]);
-                    writer.WriteLine("%f ", psys.EmitDirectionRandomness);
-                    writer.WriteLine("%f %f ", psys.ParticleRotationSpeed, psys.ParticleRotationDamping);
+                    writer.Write("{0:F6} {1:F6} {2:F6}   ", psys.EmitBoxScale[0], psys.EmitBoxScale[1], psys.EmitBoxScale[2]);
+                    writer.Write("{0:F6} {1:F6} {2:F6}   ", psys.EmitVelocity[0], psys.EmitVelocity[1], psys.EmitVelocity[2]);
+                    writer.WriteLine("{0:F6} ", psys.EmitDirectionRandomness);
+                    writer.WriteLine("{0:F6} {1:F6} ", psys.ParticleRotationSpeed, psys.ParticleRotationDamping);
                 }
             }
 
@@ -809,11 +809,11 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_particle_systems.py"))
             {
                 for (int i = 0; i < particleSystems.Count; i++)
-                    writer.WriteLine("psys_%s = %d", particleSystems[i].ID, i);
+                    writer.WriteLine("psys_{0} = {1}", particleSystems[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSceneProps(string exportDir)
@@ -824,7 +824,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_scene_props.py"))
             {
                 for (int i = 0; i < sceneProps.Count; i++)
-                    writer.WriteLine("spr_%s = %d", sceneProps[i].ID, i);
+                    writer.WriteLine("spr_{0} = {1}", sceneProps[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -836,10 +836,10 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "scene_props.txt"))
             {
                 writer.WriteLine("scene_propsfile version 1");//change version if necessary
-                writer.WriteLine(" %d", sceneProps.Count);
+                writer.WriteLine(" {0}", sceneProps.Count);
                 foreach (SceneProp sceneProp in sceneProps)
                 {
-                    writer.Write("spr_%s %d %d %s %s ", sceneProp.ID, sceneProp.FlagsGZ, sceneProp.HitPoints, sceneProp.MeshName, sceneProp.PhysicsObjectName);
+                    writer.Write("spr_{0} {1} {2} {3} {4} ", sceneProp.ID, sceneProp.FlagsGZ, sceneProp.HitPoints, sceneProp.MeshName, sceneProp.PhysicsObjectName);
                     SaveSimpleTriggers(writer, sceneProp.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
                     writer.WriteLine();
                 }
@@ -849,7 +849,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessQuests(string exportDir)
@@ -863,8 +863,8 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(quests.Count);
                 foreach (Quest quest in quests)
                 {
-                    writer.Write("qst_%s %s %d ", quest.ID, quest.Name.Replace(' ', '_'), quest.FlagsGZ);
-                    writer.WriteLine("%s ", quest.Description.Replace(' ', '_'));
+                    writer.Write("qst_{0} {1} {2} ", quest.ID, quest.Name.Replace(' ', '_'), quest.FlagsGZ);
+                    writer.WriteLine("{0} ", quest.Description.Replace(' ', '_'));
                 }
             }
 
@@ -872,13 +872,13 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_quests.py"))
             {
                 for (int i = 0; i < quests.Count; i++)
-                    writer.WriteLine("qst_%s = %d", quests[i].ID, i);
+                    writer.WriteLine("qst_{0} = {1}", quests[i].ID, i);
                 for (int i = 0; i < quests.Count; i++)
-                    writer.WriteLine("qsttag_%s = %d", quests[i].ID, OP_MASK_QUEST_INDEX | i);
+                    writer.WriteLine("qsttag_{0} = {1}", quests[i].ID, OP_MASK_QUEST_INDEX | i);
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessInfoPages(string exportDir)
@@ -891,18 +891,18 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine("infopagesfile version 1");//change version if necessary
                 writer.WriteLine(infoPages.Count);
                 foreach (InfoPage infoPage in infoPages)
-                    writer.WriteLine("ip_%s %s %s", infoPage.ID, infoPage.Name.Replace(' ', '_'), infoPage.Text.Replace(' ', '_'));
+                    writer.WriteLine("ip_{0} {1} {2}", infoPage.ID, infoPage.Name.Replace(' ', '_'), infoPage.Text.Replace(' ', '_'));
             }
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_info_pages.py"))
             {
                 for (int i = 0; i < infoPages.Count; i++)
-                    writer.WriteLine("ip_%s = %d", infoPages[i].ID, i);
+                    writer.WriteLine("ip_{0} = {1}", infoPages[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSimpleTriggers(string exportDir)
@@ -923,7 +923,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessTriggers(string exportDir)
@@ -940,7 +940,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(triggers.Count);
                 foreach (Trigger trigger in triggers)
                 {
-                    writer.Write("%f %f %f ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
+                    writer.Write("{0:F6} {1:F6} {2:F6} ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
                     SaveStatementBlock(writer, 0, true, trigger.ConditionBlock, variables, variableUses, tagUses, quickStrings);
                     SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variables, variableUses, tagUses, quickStrings);
                     writer.WriteLine();
@@ -951,7 +951,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessDialogs(string exportDir)
@@ -976,17 +976,17 @@ namespace MB_Studio_Library.IO
                     try
                     {
                         string dialogId = CreateAutoId2(dialog, autoIds);
-                        writer.Write("%s %d %d ", dialogId, dialog.TalkingPartnerCode, inputStates[i]);
+                        writer.Write("{0} {1} {2} ", dialogId, dialog.TalkingPartnerCode, inputStates[i]);
                         SaveStatementBlock(writer, 0, true, dialog.ConditionBlock, variables, variableUses, tagUses, quickStrings);
 
-                        writer.Write("%s ", dialog.DialogText.Replace(' ', '_'));
+                        writer.Write("{0} ", dialog.DialogText.Replace(' ', '_'));
                         if (dialog.DialogText.Length == 0)
                             writer.Write("NO_TEXT ");
-                        writer.Write(" %d ", outputStates[i]);
+                        writer.Write(" {0} ", outputStates[i]);
                         SaveStatementBlock(writer, 0, true, dialog.ConsequenceBlock, variables, variableUses, tagUses, quickStrings);
 
                         if (dialog.VoiceOverSoundFile.Length > 0)
-                            writer.WriteLine("%s ", dialog.VoiceOverSoundFile);
+                            writer.WriteLine("{0} ", dialog.VoiceOverSoundFile);
                         else
                             writer.WriteLine("NO_VOICEOVER ");
                     }
@@ -1002,7 +1002,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessPostfxParams(string exportDir)
@@ -1016,23 +1016,23 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(postfxParams.Count);
                 foreach (PostFX postFX in postfxParams)
                 {
-                    writer.Write("pfx_%s %d %d", postFX.ID, postFX.FlagsGZ, postFX.TonemapOperatorType);
+                    writer.Write("pfx_{0} {1} {2}", postFX.ID, postFX.FlagsGZ, postFX.TonemapOperatorType);
 
-                    writer.Write("  %f %f %f %f",
+                    writer.Write("  {0:F6} {1:F6} {2:F6} {3:F6}",
                         postFX.ShaderParameter1[0],
                         postFX.ShaderParameter1[1],
                         postFX.ShaderParameter1[2],
                         postFX.ShaderParameter1[3]
                     );
 
-                    writer.Write("  %f %f %f %f",
+                    writer.Write("  {0:F6} {1:F6} {2:F6} {3:F6}",
                         postFX.ShaderParameter2[0],
                         postFX.ShaderParameter2[1],
                         postFX.ShaderParameter2[2],
                         postFX.ShaderParameter2[3]
                     );
 
-                    writer.Write("  %f %f %f %f",
+                    writer.Write("  {0:F6} {1:F6} {2:F6} {3:F6}",
                         postFX.ShaderParameter3[0],
                         postFX.ShaderParameter3[1],
                         postFX.ShaderParameter3[2],
@@ -1047,11 +1047,11 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_postfx_params.py"))
             {
                 for (int i = 0; i < postfxParams.Count; i++)
-                    writer.WriteLine("pfx_%s = %d", postfxParams[i].ID, i);
+                    writer.WriteLine("pfx_{0} = {1}", postfxParams[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessItems(string exportDir)
@@ -1062,7 +1062,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_items.py"))
             {
                 for (int i = 0; i < items.Count; i++)
-                    writer.WriteLine("itm_%s = %d", ConvertToIdentifier(items[i].ID), i);
+                    writer.WriteLine("itm_{0} = {1}", ConvertToIdentifier(items[i].ID), i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -1084,7 +1084,7 @@ namespace MB_Studio_Library.IO
                         AddTagUse(tagUses, TagType.Item, idNo);
                     }
 
-                    writer.Write(" itm_%s %s %s %d ",
+                    writer.Write(" itm_{0} {1} {2} {3} ",
                         ConvertToIdentifier(item.ID),
                         ReplaceSpaces(item.Name),
                         ReplaceSpaces(item.PluralName),
@@ -1092,9 +1092,9 @@ namespace MB_Studio_Library.IO
                     );
 
                     foreach (var mesh in item.Meshes)
-                        writer.Write(" %s %d ", mesh.Name, mesh.Value);
+                        writer.Write(" {0} {1} ", mesh.Name, mesh.Value);
 
-                    writer.WriteLine(" %d %d %d %d %f %d %d %d %d %d %d %d %d %d %d %d %d",
+                    writer.WriteLine(" {0} {1} {2} {3} {4:F6} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16}",
                         item.PropertiesGZ,
                         item.CapabilityFlagsGZ,
                         item.Price,
@@ -1114,9 +1114,9 @@ namespace MB_Studio_Library.IO
                         item.SwingDamage
                     );
 
-                    writer.WriteLine(" %d", item.Factions.Count);
+                    writer.WriteLine(" {0}", item.Factions.Count);
                     foreach (int faction in item.Factions)
-                        writer.Write(" %d", faction);
+                        writer.Write(" {0}", faction);
                     if (item.Factions.Count > 0)
                         writer.WriteLine();
 
@@ -1128,7 +1128,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessMapIcons(string exportDir)
@@ -1139,7 +1139,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_map_icons.py"))
             {
                 for (int i = 0; i < mapIcons.Count; i++)
-                    writer.WriteLine("icon_%s = %d", mapIcons[i].ID, i);
+                    writer.WriteLine("icon_{0} = {1}", mapIcons[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -1155,7 +1155,7 @@ namespace MB_Studio_Library.IO
 
                 foreach (MapIcon mapIcon in mapIcons)
                 {
-                    writer.Write("%s %d %s %f %d %f %f %f ",
+                    writer.Write("{0} {1} {2} {3:F6} {4} {5:F6} {6:F6} {7:F6} ",
                         mapIcon.ID,
                         mapIcon.FlagsGZ,
                         mapIcon.MapIconName,
@@ -1176,7 +1176,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessTroops(string exportDir)
@@ -1187,7 +1187,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_troops.py"))
             {
                 for (int i = 0; i < troops.Count; i++)
-                    writer.WriteLine("trp_%s = %d", troops[i].ID, i);
+                    writer.WriteLine("trp_{0} = {1}", troops[i].ID, i);
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -1210,7 +1210,7 @@ namespace MB_Studio_Library.IO
                         //    AddTagUse(tagUses, TagType.Faction, troop.FactionID);
                     }
 
-                    writer.WriteLine(Environment.NewLine + "trp_%s %s %s %s %d %d %d %d %d %d",
+                    writer.WriteLine(Environment.NewLine + "trp_{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}",
                         ConvertToIdentifier(troop.ID),
                         ReplaceSpaces(troop.Name),
                         ReplaceSpaces(troop.PluralName),
@@ -1225,7 +1225,7 @@ namespace MB_Studio_Library.IO
                     for (int i = 0; i < troop.Items.Count; i++)
                     {
                         //AddTagUse(tagUses, TagType.Item, item);
-                        writer.Write("%d %d ", troop.Items[i], troop.ItemFlags[i] << 24);//check if 24 is done before
+                        writer.Write("{0} {1} ", troop.Items[i], troop.ItemFlags[i] << 24);//check if 24 is done before
                     }
 
                     int maxItemCount = 64;// is 64 enough or maybe later more?
@@ -1234,14 +1234,14 @@ namespace MB_Studio_Library.IO
                         writer.Write("-1 0 ");
                     writer.Write(Environment.NewLine + " ");
 
-                    writer.WriteLine(" %d %d %d %d %d", troop.Strength, troop.Intelligence, troop.Charisma, troop.Level);
+                    writer.WriteLine(" {0} {1} {2} {3} {4}", troop.Strength, troop.Intelligence, troop.Charisma, troop.Level);
 
                     foreach (int wp in troop.Proficiencies)
-                        writer.Write(" %d", wp);
+                        writer.Write(" {0}", wp);
                     writer.WriteLine();
 
                     foreach (int skill in troop.Skills)
-                        writer.Write("%d ", skill);
+                        writer.Write("{0} ", skill);
                     writer.Write(Environment.NewLine + "  ");
 
                     int numFaceNumericKeys = 4;
@@ -1257,13 +1257,13 @@ namespace MB_Studio_Library.IO
                                 for (int i = 0; i < wordKeys.Length; i++)
                                     wordKeys[i] = HexConverter.Hex2Dec_16CHARS(faceTmp.Substring(i * 16, 16));
                                 for (int i = 0; i < wordKeys.Length; i++)
-                                    writer.Write("%d ", wordKeys[(wordKeys.Length - 1) - i]);
+                                    writer.Write("{0} ", wordKeys[(wordKeys.Length - 1) - i]);
                             }
                         }
                         else
                         {
                             for (int i = 0; i < numFaceNumericKeys; i++)
-                                writer.Write("%d ", 0);
+                                writer.Write("{0} ", 0);
                             Console.WriteLine("FACE_FORMAT_ERROR: " + face);
                         }
                     }
@@ -1272,7 +1272,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessTableauMaterials(string exportDir)
@@ -1283,7 +1283,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_tableau_materials.py"))
             {
                 for (int i = 0; i < tableaus.Count; i++)
-                    writer.WriteLine("tableau_%s = %d", tableaus[i].ID, i);
+                    writer.WriteLine("tableau_{0} = {1}", tableaus[i].ID, i);
             }
 
             // save tableaus
@@ -1296,7 +1296,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(tableaus.Count);
                 foreach (TableauMaterial tableau in tableaus)
                 {
-                    writer.Write("tab_%s %d %s %d %d %d %d %d %d",
+                    writer.Write("tab_{0} {1} {2} {3} {4} {5} {6} {7} {8}",
                         tableau.ID,
                         tableau.FlagsGZ,
                         tableau.SampleMaterialName,
@@ -1316,7 +1316,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessPresentations(string exportDir)
@@ -1327,7 +1327,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_presentations.py"))
             {
                 for (int i = 0; i < presentations.Count; i++)
-                    writer.WriteLine("prsnt_%s = %d", presentations[i].ID, i);
+                    writer.WriteLine("prsnt_{0} = {1}", presentations[i].ID, i);
             }
 
             // save presentations
@@ -1338,10 +1338,10 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "presentations.txt"))
             {
                 writer.WriteLine("presentationsfile version 1");//change version if necessary
-                writer.WriteLine(" %d", presentations.Count);
+                writer.WriteLine(" {0}", presentations.Count);
                 foreach (Presentation presentation in presentations)
                 {
-                    writer.Write("prsnt_%s %d %s %d %d %d %d %d %d", presentation.ID, presentation.Flags, presentation.MeshID);
+                    writer.Write("prsnt_{0} {1} {2} {3} {4} {5} {6} {7} {8}", presentation.ID, presentation.Flags, presentation.MeshID);
                     SaveSimpleTriggers(writer, presentation.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
                     writer.WriteLine();
                 }
@@ -1351,7 +1351,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessScripts(string exportDir)
@@ -1361,7 +1361,7 @@ namespace MB_Studio_Library.IO
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_scripts.py"))
                 for (int i = 0; i < scripts.Count; i++)
-                    writer.WriteLine("script_%s = %d", scripts[i].ID, i);
+                    writer.WriteLine("script_{0} = {1}", scripts[i].ID, i);
 
             // save presentations
             List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
@@ -1376,14 +1376,14 @@ namespace MB_Studio_Library.IO
                 {
                     float unknownValue = -1;
                     string scriptId = ConvertToIdentifier(script.ID);
-                    writer.WriteLine("%s %f", scriptId, unknownValue);
+                    writer.WriteLine("{0} {1:F6}", scriptId, unknownValue);
                     SaveStatementBlock(writer, scriptId, false, script.Code, variableList, variableUses, tagUses, quickStrings);
                     /*
     if (type(func[1]) == list_type):
-      file.write("%s -1\n"%(convert_to_identifier(func[0])))
+      file.write("{0} -1\n"%(convert_to_identifier(func[0])))
       save_statement_block(file,convert_to_identifier(func[0]), 0,func[1], variable_list,variable_uses,tag_uses,quick_strings)
     else:
-      file.write("%s %f\n"%(convert_to_identifier(func[0]), func[1]))
+      file.write("{0} {1:F6}\n"%(convert_to_identifier(func[0]), func[1]))
       save_statement_block(file,convert_to_identifier(func[0]), 0,func[2], variable_list,variable_uses,tag_uses,quick_strings)
                     */
 
@@ -1395,7 +1395,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessMenus(string exportDir)
@@ -1406,7 +1406,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_menus.py"))
             {
                 for (int i = 0; i < presentations.Count; i++)
-                    writer.WriteLine("menu_%s = %d", presentations[i].ID, i);
+                    writer.WriteLine("menu_{0} = {1}", presentations[i].ID, i);
             }
 
             // save menus
@@ -1417,20 +1417,20 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "menus.txt"))
             {
                 writer.WriteLine("menusfile version 1");//change version if necessary
-                writer.WriteLine(" %d", menus.Count);
+                writer.WriteLine(" {0}", menus.Count);
                 foreach (GameMenu menu in menus)
                 {
-                    writer.Write("menu_%s %d %s %s", menu.ID, menu.FlagsGZ, menu.Text.Replace(' ', '_'), menu.MeshName);
+                    writer.Write("menu_{0} {1} {2} {3}", menu.ID, menu.FlagsGZ, menu.Text.Replace(' ', '_'), menu.MeshName);
                     SaveStatementBlock(writer, 0, true, menu.OperationBlock, variableList, variableUses, tagUses, quickStrings);
                     writer.WriteLine(menu.MenuOptions.Length);
 
                     foreach (GameMenuOption option in menu.MenuOptions)
                     {
-                        writer.Write(" mno_%s ", option.Name);
+                        writer.Write(" mno_{0} ", option.Name);
                         SaveStatementBlock(writer, 0, true, option.ConditionBlock, variableList, variableUses, tagUses, quickStrings);
-                        writer.Write(" %s ", option.Text.Replace(' ', '_'));
+                        writer.Write(" {0} ", option.Text.Replace(' ', '_'));
                         SaveStatementBlock(writer, 0, true, option.ConsequenceBlock, variableList, variableUses, tagUses, quickStrings);
-                        writer.Write(" %s ", option.DoorText.Replace(' ', '_'));
+                        writer.Write(" {0} ", option.DoorText.Replace(' ', '_'));
                     }
 
                     writer.WriteLine();
@@ -1441,7 +1441,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessMissionTemplates(string exportDir)
@@ -1452,7 +1452,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(".\\ID_mission_templates.py"))
             {
                 for (int i = 0; i < missionTemplates.Count; i++)
-                    writer.WriteLine("mst_%s = %d", missionTemplates[i].ID, i);
+                    writer.WriteLine("mst_{0} = {1}", missionTemplates[i].ID, i);
             }
 
             // save mission templates
@@ -1463,18 +1463,18 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "mission_templates.txt"))
             {
                 writer.WriteLine("missionsfile version 1");//change version if necessary
-                writer.WriteLine(" %d", missionTemplates.Count);
+                writer.WriteLine(" {0}", missionTemplates.Count);
                 foreach (MissionTemplate missionTemplate in missionTemplates)
                 {
-                    writer.Write("mst_%s %s %d ",
+                    writer.Write("mst_{0} {1} {2} ",
                         ConvertToIdentifier(missionTemplate.ID),
                         ConvertToIdentifier(missionTemplate.ID),
                         missionTemplate.FlagsGZ
                     );
 
-                    writer.WriteLine(" %d", missionTemplate.MissionTypeGZ);
-                    writer.WriteLine("%s ", missionTemplate.Description.Replace(' ', '_'));
-                    writer.Write(Environment.NewLine + "%d ", missionTemplate.EntryPoints.Length);
+                    writer.WriteLine(" {0}", missionTemplate.MissionTypeGZ);
+                    writer.WriteLine("{0} ", missionTemplate.Description.Replace(' ', '_'));
+                    writer.Write(Environment.NewLine + "{0} ", missionTemplate.EntryPoints.Length);
 
                     foreach (Entrypoint entryPointGroup in missionTemplate.EntryPoints)
                         SaveMissionTemplateGroup(writer, entryPointGroup, tagUses);
@@ -1489,7 +1489,7 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessPartyTemplates(string exportDir)
@@ -1499,7 +1499,7 @@ namespace MB_Studio_Library.IO
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_party_templates.py"))
                 for (int i = 0; i < partyTemplates.Count; i++)
-                    writer.WriteLine("pt_%s = %d", partyTemplates[i].ID, i);
+                    writer.WriteLine("pt_{0} = {1}", partyTemplates[i].ID, i);
 
             // save party template
             using (StreamWriter writer = new StreamWriter(exportDir + "party_templates.txt"))
@@ -1509,7 +1509,7 @@ namespace MB_Studio_Library.IO
                 foreach (PartyTemplate partyTemplate in partyTemplates)
                 {
                     //AddTagUse(tagUses, TagType.Faction, partyTemplate.FactionID);
-                    writer.Write("pt_%s %s %d %d %d %d ",
+                    writer.Write("pt_{0} {1} {2} {3} {4} {5} ",
                         ConvertToIdentifier(partyTemplate.ID),
                         ReplaceSpaces(partyTemplate.Name),
                         partyTemplate.FlagsGZ,
@@ -1529,7 +1529,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessParties(string exportDir)
@@ -1541,7 +1541,7 @@ namespace MB_Studio_Library.IO
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_parties.py"))
                 for (int i = 0; i < parties.Count; i++)
-                    writer.WriteLine("p_%s = %d", parties[i].ID, i);
+                    writer.WriteLine("p_{0} = {1}", parties[i].ID, i);
 
             // save parties
             using (StreamWriter writer = new StreamWriter(exportDir + "parties.txt"))
@@ -1556,17 +1556,17 @@ namespace MB_Studio_Library.IO
                     if (party.FactionID >= 0)
                         AddTagUse(tagUses, TagType.Faction, party.FactionID);
 
-                    writer.Write(" 1 %d %d ", i, i);
-                    //writer.Write(" 1 %d ", i);
-                    writer.Write("p_%s %s %d ", ConvertToIdentifier(party.ID), ReplaceSpaces(party.Name), party.FlagsGZ);
+                    writer.Write(" 1 {0} {1} ", i, i);
+                    //writer.Write(" 1 {0} ", i);
+                    writer.Write("p_{0} {1} {2} ", ConvertToIdentifier(party.ID), ReplaceSpaces(party.Name), party.FlagsGZ);
 
                     //int menuNo = FindObject(menus, party.Menu);
                     //if (menuNo < 0)
                     //    Console.WriteLine("Error: Unable to find menu-id: " + party.Menu);
 
-                    writer.Write("%d ", party.MenuID);
+                    writer.Write("{0} ", party.MenuID);
 
-                    writer.Write("%d %d %d %d %d ",
+                    writer.Write("{0} {1} {2} {3} {4} ",
                         party.PartyTemplateID,
                         party.FactionID,
                         party.Personality,
@@ -1574,15 +1574,15 @@ namespace MB_Studio_Library.IO
                         party.AIBehavior
                     );
 
-                    writer.Write("%d %d ", party.AITargetParty, party.AITargetParty);
+                    writer.Write("{0} {1} ", party.AITargetParty, party.AITargetParty);
 
                     double[] defaultBehaviorLocation = party.InitialCoordinates;
-                    writer.Write("%f %f ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
-                    writer.Write("%f %f ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
-                    writer.Write("%f %f 0.0 ", party.InitialCoordinates);
+                    writer.Write("{0:F6} {1:F6} ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
+                    writer.Write("{0:F6} {1:F6} ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
+                    writer.Write("{0:F6} {1:F6} 0.0 ", party.InitialCoordinates);
 
                     string troopTag = "trp_";
-                    writer.Write("%d ", party.Members.Length);
+                    writer.Write("{0} ", party.Members.Length);
                     foreach (PMember member in party.Members)
                     {
                         string troopS = member.Troop;
@@ -1590,17 +1590,17 @@ namespace MB_Studio_Library.IO
                             troopS = troopTag + troopS;
                         int troopNo = CodeReader.Troops.IndexOf(troopS);
                         AddTagUse(tagUses, TagType.Troop, troopNo);
-                        writer.Write("%d %d 0 %d ", troopNo, member.Flags, member.MaximumTroops);
+                        writer.Write("{0} {1} 0 {2} ", troopNo, member.Flags, member.MaximumTroops);
                     }
 
                     double bearing = (3.1415926 / 180d) * party.PartyDirectionInDegrees;
-                    writer.WriteLine(Environment.NewLine + "%f", bearing);
+                    writer.WriteLine(Environment.NewLine + "{0:F6}", bearing);
                 }
             }
 
             SaveTagUses(exportDir, tagUses);
 
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessGlobalVariablesUnused(string exportDir)
@@ -1610,7 +1610,7 @@ namespace MB_Studio_Library.IO
             for (int i = 0; i < variables.Count; i++)
                 if (variableUses[i] == 0)
                     Console.WriteLine("WARNING: Global variable never used: " + variables[i]);
-            Console.WriteLine("Done");
+            Console.WriteLine(/*"Done"*/);
         }
 
         #endregion
@@ -1627,7 +1627,7 @@ namespace MB_Studio_Library.IO
                     troopS = troopTag + troopS;
                 int troopNo = CodeReader.Troops.IndexOf(troopS);
                 //AddTagUse(tagUses, TagType.Troop, troopNo);
-                writer.Write("%d %d %d %d ", troopNo, member.Flags, member.MinimumTroops, member.MaximumTroops);
+                writer.Write("{0} {1} {2} {3} ", troopNo, member.Flags, member.MinimumTroops, member.MaximumTroops);
             }
             else
                 writer.Write("-1 ");
@@ -1641,7 +1641,7 @@ namespace MB_Studio_Library.IO
                 //error();
             }
 
-            writer.Write("%d %d %d %d %d %d  ",
+            writer.Write("{0} {1} {2} {3} {4} {5}  ",
                 entryPointGroup.EntryPointNo,
                 entryPointGroup.SpawnFlags,
                 entryPointGroup.AlterFlags,
@@ -1653,7 +1653,7 @@ namespace MB_Studio_Library.IO
             foreach (int itemOverride in entryPointGroup.SpawnItemIDs)
             {
                 AddTagUse(tagUses, TagType.Item, itemOverride);
-                writer.Write("%d ", itemOverride);
+                writer.Write("{0} ", itemOverride);
             }
 
             writer.WriteLine();
@@ -1671,7 +1671,7 @@ namespace MB_Studio_Library.IO
             writer.WriteLine(triggers.Length);
             foreach (Trigger trigger in triggers)
             {
-                writer.Write("%f %f %f ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
+                writer.Write("{0:F6} {1:F6} {2:F6} ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
                 SaveStatementBlock(writer, 0, true, trigger.ConditionBlock, variableList, variableUses, tagUses, quickStrings);
                 SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
                 writer.WriteLine();
@@ -1859,7 +1859,7 @@ namespace MB_Studio_Library.IO
             writer.WriteLine(simpleTriggers.Length);
             foreach (SimpleTrigger trigger in simpleTriggers)
             {
-                writer.Write("%f ", trigger.CheckInterval);
+                writer.Write("{0:F6} ", trigger.CheckInterval);
                 SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
                 writer.WriteLine();
             }
@@ -1870,7 +1870,7 @@ namespace MB_Studio_Library.IO
         {
             List<string> localVars = new List<string>();
             List<int> localVarsUses = new List<int>();
-            writer.Write(" %d ", statementBlock.Length);
+            writer.Write(" {0} ", statementBlock.Length);
 
             int storeScriptParam1Uses = 0;
             int storeScriptParam2Uses = 0;
@@ -1918,7 +1918,7 @@ namespace MB_Studio_Library.IO
                 if (localVarsUses[i] == 0 && !localVars[i].StartsWith("unused"))//make output optional
                     Console.WriteLine("WARNING: Local variable never used: " + localVars[i] + ", at: " + statementName);
 
-            if (localVars.Count > 128)
+            if (localVars.Count > -sbyte.MinValue)//128
                 Console.WriteLine("WARNING: Script uses more than 128 local wariables: " + statementName + " --> variables count:" + localVars.Count);
         }
 
@@ -1939,12 +1939,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            writer.Write("%d %d ", opcode, lenStatement);
+            writer.Write("{0} {1} ", opcode, lenStatement);
 
             for (int i = 0; i < lenStatement; i++)
             {
                 int operand = ProcessParam(statementSp[i + 1], variableList, variableUses, localVars, localVarsUses, tagUses, quickStrings);
-                writer.Write("%d ", operand);
+                writer.Write("{0} ", operand);
             }
         }
 
@@ -2290,16 +2290,16 @@ namespace MB_Studio_Library.IO
 
         private static void SavePsysKey(StreamWriter writer, double[] keys12)
         {
-            writer.WriteLine("%f %f   %f %f", keys12[0], keys12[1], keys12[2], keys12[3]);
+            writer.WriteLine("{0:F6} {1:F6}   {2:F6} {1:F6}", keys12[0], keys12[1], keys12[2], keys12[3]);
         }
 
         private static void SaveQuickStrings(string exportDir, List<string[]> quickStrings)
         {
             using (StreamWriter writer = new StreamWriter(exportDir + "quick_strings.txt"))
             {
-                writer.WriteLine("%d", quickStrings.Count);
+                writer.WriteLine("{0}", quickStrings.Count);
                 foreach (string[] quickString in quickStrings)
-                    writer.WriteLine("%s %s", quickString[0], ReplaceSpaces(quickString[1]));
+                    writer.WriteLine("{0} {1}", quickString[0], ReplaceSpaces(quickString[1]));
             }
         }
 
@@ -2309,7 +2309,7 @@ namespace MB_Studio_Library.IO
             {
                 for (int i = 0; i < tagUses.Count; i++)
                     for (int j = 0; j < tagUses[i].Count; j++)
-                        writer.Write("%d %d %d;", i, j, tagUses[i][j]);
+                        writer.Write("{0} {1} {2};", i, j, tagUses[i][j]);//semicolon correct?
                 writer.WriteLine();
             }
         }
@@ -2420,10 +2420,10 @@ namespace MB_Studio_Library.IO
             else if (!found)
             {
                 Console.WriteLine("Error passage not found: " + passage);
-                //do_error(); // ?
+                //do_error(); //?
             }
 
-            writer.Write(" %d ", sceneIdx);
+            writer.Write(" {0} ", sceneIdx);
         }
 
         private static List<double[]> CompileRelations(List<Skriptum> factions)
@@ -2459,30 +2459,30 @@ namespace MB_Studio_Library.IO
 
         private static void WriteTextures(StreamWriter writer, string[] textures)
         {
-            writer.Write(" %d ", textures.Length);
+            writer.Write(" {0} ", textures.Length);
             foreach (string texture in textures)
-                writer.Write(" %s ", texture);
+                writer.Write(" {0} ", texture);
             writer.WriteLine();
         }
 
         private static void WriteVoices(StreamWriter writer, Variable[] voices)
         {
-            writer.Write(" %d ", voices.Length);
+            writer.Write(" {0} ", voices.Length);
             foreach (var voice in voices)
-                writer.Write(" %d %s ", voice.Value, voice.Name);
+                writer.Write(" {0} {1} ", voice.Value, voice.Name);
             writer.WriteLine();
         }
 
         private static void WriteFaceTex(StreamWriter writer, FaceTexture[] faceTextures)
         {
-            writer.Write(" %d ", faceTextures.Length);
+            writer.Write(" {0} ", faceTextures.Length);
             foreach (FaceTexture texture in faceTextures)
             {
-                writer.Write(" %s %d %d %d ", texture.Name, texture.Color, texture.HairMaterials.Length, texture.HairColors.Length);
+                writer.Write(" {0} {1} {2} {3} ", texture.Name, texture.Color, texture.HairMaterials.Length, texture.HairColors.Length);
                 foreach (string material in texture.HairMaterials)
-                    writer.Write(" %s ", ReplaceSpaces(material));
+                    writer.Write(" {0} ", ReplaceSpaces(material));
                 foreach (uint color in texture.HairColors)
-                    writer.Write(" %d ", color);
+                    writer.Write(" {0} ", color);
                 writer.WriteLine();
             }
         }
