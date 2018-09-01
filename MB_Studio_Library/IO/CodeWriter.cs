@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using MB_Studio_Library.Objects.Support;
+using static MB_Studio_Library.Objects.Skriptum;
 
 namespace MB_Studio_Library.IO
 {
@@ -26,25 +27,26 @@ namespace MB_Studio_Library.IO
         #region MODULE TYPE LISTS
 
         public static List<string> ReservedVariables { get; private set; } = new List<string>();// MODULE VARIABLES
-
         public static List<string> GlobalVarsList { get; private set; } = new List<string>();
         public static List<int> GlobalVarsUses { get; private set; } = new List<int>();
 
-        private static List<Skriptum> strings = new List<Skriptum>();
+        private static List<List<Skriptum>> types = null;
+
+        /*private static List<Skriptum> strings = new List<Skriptum>();
 
         private static List<Skriptum> skills = new List<Skriptum>();
 
         private static List<Skriptum> tracks = new List<Skriptum>();
 
-        private static List<Skriptum> animations = new List<Skriptum>();
+        private static List<Skriptum> animations = new List<Skriptum>();*/
         private static List<int> animationIndices = new List<int>();
 
-        private static List<Skriptum> meshes = new List<Skriptum>();
+        /*private static List<Skriptum> meshes = new List<Skriptum>();
 
-        private static List<Skriptum> sounds = new List<Skriptum>();
+        private static List<Skriptum> sounds = new List<Skriptum>();*/
         private static List<List<object[]>> soundsArray = new List<List<object[]>>();
 
-        private static List<Skriptum> skins = new List<Skriptum>();
+        /*private static List<Skriptum> skins = new List<Skriptum>();
 
         private static List<Skriptum> factions = new List<Skriptum>();
 
@@ -84,10 +86,10 @@ namespace MB_Studio_Library.IO
 
         private static List<Skriptum> infoPages = new List<Skriptum>();
 
-        private static List<Skriptum> postfxParams = new List<Skriptum>();
+        private static List<Skriptum> postfxParams = new List<Skriptum>();*/
 
         #endregion
-
+        
         #region Consts
 
         enum TagType : int
@@ -166,8 +168,6 @@ namespace MB_Studio_Library.IO
         {
             IsFinished = false;
 
-            PrepareAndProcessFiles();
-
             object[] paras = (object[])param;
 
             RichTextBox consoleOutput = (RichTextBox)paras[0];
@@ -178,7 +178,9 @@ namespace MB_Studio_Library.IO
             Console.SetError(controlTextWriter); //new ControlWriter(consoleOutput, consoleOutput.FindForm())
             Console.SetOut(controlTextWriter);   //new ControlWriter(consoleOutput, consoleOutput.FindForm())
 
-            WriteIDFiles();
+            PrepareAndProcessFiles();
+
+            //WriteIDFiles();
 
             ReadProcessAndBuild((string)paras[1]);
 
@@ -248,19 +250,48 @@ namespace MB_Studio_Library.IO
         private static void PrepareAndProcessFiles()
         {
             string headerFilesPath = CodeReader.ProjectPath + "\\headerFiles";
-            string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";
+            /*string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";*/
 
             string[] headerFiles = Directory.GetFiles(headerFilesPath);
-            string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
+            /*string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
 
             SourceWriter.WriteAllObjects();
-            moduleFiles = Directory.GetFiles(moduleFilesPath);
+            moduleFiles = Directory.GetFiles(moduleFilesPath);*/
+            types = CodeReader.ReadAllObjects();
 
             foreach (string file in headerFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
 
-            foreach (string file in moduleFiles)
-                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
+            /*foreach (string file in moduleFiles)
+                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);*/
+            
+            /*scripts = types[(int)ObjectType.Script];
+            missionTemplates = types[(int)ObjectType.MissionTemplate];
+            presentations = types[(int)ObjectType.Presentation];
+            menus = types[(int)ObjectType.GameMenu];
+            troops = types[(int)ObjectType.Troop];
+            items = types[(int)ObjectType.Item];
+            strings = types[(int)ObjectType.GameString];
+            simpleTriggers = types[(int)ObjectType.SimpleTrigger];
+            triggers = types[(int)ObjectType.Trigger];
+            infoPages = types[(int)ObjectType.InfoPage];
+            meshes = types[(int)ObjectType.Mesh];
+            tracks = types[(int)ObjectType.Music];
+            quests = types[(int)ObjectType.Quest];
+            sounds = types[(int)ObjectType.Sound];
+            sceneProps = types[(int)ObjectType.SceneProp];
+            tableaus = types[(int)ObjectType.TableauMaterial];
+            mapIcons = types[(int)ObjectType.MapIcon];
+            dialogs = types[(int)ObjectType.Dialog];
+            factions = types[(int)ObjectType.Faction];
+            animations = types[(int)ObjectType.Animation];
+            partyTemplates = types[(int)ObjectType.PartyTemplate];
+            parties = types[(int)ObjectType.Party];
+            skills = types[(int)ObjectType.Skill];
+            postfxParams = types[(int)ObjectType.PostFX];
+            skins = types[(int)ObjectType.Skin];
+            particleSystems = types[(int)ObjectType.ParticleSystem];
+            scenes = types[(int)ObjectType.Scene];*/
 
             //string module_info = ModuleSystem + "module_info.py";
             //File.WriteAllText(module_info, File.ReadAllText(module_info).Replace("%MOD_NAME%", objs[1].ToString()));
@@ -355,6 +386,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting strings...");
 
+            List<Skriptum> strings = types[(int)ObjectType.GameString];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_strings.py"))
             {
@@ -378,6 +411,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessSkills(string exportDir)
         {
             Console.Write("Exporting skills...");
+
+            List<Skriptum> skills = types[(int)ObjectType.Skill];
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_skills.py"))
@@ -404,6 +439,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessMusic(string exportDir)
         {
             Console.Write("Exporting tracks...");
+
+            List<Skriptum> tracks = types[(int)ObjectType.Music];
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_music.py"))
@@ -434,6 +471,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessAnimations(string exportDir)
         {
             Console.Write("Exporting animations...");
+
+            List<Skriptum> animations = types[(int)ObjectType.Animation];
 
             // compile/filter action sets
             List<Animation> actionCodes = new List<Animation>();
@@ -484,7 +523,12 @@ namespace MB_Studio_Library.IO
                             sequence.FlagsGZ
                         );
                         writer.Write("{0} ", sequence.LastNumberGZ);
-                        writer.Write("{0:F6} {1:F6} {2:F6} {3:F6} ", sequence.LastNumbersFKZ);
+                        writer.Write("{0:F6} {1:F6} {2:F6} {3:F6} ",
+                            sequence.LastNumbersFKZ[0],
+                            sequence.LastNumbersFKZ[1],
+                            sequence.LastNumbersFKZ[2],
+                            sequence.LastNumbersFKZ[3]
+                        );
                     }
                 }
             }
@@ -495,6 +539,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessMeshes(string exportDir)
         {
             Console.Write("Exporting meshes...");
+
+            List<Skriptum> meshes = types[(int)ObjectType.Mesh];
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_meshes.py"))
@@ -533,6 +579,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessSounds(string exportDir)
         {
             Console.Write("Exporting sounds...");
+
+            List<Skriptum> sounds = types[(int)ObjectType.Sound];
 
             // compile/filter sounds
             List<object[]> allSounds = new List<object[]>();
@@ -604,6 +652,8 @@ namespace MB_Studio_Library.IO
 
             Console.Write("Exporting skins...");
 
+            List<Skriptum> skins = types[(int)ObjectType.Skin];
+
             // save skins
             using (StreamWriter writer = new StreamWriter(exportDir + "skins.txt"))
             {
@@ -664,6 +714,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting faction data...");
 
+            List<Skriptum> factions = types[(int)ObjectType.Faction];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_factions.py"))
             {
@@ -707,6 +759,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting scene data...");
 
+            List<Skriptum> scenes = types[(int)ObjectType.Scene];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_scenes.py"))
             {
@@ -748,7 +802,7 @@ namespace MB_Studio_Library.IO
                     writer.Write("  {0} ", scene.ChestTroops.Length);
                     foreach (string chestTroop in scene.ChestTroops)
                     {
-                        int troopNo = FindObject(troops, chestTroop);//FindTroop(troops, chestTroop);
+                        int troopNo = FindObject(ObjectType.Troop, chestTroop);//FindTroop(troops, chestTroop);
                         if (troopNo < 0)
                         {
                             Console.WriteLine("Error unable to find chest-troop: " + chestTroop);
@@ -774,6 +828,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessParticleSys(string exportDir)
         {
             Console.Write("Exporting particle data...");
+
+            List<Skriptum> particleSystems = types[(int)ObjectType.ParticleSystem];
 
             // save particle systems
             using (StreamWriter writer = new StreamWriter(exportDir + "particle_systems.txt"))
@@ -820,6 +876,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting scene props...");
 
+            List<Skriptum> sceneProps = types[(int)ObjectType.SceneProp];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_scene_props.py"))
             {
@@ -856,6 +914,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting quest data...");
 
+            List<Skriptum> quests = types[(int)ObjectType.Quest];
+
             // save quest
             using (StreamWriter writer = new StreamWriter(exportDir + "quests.txt"))
             {
@@ -885,6 +945,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting info_page data...");
 
+            List<Skriptum> infoPages = types[(int)ObjectType.InfoPage];
+
             // save info pages
             using (StreamWriter writer = new StreamWriter(exportDir + "info_pages.txt"))
             {
@@ -909,6 +971,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting simple triggers...");
 
+            List<Skriptum> simpleTriggers = types[(int)ObjectType.SimpleTrigger];
+
             List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
             List<List<int>> tagUses = LoadTagUses(exportDir);
             List<string[]> quickStrings = LoadQuickStrings(exportDir);
@@ -929,6 +993,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessTriggers(string exportDir)
         {
             Console.Write("Exporting triggers...");
+
+            List<Skriptum> triggers = types[(int)ObjectType.Trigger];
 
             List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
             List<List<int>> tagUses = LoadTagUses(exportDir);
@@ -957,6 +1023,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessDialogs(string exportDir)
         {
             Console.Write("Exporting dialogs...");
+
+            List<Skriptum> dialogs = types[(int)ObjectType.Dialog];
 
             List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
             List<List<int>> tagUses = LoadTagUses(exportDir);
@@ -1009,6 +1077,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting postfx_params...");
 
+            List<Skriptum> postfxParams = types[(int)ObjectType.PostFX];
+
             // save postfx_params
             using (StreamWriter writer = new StreamWriter(exportDir + "postfx.txt"))
             {
@@ -1058,6 +1128,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting item data...");
 
+            List<Skriptum> items = types[(int)ObjectType.Item];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_items.py"))
             {
@@ -1080,7 +1152,7 @@ namespace MB_Studio_Library.IO
                 {
                     if (item.Properties.Contains("itp_merchandise"))
                     {
-                        int idNo = FindObject(items, ConvertToIdentifier(item.ID));
+                        int idNo = FindObject(ObjectType.Item, ConvertToIdentifier(item.ID));
                         AddTagUse(tagUses, TagType.Item, idNo);
                     }
 
@@ -1135,6 +1207,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting map icons...");
 
+            List<Skriptum> mapIcons = types[(int)ObjectType.MapIcon];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_map_icons.py"))
             {
@@ -1183,6 +1257,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting troops data...");
 
+            List<Skriptum> troops = types[(int)ObjectType.Troop];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_troops.py"))
             {
@@ -1203,7 +1279,7 @@ namespace MB_Studio_Library.IO
                     {
                         //ulong TSF_SIZE_ID_MASK = 0x0000ffff;
                         //AddTagUse(tagUses, TagType.Scene, troop.SceneCodeGZ & TSF_SIZE_ID_MASK);
-                        int idNo = FindObject(troops, ConvertToIdentifier(troop.ID));
+                        int idNo = FindObject(ObjectType.Troop, ConvertToIdentifier(troop.ID));
                         //if (idNo >= 0)
                         //    AddTagUse(tagUses, TagType.Troop, idNo);
                         //if (troop.FactionID > 0)
@@ -1279,6 +1355,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting tableau materials data...");
 
+            List<Skriptum> tableaus = types[(int)ObjectType.TableauMaterial];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_tableau_materials.py"))
             {
@@ -1323,6 +1401,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting presentations...");
 
+            List<Skriptum> presentations = types[(int)ObjectType.Presentation];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_presentations.py"))
             {
@@ -1357,6 +1437,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessScripts(string exportDir)
         {
             Console.Write("Exporting scripts...");
+
+            List<Skriptum> scripts = types[(int)ObjectType.Script];
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_scripts.py"))
@@ -1402,11 +1484,13 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting menus...");
 
+            List<Skriptum> menus = types[(int)ObjectType.GameMenu];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_menus.py"))
             {
-                for (int i = 0; i < presentations.Count; i++)
-                    writer.WriteLine("menu_{0} = {1}", presentations[i].ID, i);
+                for (int i = 0; i < menus.Count; i++)
+                    writer.WriteLine("menu_{0} = {1}", menus[i].ID, i);
             }
 
             // save menus
@@ -1447,6 +1531,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessMissionTemplates(string exportDir)
         {
             Console.Write("Exporting mission_template data...");
+
+            List<Skriptum> missionTemplates = types[(int)ObjectType.MissionTemplate];
 
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_mission_templates.py"))
@@ -1496,6 +1582,8 @@ namespace MB_Studio_Library.IO
         {
             Console.Write("Exporting party_template data...");
 
+            List<Skriptum> partyTemplates = types[(int)ObjectType.PartyTemplate];
+
             // save python header
             using (StreamWriter writer = new StreamWriter(".\\ID_party_templates.py"))
                 for (int i = 0; i < partyTemplates.Count; i++)
@@ -1535,6 +1623,8 @@ namespace MB_Studio_Library.IO
         private static void ProcessParties(string exportDir)
         {
             Console.Write("Exporting parties...");
+
+            List<Skriptum> parties = types[(int)ObjectType.Party];
 
             List<List<int>> tagUses = LoadTagUses(exportDir);
 
@@ -1635,7 +1725,8 @@ namespace MB_Studio_Library.IO
 
         private static void SaveMissionTemplateGroup(StreamWriter writer, Entrypoint entryPointGroup, List<List<int>> tagUses)
         {
-            if (entryPointGroup.SpawnItems.Length > 8)
+            int maxSpawnItems = 8;
+            if (entryPointGroup.SpawnItems.Length > maxSpawnItems)
             {
                 Console.WriteLine("ERROR: Too many item_overrides!");
                 //error();
@@ -2017,87 +2108,87 @@ namespace MB_Studio_Library.IO
             switch (tag)
             {
                 case "str":
-                    idNo = FindObject(strings, identifier);
+                    idNo = FindObject(ObjectType.GameString, identifier);
                     tagType = TagType.String;
                     break;
                 case "itm":
-                    idNo = FindObject(items, identifier);
+                    idNo = FindObject(ObjectType.Item, identifier);
                     tagType = TagType.Item;
                     break;
                 case "trp":
-                    idNo = FindObject(troops, identifier);
+                    idNo = FindObject(ObjectType.Troop, identifier);
                     tagType = TagType.Troop;
                     break;
                 case "fac":
-                    idNo = FindObject(factions, identifier);
+                    idNo = FindObject(ObjectType.Faction, identifier);
                     tagType = TagType.Faction;
                     break;
                 case "qst":
-                    idNo = FindObject(quests, identifier);
+                    idNo = FindObject(ObjectType.Quest, identifier);
                     tagType = TagType.Quest;
                     break;
                 case "pt":
-                    idNo = FindObject(partyTemplates, identifier);
+                    idNo = FindObject(ObjectType.PartyTemplate, identifier);
                     tagType = TagType.PartyTemplate;
                     break;
                 case "p":
-                    idNo = FindObject(parties, identifier);
+                    idNo = FindObject(ObjectType.Party, identifier);
                     tagType = TagType.Party;
                     break;
                 case "scn":
-                    idNo = FindObject(scenes, identifier);
+                    idNo = FindObject(ObjectType.Mesh, identifier);
                     tagType = TagType.Scene;
                     break;
                 case "mt":
-                    idNo = FindObject(missionTemplates, identifier);
+                    idNo = FindObject(ObjectType.MissionTemplate, identifier);
                     tagType = TagType.MissionTemplate;
                     break;
                 case "mnu":
-                    idNo = FindObject(menus, identifier);
+                    idNo = FindObject(ObjectType.GameMenu, identifier);
                     tagType = TagType.Menu;
                     break;
                 case "script":
-                    idNo = FindObject(scripts, identifier);
+                    idNo = FindObject(ObjectType.Script, identifier);
                     tagType = TagType.Script;
                     break;
                 case "psys":
-                    idNo = FindObject(particleSystems, identifier);
+                    idNo = FindObject(ObjectType.ParticleSystem, identifier);
                     tagType = TagType.ParticleSystem;
                     break;
                 case "spr":
-                    idNo = FindObject(sceneProps, identifier);
+                    idNo = FindObject(ObjectType.SceneProp, identifier);
                     tagType = TagType.SceneProp;
                     break;
                 case "prsnt":
-                    idNo = FindObject(presentations, identifier);
+                    idNo = FindObject(ObjectType.Presentation, identifier);
                     tagType = TagType.Presentation;
                     break;
                 case "snd":
-                    idNo = FindObject(sounds, identifier);
+                    idNo = FindObject(ObjectType.Sound, identifier);
                     tagType = TagType.Sound;
                     break;
                 case "icon":
-                    idNo = FindObject(mapIcons, identifier);
+                    idNo = FindObject(ObjectType.MapIcon, identifier);
                     tagType = TagType.MapIcon;
                     break;
                 case "skl":
-                    idNo = FindObject(skills, identifier);
+                    idNo = FindObject(ObjectType.Skill, identifier);
                     tagType = TagType.Skill;
                     break;
                 case "track":
-                    idNo = FindObject(tracks, identifier);
+                    idNo = FindObject(ObjectType.Music, identifier);
                     tagType = TagType.Track;
                     break;
                 case "mesh":
-                    idNo = FindObject(meshes, identifier);
+                    idNo = FindObject(ObjectType.Mesh, identifier);
                     tagType = TagType.Mesh;
                     break;
                 case "anim":
-                    idNo = FindObject(animations, identifier);
+                    idNo = FindObject(ObjectType.Animation, identifier);
                     tagType = TagType.Animation;
                     break;
                 case "tableua":
-                    idNo = FindObject(tableaus, identifier);
+                    idNo = FindObject(ObjectType.TableauMaterial, identifier);
                     tagType = TagType.Tableau;
                     break;
                 default:
@@ -2110,12 +2201,13 @@ namespace MB_Studio_Library.IO
             return idNo;
         }
 
-        private static int FindObject(List<Skriptum> skripta, string id)
+        private static int FindObject(ObjectType objectType, string id)
         {
             int result = -1;
+            int type = (int)objectType;
             id = id.ToLower();
-            for (int i = 0; i < skripta.Count; i++)
-                if (skripta[i].ID.ToLower().Equals(id))
+            for (int i = 0; i < types[type].Count; i++)
+                if (types[type][i].ID.ToLower().Equals(id))
                     result = i;
             return result;
         }
@@ -2590,7 +2682,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (Trigger trigger in triggers)
+            foreach (Trigger trigger in types[(int)ObjectType.Trigger])
             {
                 try
                 {
@@ -2603,7 +2695,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (SceneProp sceneProp in sceneProps)
+            foreach (SceneProp sceneProp in types[(int)ObjectType.SceneProp])
             {
                 try
                 {
@@ -2617,7 +2709,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (Dialog dialog in dialogs)
+            foreach (Dialog dialog in types[(int)ObjectType.Dialog])
             {
                 try
                 {
@@ -2630,7 +2722,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (GameMenu gameMenu in menus)
+            foreach (GameMenu gameMenu in types[(int)ObjectType.GameMenu])
             {
                 try
                 {
@@ -2647,7 +2739,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (MissionTemplate missionTemplate in missionTemplates)
+            foreach (MissionTemplate missionTemplate in types[(int)ObjectType.MissionTemplate])
             {
                 try
                 {
@@ -2663,7 +2755,7 @@ namespace MB_Studio_Library.IO
                 }
             }
             
-            foreach (Presentation presentation in presentations)
+            foreach (Presentation presentation in types[(int)ObjectType.Presentation])
             {
                 try
                 {
@@ -2676,7 +2768,7 @@ namespace MB_Studio_Library.IO
                 }
             }
             
-            foreach (Script script in scripts)
+            foreach (Script script in types[(int)ObjectType.Script])
             {
                 try
                 {
@@ -2688,7 +2780,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            foreach (SimpleTrigger simpleTrigger in simpleTriggers)
+            foreach (SimpleTrigger simpleTrigger in types[(int)ObjectType.SimpleTrigger])
             {
                 try
                 {
