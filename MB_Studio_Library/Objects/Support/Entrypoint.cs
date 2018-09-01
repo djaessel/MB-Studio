@@ -9,9 +9,14 @@ namespace MB_Studio_Library.Objects.Support
         public Entrypoint(string[] raw_data)
         {
             this.raw_data = raw_data;
-            SpawnItems = new string[raw_data.Length - 8];
+
+            SpawnItemIDs = new int[raw_data.Length - 8];
+            SpawnItems = new string[SpawnItemIDs.Length];
             for (int i = 0; i < SpawnItems.Length; i++)
-                SpawnItems[i] = /*'\"' + */CodeReader.Items[int.Parse(raw_data[i + 7])]/* + '\"'*/;
+            {
+                SpawnItemIDs[i] = int.Parse(raw_data[i + 7]);
+                SpawnItems[i] = CodeReader.Items[SpawnItemIDs[i]];
+            }
         }
 
         public int EntryPointNo { get { return int.Parse(raw_data[0]); } }
@@ -25,5 +30,8 @@ namespace MB_Studio_Library.Objects.Support
         public int TroopCount { get { return int.Parse(raw_data[4]); } }
 
         public string[] SpawnItems { get; }
+
+        public int[] SpawnItemIDs { get; }
+
     }
 }

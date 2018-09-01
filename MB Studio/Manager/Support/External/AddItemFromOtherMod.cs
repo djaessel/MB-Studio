@@ -67,8 +67,7 @@ namespace MB_Studio.Manager.Support.External
             Item item = (Item)SelectedType;
             item.Factions = new List<int>() { 0 };//prevent Faction Problems
 
-            List<string> meshes = item.Meshes;
-            ToolForm.OpenBrfManager.SelectItemNameByKind(meshes[meshes.Count - 1].Split()[0]);
+            ToolForm.OpenBrfManager.SelectItemNameByKind(item.Meshes[item.Meshes.Count - 1].Name);
         }
 
         protected override void Exit_btn_Click(object sender, EventArgs e)
@@ -98,13 +97,12 @@ namespace MB_Studio.Manager.Support.External
         public static void AddItemMeshesToMod(Item item, string originalModuleName)
         {
             string curModName = ToolForm.OpenBrfManager.ModName;
-            foreach (string mesh in item.Meshes)
+            foreach (var mesh in item.Meshes)
             {
                 if (!ToolForm.OpenBrfManager.ModName.Equals(curModName))
                     ToolForm.OpenBrfManager.ChangeModule(curModName);
 
-                string[] meshData = mesh.Split();//meshData[1] -> modifiers (maybe use later for selection position)
-                ToolForm.OpenBrfManager.SelectItemNameByKind(meshData[0]);
+                ToolForm.OpenBrfManager.SelectItemNameByKind(mesh.Name);
                 ToolForm.OpenBrfManager.AddSelectedMeshsToMod(originalModuleName);
             }
         }

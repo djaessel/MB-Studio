@@ -97,10 +97,10 @@ namespace MB_Studio.Manager.Support.External
             ToolForm.OpenBrfManager.Troop3DPreviewClearData();
             foreach (Item item in items)
             {
-                foreach (string mesh in item.Meshes)
+                foreach (var mesh in item.Meshes)
                 {
                     //check bone usw.
-                    ToolForm.OpenBrfManager.AddMeshToTroop3DPreview(mesh);
+                    ToolForm.OpenBrfManager.AddMeshToTroop3DPreview(mesh.Name);
                 }
             }
             //ToolForm.OpenBrfManager.Troop3DPreviewShow();

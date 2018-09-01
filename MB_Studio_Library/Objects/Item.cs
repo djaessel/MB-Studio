@@ -34,12 +34,10 @@ namespace MB_Studio_Library.Objects
         public int Price { get; private set; } = 0;
         public double Weight { get; private set; } = 0d;
 
-        public string ItemProperties { get; private set; } = string.Empty;
-
         public string[] SpecialValues { get; set; } = new string[3];
         public List<string> Triggers { get; set; } = new List<string>();
         public List<int> Factions { get; set; } = new List<int>();
-        public List<string> Meshes { get; set; } = new List<string>();
+        public List<Variable> Meshes { get; set; } = new List<Variable>();
 
         #endregion
 
@@ -121,31 +119,19 @@ namespace MB_Studio_Library.Objects
 
         #endregion
 
-        #region HeaderVariables
+        #region SpecialValues
 
-        public string Properties
-        {
-            get
-            {
-                return GetItemPropertiesFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[0]));
-            }
-        }
+        public ulong PropertiesGZ { get { return ulong.Parse(SpecialValues[0]); } }
 
-        public string CapabilityFlags
-        {
-            get
-            {
-                return GetItemCapabilityFlagsFromValue(HexConverter.Dec2Hex_16CHARS(SpecialValues[1]));
-            }
-        }
+        public ulong CapabilityFlagsGZ { get { return ulong.Parse(SpecialValues[1]); } }
 
-        public string ModBits
-        {
-            get
-            {
-                return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(SpecialValues[2])/*, true*/).TrimStart('|');
-            }
-        }
+        public ulong ModBitsGZ { get { return ulong.Parse(SpecialValues[2]); } }
+
+        public string Properties { get { return GetItemPropertiesFromValue(HexConverter.Dec2Hex_16CHARS(PropertiesGZ)); } }
+
+        public string CapabilityFlags { get { return GetItemCapabilityFlagsFromValue(HexConverter.Dec2Hex_16CHARS(CapabilityFlagsGZ)); } }
+
+        public string ModBits { get { return GetItemModifiers_IMODBITS(HexConverter.Dec2Hex_16CHARS(ModBitsGZ)/*, true*/).TrimStart('|'); } }
 
         #endregion
 
@@ -267,7 +253,7 @@ namespace MB_Studio_Library.Objects
 
             int tmp = int.Parse(xvalues[3]);//meshCount
             for (int i = 0; i < tmp; i++)
-                Meshes.Add(xvalues[4 + (i * 2)] + " " + xvalues[5 + (i * 2)]);
+                Meshes.Add(new Variable(xvalues[4 + (i * 2)], ulong.Parse(xvalues[5 + (i * 2)])));
 
             tmp *= 2;
 
@@ -615,28 +601,72 @@ namespace MB_Studio_Library.Objects
 
         #region Helper Methods
 
-        public static string GetMeshKindFromValue(string value)
+        public static ulong GetModBitStringToValue(string modbitString)
+        {
+            ulong value = 0ul;
+            string[] tmp = modbitString.Trim(' ', '|').Split('|');
+            foreach (HeaderVariable var in HeaderIModBits)
+            {
+                for (int i = 0; i < tmp.Length; i++)
+                {
+                    if (var.VariableName.Equals(tmp[i]))
+                    {
+                        value |= HexConverter.Hex2Dec_16CHARS(var.VariableValue);
+                        i = tmp.Length;
+                    }
+                }
+            }
+            return value;
+        }
+
+        public static string GetMeshKindFromValue(ulong value)
         {
             string retur = string.Empty;
 
-            if (ulong.Parse(HexConverter.Hex2Dec_16CHARS(value).ToString()) != 0u)
+            if (value != 0u)
             {
-                if (value[0] == '1')
+                string valS = HexConverter.Dec2Hex_16CHARS(value);
+                if (valS[0] == '1')
                     retur = "ixmesh_inventory";
-                else if (value[0] == '2')
+                else if (valS[0] == '2')
                     retur = "ixmesh_flying_ammo";
-                else if (value[0] == '3')
+                else if (valS[0] == '3')
                     retur = "ixmesh_carry";
 
-                if (!value.Substring(1).Equals(ZERO_15_CHARS))
+                if (!valS.Substring(1).Equals(ZERO_15_CHARS))
                 {
-                    retur += "|" + GetItemModifiers_IMODBITS(value/*, true*/);
+                    retur += "|" + GetItemModifiers_IMODBITS(valS/*, true*/);
                     retur = retur.Trim('|');
                 }
             }
 
             if (retur.Length == 0)
-                retur = "0";
+                retur = "0";// "none"
+
+            return retur;
+        }
+
+        public static ulong GetValueFromMeshKind(string meshKind)
+        {
+            ulong retur = 0;
+
+            List<string> meshKinds = new List<string>() { "inventory", "flying_ammo", "carry" };
+
+            string meshModifierBits = string.Empty;
+            int modifIdx = meshKind.IndexOf('|') + 1;
+            if (modifIdx > 0)
+            {
+                meshModifierBits = meshKind.Substring(modifIdx);
+                meshKind = meshKind.Remove(modifIdx);
+            }
+            meshKind = meshKind.Replace("ixmesh_", string.Empty);
+
+            int kindIdx = meshKinds.IndexOf(meshKind);
+            string hexValue = string.Empty;
+            if (kindIdx >= 0)
+                hexValue += kindIdx;
+
+            //if ()
 
             return retur;
         }

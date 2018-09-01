@@ -30,7 +30,7 @@ namespace MB_Studio.Manager
         public static readonly List<string> InvisibleMeshes = new List<string>() { "invalid_item","flying_missile" };
 
         private List<int[]> memberValues = new List<int[]>();
-        private List<string> curMeshs = new List<string>();
+        private List<Variable> curMeshs = new List<Variable>();
         private List<SimpleTrigger> itemTrigger = new List<SimpleTrigger>();
 
         #endregion
@@ -370,12 +370,12 @@ namespace MB_Studio.Manager
         private int AddMeshControls(Item item, int i, bool normal = true)
         {
             int lastTopLocation = MESH_CONTROLS_TOP_DEFAULT + MESH_CONTROLS_TOP_HEIGHT - 6 + i * MESH_CONTROLS_TOP_HEIGHT;
-            string[] tmp;
 
+            Variable tmp;
             if (normal)
-                tmp = item.Meshes[i].Split();
+                tmp = item.Meshes[i];
             else
-                tmp = new string[] { "invalid_item", "0" }; // or string.Empty, "0"
+                tmp = new Variable("invalid_item", 0); // or (string.Empty, 0)
 
             // ixmesh_lbl
             Label ixmesh_lbl = new Label
@@ -403,7 +403,7 @@ namespace MB_Studio.Manager
                 Location = new Point(ixmesh_lbl.Left + ixmesh_lbl.Width + 8, lastTopLocation + 1),
                 Name = "ixmesh_" + i + "_txt",
                 Size = new Size(resourceName_column_lbl.Width - 8, MESH_CONTROLS_TOP_HEIGHT - 4),
-                Text = tmp[0],
+                Text = tmp.Name.Trim(),
                 Sorted = true,
             };
             //optional all or just current --> add in settings!!!
@@ -435,7 +435,7 @@ namespace MB_Studio.Manager
                 }
             );
 
-            string meshKind = Item.GetMeshKindFromValue(HexConverter.Dec2Hex_16CHARS(tmp[1]));
+            string meshKind = Item.GetMeshKindFromValue((ulong)tmp.Value);
             if (!meshKind.Equals("0"))
                 ixmesh_cbb.SelectedItem = meshKind.Split('|')[0].Substring(7);
             else
@@ -495,7 +495,13 @@ namespace MB_Studio.Manager
             ComboBox c = (ComboBox)sender;
             int idx = int.Parse(c.Name.Split('_')[1]);
             ComboBox c2 = (ComboBox)c.Parent.Controls.Find("ixmesh_" + idx + "_cbb", true)[0];
-            curMeshs[idx] = c.Text + ' ' + c2.Text;
+
+            ulong meshKind = HexConverter.Hex2Dec_16CHARS(c2.SelectedIndex + Item.ZERO_15_CHARS);
+
+            string meshModBitString = c.Parent.Controls.Find("ixmesh2_" + idx + "_txt", true)[0].Text;
+            ulong meshModBits = Item.GetModBitStringToValue(meshModBitString);
+
+            curMeshs[idx] = new Variable(c.Text, meshKind | meshModBits);
 
             Change3DView();
         }
@@ -1076,7 +1082,7 @@ namespace MB_Studio.Manager
                                 if (!c.Name.Split('_')[0].EndsWith("2"))
                                     tmp += ' ' + c.Text + ' ';
                                 else
-                                    tmp += (meshKindValue | GetModBitStringToValue(c.Text)).ToString();
+                                    tmp += (meshKindValue | Item.GetModBitStringToValue(c.Text)).ToString();
                             }
                             else if (nameEnd.Equals("cbb"))
                                 meshKindValue = HexToUInt64(((ComboBox)c).SelectedIndex + Item.ZERO_15_CHARS);
@@ -1232,27 +1238,6 @@ namespace MB_Studio.Manager
             return ulong.Parse(HexConverter.Hex2Dec_16CHARS(value).ToString());
         }
 
-        private ulong GetModBitStringToValue(string modbitString)
-        {
-            ulong value = 0ul;
-            List<HeaderVariable> headerVars = Item.HeaderIModBits;
-            string[] tmp = modbitString.Trim(' ', '|').Split('|');
-
-            foreach (HeaderVariable var in headerVars)
-            {
-                for (int i = 0; i < tmp.Length; i++)
-                {
-                    if (var.VariableName.Equals(tmp[i]))
-                    {
-                        value |= HexToUInt64(var.VariableValue);
-                        i = tmp.Length;
-                    }
-                }
-            }
-
-            return value;
-        }
-
         private int GetMeshesCount()
         {
             return (groupBox_3_gb.Controls.Count - MESH_INFO_CONTROLS_COUNT) / MESH_CONTROLS_COUNT;
@@ -1359,9 +1344,8 @@ namespace MB_Studio.Manager
             {
                 if (ShowMesh(i))
                 {
-                    string[] meshInfo = curMeshs[i].Split();
-                    //if (!InvisibleMeshes.Contains(meshInfo[0]))
-                        OpenBrfManager.SelectItemNameByKind(meshInfo[0]);//maybe use modifiers as well to set position/bone
+                    //if (!InvisibleMeshes.Contains(curMeshs[i].Name))
+                    OpenBrfManager.SelectItemNameByKind(curMeshs[i].Name);//maybe use modifiers as well to set position/bone
                 }
             }
         }

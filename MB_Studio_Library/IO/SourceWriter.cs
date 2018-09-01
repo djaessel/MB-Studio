@@ -556,8 +556,7 @@ namespace MB_Studio_Library.IO
                     wr.Write(Environment.NewLine + "[\"" + item.ID + "\",\"" + item.Name + "\",[");
                     for (int i = 0; i < item.Meshes.Count; i++)
                     {
-                        string[] sp = item.Meshes[i].Trim().Split();
-                        wr.Write("(\"" + sp[0] + "\"," + Item.GetMeshKindFromValue(HexConverter.Dec2Hex_16CHARS(sp[1])) + ')');
+                        wr.Write("(\"" + item.Meshes[i].Name + "\"," + Item.GetMeshKindFromValue((ulong)item.Meshes[i].Value) + ')');
                         if (i < item.Meshes.Count - 1)
                             wr.Write(",");
                     }

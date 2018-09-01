@@ -435,13 +435,13 @@ namespace MB_Studio.Manager
             {
                 if (skeletonId == 0)//no horse on screen!
                 {
-                    foreach (string meshName in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
+                    foreach (var mesh in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
                     {
-                        string mName = meshName.Split()[0].Trim();
-                        if (OpenBrfManager.AddMeshToTroop3DPreview(mName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
-                            Console.WriteLine("ADDED '" + mName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + mName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
+                        string meshName = mesh.Name.Trim();
+                        if (OpenBrfManager.AddMeshToTroop3DPreview(meshName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
+                            Console.WriteLine("ADDED '" + meshName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + meshName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
                         else
-                            Console.WriteLine("ADDING '" + mName + "' to Troop3DPreview FAILED!");
+                            Console.WriteLine("ADDING '" + meshName + "' to Troop3DPreview FAILED!");
                     }
                 }
                 //else/* if (skeletonId == 1)*/
@@ -916,7 +916,7 @@ namespace MB_Studio.Manager
                             Item itemX = (Item)itemsRList[i];
                             for (int j = 0; j < itemX.Meshes.Count; j++)
                             {
-                                string sss = itemX.Meshes[j].Split()[0].Trim();
+                                string sss = itemX.Meshes[j].Name.Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("void LoadCurrentMeshWithOpenBrf(ListBox lb) : " + OpenBrfManager.SelectItemNameByKind(sss));
                             }
@@ -947,7 +947,7 @@ namespace MB_Studio.Manager
                             Item itemX = (Item)itemsRList[i];
                             for (int j = 0; j < itemX.Meshes.Count; j++)
                             {
-                                string sss = itemX.Meshes[j].Split()[0].Trim();
+                                string sss = itemX.Meshes[j].Name.Trim();
                                 Console.WriteLine("|" + sss + "|");
                                 Console.WriteLine("void Troop3DPreview(ListBox lb) : " + OpenBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
 

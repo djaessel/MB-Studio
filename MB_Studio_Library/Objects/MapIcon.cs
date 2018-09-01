@@ -9,7 +9,7 @@ namespace MB_Studio_Library.Objects
         {
             if (ImportantMethods.IsNumericGZ(raw_data[1]))
             {
-                FlagsGZ = byte.Parse(raw_data[1]);
+                FlagsGZ = int.Parse(raw_data[1]);
                 SetFlags();
             }
             else
@@ -20,7 +20,9 @@ namespace MB_Studio_Library.Objects
 
             MapIconName = raw_data[2];
             Scale = double.Parse(CodeReader.Repl_DotWComma(raw_data[3]));
-            Sound = CodeReader.Sounds[int.Parse(raw_data[4])];
+
+            SoundID = int.Parse(raw_data[4]);
+            Sound = CodeReader.Sounds[SoundID];
 
             string x = CodeReader.Repl_DotWComma(raw_data[5]);
             string y = CodeReader.Repl_DotWComma(raw_data[6]);
@@ -41,12 +43,12 @@ namespace MB_Studio_Library.Objects
 
         private void SetFlagsGZ()
         {
-            byte flagsGZ = 0;
+            int flagsGZ = 0;
 
             if (Flags.Equals("mcn_no_shadow"))
                 flagsGZ++;
 
-            this.FlagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         private void SetFlags()
@@ -59,12 +61,12 @@ namespace MB_Studio_Library.Objects
             if (flags.Length == 0)
                 flags = FlagsGZ.ToString();
 
-            this.Flags = flags;
+            Flags = flags;
         }
 
         public SimpleTrigger[] SimpleTriggers { get; set; } = new SimpleTrigger[0];
 
-        public byte FlagsGZ { get; private set; }
+        public int FlagsGZ { get; private set; }
 
         public string Flags { get; private set; }
 
@@ -79,6 +81,8 @@ namespace MB_Studio_Library.Objects
         public string MapIconName { get; }
 
         public string Sound { get; }
+
+        public int SoundID { get; }
 
     }
 }
