@@ -18,9 +18,9 @@ namespace MB_Studio_Library.IO
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
 
-        private static List<string> canFailOperations = new List<string>();
-        private static List<string> lhsOperations = new List<string>();
-        private static List<string> globalLhsOperations = new List<string>();
+        private static List<string> canFailOperations = null;
+        private static List<string> lhsOperations = null;
+        private static List<string> globalLhsOperations = null;
 
         #endregion
 
@@ -32,61 +32,8 @@ namespace MB_Studio_Library.IO
 
         private static List<List<Skriptum>> types = null;
 
-        /*private static List<Skriptum> strings = new List<Skriptum>();
-
-        private static List<Skriptum> skills = new List<Skriptum>();
-
-        private static List<Skriptum> tracks = new List<Skriptum>();
-
-        private static List<Skriptum> animations = new List<Skriptum>();*/
         private static List<int> animationIndices = new List<int>();
-
-        /*private static List<Skriptum> meshes = new List<Skriptum>();
-
-        private static List<Skriptum> sounds = new List<Skriptum>();*/
-        private static List<List<object[]>> soundsArray = new List<List<object[]>>();
-
-        /*private static List<Skriptum> skins = new List<Skriptum>();
-
-        private static List<Skriptum> factions = new List<Skriptum>();
-
-        private static List<Skriptum> scenes = new List<Skriptum>();
-
-        private static List<Skriptum> particleSystems = new List<Skriptum>();
-
-        private static List<Skriptum> sceneProps = new List<Skriptum>();
-
-        private static List<Skriptum> troops = new List<Skriptum>();
-
-        private static List<Skriptum> tableaus = new List<Skriptum>();
-
-        private static List<Skriptum> scripts = new List<Skriptum>();
-
-        private static List<Skriptum> quests = new List<Skriptum>();
-
-        private static List<Skriptum> presentations = new List<Skriptum>();
-
-        private static List<Skriptum> missionTemplates = new List<Skriptum>();
-
-        private static List<Skriptum> menus = new List<Skriptum>();
-
-        private static List<Skriptum> mapIcons = new List<Skriptum>();
-
-        private static List<Skriptum> items = new List<Skriptum>();
-
-        private static List<Skriptum> partyTemplates = new List<Skriptum>();
-
-        private static List<Skriptum> parties = new List<Skriptum>();
-
-        private static List<Skriptum> dialogs = new List<Skriptum>();
-
-        private static List<Skriptum> simpleTriggers = new List<Skriptum>();
-
-        private static List<Skriptum> triggers = new List<Skriptum>();
-
-        private static List<Skriptum> infoPages = new List<Skriptum>();
-
-        private static List<Skriptum> postfxParams = new List<Skriptum>();*/
+        private static List<List<string>> soundsArray = new List<List<string>>();
 
         #endregion
         
@@ -264,34 +211,6 @@ namespace MB_Studio_Library.IO
 
             /*foreach (string file in moduleFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);*/
-            
-            /*scripts = types[(int)ObjectType.Script];
-            missionTemplates = types[(int)ObjectType.MissionTemplate];
-            presentations = types[(int)ObjectType.Presentation];
-            menus = types[(int)ObjectType.GameMenu];
-            troops = types[(int)ObjectType.Troop];
-            items = types[(int)ObjectType.Item];
-            strings = types[(int)ObjectType.GameString];
-            simpleTriggers = types[(int)ObjectType.SimpleTrigger];
-            triggers = types[(int)ObjectType.Trigger];
-            infoPages = types[(int)ObjectType.InfoPage];
-            meshes = types[(int)ObjectType.Mesh];
-            tracks = types[(int)ObjectType.Music];
-            quests = types[(int)ObjectType.Quest];
-            sounds = types[(int)ObjectType.Sound];
-            sceneProps = types[(int)ObjectType.SceneProp];
-            tableaus = types[(int)ObjectType.TableauMaterial];
-            mapIcons = types[(int)ObjectType.MapIcon];
-            dialogs = types[(int)ObjectType.Dialog];
-            factions = types[(int)ObjectType.Faction];
-            animations = types[(int)ObjectType.Animation];
-            partyTemplates = types[(int)ObjectType.PartyTemplate];
-            parties = types[(int)ObjectType.Party];
-            skills = types[(int)ObjectType.Skill];
-            postfxParams = types[(int)ObjectType.PostFX];
-            skins = types[(int)ObjectType.Skin];
-            particleSystems = types[(int)ObjectType.ParticleSystem];
-            scenes = types[(int)ObjectType.Scene];*/
 
             //string module_info = ModuleSystem + "module_info.py";
             //File.WriteAllText(module_info, File.ReadAllText(module_info).Replace("%MOD_NAME%", objs[1].ToString()));
@@ -308,24 +227,24 @@ namespace MB_Studio_Library.IO
             ProcessMeshes(exportDir);
             ProcessSounds(exportDir);
             ProcessSkins(exportDir);
-            ProcessFactions(exportDir);
-            ProcessScenes(exportDir);
+            //ProcessFactions(exportDir);//relation IndexOutOfRangeException
+            //ProcessScenes(exportDir);//unable to find checst troop
             ProcessParticleSys(exportDir);
-            ProcessSceneProps(exportDir);
+            //ProcessSceneProps(exportDir);//IndexOutOfRangeException
             ProcessQuests(exportDir);
             ProcessInfoPages(exportDir);
-            ProcessSimpleTriggers(exportDir);
-            ProcessTriggers(exportDir);
-            ProcessDialogs(exportDir);
+            //ProcessSimpleTriggers(exportDir);//IndexOutOfRangeException
+            //ProcessTriggers(exportDir);//IndexOutOfRangeException
+            //ProcessDialogs(exportDir);//IndexOutOfRangeException
             ProcessPostfxParams(exportDir);
-            ProcessItems(exportDir);
-            ProcessMapIcons(exportDir);
+            //ProcessItems(exportDir);//IndexOutOfRangeException
+            //ProcessMapIcons(exportDir);//IndexOutOfRangeException
             ProcessTroops(exportDir);
-            ProcessTableauMaterials(exportDir);
-            ProcessPresentations(exportDir);
-            ProcessScripts(exportDir);
-            ProcessMenus(exportDir);
-            ProcessMissionTemplates(exportDir);
+            //ProcessTableauMaterials(exportDir);
+            //ProcessPresentations(exportDir);
+            //ProcessScripts(exportDir);
+            //ProcessMenus(exportDir);
+            //ProcessMissionTemplates(exportDir);
             ProcessPartyTemplates(exportDir);
             ProcessParties(exportDir);
             ProcessGlobalVariablesUnused(exportDir);
@@ -583,18 +502,18 @@ namespace MB_Studio_Library.IO
             List<Skriptum> sounds = types[(int)ObjectType.Sound];
 
             // compile/filter sounds
-            List<object[]> allSounds = new List<object[]>();
+            List<string[]> allSounds = new List<string[]>();
             foreach (Sound sound in sounds)
             {
-                object[] soundFiles = sound.SoundFiles;
+                string[] soundFiles = sound.SoundFiles;
                 ulong soundFlags = sound.FlagsGZ;
-                for (int i = 0; i < sound.SoundFiles.Length; i++)
+                for (int i = 0; i < soundFiles.Length; i++)
                 {
                     bool found = false;
                     int soundNo = 0;
-                    object[] soundFile = soundFiles[i].ToString().Split();
+                    string[] soundFile = soundFiles[i].Split();
                     if (soundFile.Length == 1)
-                        soundFile = new object[] { soundFile[0], 0 };
+                        soundFile = new string[] { soundFile[0], "0" };
                     while (soundNo < allSounds.Count && !found)
                     {
                         if (allSounds[soundNo][0].Equals(soundFile[0]))
@@ -605,12 +524,12 @@ namespace MB_Studio_Library.IO
                     if (!found)
                     {
                         soundNo = allSounds.Count;
-                        allSounds.Add(new object[] { soundFile[0], soundFlags });
+                        allSounds.Add(new string[] { soundFile[0], soundFlags.ToString() });
                     }
-                    soundFiles[i] = new object[] { soundNo, soundFile[1] };
+                    soundFiles[i] = soundNo + " " + soundFile[1];
                 }
-                List<object[]> vs = new List<object[]>();
-                foreach (object[] v in soundFiles)
+                List<string> vs = new List<string>();
+                foreach (string v in soundFiles)
                     vs.Add(v);
                 soundsArray.Add(vs);
             }
@@ -628,9 +547,11 @@ namespace MB_Studio_Library.IO
                 for (int i = 0; i < sounds.Count; i++)
                 {
                     Sound sound = (Sound)sounds[i];
-                    writer.Write("snd_{0} {2} {3} ", sound.ID, sound.FlagsGZ, sound.SoundFiles.Length);
-                    foreach (object[] sample in soundsArray[i])
-                        writer.Write("{0} {1} ", sample);
+                    writer.Write("snd_{0} {1} {2} ", sound.ID, sound.FlagsGZ, sound.SoundFiles.Length);
+                    foreach (string sample in soundsArray[i])
+                    {
+                        writer.Write("{0} {1} ", sample.Split());
+                    }
                     writer.WriteLine();
                 }
             }
@@ -1669,7 +1590,7 @@ namespace MB_Studio_Library.IO
                     double[] defaultBehaviorLocation = party.InitialCoordinates;
                     writer.Write("{0:F6} {1:F6} ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
                     writer.Write("{0:F6} {1:F6} ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
-                    writer.Write("{0:F6} {1:F6} 0.0 ", party.InitialCoordinates);
+                    writer.Write("{0:F6} {1:F6} 0.0 ", party.InitialCoordinates[0], party.InitialCoordinates[1]);
 
                     string troopTag = "trp_";
                     writer.Write("{0} ", party.Members.Length);
@@ -2341,14 +2262,14 @@ namespace MB_Studio_Library.IO
 
         private static bool IsLhsOperation(string opcode)
         {
-            if (lhsOperations.Count == 0)
+            if (lhsOperations == null)
                 lhsOperations = GetHeaderOperationsList("lhs_operations");
             return lhsOperations.Contains(opcode);
         }
 
         private static bool IsCanFailOperation(string opcode)
         {
-            if (canFailOperations.Count == 0)
+            if (canFailOperations == null)
                 canFailOperations = GetHeaderOperationsList("can_fail_operations");
             return canFailOperations.Contains(opcode);
         }
@@ -2605,45 +2526,41 @@ namespace MB_Studio_Library.IO
 
         private static void CompileGlobalVars(string[] statementBlock, List<string> variableList, List<int> variableUses)
         {
+            if (statementBlock.Length == 0) return;
+
             foreach (string statement in statementBlock)
-                CompileGlobalVarsInStatement(statement, variableList, variableUses);
+            {
+                if (statement == null) continue;
+
+                string tmp = statement.Trim();
+                if (tmp.Length != 0)
+                    CompileGlobalVarsInStatement(tmp, variableList, variableUses);
+            }
         }
 
         public static bool IsGenericList(object o)
         {
             var oType = o.GetType();
-            return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(List<>)));
+            bool isList = (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(List<>)));
+            return isList;
         }
 
         private static bool IsLhsOperationForGlobalVars(string opcode)
         {
-            if (globalLhsOperations.Count == 0)
+            if (globalLhsOperations == null)
                 globalLhsOperations = GetHeaderOperationsList("global_lhs_operations");
-            return IsLhsOperation(opcode) ||
-                globalLhsOperations.Contains(opcode);
+            return (IsLhsOperation(opcode) || globalLhsOperations.Contains(opcode));
         }
 
-        private static void CompileGlobalVarsInStatement(object statement, List<string> variableList, List<int> variableUses)
+        private static void CompileGlobalVarsInStatement(string statement, List<string> variableList, List<int> variableUses)
         {
-            object opcode = 0;
-            if (!IsGenericList(statement) && !statement.GetType().Equals(typeof(string[])))
-                opcode = statement;
-            else
-            {
-                // check this part again because list and array are incompatible in C#
-                string[] statementA = (string[])statement;
-                opcode = statementA[0];
-                if (IsLhsOperationForGlobalVars(opcode.ToString()))
-                {
-                    if (statementA.Length > 1)
-                    {
-                        //object param = statementA[1];
-                        //if (param.GetType().Equals(typeof(string))) // not necessary if string array/list is proven!
-                        if (statementA[1][0] == '$')
-                            AddVariable(statementA[1].Substring(1), variableList, variableUses);
-                    }
-                }
-            }
+            string[] sp = statement.Split();
+            string opcode = sp[0];
+            if (IsLhsOperationForGlobalVars(opcode))
+                if (sp.Length > 1)
+                    if (sp[1].Length > 0)
+                        if (sp[1][0] == '$')
+                            AddVariable(sp[1].Substring(1), variableList, variableUses);
         }
 
         private static void AddVariable(string variableString, List<string> variableList, List<int> variableUses)
@@ -2772,7 +2689,7 @@ namespace MB_Studio_Library.IO
             {
                 try
                 {
-                    CompileGlobalVars(script.Code, variableList, variableUses);
+                    CompileGlobalVars(script.Code, variableList, variableUses);//last block is null??? fix for script code
                 }
                 catch (Exception)
                 {
