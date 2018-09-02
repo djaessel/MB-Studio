@@ -237,8 +237,8 @@ namespace importantLib
                 string sss = sx.Substring(sx.LastIndexOf('_') + 1);
                 if (sx.Equals(s)
                     || (contains && sx.Contains(s) && !checkCounter)
-                    || (contains && sx.Contains(s) && checkCounter && IsNumericFKZ2(sss))
-                    || (!contains && checkCounter && IsNumericFKZ2(sss)) && s.Equals(sx.Substring(0, sx.Length - (sss.Length + 1))))
+                    || (contains && sx.Contains(s) && checkCounter && IsNumericFKZ128(sss))
+                    || (!contains && checkCounter && IsNumericFKZ128(sss)) && s.Equals(sx.Substring(0, sx.Length - (sss.Length + 1))))
                     x++;
             }
             return x;
@@ -281,14 +281,26 @@ namespace importantLib
             return blocks;
         }
 
-        public static bool IsNumericGZ(string s)
+        public static string RemoveFirstMinus(string s)
         {
-            return ulong.TryParse(s, out ulong u);
+            if (s.StartsWith("-"))
+                s = s.Substring(1);
+            return s;
         }
 
-        public static bool IsNumericFKZ2(string s)
+        public static bool IsNumericGZ(string s)
         {
-            return decimal.TryParse(s, out decimal d);
+            return ulong.TryParse(RemoveFirstMinus(s), out ulong u);
+        }
+
+        public static bool IsNumericFKZ128(string s)
+        {
+            return decimal.TryParse(RemoveFirstMinus(s), out decimal d);
+        }
+
+        public static bool IsNumericFKZ(string s)
+        {
+            return double.TryParse(RemoveFirstMinus(s), out double d);
         }
 
         public static bool IsNumeric(string s, bool all)
@@ -297,13 +309,8 @@ namespace importantLib
             if (!b && all)
                 b = IsNumericFKZ(s);
             if (!b && all)
-                b = IsNumericFKZ2(s);
+                b = IsNumericFKZ128(s);
             return b;
-        }
-
-        public static bool IsNumericFKZ(string s)
-        {
-            return double.TryParse(s, out double d);
         }
 
         public static List<string> StringArrayToList(string[] s, int startIndex = 0)

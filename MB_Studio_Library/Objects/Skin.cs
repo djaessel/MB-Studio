@@ -39,7 +39,7 @@ namespace MB_Studio_Library.Objects
             BloodParticle1 = CodeReader.ParticleSystems[BloodParticle1GZ];
             BloodParticle2 = CodeReader.ParticleSystems[BloodParticle2GZ];
             int fkcCount = 0;
-            if (ImportantMethods.IsNumericFKZ2(raw_data[11][0]))
+            if (ImportantMethods.IsNumericFKZ128(raw_data[11][0]))
             {
                 fkcCount = int.Parse(raw_data[11][0]);
                 if (fkcCount > 0)

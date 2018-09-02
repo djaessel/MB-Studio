@@ -26,6 +26,8 @@ namespace MB_Studio_Library.IO
 
         #region MODULE TYPE LISTS
 
+        private static List<Variable> commonPythonVariables = null;
+
         public static List<string> ReservedVariables { get; private set; } = new List<string>();// MODULE VARIABLES
         public static List<string> GlobalVarsList { get; private set; } = new List<string>();
         public static List<int> GlobalVarsUses { get; private set; } = new List<int>();
@@ -230,21 +232,21 @@ namespace MB_Studio_Library.IO
             //ProcessFactions(exportDir);//relation IndexOutOfRangeException
             //ProcessScenes(exportDir);//unable to find checst troop
             ProcessParticleSys(exportDir);
-            ProcessSceneProps(exportDir);//IndexOutOfRangeException
+            ProcessSceneProps(exportDir);
             ProcessQuests(exportDir);
             ProcessInfoPages(exportDir);
-            ProcessSimpleTriggers(exportDir);//IndexOutOfRangeException
-            ProcessTriggers(exportDir);//IndexOutOfRangeException
-            ProcessDialogs(exportDir);//IndexOutOfRangeException
+            ProcessSimpleTriggers(exportDir);
+            ProcessTriggers(exportDir);
+            ProcessDialogs(exportDir);
             ProcessPostfxParams(exportDir);
-            ProcessItems(exportDir);//IndexOutOfRangeException
-            ProcessMapIcons(exportDir);//IndexOutOfRangeException
+            ProcessItems(exportDir);
+            ProcessMapIcons(exportDir);
             ProcessTroops(exportDir);
-            //ProcessTableauMaterials(exportDir);
-            //ProcessPresentations(exportDir);
-            //ProcessScripts(exportDir);
-            //ProcessMenus(exportDir);
-            //ProcessMissionTemplates(exportDir);
+            ProcessTableauMaterials(exportDir);
+            ProcessPresentations(exportDir);
+            ProcessScripts(exportDir);
+            ProcessMenus(exportDir);
+            ProcessMissionTemplates(exportDir);
             ProcessPartyTemplates(exportDir);
             ProcessParties(exportDir);
             ProcessGlobalVariablesUnused(exportDir);
@@ -256,7 +258,7 @@ namespace MB_Studio_Library.IO
 
         private static void ProcessInit(string exportDir)
         {
-            Console.Write("Initializing...");
+            Console.WriteLine("Initializing...");
 
             TryFileDelete(exportDir, "tag_uses");
             TryFileDelete(exportDir, "quick_strings");
@@ -285,12 +287,12 @@ namespace MB_Studio_Library.IO
                 Console.WriteLine("variables.txt not found.Creating new variables.txt file");
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessGlobalVariables(string exportDir)
         {
-            Console.Write("Compiling all global variables...");
+            Console.WriteLine("Compiling all global variables...");
 
             List<string> variables = LoadVariables(exportDir, out List<int> variablesUses);
 
@@ -298,12 +300,12 @@ namespace MB_Studio_Library.IO
 
             SaveVariables(exportDir, variables, variablesUses);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessStrings(string exportDir)
         {
-            Console.Write("Exporting strings...");
+            Console.WriteLine("Exporting strings...");
 
             List<Skriptum> strings = types[(int)ObjectType.GameString];
 
@@ -324,12 +326,12 @@ namespace MB_Studio_Library.IO
                     writer.WriteLine("str_{0} {1}", ConvertToIdentifier(gameString.ID), ReplaceSpaces(gameString.Text));
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSkills(string exportDir)
         {
-            Console.Write("Exporting skills...");
+            Console.WriteLine("Exporting skills...");
 
             List<Skriptum> skills = types[(int)ObjectType.Skill];
 
@@ -352,12 +354,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessMusic(string exportDir)
         {
-            Console.Write("Exporting tracks...");
+            Console.WriteLine("Exporting tracks...");
 
             List<Skriptum> tracks = types[(int)ObjectType.Music];
 
@@ -384,12 +386,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessAnimations(string exportDir)
         {
-            Console.Write("Exporting animations...");
+            Console.WriteLine("Exporting animations...");
 
             List<Skriptum> animations = types[(int)ObjectType.Animation];
 
@@ -452,12 +454,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessMeshes(string exportDir)
         {
-            Console.Write("Exporting meshes...");
+            Console.WriteLine("Exporting meshes...");
 
             List<Skriptum> meshes = types[(int)ObjectType.Mesh];
 
@@ -492,12 +494,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSounds(string exportDir)
         {
-            Console.Write("Exporting sounds...");
+            Console.WriteLine("Exporting sounds...");
 
             List<Skriptum> sounds = types[(int)ObjectType.Sound];
 
@@ -564,14 +566,14 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSkins(string exportDir)
         {
             int maxSkinCount = 16;//change if higher for bannerlord or other versions
 
-            Console.Write("Exporting skins...");
+            Console.WriteLine("Exporting skins...");
 
             List<Skriptum> skins = types[(int)ObjectType.Skin];
 
@@ -628,12 +630,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessFactions(string exportDir)
         {
-            Console.Write("Exporting faction data...");
+            Console.WriteLine("Exporting faction data...");
 
             List<Skriptum> factions = types[(int)ObjectType.Faction];
 
@@ -673,12 +675,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessScenes(string exportDir)
         {
-            Console.Write("Exporting scene data...");
+            Console.WriteLine("Exporting scene data...");
 
             List<Skriptum> scenes = types[(int)ObjectType.Scene];
 
@@ -743,12 +745,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessParticleSys(string exportDir)
         {
-            Console.Write("Exporting particle data...");
+            Console.WriteLine("Exporting particle data...");
 
             List<Skriptum> particleSystems = types[(int)ObjectType.ParticleSystem];
 
@@ -790,12 +792,12 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSceneProps(string exportDir)
         {
-            Console.Write("Exporting scene props...");
+            Console.WriteLine("Exporting scene props...");
 
             List<Skriptum> sceneProps = types[(int)ObjectType.SceneProp];
 
@@ -828,12 +830,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessQuests(string exportDir)
         {
-            Console.Write("Exporting quest data...");
+            Console.WriteLine("Exporting quest data...");
 
             List<Skriptum> quests = types[(int)ObjectType.Quest];
 
@@ -859,12 +861,12 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessInfoPages(string exportDir)
         {
-            Console.Write("Exporting info_page data...");
+            Console.WriteLine("Exporting info_page data...");
 
             List<Skriptum> infoPages = types[(int)ObjectType.InfoPage];
 
@@ -885,12 +887,12 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessSimpleTriggers(string exportDir)
         {
-            Console.Write("Exporting simple triggers...");
+            Console.WriteLine("Exporting simple triggers...");
 
             List<Skriptum> simpleTriggers = types[(int)ObjectType.SimpleTrigger];
 
@@ -908,12 +910,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessTriggers(string exportDir)
         {
-            Console.Write("Exporting triggers...");
+            Console.WriteLine("Exporting triggers...");
 
             List<Skriptum> triggers = types[(int)ObjectType.Trigger];
 
@@ -938,12 +940,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessDialogs(string exportDir)
         {
-            Console.Write("Exporting dialogs...");
+            Console.WriteLine("Exporting dialogs...");
 
             List<Skriptum> dialogs = types[(int)ObjectType.Dialog];
 
@@ -991,12 +993,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessPostfxParams(string exportDir)
         {
-            Console.Write("Exporting postfx_params...");
+            Console.WriteLine("Exporting postfx_params...");
 
             List<Skriptum> postfxParams = types[(int)ObjectType.PostFX];
 
@@ -1042,12 +1044,12 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(Environment.NewLine);
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessItems(string exportDir)
         {
-            Console.Write("Exporting item data...");
+            Console.WriteLine("Exporting item data...");
 
             List<Skriptum> items = types[(int)ObjectType.Item];
 
@@ -1121,12 +1123,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessMapIcons(string exportDir)
         {
-            Console.Write("Exporting map icons...");
+            Console.WriteLine("Exporting map icons...");
 
             List<Skriptum> mapIcons = types[(int)ObjectType.MapIcon];
 
@@ -1171,12 +1173,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessTroops(string exportDir)
         {
-            Console.Write("Exporting troops data...");
+            Console.WriteLine("Exporting troops data...");
 
             List<Skriptum> troops = types[(int)ObjectType.Troop];
 
@@ -1215,6 +1217,7 @@ namespace MB_Studio_Library.IO
                         troop.FlagsGZ,
                         troop.SceneCodeGZ,
                         troop.ReservedGZ,
+                        troop.FactionID,
                         troop.UpgradeTroop1,
                         troop.UpgradeTroop2
                     );
@@ -1231,7 +1234,7 @@ namespace MB_Studio_Library.IO
                         writer.Write("-1 0 ");
                     writer.Write(Environment.NewLine + " ");
 
-                    writer.WriteLine(" {0} {1} {2} {3} {4}", troop.Strength, troop.Intelligence, troop.Charisma, troop.Level);
+                    writer.WriteLine(" {0} {1} {2} {3} {4}", troop.Strength, troop.Agility, troop.Intelligence, troop.Charisma, troop.Level);
 
                     foreach (int wp in troop.Proficiencies)
                         writer.Write(" {0}", wp);
@@ -1269,12 +1272,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessTableauMaterials(string exportDir)
         {
-            Console.Write("Exporting tableau materials data...");
+            Console.WriteLine("Exporting tableau materials data...");
 
             List<Skriptum> tableaus = types[(int)ObjectType.TableauMaterial];
 
@@ -1315,12 +1318,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessPresentations(string exportDir)
         {
-            Console.Write("Exporting presentations...");
+            Console.WriteLine("Exporting presentations...");
 
             List<Skriptum> presentations = types[(int)ObjectType.Presentation];
 
@@ -1342,7 +1345,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(" {0}", presentations.Count);
                 foreach (Presentation presentation in presentations)
                 {
-                    writer.Write("prsnt_{0} {1} {2} {3} {4} {5} {6} {7} {8}", presentation.ID, presentation.Flags, presentation.MeshID);
+                    writer.Write("prsnt_{0} {1} {2} ", presentation.ID, presentation.Flags, presentation.MeshID);
                     SaveSimpleTriggers(writer, presentation.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
                     writer.WriteLine();
                 }
@@ -1352,12 +1355,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessScripts(string exportDir)
         {
-            Console.Write("Exporting scripts...");
+            Console.WriteLine("Exporting scripts...");
 
             List<Skriptum> scripts = types[(int)ObjectType.Script];
 
@@ -1398,12 +1401,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessMenus(string exportDir)
         {
-            Console.Write("Exporting menus...");
+            Console.WriteLine("Exporting menus...");
 
             List<Skriptum> menus = types[(int)ObjectType.GameMenu];
 
@@ -1446,12 +1449,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
         
         private static void ProcessMissionTemplates(string exportDir)
         {
-            Console.Write("Exporting mission_template data...");
+            Console.WriteLine("Exporting mission_template data...");
 
             List<Skriptum> missionTemplates = types[(int)ObjectType.MissionTemplate];
 
@@ -1496,12 +1499,12 @@ namespace MB_Studio_Library.IO
             SaveTagUses(exportDir, tagUses);
             SaveQuickStrings(exportDir, quickStrings);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessPartyTemplates(string exportDir)
         {
-            Console.Write("Exporting party_template data...");
+            Console.WriteLine("Exporting party_template data...");
 
             List<Skriptum> partyTemplates = types[(int)ObjectType.PartyTemplate];
 
@@ -1538,12 +1541,12 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessParties(string exportDir)
         {
-            Console.Write("Exporting parties...");
+            Console.WriteLine("Exporting parties...");
 
             List<Skriptum> parties = types[(int)ObjectType.Party];
 
@@ -1611,7 +1614,7 @@ namespace MB_Studio_Library.IO
 
             SaveTagUses(exportDir, tagUses);
 
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         private static void ProcessGlobalVariablesUnused(string exportDir)
@@ -1621,7 +1624,7 @@ namespace MB_Studio_Library.IO
             for (int i = 0; i < variables.Count; i++)
                 if (variableUses[i] == 0)
                     Console.WriteLine("WARNING: Global variable never used: " + variables[i]);
-            Console.WriteLine(/*"Done"*/);
+            //Console.WriteLine(/*"Done"*/);
         }
 
         #endregion
@@ -1878,9 +1881,56 @@ namespace MB_Studio_Library.IO
             writer.WriteLine();
         }
 
+        private static string HandlePythonVariables(string param)
+        {
+            if (commonPythonVariables == null)
+                InitializeCommonPythonVariables();
+
+            string ret = param;
+            for (int i = 0; i < commonPythonVariables.Count; i++)
+            {
+                if (commonPythonVariables[i].Name.Equals(param))
+                {
+                    ret = commonPythonVariables[i].Value.ToString();
+                    i = commonPythonVariables.Count;
+                }
+            }
+            return ret;
+        }
+
+        private static void InitializeCommonPythonVariables()
+        {
+            List<Variable> list = new List<Variable>();
+            List<int> maskIndices = new List<int>();
+
+            using (StreamReader sr = new StreamReader(ModuleSystem + "header_common.py"))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string s = sr.ReadLine().Split('#')[0];
+
+                    if (!s.Contains("=")) continue;
+
+                    string[] sp = s.Replace(" ", string.Empty).Split('=');
+                    if (sp.Length > 1)
+                        if (ImportantMethods.IsNumericGZ(sp[1]))
+                            list.Add(new Variable(sp[0], decimal.Parse(sp[1])));
+                }
+            }
+
+            for (int i = 0; i < list.Count; i++)
+                if (list[i].Name.EndsWith("mask"))
+                    maskIndices.Add(i);
+            maskIndices.Reverse();
+            foreach (int i in maskIndices)
+                list.RemoveAt(i);
+
+            commonPythonVariables = list;
+        }
+
         private static void SaveStatementBlock(StreamWriter writer, object statementName, bool canFailStatement, string[] statementBlock, List<string> variableList, List<int> variableUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
-            List<string> localVars = new List<string>();
+            List<string> localVarList = new List<string>();
             List<int> localVarsUses = new List<int>();
             writer.Write(" {0} ", statementBlock.Length);
 
@@ -1898,27 +1948,118 @@ namespace MB_Studio_Library.IO
                 "try_for_agents"
             };
 
-            for (int i = 0; i < statementBlock.Length; i++)
+            int maxStatement = statementBlock.Length - 1;
+            if (maxStatement >= 0)
+                if (statementBlock[maxStatement] != null)
+                    maxStatement++;
+
+            for (int i = 0; i < maxStatement; i++)
             {
-                string[] statementSp = statementBlock[i].Split();
-                string opcode = statementSp[0];
-                bool noVariables = (statementSp.Length == 1);
+                string tmp = statementBlock[i];
+                int idxt = tmp.IndexOf('(');
+                if (idxt >= 0)
+                    tmp = tmp.Substring(idxt + 1);
+                idxt = tmp.IndexOf(')');
+                if (idxt >= 0)
+                    tmp = tmp.Remove(idxt);
+
+                List<string> codeParts = new List<string>();
+
+                if (!tmp.Contains("@"))
+                {
+                    string[] sp = tmp.Split(',');
+                    for (int j = 0; j < sp.Length; j++)
+                    {
+                        sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
+                        sp[j] = HandlePythonVariables(sp[j]);
+                        if (sp[j].StartsWith("reg"))
+                        {
+                            tmp = sp[j].Replace("reg", string.Empty);
+                            if (int.TryParse(tmp, out int reg))
+                            {
+                                reg |= OP_MASK_REGISTER;
+                                sp[j] = reg.ToString();
+                            }
+                        }
+                        codeParts.Add(sp[j]);
+                    }
+                }
+                else
+                {
+                    do
+                    {
+                        string tmp2 = tmp.Remove(tmp.IndexOf('@'));
+                        tmp2 = tmp2.Trim(',', ' ', '\t', ')', '(', '\"');
+                        string[] sp = tmp2.Split(',');
+                        for (int j = 0; j < sp.Length; j++)
+                        {
+                            sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
+                            sp[j] = HandlePythonVariables(sp[j]);
+                            if (sp[j].StartsWith("reg"))
+                            {
+                                tmp = sp[j].Replace("reg", string.Empty);
+                                if (int.TryParse(tmp, out int reg))
+                                {
+                                    reg |= OP_MASK_REGISTER;
+                                    sp[j] = reg.ToString();
+                                }
+                            }
+                            codeParts.Add(sp[j]);
+                        }
+                        tmp = tmp.Substring(tmp2.Length);
+                        tmp2 = tmp.Remove(tmp.IndexOf('\"'));
+                        codeParts.Add(tmp2);
+                        tmp = tmp.Substring(tmp2.Length);
+                    } while (tmp.Contains("@"));
+                }
+
+                /*string[] spx = tmp.Split('\"');
+                for (int j = 0; j < spx.Length; j++)
+                {
+                    spx[j] = spx[j].Trim(',', ' ', '\t', ')', '(');
+                    if ((j % 2) == 0)
+                    {
+                        string[] statementSp = spx[j].Split(',');
+                        for (int k = 0; k < statementSp.Length; k++)
+                        {
+                            statementSp[k] = statementSp[k].Trim(',', ' ', '\t', ')', '(');
+                            statementSp[k] = HandlePythonVariables(statementSp[j]);
+                            if (statementSp[k].StartsWith("reg"))
+                            {
+                                tmp = statementSp[k].Replace("reg", string.Empty);
+                                if (int.TryParse(tmp, out int reg))
+                                {
+                                    reg |= OP_MASK_REGISTER;
+                                    statementSp[k] = reg.ToString();
+                                }
+                            }
+                            codeParts.Add(statementSp[k]);
+                        }
+                    }
+                    else
+                        codeParts.Add(spx[j]);
+                }*/
+
+                string opcode = codeParts[0];
+                bool noVariables = (codeParts.Count == 1);
 
                 if (tryOpcodes.Contains(opcode))
                     currentDepth++;
                 else if (opcode.Equals("try_end"))
                     currentDepth--;
-                else if (opcode.Equals("store_script_param_1") || (opcode.Equals("store_script_param") && statementSp[2].Equals("1")))
-                    storeScriptParam1Uses++;
-                else if (opcode.Equals("store_script_param_2") || (opcode.Equals("store_script_param") && statementSp[2].Equals("2")))
-                    storeScriptParam2Uses++;
-                else if (!canFailStatement && currentDepth == 0 &&
-                    (IsCanFailOperation(opcode) ||
-                    (opcode.Equals("call_script") && statementSp[1].TrimStart()/*.Substring(7)*/.StartsWith("cf_"))) &&
-                    !statementName.ToString().StartsWith("cf_"))
-                    Console.WriteLine("WARNING: Script can fail at operation #" + i + ". Use cf_ at the beginning of its name: " + statementName);
+                else if (!noVariables)
+                {
+                    if (opcode.Equals("store_script_param_1") || (opcode.Equals("store_script_param") && codeParts[2].Equals("1")))
+                        storeScriptParam1Uses++;
+                    else if (opcode.Equals("store_script_param_2") || (opcode.Equals("store_script_param") && codeParts[2].Equals("2")))
+                        storeScriptParam2Uses++;
+                    if (!canFailStatement && currentDepth == 0 &&
+                        (IsCanFailOperation(opcode) || (opcode.Equals("call_script") && codeParts[1].TrimStart()/*.Substring(7)*/.StartsWith("cf_"))) &&
+                        !statementName.ToString().StartsWith("cf_"))
+                        Console.WriteLine("WARNING: Script can fail at operation #" + i + ". Use cf_ at the beginning of its name: " + statementName);
+                }
 
-                SaveStatement(writer, opcode, noVariables, statementSp, variableList, variableUses, localVars, localVarsUses, tagUses, quickStrings);
+                SaveStatement(writer, opcode, noVariables, codeParts.ToArray(), variableList, variableUses, localVarList, localVarsUses, tagUses, quickStrings);
             }
 
             if (storeScriptParam1Uses > 1)
@@ -1926,15 +2067,15 @@ namespace MB_Studio_Library.IO
             if (storeScriptParam2Uses > 1)
                 Console.WriteLine("WARNING: store_script_param_2 is used more than once:" + statementName);
 
-            for (int i = 0; i < localVars.Count; i++)
-                if (localVarsUses[i] == 0 && !localVars[i].StartsWith("unused"))//make output optional
-                    Console.WriteLine("WARNING: Local variable never used: " + localVars[i] + ", at: " + statementName);
+            for (int i = 0; i < localVarList.Count; i++)
+                if (localVarsUses[i] == 0 && !localVarList[i].StartsWith("unused"))//make output optional
+                    Console.WriteLine("WARNING: Local variable never used: " + localVarList[i] + ", at: " + statementName);
 
-            if (localVars.Count > -sbyte.MinValue)//128
-                Console.WriteLine("WARNING: Script uses more than 128 local wariables: " + statementName + " --> variables count:" + localVars.Count);
+            if (localVarList.Count > 128)
+                Console.WriteLine("WARNING: Script uses more than 128 local wariables: " + statementName + " --> variables count:" + localVarList.Count);
         }
 
-        private static void SaveStatement(StreamWriter writer, string opcode, bool noVariables, string[] statementSp, List<string> variableList, List<int> variableUses, List<string> localVars, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        private static void SaveStatement(StreamWriter writer, string opcode, bool noVariables, string[] statementSp, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
             int lenStatement = 0;
             if (!noVariables)
@@ -1946,7 +2087,7 @@ namespace MB_Studio_Library.IO
                     {
                         string param = statementSp[1];
                         if (param[0] == ':')
-                            AddVariable(param.Substring(1), localVars, localVarsUses);
+                            AddVariable(param.Substring(1), localVarList, localVarsUses);
                     }
                 }
             }
@@ -1955,14 +2096,15 @@ namespace MB_Studio_Library.IO
 
             for (int i = 0; i < lenStatement; i++)
             {
-                int operand = ProcessParam(statementSp[i + 1], variableList, variableUses, localVars, localVarsUses, tagUses, quickStrings);
+                long operand = ProcessParam(statementSp[i + 1], variableList, variableUses, localVarList, localVarsUses, tagUses, quickStrings);
                 writer.Write("{0} ", operand);
             }
         }
 
-        private static int ProcessParam(string param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        private static long ProcessParam(string param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
-            int result = 0;
+            long result = 0;
+            param = param.Trim();
             if (param.Length != 0)
             {
                 if (!ImportantMethods.IsNumericGZ(param))
@@ -1992,7 +2134,7 @@ namespace MB_Studio_Library.IO
                     }
                 }
                 else
-                    result = int.Parse(param);
+                    result = long.Parse(param);
             }
             return result;
         }
@@ -2015,7 +2157,7 @@ namespace MB_Studio_Library.IO
                         result = idNo | ((int)tagType << OP_NUM_VALUE_BITS);
                 }
                 else
-                    Console.WriteLine("Error: Unrecognized tag: " + tagStr + "in object: " + str);
+                    Console.WriteLine("Error: Unrecognized tag: '" + tagStr + "' in object: " + str);
             }
             else
                 Console.WriteLine("Error: Invalid object: " + str + ". Variables should start with $ sign and references should start with a tag");
@@ -2059,7 +2201,7 @@ namespace MB_Studio_Library.IO
                     tagType = TagType.Party;
                     break;
                 case "scn":
-                    idNo = FindObject(ObjectType.Mesh, identifier);
+                    idNo = FindObject(ObjectType.Scene, identifier);
                     tagType = TagType.Scene;
                     break;
                 case "mt":
@@ -2110,7 +2252,8 @@ namespace MB_Studio_Library.IO
                     idNo = FindObject(ObjectType.Animation, identifier);
                     tagType = TagType.Animation;
                     break;
-                case "tableua":
+                case "tab":
+                case "tableau":
                     idNo = FindObject(ObjectType.TableauMaterial, identifier);
                     tagType = TagType.Tableau;
                     break;
@@ -2217,10 +2360,10 @@ namespace MB_Studio_Library.IO
             return found;
         }
 
-        private static int GetVariable(string param, List<string> varList, List<int> varUses)
+        private static long GetVariable(string param, List<string> varList, List<int> varUses)
         {
             bool found = false;
-            int result = -1;
+            long result = -1;
             string varString = param.Substring(1);
 
             for (int i = 0; i < varList.Count; i++)
@@ -2241,10 +2384,10 @@ namespace MB_Studio_Library.IO
                     varList.Add(varString);
                     varUses.Add(0);
                     result = varList.Count - 1;
-                    Console.WriteLine("WARNING: Usage of unassigned global variable: " + varString);
+                    //Console.WriteLine("WARNING: Usage of unassigned global variable: " + varString);
                 }
-                else
-                    Console.WriteLine("ERROR: Usage of unassigned local variable: " + varString);
+                //else
+                //    Console.WriteLine("ERROR: Usage of unassigned local variable: " + varString);
             }
 
             return result;
@@ -2279,18 +2422,18 @@ namespace MB_Studio_Library.IO
         private static List<string> GetHeaderOperationsList(string listName)
         {
             List<string> list = new List<string>();
-            using (StreamReader reader = new StreamReader(ModuleSystem + "header_common.py"))
+            using (StreamReader reader = new StreamReader(ModuleSystem + "header_operations.py"))
             {
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine().Split('#')[0];
+                    line = line.Replace('\t', ' ').Replace(" ", string.Empty);
                     if (line.StartsWith(listName))
                     {
-                        line = line.Replace('\t', ' ').Replace(" ", string.Empty);
                         string curOpcode = line.Split('=')[1].TrimStart('[').TrimEnd(',').Trim();
                         if (curOpcode.Length != 0)
                             list.Add(curOpcode);
-                        while (!reader.EndOfStream && curOpcode.EndsWith("]"))
+                        while (!reader.EndOfStream && !curOpcode.EndsWith("]"))
                         {
                             curOpcode = reader.ReadLine().Split('#')[0];
                             curOpcode = curOpcode.Trim(' ', '\t').TrimEnd(',');

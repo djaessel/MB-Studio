@@ -70,7 +70,7 @@ namespace importantLib
 
         protected bool IsNumeric(string s)
         {
-            return ImportantMethods.IsNumericFKZ2(s);
+            return ImportantMethods.IsNumericFKZ128(s);
         }
 
         protected bool IsNumeric(string s, bool all)

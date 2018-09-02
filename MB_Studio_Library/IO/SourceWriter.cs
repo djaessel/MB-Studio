@@ -293,7 +293,7 @@ namespace MB_Studio_Library.IO
                             if (s_trigger.ConsequencesBlock.Length > 2)
                             {
                                 wr.WriteLine(Environment.NewLine + "\t   [" + s_trigger.ConsequencesBlock[1].TrimStart('\t', ' '));
-                                for (int i = 2; i < s_trigger.ConsequencesBlock.Length; i++)
+                                for (int i = 1; i < s_trigger.ConsequencesBlock.Length; i++)
                                     wr.WriteLine('\t' + s_trigger.ConsequencesBlock[i]);
                                 wr.Write("\t\t");
                             }

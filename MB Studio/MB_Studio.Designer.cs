@@ -303,7 +303,7 @@
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(10, 3);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(684, 442);
+            this.tabControl.Size = new System.Drawing.Size(684, 432);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 0;
             this.tabControl.TabStop = false;
@@ -546,7 +546,7 @@
             this.console_tab.Location = new System.Drawing.Point(4, 22);
             this.console_tab.Name = "console_tab";
             this.console_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.console_tab.Size = new System.Drawing.Size(676, 416);
+            this.console_tab.Size = new System.Drawing.Size(676, 406);
             this.console_tab.TabIndex = 0;
             this.console_tab.Text = "Console";
             this.console_tab.UseVisualStyleBackColor = true;
@@ -561,7 +561,7 @@
             this.console_richTxt.Location = new System.Drawing.Point(3, 3);
             this.console_richTxt.Name = "console_richTxt";
             this.console_richTxt.ReadOnly = true;
-            this.console_richTxt.Size = new System.Drawing.Size(670, 410);
+            this.console_richTxt.Size = new System.Drawing.Size(670, 400);
             this.console_richTxt.TabIndex = 0;
             this.console_richTxt.Text = "";
             this.console_richTxt.TextChanged += new System.EventHandler(this.Console_richTxt_TextChanged);
@@ -704,7 +704,7 @@
             this.projectExplorer_group.ForeColor = System.Drawing.Color.White;
             this.projectExplorer_group.Location = new System.Drawing.Point(691, 75);
             this.projectExplorer_group.Name = "projectExplorer_group";
-            this.projectExplorer_group.Size = new System.Drawing.Size(238, 437);
+            this.projectExplorer_group.Size = new System.Drawing.Size(238, 427);
             this.projectExplorer_group.TabIndex = 21;
             this.projectExplorer_group.TabStop = false;
             this.projectExplorer_group.Text = "Project Explorer";

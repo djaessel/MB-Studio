@@ -415,12 +415,12 @@ def carries_gold(x):
             */
 
             int gold = 0;
-            if (ImportantMethods.IsNumericFKZ2(carries_gold_txt.Text))
+            if (ImportantMethods.IsNumericFKZ128(carries_gold_txt.Text))
                 gold = int.Parse(carries_gold_txt.Text);
             flags |= (ulong)((gold / 20) << 56) & 0xff00000000000000;
 
             int goods = 0;
-            if (ImportantMethods.IsNumericFKZ2(carries_goods_txt.Text))
+            if (ImportantMethods.IsNumericFKZ128(carries_goods_txt.Text))
                 goods = int.Parse(carries_gold_txt.Text);
             flags |= (ulong)(goods << 48) & 0x00ff000000000000;
 
@@ -485,14 +485,14 @@ def carries_gold(x):
                 if (stackTroopCount_txt.Text.Length > 0)
                 {
                     string[] sp = stackTroopCount_txt.Text.Split('-');
-                    if (ImportantMethods.IsNumericFKZ2(sp[0]))
+                    if (ImportantMethods.IsNumericFKZ128(sp[0]))
                     {
                         if (sp.Length == 1)
                         {
                             memberValues[selectedIndex][0] = int.Parse(sp[0]);
                             memberValues[selectedIndex][1] = int.Parse(sp[0]);
                         }
-                        else if (ImportantMethods.IsNumericFKZ2(sp[1]))
+                        else if (ImportantMethods.IsNumericFKZ128(sp[1]))
                         {
                             memberValues[selectedIndex][0] = int.Parse(sp[0]);
                             memberValues[selectedIndex][1] = int.Parse(sp[1]);

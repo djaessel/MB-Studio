@@ -29,7 +29,7 @@ namespace MB_Studio_Library.Objects.Support
             x = 0;
             for (int i = 2; i < code.Length; i++)
             {
-                if (!ImportantMethods.IsNumericFKZ2(code[i]))
+                if (!ImportantMethods.IsNumericFKZ128(code[i]))
                     i = code.Length;
                 else
                     x++;
@@ -57,7 +57,7 @@ namespace MB_Studio_Library.Objects.Support
             tts++;
             for (int i = tts; i < code.Length; i++)
             {
-                if (!ImportantMethods.IsNumericFKZ2(code[i]))
+                if (!ImportantMethods.IsNumericFKZ128(code[i]))
                     i = code.Length;
                 else
                     x++;

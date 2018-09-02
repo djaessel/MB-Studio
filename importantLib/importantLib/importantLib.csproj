@@ -3,14 +3,14 @@
     <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
     <AssemblyOriginatorKeyFile>MB-Studio-importantLib.pfx</AssemblyOriginatorKeyFile>
     <Title>importtantLib</Title>
-    <Version>2.1.0.0</Version>
+    <Version>2.1.1.0</Version>
     <Copyright>Copyright ©  2017 - 2018</Copyright>
     <Description>importantLib</Description>
     <Authors>J.SYS</Authors>
     <Company>J.SYS</Company>
     <SignAssembly>True</SignAssembly>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <FileVersion>2.1.1.0</FileVersion>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">

@@ -24,10 +24,10 @@ namespace MB_Studio_Library.Objects.Support
                         split = line.Split('=');
                         split[0] = split[0].Trim();
                         split[1] = split[1].Trim().ToLower();
-                        if (ImportantMethods.IsNumericFKZ2(split[1]) || split[1].Contains("0x"))
+                        if (ImportantMethods.IsNumericFKZ128(split[1]) || split[1].Contains("0x"))
                         {
                             decimal d;
-                            if (ImportantMethods.IsNumericFKZ2(split[1]))
+                            if (ImportantMethods.IsNumericFKZ128(split[1]))
                             {
                                 if (split[1].IndexOf('.') == 0)
                                     split[1] = "0" + split[1];

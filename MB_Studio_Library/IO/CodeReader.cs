@@ -278,7 +278,7 @@ namespace MB_Studio_Library.IO
                     if (line.Length > 0 && line.Contains("=") && !line.Contains("0x"))
                     {
                         dec = line.Split('=');
-                        if (ImportantMethods.IsNumericFKZ2(dec[1]))
+                        if (ImportantMethods.IsNumericFKZ128(dec[1]))
                         {
                             codeDeclarations.Add(dec[0]);
                             codeValue.Add(ulong.Parse(dec[1]));
@@ -612,7 +612,7 @@ namespace MB_Studio_Library.IO
                 while (!sr.EndOfStream)
                 {
                     s = sr.ReadLine().TrimStart().Split(' ')[0];
-                    if (!ImportantMethods.IsNumericFKZ2(s))
+                    if (!ImportantMethods.IsNumericFKZ128(s))
                         animations.Add("anim_" + s);
                 }
             }
@@ -958,7 +958,7 @@ namespace MB_Studio_Library.IO
                     line = sr.ReadLine();
                     if (line.Length > 1)
                     {
-                        if (ImportantMethods.IsNumericFKZ2(line.Substring(1, 1)))
+                        if (ImportantMethods.IsNumericFKZ128(line.Substring(1, 1)))
                         {
                             scriptLines = line.Substring(1, line.Length - 2).Split();
                             line = script[0];
@@ -1162,7 +1162,7 @@ namespace MB_Studio_Library.IO
             {
                 sr.ReadLine();
                 sr.ReadLine();
-                do { line = sr.ReadLine(); } while (!ImportantMethods.IsNumericFKZ2(line));
+                do { line = sr.ReadLine(); } while (!ImportantMethods.IsNumericFKZ128(line));
                 int count = int.Parse(line);
                 objectsExpected += count;
                 for (int i = 0; i < count && !sr.EndOfStream; i++)

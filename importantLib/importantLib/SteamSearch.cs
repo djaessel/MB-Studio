@@ -102,7 +102,7 @@ namespace importantLib
                                 {
                                     tmpS = sr.ReadLine().Split('\"');
                                     if (tmpS.Length > 1)
-                                        if (ImportantMethods.IsNumericFKZ2(tmpS[1]) && tmpS.Length > 4)
+                                        if (ImportantMethods.IsNumericFKZ128(tmpS[1]) && tmpS.Length > 4)
                                             libraryPaths.Add(tmpS[3].Replace("\\\\", "\\"));
                                 }
                             }
