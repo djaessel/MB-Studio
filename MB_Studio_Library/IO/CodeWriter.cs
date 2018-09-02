@@ -230,15 +230,15 @@ namespace MB_Studio_Library.IO
             //ProcessFactions(exportDir);//relation IndexOutOfRangeException
             //ProcessScenes(exportDir);//unable to find checst troop
             ProcessParticleSys(exportDir);
-            //ProcessSceneProps(exportDir);//IndexOutOfRangeException
+            ProcessSceneProps(exportDir);//IndexOutOfRangeException
             ProcessQuests(exportDir);
             ProcessInfoPages(exportDir);
-            //ProcessSimpleTriggers(exportDir);//IndexOutOfRangeException
-            //ProcessTriggers(exportDir);//IndexOutOfRangeException
-            //ProcessDialogs(exportDir);//IndexOutOfRangeException
+            ProcessSimpleTriggers(exportDir);//IndexOutOfRangeException
+            ProcessTriggers(exportDir);//IndexOutOfRangeException
+            ProcessDialogs(exportDir);//IndexOutOfRangeException
             ProcessPostfxParams(exportDir);
-            //ProcessItems(exportDir);//IndexOutOfRangeException
-            //ProcessMapIcons(exportDir);//IndexOutOfRangeException
+            ProcessItems(exportDir);//IndexOutOfRangeException
+            ProcessMapIcons(exportDir);//IndexOutOfRangeException
             ProcessTroops(exportDir);
             //ProcessTableauMaterials(exportDir);
             //ProcessPresentations(exportDir);
@@ -1960,38 +1960,40 @@ namespace MB_Studio_Library.IO
             }
         }
 
-        private static int ProcessParam(object param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        private static int ProcessParam(string param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
             int result = 0;
-            if (param.GetType().Equals(typeof(string)))
+            if (param.Length != 0)
             {
-                string paramS = (string)param;
-                if (paramS[0] == '$')
+                if (!ImportantMethods.IsNumericGZ(param))
                 {
-                    CheckVariableNotDefined(paramS.Substring(1), localVarList);
-                    result = GetVariable(paramS, GlobalVarsList, GlobalVarsUses);
-                    result |= OP_MASK_VARIABLE;
-                }
-                else if (paramS[0] == ':')
-                {
-                    CheckVariableNotDefined(paramS.Substring(1), GlobalVarsList);
-                    result = GetVariable(paramS, localVarList, localVarsUses);
-                    result |= OP_MASK_LOCAL_VARIABLE;
-                }
-                else if (paramS[0] == '@')
-                {
-                    result = InsertQuickStringWithAutoId(paramS.Substring(1), quickStrings);
-                    result |= OP_MASK_QUICK_STRING;
+                    if (param[0] == '$')
+                    {
+                        CheckVariableNotDefined(param.Substring(1), localVarList);
+                        result = GetVariable(param, GlobalVarsList, GlobalVarsUses);
+                        result |= OP_MASK_VARIABLE;
+                    }
+                    else if (param[0] == ':')
+                    {
+                        CheckVariableNotDefined(param.Substring(1), GlobalVarsList);
+                        result = GetVariable(param, localVarList, localVarsUses);
+                        result |= OP_MASK_LOCAL_VARIABLE;
+                    }
+                    else if (param[0] == '@')
+                    {
+                        result = InsertQuickStringWithAutoId(param.Substring(1), quickStrings);
+                        result |= OP_MASK_QUICK_STRING;
+                    }
+                    else
+                    {
+                        result = GetIdentifierValue(param.ToLower(), tagUses);
+                        if (result < 0)
+                            Console.WriteLine("ERROR: Illegal Identifier:" + param);
+                    }
                 }
                 else
-                {
-                    result = GetIdentifierValue(paramS.ToLower(), tagUses);
-                    if (result < 0)
-                        Console.WriteLine("ERROR: Illegal Identifier:" + param);
-                }
+                    result = int.Parse(param);
             }
-            else
-                result = (int)param;
             return result;
         }
 
@@ -2334,20 +2336,6 @@ namespace MB_Studio_Library.IO
             //tagUses[tagNo][objectNo]++;
             //pass
         }
-
-        /*private static int FindTroop(List<Troop> troops, string chestTroop)
-        {
-            int result = -1;
-            for (int i = 0; i < troops.Count; i++)
-            {
-                if (troops[i].ID.Equals(chestTroop))
-                {
-                    result = i;
-                    i = troops.Count;
-                }
-            }
-            return result;
-        }*/
 
         private static List<string[]> LoadQuickStrings(string exportDir)
         {
