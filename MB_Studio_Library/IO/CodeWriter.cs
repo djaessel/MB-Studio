@@ -182,7 +182,7 @@ namespace MB_Studio_Library.IO
             SaveAllCodes(exportDir);
 
             Console.Write("__________________________________________________" + Environment.NewLine
-                        + " Finished compiling!" + Environment.NewLine + Environment.NewLine
+                        + " Finished compiling!" + Environment.NewLine
                         + " Cleaning up...");
 
             string[] files = Directory.GetFiles(ModuleSystem);
@@ -1623,7 +1623,7 @@ namespace MB_Studio_Library.IO
 
         private static void ProcessGlobalVariablesUnused(string exportDir)
         {
-            Console.Write("Checking global variable usages...");
+            Console.WriteLine("Checking global variable usages...");
             List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
             for (int i = 0; i < variables.Count; i++)
                 if (variableUses[i] == 0)
@@ -1963,7 +1963,7 @@ namespace MB_Studio_Library.IO
                 int idxt = tmp.IndexOf('(');
                 if (idxt >= 0)
                     tmp = tmp.Substring(idxt + 1);
-                idxt = tmp.IndexOf(')');
+                idxt = tmp.LastIndexOf(')');
                 if (idxt >= 0)
                     tmp = tmp.Remove(idxt);
 
@@ -1993,56 +1993,38 @@ namespace MB_Studio_Library.IO
                     do
                     {
                         string tmp2 = tmp.Remove(tmp.IndexOf('@'));
-                        tmp2 = tmp2.Trim(',', ' ', '\t', ')', '(', '\"');
-                        string[] sp = tmp2.Split(',');
+                        string tmp3 = tmp2.Trim(',', ' ', '\t', ')', '(', '\"');
+                        string[] sp = tmp3.Split(',');
                         for (int j = 0; j < sp.Length; j++)
                         {
-                            sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
-                            sp[j] = HandlePythonVariables(sp[j]);
-                            if (sp[j].StartsWith("reg"))
+                            string xxxx = sp[j];
+                            xxxx = xxxx.Trim(',', ' ', '\t', ')', '(', '\"');
+                            xxxx = HandlePythonVariables(xxxx);
+                            if (xxxx.StartsWith("reg"))
                             {
-                                tmp = sp[j].Replace("reg", string.Empty);
-                                if (int.TryParse(tmp, out int reg))
+                                string tmp4 = xxxx.Replace("reg", string.Empty);
+                                if (int.TryParse(tmp4, out int reg))
                                 {
                                     reg |= OP_MASK_REGISTER;
-                                    sp[j] = reg.ToString();
+                                    xxxx = reg.ToString();
                                 }
                             }
-                            codeParts.Add(sp[j]);
+                            codeParts.Add(xxxx);
                         }
                         tmp = tmp.Substring(tmp2.Length);
-                        tmp2 = tmp.Remove(tmp.IndexOf('\"'));
-                        codeParts.Add(tmp2);
-                        tmp = tmp.Substring(tmp2.Length);
-                    } while (tmp.Contains("@"));
-                }
 
-                /*string[] spx = tmp.Split('\"');
-                for (int j = 0; j < spx.Length; j++)
-                {
-                    spx[j] = spx[j].Trim(',', ' ', '\t', ')', '(');
-                    if ((j % 2) == 0)
-                    {
-                        string[] statementSp = spx[j].Split(',');
-                        for (int k = 0; k < statementSp.Length; k++)
+                        int xyt = tmp.IndexOf('\"');
+                        if (xyt >= 0)
                         {
-                            statementSp[k] = statementSp[k].Trim(',', ' ', '\t', ')', '(');
-                            statementSp[k] = HandlePythonVariables(statementSp[j]);
-                            if (statementSp[k].StartsWith("reg"))
-                            {
-                                tmp = statementSp[k].Replace("reg", string.Empty);
-                                if (int.TryParse(tmp, out int reg))
-                                {
-                                    reg |= OP_MASK_REGISTER;
-                                    statementSp[k] = reg.ToString();
-                                }
-                            }
-                            codeParts.Add(statementSp[k]);
+                            tmp2 = tmp.Remove(xyt);
+                            codeParts.Add(tmp2);
+                            tmp = tmp.Substring(tmp2.Length);
                         }
+                        else
+                            Console.WriteLine("Warning: Trailing '\"' not found!");
                     }
-                    else
-                        codeParts.Add(spx[j]);
-                }*/
+                    while (tmp.Contains("@"));
+                }
 
                 string opcode = codeParts[0];
                 bool noVariables = (codeParts.Count == 1);
