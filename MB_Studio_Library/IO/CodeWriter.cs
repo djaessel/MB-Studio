@@ -229,8 +229,8 @@ namespace MB_Studio_Library.IO
             ProcessMeshes(exportDir);
             ProcessSounds(exportDir);
             ProcessSkins(exportDir);
-            //ProcessFactions(exportDir);//relation IndexOutOfRangeException
-            //ProcessScenes(exportDir);//unable to find checst troop
+            ProcessFactions(exportDir);
+            ProcessScenes(exportDir);
             ProcessParticleSys(exportDir);
             ProcessSceneProps(exportDir);
             ProcessQuests(exportDir);
@@ -722,13 +722,17 @@ namespace MB_Studio_Library.IO
                         WritePassage(writer, scenes, passage);
                     writer.WriteLine();
 
+                    string troopPrefix = types[(int)ObjectType.Troop][0].Prefix;
                     writer.Write("  {0} ", scene.ChestTroops.Length);
                     foreach (string chestTroop in scene.ChestTroops)
                     {
-                        int troopNo = FindObject(ObjectType.Troop, chestTroop);//FindTroop(troops, chestTroop);
+                        string troopId = chestTroop;
+                        if (troopId.StartsWith(troopPrefix))
+                            troopId = troopId.Substring(troopPrefix.Length);
+                        int troopNo = FindObject(ObjectType.Troop, troopId);
                         if (troopNo < 0)
                         {
-                            Console.WriteLine("Error unable to find chest-troop: " + chestTroop);
+                            Console.WriteLine("Error unable to find chest-troop: " + troopId);
                             troopNo = 0;
                         }
                         else
@@ -2528,7 +2532,7 @@ namespace MB_Studio_Library.IO
             }
             catch (Exception)
             {
-                Console.WriteLine(Environment.NewLine + "Creating new tag_uses.txt file...");
+                Console.WriteLine("Creating new tag_uses.txt file...");
             }
 
             return tagUses;
@@ -2549,6 +2553,9 @@ namespace MB_Studio_Library.IO
         {
             int sceneIdx = 0;
             bool found = false;
+            string scnPrefix = scenes[0].Prefix;
+            if (passage.StartsWith(scnPrefix))
+                passage = passage.Substring(scnPrefix.Length);
             while (!found && sceneIdx < scenes.Count)
             {
                 if (scenes[sceneIdx].ID.Equals(passage))
@@ -2584,21 +2591,43 @@ namespace MB_Studio_Library.IO
                 for (int j = 0; j < rels.Length; j++)
                 {
                     int otherPos = -1;
-                    string relName = faction.Ranks[j];
+                    string relID = factions[j].ID;
                     for (int k = 0; k < factions.Count; k++)
-                        if (((Faction)factions[k]).Name.Equals(relName))
+                        if (factions[k].ID.Equals(relID))
                             otherPos = k;
                     if (otherPos >= 0)
                     {
-                        relations[otherPos][i] = rels[i];
-                        relations[i][otherPos] = rels[i];
+                        relations[otherPos][i] = rels[j];
+                        relations[i][otherPos] = rels[j];
                     }
                     else
-                        Console.WriteLine("ERROR faction not found: " + relName);
+                        Console.WriteLine("ERROR faction not found: " + relID);
                 }
             }
 
             return relations;
+
+            /*
+  relations = []
+  for i in xrange(len(factions)):
+    r = [0.0 for j in range(len(factions))]
+    relations.append(r)
+  for i_faction in xrange(len(factions)):
+    relations[i_faction][i_faction] = factions[i_faction][faction_coherence_pos]
+    rels = factions[i_faction][faction_relations_pos]
+    for rel in rels:
+      rel_name = rel[0]
+      other_pos = -1
+      for j_f in xrange(len(factions)):
+        if factions[j_f][faction_name_pos] == rel_name:
+          other_pos = j_f
+      if other_pos == -1:
+        print "ERROR faction not found: "+ rel_name
+      else:
+        relations[other_pos][i_faction] = rel[1]
+        relations[i_faction][other_pos] = rel[1]
+  return relations
+            */
         }
 
         private static void WriteTextures(StreamWriter writer, string[] textures)
