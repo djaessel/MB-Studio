@@ -1,12 +1,13 @@
 ﻿using importantLib;
 using MB_Studio_Library.Objects;
+using MB_Studio_Library.Objects.Support;
+using static MB_Studio_Library.Objects.Skriptum;
 using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using MB_Studio_Library.Objects.Support;
-using static MB_Studio_Library.Objects.Skriptum;
+using System.Globalization;
 
 namespace MB_Studio_Library.IO
 {
@@ -17,6 +18,8 @@ namespace MB_Studio_Library.IO
         public static bool IsFinished { get; private set; }
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
+
+        private static List<Variable> allOpcodes = null;
 
         private static List<string> canFailOperations = null;
         private static List<string> lhsOperations = null;
@@ -177,11 +180,22 @@ namespace MB_Studio_Library.IO
             return idFile;
         }
 
+        private static void SetDecimalSeparatorToUSFormat()
+        {
+            CultureInfo customCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+
+            Thread.CurrentThread.CurrentCulture = customCulture;
+        }
+
         private static void ReadProcessAndBuild(string exportDir)
         {
+            SetDecimalSeparatorToUSFormat();
+
             SaveAllCodes(exportDir);
 
             Console.Write("__________________________________________________" + Environment.NewLine
+                        + Environment.NewLine
                         + " Finished compiling!" + Environment.NewLine
                         + " Cleaning up...");
 
@@ -1635,6 +1649,46 @@ namespace MB_Studio_Library.IO
 
         #region Helper Methods
 
+        private static ulong GetOpcodeID(string opcode)
+        {
+            if (allOpcodes == null)
+                InitializeAllOpcodes();
+
+            ulong opcodeId = ulong.MinValue;
+            for (int i = 0; i < allOpcodes.Count; i++)
+            {
+                if (allOpcodes[i].Name.Equals(opcode))
+                {
+                    opcodeId = (ulong)allOpcodes[i].Value;
+                    i = allOpcodes.Count;
+                }
+            }
+            return opcodeId;
+        }
+
+        private static void InitializeAllOpcodes()
+        {
+            List<Variable> list = new List<Variable>();
+            using (StreamReader reader = new StreamReader(ModuleSystem + "header_operations.py"))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine().Split('#')[0];
+                    line = line.Replace('\t', ' ').Replace(" ", string.Empty);
+                    if (line.Contains("="))
+                    {
+                        string[] data = line.Split('=');
+                        if (ulong.TryParse(data[1], out ulong val) &&
+                            !ImportantMethods.IsNumeric(data[0], true))
+                        {
+                            list.Add(new Variable(data[0], val));
+                        }
+                    }
+                }
+            }
+            allOpcodes = list;
+        }
+
         private static void SavePartyTemplateTroop(StreamWriter writer, PMember member)
         {
             if (member != null)
@@ -2078,7 +2132,7 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            writer.Write("{0} {1} ", opcode, lenStatement);
+            writer.Write("{0} {1} ", GetOpcodeID(opcode), lenStatement);
 
             for (int i = 0; i < lenStatement; i++)
             {
