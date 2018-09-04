@@ -44,9 +44,9 @@ namespace MB_Studio_Library.IO
         
         #region Consts
 
-        enum TagType : int
+        enum TagType
         {
-            Register,
+            Register = 1,
             Variable,
             String,
             Item,
@@ -75,13 +75,13 @@ namespace MB_Studio_Library.IO
             End
         }
 
-        private const int OP_NUM_VALUE_BITS = 24 + 32;
+        private const int OP_NUM_VALUE_BITS = 56; // 24 + 32;
 
-        private const int OP_MASK_REGISTER = ((int)TagType.Register) << OP_NUM_VALUE_BITS;
-        private const int OP_MASK_VARIABLE = ((int)TagType.Variable) << OP_NUM_VALUE_BITS;
-        private const int OP_MASK_QUEST_INDEX = ((int)TagType.Quest) << OP_NUM_VALUE_BITS;
-        private const int OP_MASK_LOCAL_VARIABLE = ((int)TagType.LocalVariable) << OP_NUM_VALUE_BITS;
-        private const int OP_MASK_QUICK_STRING = ((int)TagType.QuickString) << OP_NUM_VALUE_BITS;
+        private const ulong OP_MASK_REGISTER = ((ulong)((int)TagType.Register)) << OP_NUM_VALUE_BITS;
+        private const ulong OP_MASK_VARIABLE = ((ulong)((int)TagType.Variable)) << OP_NUM_VALUE_BITS;
+        private const ulong OP_MASK_QUEST_INDEX = ((ulong)((int)TagType.Quest)) << OP_NUM_VALUE_BITS;
+        private const ulong OP_MASK_LOCAL_VARIABLE = ((ulong)((int)TagType.LocalVariable)) << OP_NUM_VALUE_BITS;
+        private const ulong OP_MASK_QUICK_STRING = ((ulong)((int)TagType.QuickString)) << OP_NUM_VALUE_BITS;
 
         //private string sourcePath, destinationPath;
 
@@ -183,8 +183,7 @@ namespace MB_Studio_Library.IO
         private static void SetDecimalSeparatorToUSFormat()
         {
             CultureInfo customCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
-            customCulture.NumberFormat.NumberDecimalSeparator = ".";
-
+            customCulture.NumberFormat.NumberDecimalSeparator = "."; 
             Thread.CurrentThread.CurrentCulture = customCulture;
         }
 
@@ -324,7 +323,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> strings = types[(int)ObjectType.GameString];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_strings.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_strings.py"))
             {
                 for (int i = 0; i < strings.Count; i++)
                     writer.WriteLine("str_{0} = {1}", ConvertToIdentifier(strings[i].ID), i);
@@ -350,7 +349,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> skills = types[(int)ObjectType.Skill];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_skills.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_skills.py"))
             {
                 for (int i = 0; i < skills.Count; i++)
                     writer.WriteLine("skl_{0} = {1}", ConvertToIdentifier(skills[i].ID), i);
@@ -378,7 +377,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> tracks = types[(int)ObjectType.Music];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_music.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_music.py"))
             {
                 for (int i = 0; i < tracks.Count; i++)
                     writer.WriteLine("track_{0} = {1}", tracks[i].ID, i);
@@ -433,7 +432,7 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_actions.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_actions.py"))
             {
                 for (int i = 0; i < animations.Count; i++)
                     writer.WriteLine("anim_{0} = {1}", animations[i].ID, i);
@@ -478,7 +477,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> meshes = types[(int)ObjectType.Mesh];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_meshes.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_meshes.py"))
             {
                 for (int i = 0; i < meshes.Count; i++)
                     writer.WriteLine("mesh_{0} = {1}", meshes[i].ID, i);
@@ -573,7 +572,7 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_sounds.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_sounds.py"))
             {
                 for (int i = 0; i < sounds.Count; i++)
                     writer.WriteLine("snd_{0} = {1}", sounds[i].ID, i);
@@ -654,7 +653,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> factions = types[(int)ObjectType.Faction];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_factions.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_factions.py"))
             {
                 for (int i = 0; i < factions.Count; i++)
                     writer.WriteLine("fac_{0} = {1}", factions[i].ID, i);
@@ -699,7 +698,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> scenes = types[(int)ObjectType.Scene];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_scenes.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scenes.py"))
             {
                 for (int i = 0; i < scenes.Count; i++)
                     writer.WriteLine("scn_{0} = {1}", scenes[i].ID, i);
@@ -803,7 +802,7 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_particle_systems.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_particle_systems.py"))
             {
                 for (int i = 0; i < particleSystems.Count; i++)
                     writer.WriteLine("psys_{0} = {1}", particleSystems[i].ID, i);
@@ -820,7 +819,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> sceneProps = types[(int)ObjectType.SceneProp];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_scene_props.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scene_props.py"))
             {
                 for (int i = 0; i < sceneProps.Count; i++)
                     writer.WriteLine("spr_{0} = {1}", sceneProps[i].ID, i);
@@ -870,12 +869,15 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_quests.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_quests.py"))
             {
                 for (int i = 0; i < quests.Count; i++)
                     writer.WriteLine("qst_{0} = {1}", quests[i].ID, i);
                 for (int i = 0; i < quests.Count; i++)
-                    writer.WriteLine("qsttag_{0} = {1}", quests[i].ID, OP_MASK_QUEST_INDEX | i);
+                {
+                    ulong idx = ((ulong)i);
+                    writer.WriteLine("qsttag_{0} = {1}", quests[i].ID, OP_MASK_QUEST_INDEX | idx);
+                }
                 writer.WriteLine(Environment.NewLine);
             }
 
@@ -898,7 +900,7 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_info_pages.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_info_pages.py"))
             {
                 for (int i = 0; i < infoPages.Count; i++)
                     writer.WriteLine("ip_{0} = {1}", infoPages[i].ID, i);
@@ -1055,7 +1057,7 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_postfx_params.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_postfx_params.py"))
             {
                 for (int i = 0; i < postfxParams.Count; i++)
                     writer.WriteLine("pfx_{0} = {1}", postfxParams[i].ID, i);
@@ -1072,7 +1074,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> items = types[(int)ObjectType.Item];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_items.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_items.py"))
             {
                 for (int i = 0; i < items.Count; i++)
                     writer.WriteLine("itm_{0} = {1}", ConvertToIdentifier(items[i].ID), i);
@@ -1151,7 +1153,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> mapIcons = types[(int)ObjectType.MapIcon];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_map_icons.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_map_icons.py"))
             {
                 for (int i = 0; i < mapIcons.Count; i++)
                     writer.WriteLine("icon_{0} = {1}", mapIcons[i].ID, i);
@@ -1201,7 +1203,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> troops = types[(int)ObjectType.Troop];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_troops.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_troops.py"))
             {
                 for (int i = 0; i < troops.Count; i++)
                     writer.WriteLine("trp_{0} = {1}", troops[i].ID, i);
@@ -1300,7 +1302,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> tableaus = types[(int)ObjectType.TableauMaterial];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_tableau_materials.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_tableau_materials.py"))
             {
                 for (int i = 0; i < tableaus.Count; i++)
                     writer.WriteLine("tableau_{0} = {1}", tableaus[i].ID, i);
@@ -1346,7 +1348,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> presentations = types[(int)ObjectType.Presentation];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_presentations.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_presentations.py"))
             {
                 for (int i = 0; i < presentations.Count; i++)
                     writer.WriteLine("prsnt_{0} = {1}", presentations[i].ID, i);
@@ -1383,7 +1385,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> scripts = types[(int)ObjectType.Script];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_scripts.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scripts.py"))
                 for (int i = 0; i < scripts.Count; i++)
                     writer.WriteLine("script_{0} = {1}", scripts[i].ID, i);
 
@@ -1400,7 +1402,11 @@ namespace MB_Studio_Library.IO
                 {
                     float unknownValue = -1;
                     string scriptId = ConvertToIdentifier(script.ID);
-                    writer.WriteLine("{0} {1:F6}", scriptId, unknownValue);
+                    writer.Write("{0}", scriptId);
+                    if (unknownValue < 0)
+                        writer.WriteLine(" {0}", unknownValue);
+                    else
+                        writer.WriteLine(" {0:F6}", unknownValue);
                     SaveStatementBlock(writer, scriptId, false, script.Code, variableList, variableUses, tagUses, quickStrings);
                     /*
     if (type(func[1]) == list_type):
@@ -1429,7 +1435,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> menus = types[(int)ObjectType.GameMenu];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_menus.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_menus.py"))
             {
                 for (int i = 0; i < menus.Count; i++)
                     writer.WriteLine("menu_{0} = {1}", menus[i].ID, i);
@@ -1477,7 +1483,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> missionTemplates = types[(int)ObjectType.MissionTemplate];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_mission_templates.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_mission_templates.py"))
             {
                 for (int i = 0; i < missionTemplates.Count; i++)
                     writer.WriteLine("mst_{0} = {1}", missionTemplates[i].ID, i);
@@ -1527,7 +1533,7 @@ namespace MB_Studio_Library.IO
             List<Skriptum> partyTemplates = types[(int)ObjectType.PartyTemplate];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_party_templates.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_party_templates.py"))
                 for (int i = 0; i < partyTemplates.Count; i++)
                     writer.WriteLine("pt_{0} = {1}", partyTemplates[i].ID, i);
 
@@ -1571,7 +1577,7 @@ namespace MB_Studio_Library.IO
             List<List<int>> tagUses = LoadTagUses(exportDir);
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(".\\ID_parties.py"))
+            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_parties.py"))
                 for (int i = 0; i < parties.Count; i++)
                     writer.WriteLine("p_{0} = {1}", parties[i].ID, i);
 
@@ -1649,21 +1655,26 @@ namespace MB_Studio_Library.IO
 
         #region Helper Methods
 
-        private static ulong GetOpcodeID(string opcode)
+        private static ulong GetOpcodeValue(string opcode)
         {
             if (allOpcodes == null)
                 InitializeAllOpcodes();
 
-            ulong opcodeId = ulong.MinValue;
-            for (int i = 0; i < allOpcodes.Count; i++)
+            ulong opcodeValue = ulong.MinValue;
+            opcode = opcode.Replace('\t', ' ').Replace(" ", string.Empty);
+            string[] opcodeParts = opcode.Split('|');
+            foreach (string opcodeX in opcodeParts)
             {
-                if (allOpcodes[i].Name.Equals(opcode))
+                for (int i = 0; i < allOpcodes.Count; i++)
                 {
-                    opcodeId = (ulong)allOpcodes[i].Value;
-                    i = allOpcodes.Count;
+                    if (allOpcodes[i].Name.Equals(opcodeX))
+                    {
+                        opcodeValue |= (ulong)allOpcodes[i].Value;
+                        i = allOpcodes.Count;
+                    }
                 }
             }
-            return opcodeId;
+            return opcodeValue;
         }
 
         private static void InitializeAllOpcodes()
@@ -1678,10 +1689,13 @@ namespace MB_Studio_Library.IO
                     if (line.Contains("="))
                     {
                         string[] data = line.Split('=');
-                        if (ulong.TryParse(data[1], out ulong val) &&
-                            !ImportantMethods.IsNumeric(data[0], true))
-                        {
+                        if (ulong.TryParse(data[1], out ulong val))
                             list.Add(new Variable(data[0], val));
+                        else if (data[1].StartsWith("0x"))
+                        {
+                            data[1] = data[1].Substring(2);
+                            if (data[1].Length <= 16)
+                                list.Add(new Variable(data[0], HexConverter.Hex2Dec_16CHARS(data[1])));
                         }
                     }
                 }
@@ -1972,7 +1986,7 @@ namespace MB_Studio_Library.IO
                     string[] sp = s.Replace(" ", string.Empty).Split('=');
                     if (sp.Length > 1)
                         if (ImportantMethods.IsNumericGZ(sp[1]))
-                            list.Add(new Variable(sp[0], decimal.Parse(sp[1])));
+                            list.Add(new Variable(sp[0], int.Parse(sp[1])));
                 }
             }
 
@@ -1990,7 +2004,6 @@ namespace MB_Studio_Library.IO
         {
             List<string> localVarList = new List<string>();
             List<int> localVarsUses = new List<int>();
-            writer.Write(" {0} ", statementBlock.Length);
 
             int storeScriptParam1Uses = 0;
             int storeScriptParam2Uses = 0;
@@ -2010,6 +2023,8 @@ namespace MB_Studio_Library.IO
             if (maxStatement >= 0)
                 if (statementBlock[maxStatement] != null)
                     maxStatement++;
+
+            writer.Write(" {0} ", maxStatement);
 
             for (int i = 0; i < maxStatement; i++)
             {
@@ -2033,7 +2048,7 @@ namespace MB_Studio_Library.IO
                         if (sp[j].StartsWith("reg"))
                         {
                             tmp = sp[j].Replace("reg", string.Empty);
-                            if (int.TryParse(tmp, out int reg))
+                            if (ulong.TryParse(tmp, out ulong reg))
                             {
                                 reg |= OP_MASK_REGISTER;
                                 sp[j] = reg.ToString();
@@ -2057,7 +2072,7 @@ namespace MB_Studio_Library.IO
                             if (xxxx.StartsWith("reg"))
                             {
                                 string tmp4 = xxxx.Replace("reg", string.Empty);
-                                if (int.TryParse(tmp4, out int reg))
+                                if (ulong.TryParse(tmp4, out ulong reg))
                                 {
                                     reg |= OP_MASK_REGISTER;
                                     xxxx = reg.ToString();
@@ -2132,18 +2147,18 @@ namespace MB_Studio_Library.IO
                 }
             }
 
-            writer.Write("{0} {1} ", GetOpcodeID(opcode), lenStatement);
+            writer.Write("{0} {1} ", GetOpcodeValue(opcode), lenStatement);
 
             for (int i = 0; i < lenStatement; i++)
             {
-                long operand = ProcessParam(statementSp[i + 1], variableList, variableUses, localVarList, localVarsUses, tagUses, quickStrings);
+                decimal operand = ProcessParam(statementSp[i + 1], variableList, variableUses, localVarList, localVarsUses, tagUses, quickStrings);
                 writer.Write("{0} ", operand);
             }
         }
 
-        private static long ProcessParam(string param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        private static decimal ProcessParam(string param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
-            long result = 0;
+            decimal result = 0;
             param = param.Trim();
             if (param.Length != 0)
             {
@@ -2153,18 +2168,18 @@ namespace MB_Studio_Library.IO
                     {
                         CheckVariableNotDefined(param.Substring(1), localVarList);
                         result = GetVariable(param, GlobalVarsList, GlobalVarsUses);
-                        result |= OP_MASK_VARIABLE;
+                        result = ((ulong)result) | OP_MASK_VARIABLE;
                     }
                     else if (param[0] == ':')
                     {
                         CheckVariableNotDefined(param.Substring(1), GlobalVarsList);
                         result = GetVariable(param, localVarList, localVarsUses);
-                        result |= OP_MASK_LOCAL_VARIABLE;
+                        result = ((ulong)result) | OP_MASK_LOCAL_VARIABLE;
                     }
                     else if (param[0] == '@')
                     {
                         result = InsertQuickStringWithAutoId(param.Substring(1), quickStrings);
-                        result |= OP_MASK_QUICK_STRING;
+                        result = ((ulong)result) | OP_MASK_QUICK_STRING;
                     }
                     else
                     {
@@ -2174,34 +2189,32 @@ namespace MB_Studio_Library.IO
                     }
                 }
                 else
-                    result = long.Parse(param);
+                    result = decimal.Parse(param);
             }
             return result;
         }
 
-        private static int GetIdentifierValue(string str, List<List<int>> tagUses)
+        private static decimal GetIdentifierValue(string str, List<List<int>> tagUses)
         {
+            decimal result = -1;
             int underscorePos = str.IndexOf('_');
-            int result = -1;
-
             if (underscorePos > 0)
             {
                 string tagStr = str.Remove(underscorePos);
                 string idStr = str.Substring(underscorePos + 1);
-                int idNo = GetIdValue(tagStr, idStr, tagUses, out TagType tagType);
+                ulong idNo = (ulong)GetIdValue(tagStr, idStr, tagUses, out TagType tagType);
                 if (tagType > 0 && tagType < TagType.End)
                 {
                     if (idNo < 0)
                         Console.WriteLine("Error: Unable to find object: " + str);
                     else
-                        result = idNo | ((int)tagType << OP_NUM_VALUE_BITS);
+                        result = idNo | ((ulong)tagType << OP_NUM_VALUE_BITS);
                 }
                 else
                     Console.WriteLine("Error: Unrecognized tag: '" + tagStr + "' in object: " + str);
             }
             else
                 Console.WriteLine("Error: Invalid object: " + str + ". Variables should start with $ sign and references should start with a tag");
-
             return result;
         }
 
@@ -2400,10 +2413,10 @@ namespace MB_Studio_Library.IO
             return found;
         }
 
-        private static long GetVariable(string param, List<string> varList, List<int> varUses)
+        private static int GetVariable(string param, List<string> varList, List<int> varUses)
         {
             bool found = false;
-            long result = -1;
+            int result = -1;
             string varString = param.Substring(1);
 
             for (int i = 0; i < varList.Count; i++)
