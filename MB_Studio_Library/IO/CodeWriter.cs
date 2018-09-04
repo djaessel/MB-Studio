@@ -797,7 +797,18 @@ namespace MB_Studio_Library.IO
                     writer.Write("{0:F6} {1:F6} {2:F6}   ", psys.EmitBoxScale[0], psys.EmitBoxScale[1], psys.EmitBoxScale[2]);
                     writer.Write("{0:F6} {1:F6} {2:F6}   ", psys.EmitVelocity[0], psys.EmitVelocity[1], psys.EmitVelocity[2]);
                     writer.WriteLine("{0:F6} ", psys.EmitDirectionRandomness);
-                    writer.WriteLine("{0:F6} {1:F6} ", psys.ParticleRotationSpeed, psys.ParticleRotationDamping);
+
+                    if (psys.ParticleRotationSpeed == double.NaN)
+                        writer.Write("0.0 ");
+                    else
+                        writer.Write("{0:F6} ", psys.ParticleRotationSpeed);
+
+                    if (psys.ParticleRotationDamping == double.NaN)
+                        writer.Write("0.0 ");
+                    else
+                        writer.Write("{0:F6} ", psys.ParticleRotationDamping);
+
+                    writer.WriteLine();
                 }
             }
 
@@ -2501,7 +2512,7 @@ namespace MB_Studio_Library.IO
 
         private static void SavePsysKey(StreamWriter writer, double[] keys12)
         {
-            writer.WriteLine("{0:F6} {1:F6}   {2:F6} {1:F6}", keys12[0], keys12[1], keys12[2], keys12[3]);
+            writer.WriteLine("{0:F6} {1:F6}   {2:F6} {3:F6}", keys12[0], keys12[1], keys12[2], keys12[3]);
         }
 
         private static void SaveQuickStrings(string exportDir, List<string[]> quickStrings)
@@ -2705,8 +2716,8 @@ namespace MB_Studio_Library.IO
                     writer.Write(" {0} ", ReplaceSpaces(material));
                 foreach (uint color in texture.HairColors)
                     writer.Write(" {0} ", color);
-                writer.WriteLine();
             }
+            writer.WriteLine();
         }
 
         private static string ConvertToIdentifier(string idText)
