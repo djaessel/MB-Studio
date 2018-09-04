@@ -388,8 +388,8 @@ namespace CheckIfEqualFiles
 
         private static bool CheckIfIsEqualNumericGZ(ref List<string[]> orgLines, ref List<string[]> genLines, ref List<int[]> idxs, int i, int j)
         {
-            ulong u1 = ulong.Parse(orgLines[i][j]);
-            ulong u2 = ulong.Parse(genLines[i][j]);
+            decimal u1 = decimal.Parse(orgLines[i][j]);
+            decimal u2 = decimal.Parse(genLines[i][j]);
             bool match = (u1 == u2);
             if (!match)
             {
