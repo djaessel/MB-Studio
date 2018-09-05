@@ -46,7 +46,7 @@ namespace MB_Studio_Library.Objects.Support
                 {
                     LastNumbersFKZ[i] = double.Parse(tmp);
                     if (tmp.Contains("-") && LastNumbersFKZ[i] == 0d)
-                        LastNumbersFKZ[i] = -0.000001;
+                        LastNumbersFKZ[i] = -0.0000001;
                 }
                 else
                     LastNumbersFKZ[i] = double.NaN;

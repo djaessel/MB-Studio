@@ -362,7 +362,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(skills.Count);
                 foreach (Skill skill in skills)
                 {
-                    writer.Write("skl_{0} {1}", ConvertToIdentifier(skill.ID), ReplaceSpaces(skill.Name));
+                    writer.Write("skl_{0} {1} ", ConvertToIdentifier(skill.ID), ReplaceSpaces(skill.Name));
                     writer.WriteLine("{0} {1} {2}", skill.FlagsGZ, skill.MaxLevel, skill.Description.Replace(' ', '_'));
                 }
             }
@@ -457,12 +457,22 @@ namespace MB_Studio_Library.IO
                             sequence.FlagsGZ
                         );
                         writer.Write("{0} ", sequence.LastNumberGZ);
-                        writer.Write("{0:F6} {1:F6} {2:F6} {3:F6} ",
-                            sequence.LastNumbersFKZ[0],
-                            sequence.LastNumbersFKZ[1],
-                            sequence.LastNumbersFKZ[2],
-                            sequence.LastNumbersFKZ[3]
-                        );
+
+                        double[] lastNums = sequence.LastNumbersFKZ;
+                        for (int i = 0; i < lastNums.Length; i++)
+                        {
+                            if (!lastNums[i].Equals(double.NaN))
+                            {
+                                if (i == (lastNums.Length - 1))
+                                    writer.Write(" ");
+                                if (lastNums[i] < 0d && Math.Round(lastNums[i], 6) == 0d)
+                                    writer.Write("-");
+                                writer.Write("{0:F6} ", lastNums[i]);
+                            }
+                            else
+                                writer.Write("0.0 ");
+                        }
+                        writer.WriteLine();
                     }
                 }
             }
@@ -779,14 +789,13 @@ namespace MB_Studio_Library.IO
                 foreach (ParticleSystem psys in particleSystems)
                 {
                     writer.Write("psys_{0} {1} {2}  ", psys.ID, psys.FlagsGZ, psys.MeshName);
-                    writer.WriteLine("{0} {1:F6} {2:F6} {3:F6} {4:F6} {5:F6} ",
-                        psys.ParticlesPerSecond,
-                        psys.ParticleLifeTime,
-                        psys.Damping,
-                        psys.GravityStrength,
-                        psys.TurbulanceSize,
-                        psys.TurbulanceStrength
-                    );
+                    writer.Write("{0} {1:F6} {2:F6} ", psys.ParticlesPerSecond, psys.ParticleLifeTime, psys.Damping);
+
+                    if (psys.GravityStrength < 0d && Math.Round(psys.GravityStrength, 6) == 0d)
+                        writer.Write("-");//-0.000000
+                    writer.Write("{0:F6} ", psys.GravityStrength);
+
+                    writer.WriteLine("{0:F6} {1:F6} ", psys.TurbulanceSize, psys.TurbulanceStrength);
 
                     SavePsysKey(writer, psys.AlphaKeys);
                     SavePsysKey(writer, psys.RedKeys);
@@ -798,15 +807,15 @@ namespace MB_Studio_Library.IO
                     writer.Write("{0:F6} {1:F6} {2:F6}   ", psys.EmitVelocity[0], psys.EmitVelocity[1], psys.EmitVelocity[2]);
                     writer.WriteLine("{0:F6} ", psys.EmitDirectionRandomness);
 
-                    if (psys.ParticleRotationSpeed == double.NaN)
-                        writer.Write("0.0 ");
-                    else
+                    if (!psys.ParticleRotationSpeed.Equals(double.NaN))
                         writer.Write("{0:F6} ", psys.ParticleRotationSpeed);
-
-                    if (psys.ParticleRotationDamping == double.NaN)
-                        writer.Write("0.0 ");
                     else
+                        writer.Write("0.0 ");
+
+                    if (!psys.ParticleRotationDamping.Equals(double.NaN))
                         writer.Write("{0:F6} ", psys.ParticleRotationDamping);
+                    else
+                        writer.Write("0.0 ");
 
                     writer.WriteLine();
                 }
@@ -1596,7 +1605,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "parties.txt"))
             {
                 writer.WriteLine("partiesfile version 1");//change version if necessary
-                writer.WriteLine(parties.Count);
+                writer.WriteLine("{0} {0}", parties.Count);
 
                 for (int i = 0; i < parties.Count; i++)
                 {
@@ -1605,7 +1614,7 @@ namespace MB_Studio_Library.IO
                     if (party.FactionID >= 0)
                         AddTagUse(tagUses, TagType.Faction, party.FactionID);
 
-                    writer.Write(" 1 {0} {1} ", i, i);
+                    writer.Write(" 1 {0} {0} ", i);
                     //writer.Write(" 1 {0} ", i);
                     writer.Write("p_{0} {1} {2} ", ConvertToIdentifier(party.ID), ReplaceSpaces(party.Name), party.FlagsGZ);
 
@@ -1623,7 +1632,7 @@ namespace MB_Studio_Library.IO
                         party.AIBehavior
                     );
 
-                    writer.Write("{0} {1} ", party.AITargetParty, party.AITargetParty);
+                    writer.Write("{0} {0} ", party.AITargetParty);
 
                     double[] defaultBehaviorLocation = party.InitialCoordinates;
                     writer.Write("{0:F6} {1:F6} ", defaultBehaviorLocation[0], defaultBehaviorLocation[1]);
@@ -1635,11 +1644,11 @@ namespace MB_Studio_Library.IO
                     foreach (PMember member in party.Members)
                     {
                         string troopS = member.Troop;
-                        if (troopS.StartsWith(troopTag))
+                        if (!troopS.StartsWith(troopTag))
                             troopS = troopTag + troopS;
                         int troopNo = CodeReader.Troops.IndexOf(troopS);
                         AddTagUse(tagUses, TagType.Troop, troopNo);
-                        writer.Write("{0} {1} 0 {2} ", troopNo, member.Flags, member.MaximumTroops);
+                        writer.Write("{0} {1} 0 {2} ", troopNo, member.MinimumTroops, member.Flags);
                     }
 
                     double bearing = (3.1415926 / 180d) * party.PartyDirectionInDegrees;
@@ -1720,11 +1729,15 @@ namespace MB_Studio_Library.IO
             {
                 string troopTag = "trp_";
                 string troopS = member.Troop;
-                if (troopS.StartsWith(troopTag))
+                if (!troopS.StartsWith(troopTag))
                     troopS = troopTag + troopS;
                 int troopNo = CodeReader.Troops.IndexOf(troopS);
-                //AddTagUse(tagUses, TagType.Troop, troopNo);
-                writer.Write("{0} {1} {2} {3} ", troopNo, member.Flags, member.MinimumTroops, member.MaximumTroops);
+                writer.Write("{0} ", troopNo);
+                if (troopNo >= 0)
+                {
+                    //AddTagUse(tagUses, TagType.Troop, troopNo);
+                    writer.Write("{0} {1} {2} ", member.MinimumTroops, member.MaximumTroops, member.Flags);
+                }
             }
             else
                 writer.Write("-1 ");
