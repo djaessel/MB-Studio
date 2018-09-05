@@ -42,7 +42,7 @@ namespace MB_Studio_Library.Objects
             else
                 index2++;
             for (int i = index1; i < index2; i++)
-                valuesX.Add(float.Parse(values[i]));
+                valuesX.Add(float.Parse(values[i].Replace('.', ',')));
             AllShaderParameters.Add(valuesX.ToArray());
         }
 
