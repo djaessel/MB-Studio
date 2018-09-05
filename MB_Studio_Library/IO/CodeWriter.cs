@@ -20,6 +20,8 @@ namespace MB_Studio_Library.IO
         public static string DefaultModuleSystemPath { get; private set; }
 
         private static List<Variable> allOpcodes = null;
+        private static List<Variable> allIntervalVars = null;
+        private static List<Variable> commonPythonVariables = null;
 
         private static List<string> canFailOperations = null;
         private static List<string> lhsOperations = null;
@@ -28,8 +30,6 @@ namespace MB_Studio_Library.IO
         #endregion
 
         #region MODULE TYPE LISTS
-
-        private static List<Variable> commonPythonVariables = null;
 
         public static List<string> ReservedVariables { get; private set; } = new List<string>();// MODULE VARIABLES
         public static List<string> GlobalVarsList { get; private set; } = new List<string>();
@@ -969,7 +969,11 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(triggers.Count);
                 foreach (Trigger trigger in triggers)
                 {
-                    writer.Write("{0:F6} {1:F6} {2:F6} ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
+                    writer.Write("{0:F6} {1:F6} {2:F6} ",
+                        GetIntervalValue(trigger.CheckInterval),
+                        GetIntervalValue(trigger.DelayInterval),
+                        GetIntervalValue(trigger.ReArmInterval)
+                    );
                     SaveStatementBlock(writer, 0, true, trigger.ConditionBlock, variables, variableUses, tagUses, quickStrings);
                     SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variables, variableUses, tagUses, quickStrings);
                     writer.WriteLine();
@@ -1234,7 +1238,7 @@ namespace MB_Studio_Library.IO
             using (StreamWriter writer = new StreamWriter(exportDir + "troops.txt"))
             {
                 writer.WriteLine("troopsfile version 2");//change version if necessary
-                writer.WriteLine(troops.Count);
+                writer.Write(troops.Count);
 
                 foreach (Troop troop in troops)
                 {
@@ -1262,6 +1266,7 @@ namespace MB_Studio_Library.IO
                         troop.UpgradeTroop2
                     );
 
+                    writer.Write("  ");
                     for (int i = 0; i < troop.Items.Count; i++)
                     {
                         //AddTagUse(tagUses, TagType.Item, item);
@@ -1280,8 +1285,17 @@ namespace MB_Studio_Library.IO
                         writer.Write(" {0}", wp);
                     writer.WriteLine();
 
-                    foreach (int skill in troop.Skills)
-                        writer.Write("{0} ", skill);
+                    //SuperGZ_192Bit skillArray = new SuperGZ_192Bit();
+                    int num_skill_words = 6;
+                    uint[] skillBlocks = new uint[num_skill_words];
+                    for (int i = 0; i < num_skill_words; i++)
+                    {
+                        foreach (int skill in troop.Skills)
+                        {
+
+                        }
+                    }
+                    
                     writer.Write(Environment.NewLine + "  ");
 
                     int numFaceNumericKeys = 4;
@@ -1294,10 +1308,16 @@ namespace MB_Studio_Library.IO
                             if (faceTmp.Length == (numFaceNumericKeys * 16))
                             {
                                 ulong[] wordKeys = new ulong[numFaceNumericKeys];
-                                for (int i = 0; i < wordKeys.Length; i++)
+                                for (int i = wordKeys.Length - 1; i >= 0; i--)
                                     wordKeys[i] = HexConverter.Hex2Dec_16CHARS(faceTmp.Substring(i * 16, 16));
                                 for (int i = 0; i < wordKeys.Length; i++)
-                                    writer.Write("{0} ", wordKeys[(wordKeys.Length - 1) - i]);
+                                    writer.Write("{0} ", wordKeys[(numFaceNumericKeys - 1) - i]);
+                                /*
+      for word_no in xrange(num_face_numeric_keys):
+        word_keys.append((fckey >> (64 * word_no)) & 0xFFFFFFFFFFFFFFFF)
+      for word_no in xrange(num_face_numeric_keys):
+        file.write("%d "%(word_keys[(num_face_numeric_keys -1) - word_no]))
+                                */
                             }
                         }
                         else
@@ -1782,7 +1802,11 @@ namespace MB_Studio_Library.IO
             writer.WriteLine(triggers.Length);
             foreach (Trigger trigger in triggers)
             {
-                writer.Write("{0:F6} {1:F6} {2:F6} ", trigger.CheckInterval, trigger.DelayInterval, trigger.ReArmInterval);
+                writer.Write("{0:F6} {1:F6} {2:F6} ",
+                    GetIntervalValue(trigger.CheckInterval),
+                    GetIntervalValue(trigger.DelayInterval),
+                    GetIntervalValue(trigger.ReArmInterval)
+                );
                 SaveStatementBlock(writer, 0, true, trigger.ConditionBlock, variableList, variableUses, tagUses, quickStrings);
                 SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
                 writer.WriteLine();
@@ -1970,11 +1994,52 @@ namespace MB_Studio_Library.IO
             writer.WriteLine(simpleTriggers.Length);
             foreach (SimpleTrigger trigger in simpleTriggers)
             {
-                writer.Write("{0:F6} ", trigger.CheckInterval);
+                writer.Write("{0:F6} ", GetIntervalValue(trigger.CheckInterval));
                 SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
                 writer.WriteLine();
             }
             writer.WriteLine();
+        }
+
+        private static double GetIntervalValue(string checkInterval)
+        {
+            if (allIntervalVars == null)
+                InitializeAllIntervalVars();
+
+            if (double.TryParse(checkInterval.Replace('.', ','), out double intervalValue))
+                return intervalValue;
+
+            intervalValue = 0d;
+            for (int i = 0; i < allIntervalVars.Count; i++)
+            {
+                if (allIntervalVars[i].Name.Equals(checkInterval))
+                {
+                    intervalValue = (double)allIntervalVars[i].Value;
+                    i = allIntervalVars.Count;
+                }
+            }
+            return intervalValue;
+        }
+
+        private static void InitializeAllIntervalVars()
+        {
+            List<Variable> list = new List<Variable>();
+            using (StreamReader sr = new StreamReader(ModuleSystem + "header_triggers.py"))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string s = sr.ReadLine().Split('#')[0];
+
+                    if (!s.Contains("=")) continue;
+
+                    string[] sp = s.Replace(" ", string.Empty).Split('=');
+                    if (sp.Length > 1)
+                        if (sp[0].StartsWith("ti_"))
+                            if (ImportantMethods.IsNumeric(sp[1], true))
+                                list.Add(new Variable(sp[0], decimal.Parse(sp[1])));
+                }
+            }
+            allIntervalVars = list;
         }
 
         private static string HandlePythonVariables(string param)
@@ -2045,8 +2110,12 @@ namespace MB_Studio_Library.IO
 
             int maxStatement = statementBlock.Length - 1;
             if (maxStatement >= 0)
+            {
                 if (statementBlock[maxStatement] != null)
                     maxStatement++;
+            }
+            else
+                maxStatement++;
 
             writer.Write(" {0} ", maxStatement);
 
