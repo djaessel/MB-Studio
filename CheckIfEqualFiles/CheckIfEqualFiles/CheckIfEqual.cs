@@ -403,12 +403,28 @@ namespace CheckIfEqualFiles
             bool match = (u1 == u2);
             if (!match)
             {
-                if (u1 < CodeReader.QUICKSTRING_MAX && u1 >= CodeReader.QUICKSTRING_MIN
-                    && u2 < CodeReader.QUICKSTRING_MAX && u2 >= CodeReader.QUICKSTRING_MIN)
+                if (u1 < CodeReader.QUICKSTRING_MAX && u1 >= CodeReader.QUICKSTRING_MIN &&
+                    u2 < CodeReader.QUICKSTRING_MAX && u2 >= CodeReader.QUICKSTRING_MIN)
                 {
                     string s1 = File.ReadAllLines(originalModPath + "quick_strings.txt")[(int)(u1 - CodeReader.QUICKSTRING_MIN) + 1].Split()[1];
                     string s2 = File.ReadAllLines(generatedFolderPath + "quick_strings.txt")[(int)(u2 - CodeReader.QUICKSTRING_MIN) + 1].Split()[1];
                     match = s1.Equals(s2);
+                    if (!match)
+                    {
+                        char[] c1 = s1.Replace(" ", string.Empty).ToCharArray();
+                        char[] c2 = s2.Replace(" ", string.Empty).ToCharArray();
+                        match = true;
+                        int minmax = Math.Min(c1.Length, c2.Length);
+                        for (int x = 0; x < minmax; x++)
+                        {
+                            if (c1[x] != c2[x])
+                            {
+                                match = false;
+                                Console.WriteLine("ERROR: QuickString not equal!");
+                                i = minmax;
+                            }
+                        }
+                    }
                 }
                 else
                     match = CorrectSimilarIDError(ref orgLines, ref genLines, ref idxs, i, j);

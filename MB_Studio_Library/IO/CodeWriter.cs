@@ -2033,7 +2033,7 @@ namespace MB_Studio_Library.IO
             if (allIntervalVars == null)
                 InitializeAllIntervalVars();
 
-            if (double.TryParse(checkInterval.Replace('.', ','), out double intervalValue))
+            if (double.TryParse(checkInterval, out double intervalValue))
                 return intervalValue;
 
             intervalValue = 0d;
