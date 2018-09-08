@@ -1496,7 +1496,7 @@ namespace MB_Studio_Library.IO
 
                     foreach (GameMenuOption option in menu.MenuOptions)
                     {
-                        writer.Write(" mno_{0} ", option.Name);
+                        writer.Write(" {0} ", option.Name);
                         SaveStatementBlock(writer, 0, true, option.ConditionBlock, variableList, variableUses, tagUses, quickStrings);
                         writer.Write(" {0} ", option.Text.Replace(' ', '_'));
                         SaveStatementBlock(writer, 0, true, option.ConsequenceBlock, variableList, variableUses, tagUses, quickStrings);
@@ -1734,6 +1734,27 @@ namespace MB_Studio_Library.IO
                             data[1] = data[1].Substring(2);
                             if (data[1].Length <= 16)
                                 list.Add(new Variable(data[0], HexConverter.Hex2Dec_16CHARS(data[1])));
+                        }
+                        else if (data[1].Contains("|"))
+                        {
+                            ulong ux = 0;
+                            string[] sp = data[1].Split('|');
+                            foreach (string s in sp)
+                            {
+                                bool found = false;
+                                for (int i = 0; i < list.Count; i++)
+                                {
+                                    if (list[i].Name.Equals(s))
+                                    {
+                                        ux |= (ulong)list[i].Value;
+                                        found = true;
+                                        i = list.Count;
+                                    }
+                                }
+                                if (!found)
+                                    Console.WriteLine("ERROR: Operand '" + s + "' not found!");
+                            }
+                            list.Add(new Variable(data[0], ux));
                         }
                     }
                 }
