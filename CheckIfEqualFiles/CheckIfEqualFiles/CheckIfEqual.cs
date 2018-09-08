@@ -20,7 +20,9 @@ namespace CheckIfEqualFiles
 
         private const byte MAX_ARGUMENTS = 2;
 
-        private static bool debugMode = false;
+        protected static bool DeepValidationActive { get; private set; } = false;
+
+        protected static bool DebugMode { get; private set; } = false;
 
         private static readonly short languageCode = 0; // index for ini - NO REAL LANGUAGE CODE!!!
 
@@ -45,8 +47,12 @@ namespace CheckIfEqualFiles
         {
             if (args.Length != 0 && args.Length <= MAX_ARGUMENTS)
             {
+                DebugMode = args[0].Equals("-deep");
                 if (args[0].Equals("-debug"))
-                    debugMode = true;
+                    DebugMode = true;
+                else if (DebugMode)
+                    DeepValidationActive = true;
+
                 if (args.Length > 1)
                     modulePath = args[1].TrimStart('-');
             }
@@ -89,7 +95,7 @@ namespace CheckIfEqualFiles
                 languageDeniedLetter.Add('N');
             }
 
-            if (!debugMode)
+            if (!DebugMode)
                 Console.Clear();
         }
 
@@ -303,7 +309,11 @@ namespace CheckIfEqualFiles
             {
                 string orgCode = GetLineCode(orgLines);
                 string genCode = GetLineCode(genLines);
-                fileMatch = ((orgCode.Equals(genCode)) && (orgCode.Length == genCode.Length));
+
+                fileMatch = (orgCode.Length == genCode.Length);
+
+                if (fileMatch && DeepValidationActive)
+                    fileMatch = (fileMatch && orgCode.Equals(genCode));
             }
 
             if (!fileMatch && genLines.Count < 5)

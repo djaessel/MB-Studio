@@ -1002,13 +1002,12 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine(dialogs.Count);
 
                 List<string[]> autoIds = new List<string[]>();
-
                 for (int i = 0; i < dialogs.Count; i++)
                 {
                     Dialog dialog = (Dialog)dialogs[i];
                     try
                     {
-                        string dialogId = CreateAutoId2(dialog, autoIds);
+                        string dialogId = CreateAutoId2(dialog, ref autoIds);
                         writer.Write("{0} {1} {2} ", dialogId, dialog.TalkingPartnerCode, inputStates[i]);
                         SaveStatementBlock(writer, 0, true, dialog.ConditionBlock, variables, variableUses, tagUses, quickStrings);
 
@@ -1833,7 +1832,7 @@ namespace MB_Studio_Library.IO
             writer.WriteLine();
         }
 
-        private static string CreateAutoId2(Dialog dialog, List<string[]> autoIds)
+        private static string CreateAutoId2(Dialog dialog, ref List<string[]> autoIds)
         {
             string text = dialog.DialogText;
             string tokenInput = ConvertToIdentifier(dialog.StartDialogState);
@@ -1893,14 +1892,18 @@ namespace MB_Studio_Library.IO
 
         private static void AutoIdsSetValue(List<string[]> autoIds, string key, string val)
         {
+            bool found = false;
             for (int i = 0; i < autoIds.Count; i++)
             {
                 if (autoIds[i][0].Equals(key))
                 {
                     autoIds[i][1] = val;
+                    found = true;
                     i = autoIds.Count;
                 }
             }
+            if (!found)
+                autoIds.Add(new string[] { key, val });
         }
 
         private static List<int> CompileSentenceTokens(string exportDir, List<Skriptum> dialogs, out List<int> inputTokens)
