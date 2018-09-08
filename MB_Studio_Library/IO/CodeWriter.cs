@@ -2819,6 +2819,8 @@ namespace MB_Studio_Library.IO
 
         private static List<string> GenerateCodePartsFromSourceCode(string statement)
         {
+            List<string> codeParts = new List<string>();
+
             string tmp = statement;
             int idxt = tmp.IndexOf('(');
             if (idxt >= 0)
@@ -2827,7 +2829,6 @@ namespace MB_Studio_Library.IO
             if (idxt >= 0)
                 tmp = tmp.Remove(idxt);
 
-            List<string> codeParts = new List<string>();
             if (!tmp.Contains("@"))
             {
                 string[] sp = tmp.Split(',');
@@ -2852,24 +2853,7 @@ namespace MB_Studio_Library.IO
                 do
                 {
                     string tmp2 = tmp.Remove(tmp.IndexOf('@'));
-                    string tmp3 = tmp2.Trim(',', ' ', '\t', ')', '(', '\"');
-                    string[] sp = tmp3.Split(',');
-                    for (int j = 0; j < sp.Length; j++)
-                    {
-                        string xxxx = sp[j];
-                        xxxx = xxxx.Trim(',', ' ', '\t', ')', '(', '\"');
-                        xxxx = HandlePythonVariables(xxxx);
-                        if (xxxx.StartsWith("reg"))
-                        {
-                            string tmp4 = xxxx.Replace("reg", string.Empty);
-                            if (ulong.TryParse(tmp4, out ulong reg))
-                            {
-                                reg |= OP_MASK_REGISTER;
-                                xxxx = reg.ToString();
-                            }
-                        }
-                        codeParts.Add(xxxx);
-                    }
+                    GGG(ref codeParts, tmp2);
                     tmp = tmp.Substring(tmp2.Length);
 
                     int xyt = tmp.IndexOf('\"');
@@ -2881,10 +2865,39 @@ namespace MB_Studio_Library.IO
                     }
                     else
                         Console.WriteLine("Warning: Trailing '\"' not found!");
+
+                    if (!tmp.Trim('\"').Contains("@"))
+                        GGG(ref codeParts, tmp);
                 }
                 while (tmp.Contains("@"));
             }
+
             return codeParts;
+        }
+
+        private static void GGG(ref List<string> codeParts, string s)
+        {
+            s = s.Trim(',', ' ', '\t', ')', '(', '\"');
+
+            if (s.Length == 0) return;
+
+            string[] sp = s.Split(',');
+            for (int j = 0; j < sp.Length; j++)
+            {
+                string s2 = sp[j];
+                s2 = s2.Trim(',', ' ', '\t', ')', '(', '\"');
+                s2 = HandlePythonVariables(s2);
+                if (s2.StartsWith("reg"))
+                {
+                    string s3 = s2.Replace("reg", string.Empty);
+                    if (ulong.TryParse(s3, out ulong reg))
+                    {
+                        reg |= OP_MASK_REGISTER;
+                        s2 = reg.ToString();
+                    }
+                }
+                codeParts.Add(s2);
+            }
         }
 
         private static void AddVariable(string variableString, ref List<string> variableList, ref List<int> variableUses)
