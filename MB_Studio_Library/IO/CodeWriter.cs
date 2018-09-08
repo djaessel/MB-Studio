@@ -32,8 +32,6 @@ namespace MB_Studio_Library.IO
         #region MODULE TYPE LISTS
 
         public static List<string> ReservedVariables { get; private set; } = new List<string>();// MODULE VARIABLES
-        public static List<string> GlobalVarsList { get; private set; } = new List<string>();
-        public static List<int> GlobalVarsUses { get; private set; } = new List<int>();
 
         private static List<List<Skriptum>> types = null;
 
@@ -281,7 +279,6 @@ namespace MB_Studio_Library.IO
             List<string> variables = new List<string>();
             List<int> variableUses = new List<int>();
 
-            /*
             try
             {
                 string[] varList = File.ReadAllLines(ModuleSystem + "variables.txt");
@@ -300,7 +297,6 @@ namespace MB_Studio_Library.IO
             {
                 Console.WriteLine("variables.txt not found. Creating new variables.txt file");
             }
-            */
 
             //Console.WriteLine(/*"Done"*/);
         }
@@ -2206,7 +2202,7 @@ namespace MB_Studio_Library.IO
             }
         }
 
-        private static decimal ProcessParam(string param, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        private static decimal ProcessParam(string param, List<string> globalVarsList, List<int> globalVarsUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
             decimal result = 0;
             param = param.Trim();
@@ -2217,12 +2213,12 @@ namespace MB_Studio_Library.IO
                     if (param[0] == '$')
                     {
                         CheckVariableNotDefined(param.Substring(1), localVarList);
-                        result = GetVariable(param, GlobalVarsList, GlobalVarsUses);
+                        result = GetVariable(param, globalVarsList, globalVarsUses);
                         result = ((ulong)result) | OP_MASK_VARIABLE;
                     }
                     else if (param[0] == ':')
                     {
-                        CheckVariableNotDefined(param.Substring(1), GlobalVarsList);
+                        CheckVariableNotDefined(param.Substring(1), globalVarsList);
                         result = GetVariable(param, localVarList, localVarsUses);
                         result = ((ulong)result) | OP_MASK_LOCAL_VARIABLE;
                     }
@@ -3085,8 +3081,11 @@ namespace MB_Studio_Library.IO
         private static void SaveVariables(string exportDir, List<string> variables, List<int> variableUses)
         {
             using (StreamWriter writer = new StreamWriter(exportDir + "variables.txt"))
+            {
                 foreach (string variable in variables)
                     writer.WriteLine(variable);
+                writer.WriteLine();
+            }
             using (StreamWriter writer = new StreamWriter(exportDir + "variable_uses.txt"))
                 foreach (int variableUse in variableUses)
                     writer.WriteLine(variableUse);
