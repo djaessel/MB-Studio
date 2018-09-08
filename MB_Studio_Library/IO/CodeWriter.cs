@@ -2017,7 +2017,12 @@ namespace MB_Studio_Library.IO
             foreach (SimpleTrigger trigger in simpleTriggers)
             {
                 writer.Write("{0:F6} ", GetIntervalValue(trigger.CheckInterval));
-                SaveStatementBlock(writer, 0, true, trigger.ConsequencesBlock, variableList, variableUses, tagUses, quickStrings);
+                int startIdx = 0;
+                if (trigger.ConsequencesBlock.Length > 0)
+                    if (trigger.ConsequencesBlock[0].Equals("SIMPLE_TRIGGER"))
+                        startIdx++;
+                List<string> realConsBlock = ImportantMethods.StringArrayToList(trigger.ConsequencesBlock, startIdx);
+                SaveStatementBlock(writer, 0, true, realConsBlock.ToArray(), variableList, variableUses, tagUses, quickStrings);
                 writer.WriteLine();
             }
             writer.WriteLine();
