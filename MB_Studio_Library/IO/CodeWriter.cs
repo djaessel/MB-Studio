@@ -281,6 +281,7 @@ namespace MB_Studio_Library.IO
             List<string> variables = new List<string>();
             List<int> variableUses = new List<int>();
 
+            /*
             try
             {
                 string[] varList = File.ReadAllLines(ModuleSystem + "variables.txt");
@@ -297,8 +298,9 @@ namespace MB_Studio_Library.IO
             }
             catch (Exception)
             {
-                Console.WriteLine("variables.txt not found.Creating new variables.txt file");
+                Console.WriteLine("variables.txt not found. Creating new variables.txt file");
             }
+            */
 
             //Console.WriteLine(/*"Done"*/);
         }
@@ -309,7 +311,7 @@ namespace MB_Studio_Library.IO
 
             List<string> variables = LoadVariables(exportDir, out List<int> variablesUses);
 
-            CompileAllGlobalVars(variables, variablesUses);
+            CompileAllGlobalVars(ref variables, ref variablesUses);
 
             SaveVariables(exportDir, variables, variablesUses);
 
@@ -1196,16 +1198,18 @@ namespace MB_Studio_Library.IO
 
                 foreach (MapIcon mapIcon in mapIcons)
                 {
-                    writer.Write("{0} {1} {2} {3:F6} {4} {5:F6} {6:F6} {7:F6} ",
+                    writer.Write("{0} {1} {2} {3:F6} {4} ",
                         mapIcon.ID,
                         mapIcon.FlagsGZ,
                         mapIcon.MapIconName,
                         mapIcon.Scale,
-                        mapIcon.SoundID,
-                        mapIcon.OffsetX,
-                        mapIcon.OffsetY,
-                        mapIcon.OffsetZ
+                        mapIcon.SoundID
                     );
+
+                    if (!mapIcon.OffsetX.Equals(double.NaN))
+                        writer.Write("{0:F6} {1:F6} {2:F6} ", mapIcon.OffsetX, mapIcon.OffsetY, mapIcon.OffsetZ);
+                    else
+                        writer.Write("0 0 0 ");
 
                     SaveSimpleTriggers(writer, mapIcon.SimpleTriggers, variableList, variableUses, tagUses, quickStrings);
 
@@ -2140,73 +2144,7 @@ namespace MB_Studio_Library.IO
 
             for (int i = 0; i < maxStatement; i++)
             {
-                string tmp = statementBlock[i];
-                int idxt = tmp.IndexOf('(');
-                if (idxt >= 0)
-                    tmp = tmp.Substring(idxt + 1);
-                idxt = tmp.LastIndexOf(')');
-                if (idxt >= 0)
-                    tmp = tmp.Remove(idxt);
-
-                List<string> codeParts = new List<string>();
-
-                if (!tmp.Contains("@"))
-                {
-                    string[] sp = tmp.Split(',');
-                    for (int j = 0; j < sp.Length; j++)
-                    {
-                        sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
-                        sp[j] = HandlePythonVariables(sp[j]);
-                        if (sp[j].StartsWith("reg"))
-                        {
-                            tmp = sp[j].Replace("reg", string.Empty);
-                            if (ulong.TryParse(tmp, out ulong reg))
-                            {
-                                reg |= OP_MASK_REGISTER;
-                                sp[j] = reg.ToString();
-                            }
-                        }
-                        codeParts.Add(sp[j]);
-                    }
-                }
-                else
-                {
-                    do
-                    {
-                        string tmp2 = tmp.Remove(tmp.IndexOf('@'));
-                        string tmp3 = tmp2.Trim(',', ' ', '\t', ')', '(', '\"');
-                        string[] sp = tmp3.Split(',');
-                        for (int j = 0; j < sp.Length; j++)
-                        {
-                            string xxxx = sp[j];
-                            xxxx = xxxx.Trim(',', ' ', '\t', ')', '(', '\"');
-                            xxxx = HandlePythonVariables(xxxx);
-                            if (xxxx.StartsWith("reg"))
-                            {
-                                string tmp4 = xxxx.Replace("reg", string.Empty);
-                                if (ulong.TryParse(tmp4, out ulong reg))
-                                {
-                                    reg |= OP_MASK_REGISTER;
-                                    xxxx = reg.ToString();
-                                }
-                            }
-                            codeParts.Add(xxxx);
-                        }
-                        tmp = tmp.Substring(tmp2.Length);
-
-                        int xyt = tmp.IndexOf('\"');
-                        if (xyt >= 0)
-                        {
-                            tmp2 = tmp.Remove(xyt);
-                            codeParts.Add(tmp2);
-                            tmp = tmp.Substring(tmp2.Length);
-                        }
-                        else
-                            Console.WriteLine("Warning: Trailing '\"' not found!");
-                    }
-                    while (tmp.Contains("@"));
-                }
-
+                List<string> codeParts = GenerateCodePartsFromSourceCode(statementBlock[i]);
                 string opcode = codeParts[0];
                 bool noVariables = (codeParts.Count == 1);
 
@@ -2226,7 +2164,7 @@ namespace MB_Studio_Library.IO
                         Console.WriteLine("WARNING: Script can fail at operation #" + i + ". Use cf_ at the beginning of its name: " + statementName);
                 }
 
-                SaveStatement(writer, opcode, noVariables, codeParts.ToArray(), variableList, variableUses, localVarList, localVarsUses, tagUses, quickStrings);
+                SaveStatement(writer, opcode, noVariables, codeParts.ToArray(), ref variableList, ref variableUses, localVarList, localVarsUses, tagUses, quickStrings);
             }
 
             if (storeScriptParam1Uses > 1)
@@ -2242,7 +2180,7 @@ namespace MB_Studio_Library.IO
                 Console.WriteLine("WARNING: Script uses more than 128 local wariables: " + statementName + " --> variables count:" + localVarList.Count);
         }
 
-        private static void SaveStatement(StreamWriter writer, string opcode, bool noVariables, string[] statementSp, List<string> variableList, List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
+        private static void SaveStatement(StreamWriter writer, string opcode, bool noVariables, string[] statementSp, ref List<string> variableList, ref List<int> variableUses, List<string> localVarList, List<int> localVarsUses, List<List<int>> tagUses, List<string[]> quickStrings)
         {
             int lenStatement = 0;
             if (!noVariables)
@@ -2254,7 +2192,7 @@ namespace MB_Studio_Library.IO
                     {
                         string param = statementSp[1];
                         if (param[0] == ':')
-                            AddVariable(param.Substring(1), localVarList, localVarsUses);
+                            AddVariable(param.Substring(1), ref localVarList, ref localVarsUses);
                     }
                 }
             }
@@ -2845,7 +2783,7 @@ namespace MB_Studio_Library.IO
             return text.Replace('\t', '_').Replace(' ', '_');
         }
 
-        private static void CompileGlobalVars(string[] statementBlock, List<string> variableList, List<int> variableUses)
+        private static void CompileGlobalVars(string[] statementBlock, ref List<string> variableList, ref List<int> variableUses)
         {
             if (statementBlock.Length == 0) return;
 
@@ -2855,7 +2793,7 @@ namespace MB_Studio_Library.IO
 
                 string tmp = statement.Trim();
                 if (tmp.Length != 0)
-                    CompileGlobalVarsInStatement(tmp, variableList, variableUses);
+                    CompileGlobalVarsInStatement(tmp, ref variableList, ref variableUses);
             }
         }
 
@@ -2873,18 +2811,87 @@ namespace MB_Studio_Library.IO
             return (IsLhsOperation(opcode) || globalLhsOperations.Contains(opcode));
         }
 
-        private static void CompileGlobalVarsInStatement(string statement, List<string> variableList, List<int> variableUses)
+        private static void CompileGlobalVarsInStatement(string statement, ref List<string> variableList, ref List<int> variableUses)
         {
-            string[] sp = statement.Split();
-            string opcode = sp[0];
-            if (IsLhsOperationForGlobalVars(opcode))
-                if (sp.Length > 1)
-                    if (sp[1].Length > 0)
-                        if (sp[1][0] == '$')
-                            AddVariable(sp[1].Substring(1), variableList, variableUses);
+            List<string> codeParts = GenerateCodePartsFromSourceCode(statement);
+            string opcode = codeParts[0];
+            if (codeParts.Count > 1)
+                if (IsLhsOperationForGlobalVars(opcode))
+                    if (codeParts[1][0] == '$')
+                        AddVariable(codeParts[1].Substring(1), ref variableList, ref variableUses);
         }
 
-        private static void AddVariable(string variableString, List<string> variableList, List<int> variableUses)
+        private static List<string> GenerateCodePartsFromSourceCode(string statement)
+        {
+            string tmp = statement;
+            int idxt = tmp.IndexOf('(');
+            if (idxt >= 0)
+                tmp = tmp.Substring(idxt + 1);
+            idxt = tmp.LastIndexOf(')');
+            if (idxt >= 0)
+                tmp = tmp.Remove(idxt);
+
+            List<string> codeParts = new List<string>();
+            if (!tmp.Contains("@"))
+            {
+                string[] sp = tmp.Split(',');
+                for (int j = 0; j < sp.Length; j++)
+                {
+                    sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
+                    sp[j] = HandlePythonVariables(sp[j]);
+                    if (sp[j].StartsWith("reg"))
+                    {
+                        tmp = sp[j].Replace("reg", string.Empty);
+                        if (ulong.TryParse(tmp, out ulong reg))
+                        {
+                            reg |= OP_MASK_REGISTER;
+                            sp[j] = reg.ToString();
+                        }
+                    }
+                    codeParts.Add(sp[j]);
+                }
+            }
+            else
+            {
+                do
+                {
+                    string tmp2 = tmp.Remove(tmp.IndexOf('@'));
+                    string tmp3 = tmp2.Trim(',', ' ', '\t', ')', '(', '\"');
+                    string[] sp = tmp3.Split(',');
+                    for (int j = 0; j < sp.Length; j++)
+                    {
+                        string xxxx = sp[j];
+                        xxxx = xxxx.Trim(',', ' ', '\t', ')', '(', '\"');
+                        xxxx = HandlePythonVariables(xxxx);
+                        if (xxxx.StartsWith("reg"))
+                        {
+                            string tmp4 = xxxx.Replace("reg", string.Empty);
+                            if (ulong.TryParse(tmp4, out ulong reg))
+                            {
+                                reg |= OP_MASK_REGISTER;
+                                xxxx = reg.ToString();
+                            }
+                        }
+                        codeParts.Add(xxxx);
+                    }
+                    tmp = tmp.Substring(tmp2.Length);
+
+                    int xyt = tmp.IndexOf('\"');
+                    if (xyt >= 0)
+                    {
+                        tmp2 = tmp.Remove(xyt);
+                        codeParts.Add(tmp2);
+                        tmp = tmp.Substring(tmp2.Length);
+                    }
+                    else
+                        Console.WriteLine("Warning: Trailing '\"' not found!");
+                }
+                while (tmp.Contains("@"));
+            }
+            return codeParts;
+        }
+
+        private static void AddVariable(string variableString, ref List<string> variableList, ref List<int> variableUses)
         {
             bool found = false;
             for (int i = 0; i < variableList.Count; i++)
@@ -2903,16 +2910,13 @@ namespace MB_Studio_Library.IO
             }
         }
 
-        private static void CompileAllGlobalVars(List<string> variableList, List<int> variableUses)
+        private static void CompileAllGlobalVars(ref List<string> variableList, ref List<int> variableUses)
         {
-            List<object> tempList = new List<object>();
-            var listType = tempList.GetType(); // not necessary later because is always (generic) IList
-
             foreach (string variable in ReservedVariables)
             {
                 try
                 {
-                    AddVariable(variable, variableList, variableUses);
+                    AddVariable(variable, ref variableList, ref variableUses);
                 }
                 catch (Exception)
                 {
@@ -2924,8 +2928,8 @@ namespace MB_Studio_Library.IO
             {
                 try
                 {
-                    CompileGlobalVars(trigger.ConditionBlock, variableList, variableUses);
-                    CompileGlobalVars(trigger.ConsequencesBlock, variableList, variableUses);
+                    CompileGlobalVars(trigger.ConditionBlock, ref variableList, ref variableUses);
+                    CompileGlobalVars(trigger.ConsequencesBlock, ref variableList, ref variableUses);
                 }
                 catch (Exception)
                 {
@@ -2939,7 +2943,7 @@ namespace MB_Studio_Library.IO
                 {
                     SimpleTrigger[] spTriggers = sceneProp.SimpleTriggers;
                     foreach (SimpleTrigger spTrigger in spTriggers)
-                        CompileGlobalVars(spTrigger.ConsequencesBlock, variableList, variableUses);
+                        CompileGlobalVars(spTrigger.ConsequencesBlock, ref variableList, ref variableUses);
                 }
                 catch (Exception)
                 {
@@ -2951,8 +2955,8 @@ namespace MB_Studio_Library.IO
             {
                 try
                 {
-                    CompileGlobalVars(dialog.ConditionBlock, variableList, variableUses);
-                    CompileGlobalVars(dialog.ConsequenceBlock, variableList, variableUses);
+                    CompileGlobalVars(dialog.ConditionBlock, ref variableList, ref variableUses);
+                    CompileGlobalVars(dialog.ConsequenceBlock, ref variableList, ref variableUses);
                 }
                 catch (Exception)
                 {
@@ -2964,11 +2968,11 @@ namespace MB_Studio_Library.IO
             {
                 try
                 {
-                    CompileGlobalVars(gameMenu.OperationBlock, variableList, variableUses);
+                    CompileGlobalVars(gameMenu.OperationBlock, ref variableList, ref variableUses);
                     foreach (GameMenuOption menuOption in gameMenu.MenuOptions)
                     {
-                        CompileGlobalVars(menuOption.ConditionBlock, variableList, variableUses);
-                        CompileGlobalVars(menuOption.ConsequenceBlock, variableList, variableUses);
+                        CompileGlobalVars(menuOption.ConditionBlock, ref variableList, ref variableUses);
+                        CompileGlobalVars(menuOption.ConsequenceBlock, ref variableList, ref variableUses);
                     }
                 }
                 catch (Exception)
@@ -2983,8 +2987,8 @@ namespace MB_Studio_Library.IO
                 {
                     foreach (Trigger trigger in missionTemplate.Triggers)
                     {
-                        CompileGlobalVars(trigger.ConditionBlock, variableList, variableUses);
-                        CompileGlobalVars(trigger.ConsequencesBlock, variableList, variableUses);
+                        CompileGlobalVars(trigger.ConditionBlock, ref variableList, ref variableUses);
+                        CompileGlobalVars(trigger.ConsequencesBlock, ref variableList, ref variableUses);
                     }
                 }
                 catch (Exception)
@@ -2998,7 +3002,7 @@ namespace MB_Studio_Library.IO
                 try
                 {
                     foreach (SimpleTrigger trigger in presentation.SimpleTriggers)
-                        CompileGlobalVars(trigger.ConsequencesBlock, variableList, variableUses);
+                        CompileGlobalVars(trigger.ConsequencesBlock, ref variableList, ref variableUses);
                 }
                 catch (Exception)
                 {
@@ -3010,7 +3014,7 @@ namespace MB_Studio_Library.IO
             {
                 try
                 {
-                    CompileGlobalVars(script.Code, variableList, variableUses);//last block is null??? fix for script code
+                    CompileGlobalVars(script.Code, ref variableList, ref variableUses);//last block is null??? fix for script code
                 }
                 catch (Exception)
                 {
@@ -3022,7 +3026,7 @@ namespace MB_Studio_Library.IO
             {
                 try
                 {
-                    CompileGlobalVars(simpleTrigger.ConsequencesBlock, variableList, variableUses);
+                    CompileGlobalVars(simpleTrigger.ConsequencesBlock, ref variableList, ref variableUses);
                 }
                 catch (Exception)
                 {
