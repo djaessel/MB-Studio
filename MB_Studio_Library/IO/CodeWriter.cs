@@ -1285,17 +1285,20 @@ namespace MB_Studio_Library.IO
                         writer.Write(" {0}", wp);
                     writer.WriteLine();
 
-                    //SuperGZ_192Bit skillArray = new SuperGZ_192Bit();
-                    int num_skill_words = 6;
-                    uint[] skillBlocks = new uint[num_skill_words];
-                    for (int i = 0; i < num_skill_words; i++)
-                    {
-                        foreach (int skill in troop.Skills)
-                        {
+                    int skillWordCount = 6;
+                    string tmp = string.Empty;
+                    foreach (int skill in troop.Skills)
+                        tmp += HexConverter.Dec2Hex((ulong)skill).Substring(7);//only 4 Bit per skill --> only one hex character
+                    tmp += "000000"; // maybe replace later if there are more than 42 skills possible 192 / 4 = 48
 
-                        }
-                    }
-                    
+                    uint[] skillCodes = new uint[skillWordCount];
+                    for (int i = skillWordCount - 1; i >= 0; i--)
+                        skillCodes[i] = uint.Parse(HexConverter.Hex2Dec(/*ImportantMethods.ReverseString(*/tmp.Substring(i * 8, 8)/*)*/).ToString());
+
+                    SuperGZ_192Bit skillVals = new SuperGZ_192Bit(skillCodes);
+                    foreach (uint skillCode in skillVals.ValueUInt)
+                        writer.Write("{0} ", skillCode);
+
                     writer.Write(Environment.NewLine + "  ");
 
                     int numFaceNumericKeys = 4;
@@ -1307,17 +1310,12 @@ namespace MB_Studio_Library.IO
                             string faceTmp = face.Substring(2);
                             if (faceTmp.Length == (numFaceNumericKeys * 16))
                             {
-                                ulong[] wordKeys = new ulong[numFaceNumericKeys];
-                                for (int i = wordKeys.Length - 1; i >= 0; i--)
-                                    wordKeys[i] = HexConverter.Hex2Dec_16CHARS(faceTmp.Substring(i * 16, 16));
-                                for (int i = 0; i < wordKeys.Length; i++)
-                                    writer.Write("{0} ", wordKeys[(numFaceNumericKeys - 1) - i]);
-                                /*
-      for word_no in xrange(num_face_numeric_keys):
-        word_keys.append((fckey >> (64 * word_no)) & 0xFFFFFFFFFFFFFFFF)
-      for word_no in xrange(num_face_numeric_keys):
-        file.write("%d "%(word_keys[(num_face_numeric_keys -1) - word_no]))
-                                */
+                                List<ulong> wordKeys = new List<ulong>();
+                                for (int i = 0; i < numFaceNumericKeys; i++)
+                                    wordKeys.Add(HexConverter.Hex2Dec_16CHARS(faceTmp.Substring((numFaceNumericKeys - (i + 1)) * 16, 16)));
+                                int maxCount = numFaceNumericKeys - 1;
+                                for (int i = 0; i < wordKeys.Count; i++)
+                                    writer.Write("{0} ", wordKeys[maxCount - i]);
                             }
                         }
                         else

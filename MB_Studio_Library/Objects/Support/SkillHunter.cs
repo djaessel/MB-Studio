@@ -13,7 +13,7 @@ namespace MB_Studio_Library.Objects.Support
 
         public static bool DebugMode { get; } = false;
 
-        public int[] Skills { get; } = new int[48]; // had 42 slots bere
+        public int[] Skills { get; } = new int[48]; // had 42 slots before
 
         public static string[] Skillnames { get; } = new string[] { "persuasion", "reserved_4", "reserved_3", "reserved_2", "reserved_1", "prisoner_management", "leadership", "trade",
                                                                     "tactics", "pathfinding", "spotting", "inventory_management", "wound_treatment", "surgery", "first_aid", "engineer",
