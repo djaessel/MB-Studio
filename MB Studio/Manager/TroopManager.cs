@@ -657,7 +657,7 @@ namespace MB_Studio.Manager
                     }
                 }
             }
-            tmp += "000000"; // maybe replace later if there are more than 42 skills possible
+            tmp += "000000"; // maybe replace later if there are more than 42 skills possible 192 / 4 = 48
             for (int i = 5; i >= 0; i--)
                 skillCodes[i] = uint.Parse(HexConverter.Hex2Dec(ImportantMethods.ReverseString(tmp.Substring(i * 8, 8))).ToString());
             //MessageBox.Show(skillCode);
