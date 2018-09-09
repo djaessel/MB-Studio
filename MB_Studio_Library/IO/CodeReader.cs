@@ -212,6 +212,8 @@ namespace MB_Studio_Library.IO
 
         #region Read References
 
+        // script bug - 9223388529554358287 to 25165839 in scripts.txt
+
         public static void LoadAll()
         {
             Reset();
