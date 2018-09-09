@@ -2,14 +2,16 @@
 using MB_Studio_CLI;
 using MB_Studio_Library.IO;
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 
 namespace CheckIfEqualFiles
 {
     public class CheckIfEqual
     {
         #region Attributes
+
+        private static StreamWriter logWriter;
 
         private static readonly string[] Modes = new string[] { "Default", "Single File" };
         private static string modulePath, originalModPath, generatedFolderPath, backupPath;
@@ -41,6 +43,22 @@ namespace CheckIfEqualFiles
         {
             InitializeConsole(args);
             MainAnalyseProgram(Directory.GetDirectories(modulePath));
+        }
+
+        private static void WriteLog(string text, bool writeTime = true)
+        {
+            if (writeTime)
+                logWriter.Write("[" + DateTime.Now.ToLongTimeString() + "]: ");
+            logWriter.Write(text);
+            Console.Write(text);
+        }
+
+        private static void WriteLineLog(string text, bool writeTime = true)
+        {
+            if (writeTime)
+                logWriter.Write("[" + DateTime.Now.ToLongTimeString() + "]: ");
+            logWriter.WriteLine(text);
+            Console.WriteLine(text);
         }
 
         private static void InitializeConsole(string[] args)
@@ -104,7 +122,12 @@ namespace CheckIfEqualFiles
             string input;
             do
             {
-                Console.WriteLine(Environment.NewLine + "- - - - - - - - - - - - - - - -" + Environment.NewLine + "MODULES:" + Environment.NewLine + "- - - - - - - - - - - - - - - -" + Environment.NewLine);
+                Console.WriteLine(
+                    Environment.NewLine + 
+                    "- - - - - - - - - - - - - - - -" + Environment.NewLine + 
+                    "MODULES:" + Environment.NewLine + 
+                    "- - - - - - - - - - - - - - - -" + Environment.NewLine
+                    );
 
                 for (int i = 0; i < modDirs.Length; i++)
                     Console.WriteLine(i + " - " + modDirs[i].Substring(modDirs[i].LastIndexOf('\\') + 1));
@@ -117,7 +140,9 @@ namespace CheckIfEqualFiles
                 input = Console.ReadLine();
                 if (ImportantMethods.IsNumericGZ(input))
                 {
-                    originalModPath = modDirs[int.Parse(input)] + '\\';
+                    string orgModName = modDirs[int.Parse(input)];
+                    originalModPath = orgModName + '\\';
+                    orgModName = orgModName.Substring(orgModName.LastIndexOf('\\') + 1);
 
                     Console.Write("Genereated Mod: ");
                     input = Console.ReadLine();
@@ -125,27 +150,30 @@ namespace CheckIfEqualFiles
                     {
                         generatedFolderPath = modDirs[int.Parse(input)] + '\\';
 
-                        while (!input.Equals(EXIT) && !input.Equals(CHANGE_MODULE))
+                        using (logWriter = new StreamWriter(orgModName.ToLower() + '_' + DateTime.Now.ToShortDateString() + ".log"))
                         {
-                            Console.WriteLine(Environment.NewLine + "Modes:");
-                            for (int i = 0; i < Modes.Length; i++)
-                                Console.WriteLine(i + " - " + Modes[i]);
-
-                            do
+                            while (!input.Equals(EXIT) && !input.Equals(CHANGE_MODULE))
                             {
-                                Console.Write(Environment.NewLine + "Mode: ");
-                                input = Console.ReadLine();
-                                if (!int.TryParse(input, out mode))
-                                    mode = 0;
-                            } while (!ModeExists(mode) && !input.Equals(EXIT));
+                                Console.WriteLine(Environment.NewLine + "Modes:");
+                                for (int i = 0; i < Modes.Length; i++)
+                                    Console.WriteLine(i + " - " + Modes[i]);
 
-                            if (!input.Equals(EXIT) && RequestAcception("Run"))
-                            {
-                                do { ManageMode(mode); } while (RequestAcception("Run Again"));
-                                if (RequestAcception("Change Module"))
-                                    input = CHANGE_MODULE;
-                                else
-                                    input = EXIT;
+                                do
+                                {
+                                    Console.Write(Environment.NewLine + "Mode: ");
+                                    input = Console.ReadLine();
+                                    if (!int.TryParse(input, out mode))
+                                        mode = 0;
+                                } while (!ModeExists(mode) && !input.Equals(EXIT));
+
+                                if (!input.Equals(EXIT) && RequestAcception("Run"))
+                                {
+                                    do { ManageMode(mode); } while (RequestAcception("Run Again"));
+                                    if (RequestAcception("Change Module"))
+                                        input = CHANGE_MODULE;
+                                    else
+                                        input = EXIT;
+                                }
                             }
                         }
                     }
@@ -218,19 +246,20 @@ namespace CheckIfEqualFiles
             }
             int filesCount = CodeReader.Files.Count;
             failCount = filesCount - matchCount;
-            Console.WriteLine(Environment.NewLine + "Files Analysed: " + filesCount);
-            //Console.WriteLine(Environment.NewLine + "Matches: " + matchCount);
-            //Console.WriteLine("Fails: " + failCount);
 
-            Console.WriteLine(Environment.NewLine + "Files Matched (" + matchCount + ") [");
+            WriteLineLog(Environment.NewLine + "Files Analysed: " + filesCount);
+            //WriteLog(Environment.NewLine + "Matches: " + matchCount);
+            //WriteLog("Fails: " + failCount);
+
+            WriteLineLog(Environment.NewLine + "Files Matched (" + matchCount + ") [");
             foreach (string file in matchFiles)
-                Console.WriteLine("  " + file + ',');
-            Console.WriteLine("]" + Environment.NewLine);
+                WriteLineLog("  " + file + ',');
+            WriteLineLog("]" + Environment.NewLine);
 
-            Console.WriteLine(Environment.NewLine + "Files Failed (" + failCount + ") [");
+            WriteLineLog(Environment.NewLine + "Files Failed (" + failCount + ") [");
             foreach (string file in failFiles)
-                Console.WriteLine("  " + file + ',');
-            Console.WriteLine("]" + Environment.NewLine);
+                WriteLineLog("  " + file + ',');
+            WriteLineLog("]" + Environment.NewLine);
         }
 
         private static bool AnalyseSingleFile(string fileName = null)
@@ -238,8 +267,9 @@ namespace CheckIfEqualFiles
             bool fileMatch = FileExists(fileName);
             while (fileName == null || !fileMatch)
             {
-                Console.Write("Filename: ");
+                WriteLog("Filename: ");
                 fileName = Console.ReadLine();
+                logWriter.WriteLine(fileName);
                 if (!fileName.Contains("."))
                     fileName += ".txt";
                 string orgFile = originalModPath + fileName;
@@ -256,7 +286,7 @@ namespace CheckIfEqualFiles
                     fileMatch = true;
             }
 
-            Console.WriteLine(Environment.NewLine + "Analyse " + fileName + ':');
+            WriteLineLog(Environment.NewLine + "Analyse " + fileName + ':');
 
             if (fileMatch)
             {
@@ -270,9 +300,9 @@ namespace CheckIfEqualFiles
             }
 
             if (fileMatch)
-                Console.WriteLine(fileName + " matched!");
+                WriteLineLog(fileName + " matched!");
             else
-                Console.WriteLine(fileName + " didn't match!");
+                WriteLineLog(fileName + " didn't match!");
 
             return fileMatch;
         }
@@ -299,7 +329,7 @@ namespace CheckIfEqualFiles
                         if (!match)
                         {
                             fileMatch = false;
-                            Console.WriteLine("line[" + i + "][" + j + "]\t-->\t<|" + CodeReader.Repl_CommaWDot(orgLines[i][j]) + "| != |" + CodeReader.Repl_CommaWDot(genLines[i][j]) + "|> ");
+                            WriteLineLog("line[" + i + "][" + j + "]\t-->\t<|" + CodeReader.Repl_CommaWDot(orgLines[i][j]) + "| != |" + CodeReader.Repl_CommaWDot(genLines[i][j]) + "|> ");
                         }
                     }
                 }
@@ -317,7 +347,7 @@ namespace CheckIfEqualFiles
             }
 
             if (!fileMatch && genLines.Count < 5)
-                Console.WriteLine("Warning: Generated file is probably empty!");
+                WriteLineLog("Warning: Generated file is probably empty!");
 
             return fileMatch;
         }
@@ -420,7 +450,7 @@ namespace CheckIfEqualFiles
                             if (c1[x] != c2[x])
                             {
                                 match = false;
-                                Console.WriteLine("ERROR: QuickString not equal!");
+                                WriteLineLog("ERROR: QuickString not equal!");
                                 x = minmax;
                             }
                         }
@@ -483,8 +513,7 @@ namespace CheckIfEqualFiles
 
         private static void ShowErrorFileNotFound(string file)
         {
-            Console.WriteLine("FILE NOT FOUND: " + file);
+            WriteLineLog("FILE NOT FOUND: " + file);
         }
-
     }
 }

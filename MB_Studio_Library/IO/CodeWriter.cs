@@ -1665,7 +1665,7 @@ namespace MB_Studio_Library.IO
                         writer.Write("{0} {1} 0 {2} ", troopNo, member.MinimumTroops, member.Flags);
                     }
 
-                    double bearing = piVersa * Math.Round(party.PartyDirectionInDegrees, 3);
+                    double bearing = piVersa * Math.Round(party.PartyDirectionInDegrees, 3);// or less digits
                     writer.WriteLine(Environment.NewLine + "{0:F6}", bearing);
                 }
             }
