@@ -421,7 +421,7 @@ namespace CheckIfEqualFiles
                             {
                                 match = false;
                                 Console.WriteLine("ERROR: QuickString not equal!");
-                                i = minmax;
+                                x = minmax;
                             }
                         }
                     }
