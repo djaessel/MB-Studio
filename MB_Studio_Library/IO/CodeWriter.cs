@@ -1620,6 +1620,7 @@ namespace MB_Studio_Library.IO
                 writer.WriteLine("partiesfile version 1");//change version if necessary
                 writer.WriteLine("{0} {0}", parties.Count);
 
+                double piVersa = Math.Round(3.1415926 / 180.0, 7);
                 for (int i = 0; i < parties.Count; i++)
                 {
                     Party party = (Party)parties[i];
@@ -1664,7 +1665,7 @@ namespace MB_Studio_Library.IO
                         writer.Write("{0} {1} 0 {2} ", troopNo, member.MinimumTroops, member.Flags);
                     }
 
-                    double bearing = (3.1415926 / 180d) * party.PartyDirectionInDegrees;
+                    double bearing = piVersa * Math.Round(party.PartyDirectionInDegrees, 3);
                     writer.WriteLine(Environment.NewLine + "{0:F6}", bearing);
                 }
             }
