@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using importantLib;
 using MB_Studio_Library.IO;
+using MB_Studio_Library.Objects.Support;
 
 namespace MB_Studio_Library.Objects
 {
@@ -11,25 +13,41 @@ namespace MB_Studio_Library.Objects
         {
             if (allSoundFiles.Length == 0)
                 InitializeAllSounds();
-            FlagsGZ = ulong.Parse(raw_data[1]);
-            SetFlags();
-            SoundFiles = new string[int.Parse(raw_data[2])];
+            if (ImportantMethods.IsNumericGZ(raw_data[1]))
+            {
+                FlagsGZ = ulong.Parse(raw_data[1]);
+                SetFlags();
+            }
+            else
+            {
+                Flags = raw_data[1];
+                SetFlagsGZ();
+            }
+            SoundFiles = new Variable[int.Parse(raw_data[2])];
             for (int i = 0; i < SoundFiles.Length; i++)
-                SoundFiles[i] = allSoundFiles[int.Parse(raw_data[i * 2 + 3])];
+            {
+                string soundFileId = allSoundFiles[int.Parse(raw_data[i * 2 + 3])];
+                ulong soundFileFlags = ulong.Parse(raw_data[i * 2 + 4]);
+                SoundFiles[i] = new Variable(soundFileId, soundFileFlags);
+            }
         }
 
         public Sound(string[] source_data, bool sortSounds) : base(source_data[0], ObjectType.Sound)
         {
             Flags = source_data[1];
             SetFlagsGZ();
-            SoundFiles = source_data[2].Split();
+            string[] soundFileIds = source_data[2].Split();
+            SoundFiles = new Variable[soundFileIds.Length];
+            ulong soundFileFlags = 0;//should be checked before and replaced with real flags if there are some
+            for (int i = 0; i < SoundFiles.Length; i++)
+                SoundFiles[i] = new Variable(soundFileIds[i], soundFileFlags);
         }
 
         public ulong FlagsGZ { get; private set; }
 
         public string Flags { get; private set; }
 
-        public string[] SoundFiles { get; }
+        public Variable[] SoundFiles { get; }
 
         private void SetFlags()
         {
@@ -55,7 +73,7 @@ namespace MB_Studio_Library.Objects
             else
                 flags = FlagsGZ.ToString();
 
-            this.Flags = flags;
+            Flags = flags;
         }
 
         private void SetFlagsGZ()
@@ -79,7 +97,7 @@ namespace MB_Studio_Library.Objects
                 else if (flag.StartsWith("sf_vol_"))
                     flagsGZ |= ulong.Parse(flag.Split('_')[1]) << 8;
             }
-            this.FlagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         private static void InitializeAllSounds()

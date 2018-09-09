@@ -36,7 +36,8 @@ namespace MB_Studio_Library.IO
         private static List<List<Skriptum>> types = null;
 
         private static List<int> animationIndices = new List<int>();
-        private static List<List<string>> soundsArray = new List<List<string>>();
+
+        private static List<List<Variable>> soundsArray = new List<List<Variable>>();
 
         #endregion
         
@@ -528,18 +529,15 @@ namespace MB_Studio_Library.IO
             List<string[]> allSounds = new List<string[]>();
             foreach (Sound sound in sounds)
             {
-                string[] soundFiles = sound.SoundFiles;
                 ulong soundFlags = sound.FlagsGZ;
-                for (int i = 0; i < soundFiles.Length; i++)
+                for (int i = 0; i < sound.SoundFiles.Length; i++)
                 {
                     bool found = false;
                     int soundNo = 0;
-                    string[] soundFile = soundFiles[i].Split();
-                    if (soundFile.Length == 1)
-                        soundFile = new string[] { soundFile[0], "0" };
+                    Variable soundFile = sound.SoundFiles[i];
                     while (soundNo < allSounds.Count && !found)
                     {
-                        if (allSounds[soundNo][0].Equals(soundFile[0]))
+                        if (allSounds[soundNo][0].Equals(soundFile.Name))
                             found = true;
                         else
                             soundNo++;
@@ -547,12 +545,12 @@ namespace MB_Studio_Library.IO
                     if (!found)
                     {
                         soundNo = allSounds.Count;
-                        allSounds.Add(new string[] { soundFile[0], soundFlags.ToString() });
+                        allSounds.Add(new string[] { soundFile.Name, soundFlags.ToString() });
                     }
-                    soundFiles[i] = soundNo + " " + soundFile[1];
+                    sound.SoundFiles[i] = new Variable(soundNo.ToString(), soundFile.Value);
                 }
-                List<string> vs = new List<string>();
-                foreach (string v in soundFiles)
+                List<Variable> vs = new List<Variable>();
+                foreach (var v in sound.SoundFiles)
                     vs.Add(v);
                 soundsArray.Add(vs);
             }
@@ -564,17 +562,15 @@ namespace MB_Studio_Library.IO
 
                 writer.WriteLine(allSounds.Count);
                 foreach (var soundSample in allSounds)
-                    writer.WriteLine(" {0} {1}", soundSample);
+                    writer.WriteLine(" {0} {1}", soundSample[0], soundSample[1]);
 
                 writer.WriteLine(sounds.Count);
                 for (int i = 0; i < sounds.Count; i++)
                 {
                     Sound sound = (Sound)sounds[i];
                     writer.Write("snd_{0} {1} {2} ", sound.ID, sound.FlagsGZ, sound.SoundFiles.Length);
-                    foreach (string sample in soundsArray[i])
-                    {
-                        writer.Write("{0} {1} ", sample.Split());
-                    }
+                    foreach (var sample in soundsArray[i])
+                        writer.Write("{0} {1} ", ulong.Parse(sample.Name), (ulong)sample.Value);
                     writer.WriteLine();
                 }
             }
@@ -2059,7 +2055,8 @@ namespace MB_Studio_Library.IO
 
                     if (!s.Contains("=")) continue;
 
-                    string[] sp = s.Replace(" ", string.Empty).Split('=');
+                    s = s.Replace('\t', ' ').Replace(" ", string.Empty);
+                    string[] sp = s.Split('=');
                     if (sp.Length > 1)
                         if (sp[0].StartsWith("ti_"))
                             if (ImportantMethods.IsNumeric(sp[1], true))

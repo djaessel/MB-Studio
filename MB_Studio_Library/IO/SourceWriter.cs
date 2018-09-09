@@ -711,7 +711,12 @@ namespace MB_Studio_Library.IO
                     wr.Write(" (\"" + sound.ID + "\", " + sound.Flags + ", [");
                     for (int i = 0; i < sound.SoundFiles.Length; i++)
                     {
-                        wr.Write('\"' + sound.SoundFiles[i] + '\"');
+                        bool hasFlags = (sound.SoundFiles[i].Value > 0);
+                        if (hasFlags)
+                            wr.Write("(");
+                        wr.Write("\"{0}\"", sound.SoundFiles[i].Name);
+                        if (hasFlags)
+                            wr.Write(", {0})", (ulong)sound.SoundFiles[i].Value);
                         if (i < sound.SoundFiles.Length - 1)
                             wr.Write(",");
                     }

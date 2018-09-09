@@ -1165,12 +1165,14 @@ namespace MB_Studio_Library.IO
                     if (line.StartsWith("(\""))
                     {
                         line = line.Substring(1).Replace(" ", string.Empty);
+
                         string tmp = line.Split('[')[0].Replace("\"", string.Empty);
-                        xss[0] = tmp.Split(',')[0];
-                        xss[1] = tmp.Split(',')[1];
-                        if (line.Contains("]"))
-                            xss[1] = line.Split('[')[1].Replace("\"", string.Empty).Split(']')[0].Trim(',', ' ').Replace(" ", string.Empty).Replace(',', ' '); // rethink trim
-                        else
+                        string[] sp = tmp.Split(',');
+
+                        xss[0] = sp[0];
+                        xss[1] = sp[1];
+
+                        if (!line.Contains("]"))
                         {
                             line = line.Split('[')[1];
                             while (!sr.EndOfStream && !line.Contains("]"))
@@ -1178,10 +1180,14 @@ namespace MB_Studio_Library.IO
                             string[] tmpX = line.Split('\"');
                             line = string.Empty;
                             for (int i = 1; i < tmpX.Length; i += 2)
-                                line += tmpX[i] + ' ';
+                                line += "(" + tmpX[i] + "," + tmpX[i + 1] + ") ";
                             line.TrimEnd();
-                            xss[1] = line;
+                            xss[2] = line;
                         }
+                        else
+                            xss[2] = line.Split('[')[1].Replace("\"", string.Empty).Split(']')[0].Trim(',', ' ').Replace('(', ' ').Replace(" ", string.Empty).Replace("),", " "); // rethink trim
+
+                        sounds.Add(new Sound(xss));
                     }
                 }
             }
