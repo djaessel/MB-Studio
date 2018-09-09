@@ -35,10 +35,6 @@ namespace MB_Studio_Library.IO
 
         private static List<List<Skriptum>> types = null;
 
-        private static List<int> animationIndices = new List<int>();
-
-        private static List<List<Variable>> soundsArray = new List<List<Variable>>();
-
         #endregion
         
         #region Consts
@@ -407,11 +403,13 @@ namespace MB_Studio_Library.IO
 
             List<Skriptum> animations = types[(int)ObjectType.Animation];
 
+            List<int> animationIndices = new List<int>();
+
             // compile/filter action sets
             List<Animation> actionCodes = new List<Animation>();
             foreach (Animation action in animations)
             {
-                int index = -1;
+                /*int index = -1;
                 for (int i = 0; i < actionCodes.Count; i++)
                 {
                     if (actionCodes[i].ID == action.ID)
@@ -421,13 +419,13 @@ namespace MB_Studio_Library.IO
                     }
                 }
                 if (index < 0)
-                {
-                    int pos = actionCodes.Count;
-                    actionCodes.Add(action);
-                    animationIndices.Add(pos);//action[0] = pos;
-                }
-                else
-                    animationIndices.Add(index);//action[0] = index;
+                {*/
+                int pos = actionCodes.Count;
+                actionCodes.Add(action);
+                animationIndices.Add(pos);//action[0] = pos;
+                /*}
+                //else
+                //    animationIndices.Add(index);//action[0] = index;*/
             }
 
             // save python header
@@ -524,6 +522,8 @@ namespace MB_Studio_Library.IO
             Console.WriteLine("Exporting sounds...");
 
             List<Skriptum> sounds = types[(int)ObjectType.Sound];
+
+            List<List<Variable>> soundsArray = new List<List<Variable>>();
 
             // compile/filter sounds
             List<string[]> allSounds = new List<string[]>();
