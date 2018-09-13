@@ -1110,49 +1110,56 @@ namespace MB_Studio_Library.IO
 
                 foreach (Item item in items)
                 {
-                    if (item.Properties.Contains("itp_merchandise"))
+                    try
                     {
-                        int idNo = FindObject(ObjectType.Item, ConvertToIdentifier(item.ID));
-                        AddTagUse(tagUses, TagType.Item, idNo);
+                        if (item.Properties.Contains("itp_merchandise"))
+                        {
+                            int idNo = FindObject(ObjectType.Item, ConvertToIdentifier(item.ID));
+                            AddTagUse(tagUses, TagType.Item, idNo);
+                        }
+
+                        writer.Write(" itm_{0} {1} {2} {3} ",
+                            ConvertToIdentifier(item.ID),
+                            ReplaceSpaces(item.Name),
+                            ReplaceSpaces(item.PluralName),
+                            item.Meshes.Count
+                        );
+
+                        foreach (var mesh in item.Meshes)
+                            writer.Write(" {0} {1} ", mesh.Name, mesh.Value);
+
+                        writer.WriteLine(" {0} {1} {2} {3} {4:F6} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16}",
+                            item.PropertiesGZ,
+                            item.CapabilityFlagsGZ,
+                            item.Price,
+                            item.ModBitsGZ,
+                            item.Weight,
+                            item.Abundance,
+                            item.HeadArmor,
+                            item.BodyArmor,
+                            item.LegArmor,
+                            item.Difficulty,
+                            item.HitPoints,
+                            item.SpeedRating,
+                            item.MissileSpeed,
+                            item.WeaponLength,
+                            item.MaxAmmo,
+                            item.ThrustDamage,
+                            item.SwingDamage
+                        );
+
+                        writer.WriteLine(" {0}", item.Factions.Count);
+                        foreach (int faction in item.Factions)
+                            writer.Write(" {0}", faction);
+                        if (item.Factions.Count > 0)
+                            writer.WriteLine();
+
+                        SaveSimpleTriggers(writer, item.SimpleTriggers.ToArray(), variableList, variableUses, tagUses, quickStrings);
                     }
-
-                    writer.Write(" itm_{0} {1} {2} {3} ",
-                        ConvertToIdentifier(item.ID),
-                        ReplaceSpaces(item.Name),
-                        ReplaceSpaces(item.PluralName),
-                        item.Meshes.Count
-                    );
-
-                    foreach (var mesh in item.Meshes)
-                        writer.Write(" {0} {1} ", mesh.Name, mesh.Value);
-
-                    writer.WriteLine(" {0} {1} {2} {3} {4:F6} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16}",
-                        item.PropertiesGZ,
-                        item.CapabilityFlagsGZ,
-                        item.Price,
-                        item.ModBitsGZ,
-                        item.Weight,
-                        item.Abundance,
-                        item.HeadArmor,
-                        item.BodyArmor,
-                        item.LegArmor,
-                        item.Difficulty,
-                        item.HitPoints,
-                        item.SpeedRating,
-                        item.MissileSpeed,
-                        item.WeaponLength,
-                        item.MaxAmmo,
-                        item.ThrustDamage,
-                        item.SwingDamage
-                    );
-
-                    writer.WriteLine(" {0}", item.Factions.Count);
-                    foreach (int faction in item.Factions)
-                        writer.Write(" {0}", faction);
-                    if (item.Factions.Count > 0)
-                        writer.WriteLine();
-
-                    SaveSimpleTriggers(writer, item.SimpleTriggers.ToArray(), variableList, variableUses, tagUses, quickStrings);//activate if working!!!
+                    catch (Exception exp)
+                    {
+                        MessageBox.Show("0x0x0x0x0x0" + Environment.NewLine + exp.ToString());
+                    }
                 }
             }
 
@@ -2019,7 +2026,7 @@ namespace MB_Studio_Library.IO
                     if (trigger.ConsequencesBlock[0].Equals("SIMPLE_TRIGGER"))
                         startIdx++;
                 List<string> realConsBlock = ImportantMethods.StringArrayToList(trigger.ConsequencesBlock, startIdx);
-                SaveStatementBlock(writer, 0, true, realConsBlock.ToArray(), variableList, variableUses, tagUses, quickStrings);
+                    SaveStatementBlock(writer, 0, true, realConsBlock.ToArray(), variableList, variableUses, tagUses, quickStrings);
                 writer.WriteLine();
             }
             writer.WriteLine();

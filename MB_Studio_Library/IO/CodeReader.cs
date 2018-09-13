@@ -1539,18 +1539,44 @@ namespace MB_Studio_Library.IO
 
         public static string[] DecompileScriptCode(string[] script, string[] scriptCode)
         {
-            ulong border1 = (ulong)1 + int.MaxValue, border2 = border1 / 2;
-            bool neg, this_or_next, plus = false, else_try = false;
-            int elements, activeScriptLine = 1, adder = 0, mul, i = 0;
             ulong[] codes = new ulong[scriptCode.Length - 1];
+            ulong border1 = (ulong)1 + int.MaxValue;
+            ulong border2 = border1 / 2;
+            bool neg, this_or_next;
+            bool plus = false;
+            bool else_try = false;
+            int elements;
+            int activeScriptLine = 1;
+            int adder = 0;
+            int i = 0;
 
             /*string sss = string.Empty; // FOR DEBUGGING
             for (int j = 0; j < scriptCode.Length; j++)
-                sss += scriptCode[j] + '\n';
+                sss += scriptCode[j] + "\n";
             sss += "|END";
             System.Windows.Forms.MessageBox.Show(sss);*/
 
             localVariableInterpreter = new LocalVariableInterpreter();
+
+            int mul = 0;
+            /*for (int j = 0; j < codes.Length; j++)
+            {
+                bool isNegative = (scriptCode[j + 1].Contains("-"));
+                try
+                {
+                    if (isNegative)
+                        scriptCode[j + 1] = scriptCode[j + 1].Substring(1);
+
+                    codes[j] = ulong.Parse(scriptCode[j + 1]);
+
+                    if (isNegative)
+                        codes[j] = (ulong)mul * codes[j];
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(scriptCode[j + 1] + Environment.NewLine + codes[j] + Environment.NewLine + isNegative + Environment.NewLine + ex.ToString());
+                }
+            }*/
 
             for (int j = 0; j < codes.Length; j++)
             {
@@ -1623,8 +1649,6 @@ namespace MB_Studio_Library.IO
                     script[activeScriptLine] = GetNegationCode("(neg|" + script[activeScriptLine]); // A FEW TIMES DANGERZONE !!!
                 else
                     script[activeScriptLine] = '(' + script[activeScriptLine];
-
-                
 
                 if (else_try)
                     adder--;
@@ -2027,14 +2051,22 @@ namespace MB_Studio_Library.IO
                 codeLine += MapIcons[GetObjIdx(code, MAP_ICON_MAX)];
             else if (code >= TRACK_MIN && code < TRACK_MAX)
                 codeLine += Tracks[GetObjIdx(code, TRACK_MIN)];
-            else if (code <= ulong.MaxValue && code >= ANIM_MAX)
-            {
-                codeLine = codeLine.TrimEnd('\"') + (GetObjIdx(code, ulong.MaxValue) - 1);
-                code = REG0;
-            }
             else
             {
-                codeLine = codeLine.TrimEnd('\"') + ConstantsFinder.FindConst(codeLine, code);
+                codeLine = codeLine.TrimEnd('\"');
+                if (code <= ulong.MaxValue && code >= ANIM_MAX)
+                {
+                    //ulong slotSpec = 0x8000000000000000;
+                    //ulong slotEndX = 0x9000000000000000;
+                    //if ((((ulong)code & slotSpec) == slotSpec && code < slotEndX))
+                    //    codeLine += code;
+                    if (code.ToString().Length == 20)
+                        codeLine += (GetObjIdx(code, ulong.MaxValue) - 1);
+                    else
+                        codeLine += code;
+                }
+                else
+                    codeLine += ConstantsFinder.FindConst(codeLine, code);
                 code = REG0;
             }
             if (code < REG0 || code > REG127)
