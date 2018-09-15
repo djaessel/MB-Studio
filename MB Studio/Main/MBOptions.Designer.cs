@@ -28,13 +28,13 @@
         /// </summary>
         private new void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("Projects Folder");
-            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("Projects", new System.Windows.Forms.TreeNode[] {
-            treeNode37});
-            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Generate Header");
-            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
-            treeNode39});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Projects Folder");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Projects", new System.Windows.Forms.TreeNode[] {
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Generate Header");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
+            treeNode9});
             this.min_btn = new System.Windows.Forms.Button();
             this.maxnorm_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
@@ -46,13 +46,15 @@
             this.selectProjectsFolder_btn = new System.Windows.Forms.Button();
             this.projects_panel = new System.Windows.Forms.Panel();
             this.generalSettings_panel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.updateChannel_cbb = new System.Windows.Forms.ComboBox();
             this.baseColor_lbl = new System.Windows.Forms.Label();
             this.loadSavedObjects_cb = new System.Windows.Forms.CheckBox();
             this.show3DView_cb = new System.Windows.Forms.CheckBox();
             this.projectsPathBrowser_fbd = new System.Windows.Forms.FolderBrowserDialog();
             this.colorBase_cd = new System.Windows.Forms.ColorDialog();
-            this.updateChannel_cbb = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.language_cbb = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.projects_panel.SuspendLayout();
             this.generalSettings_panel.SuspendLayout();
             this.SuspendLayout();
@@ -137,24 +139,24 @@
             this.options_tree.LineColor = System.Drawing.Color.White;
             this.options_tree.Location = new System.Drawing.Point(8, 42);
             this.options_tree.Name = "options_tree";
-            treeNode36.Name = "generalSettings_node";
-            treeNode36.Text = "General";
-            treeNode36.ToolTipText = "General Settings";
-            treeNode37.Name = "projectsFolder_node";
-            treeNode37.Text = "Projects Folder";
-            treeNode37.ToolTipText = "Folder where all the mod projects are stored";
-            treeNode38.Name = "projectsSettings_node";
-            treeNode38.Text = "Projects";
-            treeNode38.ToolTipText = "Projects Settings";
-            treeNode39.Name = "generateHeader_node";
-            treeNode39.Text = "Generate Header";
-            treeNode40.Name = "Tools_node";
-            treeNode40.Text = "Tools";
-            treeNode40.ToolTipText = "Extra Tools";
+            treeNode6.Name = "generalSettings_node";
+            treeNode6.Text = "General";
+            treeNode6.ToolTipText = "General Settings";
+            treeNode7.Name = "projectsFolder_node";
+            treeNode7.Text = "Projects Folder";
+            treeNode7.ToolTipText = "Folder where all the mod projects are stored";
+            treeNode8.Name = "projectsSettings_node";
+            treeNode8.Text = "Projects";
+            treeNode8.ToolTipText = "Projects Settings";
+            treeNode9.Name = "generateHeader_node";
+            treeNode9.Text = "Generate Header";
+            treeNode10.Name = "Tools_node";
+            treeNode10.Text = "Tools";
+            treeNode10.ToolTipText = "Extra Tools";
             this.options_tree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode36,
-            treeNode38,
-            treeNode40});
+            treeNode6,
+            treeNode8,
+            treeNode10});
             this.options_tree.Size = new System.Drawing.Size(192, 258);
             this.options_tree.TabIndex = 20;
             this.options_tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Options_tree_AfterSelect);
@@ -232,6 +234,8 @@
             // 
             // generalSettings_panel
             // 
+            this.generalSettings_panel.Controls.Add(this.label2);
+            this.generalSettings_panel.Controls.Add(this.language_cbb);
             this.generalSettings_panel.Controls.Add(this.label1);
             this.generalSettings_panel.Controls.Add(this.updateChannel_cbb);
             this.generalSettings_panel.Controls.Add(this.baseColor_lbl);
@@ -243,13 +247,42 @@
             this.generalSettings_panel.TabIndex = 23;
             this.generalSettings_panel.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label1.Location = new System.Drawing.Point(102, 147);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(145, 28);
+            this.label1.TabIndex = 35;
+            this.label1.Text = "Update Channel:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // updateChannel_cbb
+            // 
+            this.updateChannel_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.updateChannel_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.updateChannel_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateChannel_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.updateChannel_cbb.FormattingEnabled = true;
+            this.updateChannel_cbb.Items.AddRange(new object[] {
+            "dev",
+            "beta",
+            "stable"});
+            this.updateChannel_cbb.Location = new System.Drawing.Point(253, 147);
+            this.updateChannel_cbb.Name = "updateChannel_cbb";
+            this.updateChannel_cbb.Size = new System.Drawing.Size(88, 28);
+            this.updateChannel_cbb.TabIndex = 34;
+            this.updateChannel_cbb.SelectedIndexChanged += new System.EventHandler(this.UpdateChannel_cbb_SelectedIndexChanged);
+            // 
             // baseColor_lbl
             // 
             this.baseColor_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.baseColor_lbl.Cursor = System.Windows.Forms.Cursors.Hand;
             this.baseColor_lbl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.baseColor_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.baseColor_lbl.ForeColor = System.Drawing.Color.DarkGray;
+            this.baseColor_lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.baseColor_lbl.Location = new System.Drawing.Point(102, 118);
             this.baseColor_lbl.Name = "baseColor_lbl";
             this.baseColor_lbl.Size = new System.Drawing.Size(239, 23);
@@ -263,7 +296,7 @@
             this.loadSavedObjects_cb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.loadSavedObjects_cb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loadSavedObjects_cb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loadSavedObjects_cb.ForeColor = System.Drawing.Color.DarkGray;
+            this.loadSavedObjects_cb.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.loadSavedObjects_cb.Location = new System.Drawing.Point(103, 87);
             this.loadSavedObjects_cb.Name = "loadSavedObjects_cb";
             this.loadSavedObjects_cb.Size = new System.Drawing.Size(238, 24);
@@ -278,7 +311,7 @@
             this.show3DView_cb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.show3DView_cb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.show3DView_cb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.show3DView_cb.ForeColor = System.Drawing.Color.DarkGray;
+            this.show3DView_cb.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.show3DView_cb.Location = new System.Drawing.Point(103, 57);
             this.show3DView_cb.Name = "show3DView_cb";
             this.show3DView_cb.Size = new System.Drawing.Size(238, 24);
@@ -299,34 +332,41 @@
             this.colorBase_cd.Color = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.colorBase_cd.FullOpen = true;
             // 
-            // updateChannel_cbb
+            // language_cbb
             // 
-            this.updateChannel_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.updateChannel_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.updateChannel_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.updateChannel_cbb.ForeColor = System.Drawing.Color.DarkGray;
-            this.updateChannel_cbb.FormattingEnabled = true;
-            this.updateChannel_cbb.Items.AddRange(new object[] {
-            "dev",
-            "beta",
-            "stable"});
-            this.updateChannel_cbb.Location = new System.Drawing.Point(253, 147);
-            this.updateChannel_cbb.Name = "updateChannel_cbb";
-            this.updateChannel_cbb.Size = new System.Drawing.Size(88, 28);
-            this.updateChannel_cbb.TabIndex = 34;
-            this.updateChannel_cbb.SelectedIndexChanged += new System.EventHandler(this.UpdateChannel_cbb_SelectedIndexChanged);
+            this.language_cbb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.language_cbb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.language_cbb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.language_cbb.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.language_cbb.FormattingEnabled = true;
+            this.language_cbb.Items.AddRange(new object[] {
+            "cz (Český)",
+            "de (Deutsch)",
+            "en (English)",
+            "es (Español)",
+            "fr (Français)",
+            "hu (Magyar)",
+            "pl (Polskie)",
+            "rus (Pусский)",
+            "tr (Türkçe)"});
+            this.language_cbb.Location = new System.Drawing.Point(205, 181);
+            this.language_cbb.Name = "language_cbb";
+            this.language_cbb.Size = new System.Drawing.Size(136, 28);
+            this.language_cbb.Sorted = true;
+            this.language_cbb.TabIndex = 36;
+            this.language_cbb.SelectedIndexChanged += new System.EventHandler(this.Language_cbb_SelectedIndexChanged);
             // 
-            // label1
+            // label2
             // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.DarkGray;
-            this.label1.Location = new System.Drawing.Point(99, 147);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(148, 28);
-            this.label1.TabIndex = 35;
-            this.label1.Text = "Update Channel:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label2.Location = new System.Drawing.Point(102, 181);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 28);
+            this.label2.TabIndex = 37;
+            this.label2.Text = "Language:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MBOptions
             // 
@@ -373,5 +413,7 @@
         private System.Windows.Forms.Label baseColor_lbl;
         private System.Windows.Forms.ComboBox updateChannel_cbb;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        protected System.Windows.Forms.ComboBox language_cbb;
     }
 }

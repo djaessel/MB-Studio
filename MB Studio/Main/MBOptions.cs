@@ -24,6 +24,12 @@ namespace MB_Studio.Main
             show3DView_cb.Checked = Properties.Settings.Default.show3DView;
             loadSavedObjects_cb.Checked = Properties.Settings.Default.loadSavedObjects;
 
+            int langIdx = Properties.Settings.Default.languageIndex;
+            if (langIdx < language_cbb.Items.Count)
+                language_cbb.SelectedIndex = langIdx;
+            else
+                language_cbb.SelectedIndex = 2;//default en
+
             int updateChannelIndex = updateChannel_cbb.Items.IndexOf(Properties.Settings.Default.updateChannel);
             if (updateChannelIndex < 0)
                 updateChannelIndex = 0;
@@ -235,6 +241,13 @@ namespace MB_Studio.Main
         private void UpdateChannel_cbb_SelectedIndexChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.updateChannel = updateChannel_cbb.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Reload();
+        }
+
+        private void Language_cbb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.languageIndex = (byte)language_cbb.SelectedIndex;
             Properties.Settings.Default.Save();
             Properties.Settings.Default.Reload();
         }
