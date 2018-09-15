@@ -2832,8 +2832,6 @@ namespace MB_Studio_Library.IO
 
         private static List<string> GenerateCodePartsFromSourceCode(string statement)
         {
-            List<string> codeParts = new List<string>();
-
             string tmp = statement;
             int idxt = tmp.IndexOf('(');
             if (idxt >= 0)
@@ -2842,48 +2840,75 @@ namespace MB_Studio_Library.IO
             if (idxt >= 0)
                 tmp = tmp.Remove(idxt);
 
+            List<string> codeParts;
             if (!tmp.Contains("@"))
-            {
-                string[] sp = tmp.Split(',');
-                for (int j = 0; j < sp.Length; j++)
-                {
-                    sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
-                    sp[j] = HandlePythonVariables(sp[j]);
-                    if (sp[j].StartsWith("reg"))
-                    {
-                        tmp = sp[j].Replace("reg", string.Empty);
-                        if (ulong.TryParse(tmp, out ulong reg))
-                        {
-                            reg |= OP_MASK_REGISTER;
-                            sp[j] = reg.ToString();
-                        }
-                    }
-                    codeParts.Add(sp[j]);
-                }
-            }
+                codeParts = HandleDefaultParams(tmp);
             else
+                codeParts = HandleQuickStringParams(tmp);
+            return codeParts;
+        }
+
+        private static List<string> HandleDefaultParams(string tmp)
+        {
+            List<string> codeParts = new List<string>();
+
+            string[] sp = tmp.Split(',');
+            for (int j = 0; j < sp.Length; j++)
             {
-                do
+                sp[j] = sp[j].Trim(',', ' ', '\t', ')', '(', '\"');
+                sp[j] = HandlePythonVariables(sp[j]);
+                if (sp[j].StartsWith("reg"))
                 {
-                    string tmp2 = tmp.Remove(tmp.IndexOf('@'));
-                    GGG(ref codeParts, tmp2);
-                    tmp = tmp.Substring(tmp2.Length);
-
-                    int xyt = tmp.IndexOf('\"');
-                    if (xyt >= 0)
+                    tmp = sp[j].Replace("reg", string.Empty);
+                    if (ulong.TryParse(tmp, out ulong reg))
                     {
-                        tmp2 = tmp.Remove(xyt);
-                        codeParts.Add(tmp2);
-                        tmp = tmp.Substring(tmp2.Length);
+                        reg |= OP_MASK_REGISTER;
+                        sp[j] = reg.ToString();
                     }
-                    else
-                        Console.WriteLine("Warning: Trailing '\"' not found!");
-
-                    if (!tmp.Trim('\"').Contains("@"))
-                        GGG(ref codeParts, tmp);
                 }
-                while (tmp.Contains("@"));
+                codeParts.Add(sp[j]);
             }
+
+            return codeParts;
+        }
+
+        private static List<string> HandleQuickStringParams(string tmp)
+        {
+            List<string> codeParts = new List<string>();
+
+            do
+            {
+                string tmp2 = tmp.Remove(tmp.IndexOf('@'));
+                GGG(ref codeParts, tmp2);
+                tmp = tmp.Substring(tmp2.Length);
+
+                List<int> odx = new List<int>();
+                if (tmp.Contains("\\\""))
+                {
+                    string tesat = tmp;
+                    do
+                    {
+                        int idx = tesat.IndexOf("\\\"");
+                        odx.Add(idx);
+                        tesat = tesat.Substring(idx + 2);
+                    } while (tesat.Contains("\\\""));
+                    tmp = tmp.Replace("\\\"", "'");
+                }
+
+                int xyt = tmp.IndexOf('\"');
+                if (xyt >= 0)
+                {
+                    tmp2 = HandleStringInString(odx, tmp.Remove(xyt));
+                    codeParts.Add(tmp2);
+                    tmp = tmp.Substring(tmp2.Length);
+                }
+                else
+                    Console.WriteLine("Warning: Trailing '\"' not found!");
+
+                if (!tmp.Trim('\"').Contains("@"))
+                    GGG(ref codeParts, tmp);
+            }
+            while (tmp.Contains("@"));
 
             return codeParts;
         }
@@ -2911,6 +2936,37 @@ namespace MB_Studio_Library.IO
                 }
                 codeParts.Add(s2);
             }
+        }
+
+        private static string HandleStringInString(List<int> odx, string tmp2)
+        {
+            if (odx.Count != 0)
+            {
+                int lastIdx = 0;
+                for (int i = 0; i < odx.Count; i++)
+                {
+                    int idx = odx[i];
+                    if (idx < tmp2.Length)
+                    {
+                        idx += lastIdx;
+                        string abcdef = tmp2.Remove(idx);
+                        if (tmp2[idx] == '\'')
+                            abcdef += '\"';
+                        else
+                            abcdef += tmp2[idx];//ERROR?
+
+                        string pdddd = string.Empty;
+                        idx++;//because before 2 chars
+                        if (tmp2.Length > idx)
+                            pdddd = tmp2.Substring(idx);
+                        tmp2 = abcdef + pdddd;
+                        lastIdx = idx;
+                    }
+                    else
+                        i = odx.Count;
+                }
+            }
+            return tmp2;
         }
 
         private static void AddVariable(string variableString, ref List<string> variableList, ref List<int> variableUses)

@@ -1,9 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
+using importantLib;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
-using System;
-using importantLib;
 
 namespace MB_Studio_Library.IO
 {
@@ -211,8 +211,6 @@ namespace MB_Studio_Library.IO
         public CodeReader(string filepath = null) { this.filepath = filepath; }
 
         #region Read References
-
-        // script bug - 9223388529554358287 to 25165839 in scripts.txt
 
         public static void LoadAll()
         {
@@ -1587,6 +1585,7 @@ namespace MB_Studio_Library.IO
                 }
                 else
                     mul = 1;
+
                 codes[j] = ulong.Parse(scriptCode[j + 1]);
                 codes[j] = (ulong)mul * codes[j];
             }
@@ -1595,6 +1594,7 @@ namespace MB_Studio_Library.IO
             {
                 this_or_next = false;
                 neg = false;
+
                 if (codes[i] > border2)
                 {
                     if (codes[i] > int.MaxValue)
@@ -1668,10 +1668,7 @@ namespace MB_Studio_Library.IO
 
                 int x = i + elements;
                 for (int j = i; j < x; j++)
-                    //if (j < codes.Length)
-                        script[activeScriptLine] = GetDecompiledCodeParameters(script[activeScriptLine] + ", \"", codes[j], activeScriptLine); // SOMETIMES THIS IS THE DANGERZONE !!!
-                    //else
-                    //    System.Windows.Forms.MessageBox.Show(script[activeScriptLine] + "!!!" + Environment.NewLine + script[0] + Environment.NewLine + codes.Length + Environment.NewLine + x);
+                    script[activeScriptLine] = GetDecompiledCodeParameters(script[activeScriptLine] + ", \"", codes[j], activeScriptLine); // SOMETIMES THIS IS THE DANGERZONE !!!
 
                 script[activeScriptLine] += "),";
 
