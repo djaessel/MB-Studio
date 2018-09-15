@@ -198,6 +198,11 @@ namespace MB_Studio
                 process.Start();
         }
 
+        private void SetTabControlFixedHeight()
+        {
+            tabControl.Height = projectExplorer_group.Height + 4;
+        }
+
         private void MB_Studio_ResizeEnd(object sender, EventArgs e)
         {
             tabControl.Update();
@@ -226,6 +231,7 @@ namespace MB_Studio
         private void MB_Studio_Shown(object sender, EventArgs e)
         {
             SetFullScreenByHandle();
+            SetTabControlFixedHeight();
         }
 
         //Not finished yet - just started
@@ -430,6 +436,7 @@ namespace MB_Studio
                 SetNormalScreen(s);//WindowState = FormWindowState.Maximized;
             else
                 SetFullScreenByHandle();//WindowState = FormWindowState.Normal;
+            SetTabControlFixedHeight();
             FullScreen = !FullScreen;
         }
 

@@ -293,8 +293,7 @@
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.startPage_tab);
             this.tabControl.Controls.Add(this.console_tab);
@@ -303,7 +302,7 @@
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(10, 3);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(684, 432);
+            this.tabControl.Size = new System.Drawing.Size(684, 436);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 0;
             this.tabControl.TabStop = false;
@@ -318,7 +317,7 @@
             this.startPage_tab.Location = new System.Drawing.Point(4, 22);
             this.startPage_tab.Name = "startPage_tab";
             this.startPage_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.startPage_tab.Size = new System.Drawing.Size(676, 416);
+            this.startPage_tab.Size = new System.Drawing.Size(676, 410);
             this.startPage_tab.TabIndex = 1;
             this.startPage_tab.Text = "Start Page";
             // 
@@ -329,7 +328,7 @@
             this.zuletztVerwendet_panel.Controls.Add(this.zuletztVerwendet_lbl);
             this.zuletztVerwendet_panel.Location = new System.Drawing.Point(3, 194);
             this.zuletztVerwendet_panel.Name = "zuletztVerwendet_panel";
-            this.zuletztVerwendet_panel.Size = new System.Drawing.Size(325, 214);
+            this.zuletztVerwendet_panel.Size = new System.Drawing.Size(325, 218);
             this.zuletztVerwendet_panel.TabIndex = 9;
             // 
             // zuletztVerwendet_lbl
@@ -351,7 +350,7 @@
             this.ersteSchritte_panel.Controls.Add(this.ersteSchritte_lbl);
             this.ersteSchritte_panel.Location = new System.Drawing.Point(3, 6);
             this.ersteSchritte_panel.Name = "ersteSchritte_panel";
-            this.ersteSchritte_panel.Size = new System.Drawing.Size(325, 182);
+            this.ersteSchritte_panel.Size = new System.Drawing.Size(325, 186);
             this.ersteSchritte_panel.TabIndex = 8;
             // 
             // button2
@@ -546,7 +545,7 @@
             this.console_tab.Location = new System.Drawing.Point(4, 22);
             this.console_tab.Name = "console_tab";
             this.console_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.console_tab.Size = new System.Drawing.Size(676, 406);
+            this.console_tab.Size = new System.Drawing.Size(676, 410);
             this.console_tab.TabIndex = 0;
             this.console_tab.Text = "Console";
             this.console_tab.UseVisualStyleBackColor = true;
@@ -561,7 +560,7 @@
             this.console_richTxt.Location = new System.Drawing.Point(3, 3);
             this.console_richTxt.Name = "console_richTxt";
             this.console_richTxt.ReadOnly = true;
-            this.console_richTxt.Size = new System.Drawing.Size(670, 400);
+            this.console_richTxt.Size = new System.Drawing.Size(670, 404);
             this.console_richTxt.TabIndex = 0;
             this.console_richTxt.Text = "";
             this.console_richTxt.TextChanged += new System.EventHandler(this.Console_richTxt_TextChanged);
@@ -690,9 +689,9 @@
             this.projectFiles_lb.ForeColor = System.Drawing.Color.White;
             this.projectFiles_lb.FormattingEnabled = true;
             this.projectFiles_lb.ItemHeight = 29;
-            this.projectFiles_lb.Location = new System.Drawing.Point(12, 21);
+            this.projectFiles_lb.Location = new System.Drawing.Point(6, 19);
             this.projectFiles_lb.Name = "projectFiles_lb";
-            this.projectFiles_lb.Size = new System.Drawing.Size(214, 406);
+            this.projectFiles_lb.Size = new System.Drawing.Size(226, 406);
             this.projectFiles_lb.TabIndex = 20;
             this.projectFiles_lb.SelectedIndexChanged += new System.EventHandler(this.ProjectFiles_lb_SelectedIndexChanged);
             // 
@@ -704,7 +703,7 @@
             this.projectExplorer_group.ForeColor = System.Drawing.Color.White;
             this.projectExplorer_group.Location = new System.Drawing.Point(691, 75);
             this.projectExplorer_group.Name = "projectExplorer_group";
-            this.projectExplorer_group.Size = new System.Drawing.Size(238, 427);
+            this.projectExplorer_group.Size = new System.Drawing.Size(238, 431);
             this.projectExplorer_group.TabIndex = 21;
             this.projectExplorer_group.TabStop = false;
             this.projectExplorer_group.Text = "Project Explorer";
@@ -730,9 +729,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(936, 512);
-            this.Controls.Add(this.mbOptions_btn);
+            this.ClientSize = new System.Drawing.Size(936, 516);
             this.Controls.Add(this.projectExplorer_group);
+            this.Controls.Add(this.mbOptions_btn);
             this.Controls.Add(this.help_btn);
             this.Controls.Add(this.build_btn);
             this.Controls.Add(this.project_btn);
