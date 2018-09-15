@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using MB_Studio_Library.Objects;
 
 namespace MB_Studio
 {
@@ -67,6 +66,9 @@ namespace MB_Studio
         {
             StartLoadingForm();
 
+            if (Properties.Settings.Default.firstRun)
+                AskForOldConfigImport();
+
             if (RunAutoUpdate)
                 RunAutoUpdate = !File.Exists("debugMode.enabled");
 
@@ -81,6 +83,93 @@ namespace MB_Studio
             name_lbl.MouseDown += Control_MoveForm_MouseDown;
             file_btn.Click += Button_Open_ContextMenuStrip_Click;
             project_btn.Click += Button_Open_ContextMenuStrip_Click;
+        }
+
+        private void AskForOldConfigImport()
+        {
+            string[] curVal = Application.ProductVersion.Split('.');
+            uint[] last = null;
+            uint[] curVersCodes = new uint[curVal.Length];
+            for (int i = 0; i < curVersCodes.Length; i++)
+                curVersCodes[i] = uint.Parse(curVal[i]);
+            
+            string configDirPath = Path.GetDirectoryName(Application.LocalUserAppDataPath);
+            configDirPath = Path.GetDirectoryName(configDirPath);
+            string appName = Application.ProductName.Replace(' ', '_');
+            //Console.WriteLine("ConfigPath: " + configDirPath);
+            string path = string.Empty;
+            foreach (string dir in Directory.GetDirectories(configDirPath))
+            {
+                string fxxx = Path.GetFileName(dir).Replace(' ', '_');
+                if (fxxx.StartsWith(appName))
+                {
+                    foreach (string dir2 in Directory.GetDirectories(dir))
+                    {
+                        string[] val = Path.GetFileName(dir2).Split('.');
+                        uint[] versCodes = new uint[val.Length];
+                        for (int i = 0; i < versCodes.Length; i++)
+                            versCodes[i] = uint.Parse(val[i]);
+                        if (curVersCodes[0] >= versCodes[0])
+                        {
+                            bool higher = curVersCodes[0] > versCodes[0];
+                            if (!higher)
+                            {
+                                for (int i = 0; i < versCodes.Length && !higher; i++)
+                                    if (curVersCodes[i] >= versCodes[i])
+                                        higher = (curVersCodes[i] > versCodes[i]);
+                            }
+                            if (higher)
+                            {
+                                bool lastLower = false;
+                                if (last != null)
+                                {
+                                    for (int i = 0; i < versCodes.Length && !lastLower; i++)
+                                        if (last[i] <= versCodes[i])
+                                            lastLower = (last[i] < versCodes[i]);
+                                }
+                                else
+                                    lastLower = true;
+                                if (lastLower)
+                                {
+                                    last = versCodes;
+                                    path = Path.GetFullPath(dir2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (last != null)
+            {
+                DialogResult result = MessageBox.Show(
+                    "Do you want to import the old config from version " +
+                    last[0] + "." + last[1] + "." + last[2] + "." + last[3] +
+                    "?"// + 
+                    //Environment.NewLine + path + "\\user.config"
+                    ,
+                    Application.ProductName,
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1
+                );
+
+                if (result != DialogResult.Cancel)
+                {
+                    if (result == DialogResult.Yes)
+                    {
+                        //File.Copy(path, "studio.config");
+                        Properties.Settings.Default.Upgrade();
+                        Properties.Settings.Default.Reload();
+                    }
+
+                    Properties.Settings.Default.firstRun = false;
+                    Properties.Settings.Default.Save();
+                    Properties.Settings.Default.Reload();
+                }
+                else
+                    Environment.Exit(0);
+            }
         }
 
         private void CheckForUpdates()
@@ -283,7 +372,6 @@ namespace MB_Studio
             projectVorlagenSearch_txt.LostFocus += ProjectVorlagenSearch_txt_LostFocus;
 
             string projectsPath = Properties.Settings.Default.projectsFolderPath.TrimEnd('\\'); //Application.StartupPath + "\\Projects";
-
             if (Directory.Exists(projectsPath))
             {
                 foreach (string dir in Directory.GetDirectories(projectsPath))
