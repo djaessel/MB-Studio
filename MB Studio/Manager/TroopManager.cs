@@ -233,6 +233,25 @@ namespace MB_Studio.Manager
 
             IsDataLoaded = false;
 
+            head_cbb.Items.Clear();
+            body_cbb.Items.Clear();
+            hand_cbb.Items.Clear();
+            feet_cbb.Items.Clear();
+            calfR_cbb.Items.Clear();
+            weapon_cbb.Items.Clear();
+            shield_cbb.Items.Clear();
+            horse_cbb.Items.Clear();
+            horse_cbb.Items.Clear();
+
+            head_cbb.ResetText();
+            body_cbb.ResetText();
+            hand_cbb.ResetText();
+            feet_cbb.ResetText();
+            calfR_cbb.ResetText();
+            weapon_cbb.ResetText();
+            shield_cbb.ResetText();
+            horse_cbb.ResetText();
+
             foreach (int itemID in troop.Items)
             {
                 Item itemX = (Item)itemsRList[itemID];
@@ -393,10 +412,11 @@ namespace MB_Studio.Manager
                     boneIndex = 8;//thorax
                     break;
                 case 14://FootArmor
-                    boneIndex = 9;
+                    boneIndex = 9;//wrong index?
                     break;
                 case 15://HandArmor
-                    boneIndex = 13;
+                    boneIndex = 13;//Left
+                    // + boneIndex = 18;//Right
                     break;
                 case 8: //Bow
                     carryPosition = 12;
@@ -435,13 +455,17 @@ namespace MB_Studio.Manager
             {
                 if (skeletonId == 0)//no horse on screen!
                 {
+                    bool isHand = (boneIndex == 13);//leftHand
                     foreach (var mesh in item.Meshes)// bone (0 to 19) // skeleton (0 to 1) // carryPosition (0 to ... (depends on file data)) // carryPosition before bone!!!
                     {
                         string meshName = mesh.Name.Trim();
-                        if (OpenBrfManager.AddMeshToTroop3DPreview(meshName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
-                            Console.WriteLine("ADDED '" + meshName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + meshName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
-                        else
-                            Console.WriteLine("ADDING '" + meshName + "' to Troop3DPreview FAILED!");
+                        AddDataToOpenBrf(meshName, boneIndex, skeletonId, carryPosition);
+
+                        if (isHand && meshName.EndsWith("_L"))
+                        {
+                            meshName = meshName.Remove(meshName.LastIndexOf("_L")) + "_R";
+                            AddDataToOpenBrf(meshName, 18, skeletonId, carryPosition);//rightHand
+                        }
                     }
                 }
                 //else/* if (skeletonId == 1)*/
@@ -449,6 +473,14 @@ namespace MB_Studio.Manager
                 //    // CODE
                 //}
             }
+        }
+
+        private void AddDataToOpenBrf(string meshName, int boneIndex, int skeletonId, int carryPosition)
+        {
+            if (OpenBrfManager.AddMeshToTroop3DPreview(meshName, boneIndex, skeletonId, carryPosition))//error with file path and mod path
+                Console.WriteLine("ADDED '" + meshName + "' to Troop3DPreview:" + Environment.NewLine + "  --> openBrfManager.AddMeshToTroop3DPreview(" + meshName + ", " + boneIndex + ", " + skeletonId + ", " + carryPosition/* + ", " + isAtOrigin*/ + ")");
+            else
+                Console.WriteLine("ADDING '" + meshName + "' to Troop3DPreview FAILED!");
         }
 
         private void SetupTroopSkills(Troop troop)
