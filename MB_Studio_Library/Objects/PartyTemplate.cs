@@ -139,7 +139,7 @@ namespace MB_Studio_Library.Objects
                     flagsGZ |= (uint)CodeReader.MapIcons.IndexOf(flagS);
             }
 
-            this.FlagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         private static void DisplayErrorMessage()

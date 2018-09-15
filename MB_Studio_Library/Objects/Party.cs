@@ -290,7 +290,7 @@ namespace MB_Studio_Library.Objects
                     flagsGZ |= (uint)CodeReader.MapIcons.IndexOf(flagS);
             }
 
-            this.FlagsGZ = flagsGZ;
+            FlagsGZ = flagsGZ;
         }
 
         public string Menu { get; }

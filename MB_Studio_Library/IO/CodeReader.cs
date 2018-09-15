@@ -1405,11 +1405,12 @@ namespace MB_Studio_Library.IO
                 sr.ReadLine();
                 int count = int.Parse(sr.ReadLine().Split()[0]);
                 objectsExpected += count;
+                double piVersa = 3.1415926 / 180d;
                 for (int i = 0; i < count && !sr.EndOfStream; i++)
                 {
                     line = sr.ReadLine().Trim();
                     double degrees = double.Parse(Repl_DotWComma(sr.ReadLine()));
-                    degrees = Math.Round(degrees / (3.1415926 / 180d), 4);
+                    degrees /= piVersa;
                     line += " " + degrees; // maybe check if values are still correct!
                     parties.Add(new Party(line.Split()));
                 }
