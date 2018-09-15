@@ -340,7 +340,12 @@ namespace CheckIfEqualFiles
                 string orgCode = GetLineCode(orgLines);
                 string genCode = GetLineCode(genLines);
 
-                fileMatch = (orgCode.Length == genCode.Length);
+                if (fileMatch && DeepValidationActive)//because some spaces are ignored but maybe counted?
+                {
+                    fileMatch = (orgCode.Length == genCode.Length);
+                    if (!fileMatch)
+                        Console.WriteLine("OrgLines: {0}" + Environment.NewLine + "GenLines: {1}", orgCode.Length, genCode.Length);
+                }
 
                 if (fileMatch && DeepValidationActive)
                     fileMatch = (fileMatch && orgCode.Equals(genCode));
@@ -455,6 +460,26 @@ namespace CheckIfEqualFiles
                             }
                         }
                     }
+                }
+                else if (u1 < CodeReader.LOCAL_MAX && u1 >= CodeReader.LOCAL_MIN &&
+                    u2 < CodeReader.LOCAL_MAX && u2 >= CodeReader.LOCAL_MIN)
+                {
+                    bool failed = false;
+                    int count = Math.Min(orgLines[i].Length, genLines[i].Length);
+                    for (int x = 0; x < count; x++)
+                    {
+                        bool a = orgLines[i][x].Equals(u1.ToString());
+                        bool b = genLines[i][x].Equals(u2.ToString());
+                        if (a || b)
+                        {
+                            if (!a || !b)
+                            {
+                                failed = true;
+                                x = count;
+                            }
+                        }
+                    }
+                    match = !failed;//re-check later for proof that it works!
                 }
                 else
                     match = CorrectSimilarIDError(ref orgLines, ref genLines, ref idxs, i, j);
