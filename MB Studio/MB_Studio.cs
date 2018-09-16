@@ -34,7 +34,7 @@ namespace MB_Studio
 
         #region Attributes
 
-        private bool IsEqualVersion = false;
+        private bool IsEqualVersion = true;
 
         private bool FullScreen = true;
 
@@ -237,12 +237,12 @@ namespace MB_Studio
             SetFullScreenByHandle();
             SetTabControlFixedHeight();
 
-            //if (!IsEqualVersion)
-            //{
+            if (!IsEqualVersion)
+            {
                 Changelog changelog = new Changelog();
                 changelog.LoadCurrentChangelog();
                 changelog.ShowDialog();
-            //}
+            }
         }
 
         //Not finished yet - just started

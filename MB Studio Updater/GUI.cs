@@ -19,11 +19,6 @@ namespace MB_Studio_Updater
             InitializeComponent();
         }
 
-        private void Console_richtxt_TextChanged(object sender, EventArgs e)
-        {
-            progressInfo_lbl.Text = console_richtxt.Lines[console_richtxt.Lines.LongLength];
-        }
-
         private void GUI_Shown(object sender, EventArgs e)
         {
             Thread t = new Thread(new ThreadStart(RunUpdater)) {
@@ -35,8 +30,6 @@ namespace MB_Studio_Updater
         private void GUI_Load(object sender, EventArgs e)
         {
             Shown += GUI_Shown;
-
-            console_richtxt.TextChanged += Console_richtxt_TextChanged;
         }
 
         private void RunUpdater()

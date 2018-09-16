@@ -525,15 +525,15 @@ namespace MB_Studio_Updater
             Console.WriteLine("Done");
             Console.Write("Downloading new updater version...");
 
-            string downloadedFile = currentPath + ".tmp";
+            string downloadedFile = currentPath + "\\" + Application.ProductName + ".tmp";
             using (WebClient client = new WebClient())
                 client.DownloadFile("https://www.dropbox.com/s/" + downloadPart + "/MB%20Studio%20Updater.exe?dl=1", downloadedFile);
 
             Console.WriteLine("Done");
             Console.Write("Replacing old with new version...");
 
-            string backupFile = currentPath + ".bak";
-            File.Replace(downloadedFile, currentPath, backupFile);//maybe copy later
+            string backupFile = updatedUpdaterPath + ".bak";
+            File.Replace(downloadedFile, updatedUpdaterPath, backupFile);//maybe copy later
 
             Console.WriteLine("Done");
 
