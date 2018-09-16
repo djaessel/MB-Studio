@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlWriter.cs" />
     <Compile Include="FileVersionCode.cs" />
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
@@ -87,12 +88,6 @@
     <EmbeddedResource Include="GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\importantLib\importantLib\importantLib.csproj">
-      <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
-      <Name>importantLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

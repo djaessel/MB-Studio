@@ -1,11 +1,10 @@
-﻿using importantLib;
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace MB_Studio_Updater
 {
-    public partial class GUI : SpecialFormBlack
+    public partial class GUI : Form
     {
         MBStudioUpdater updater;
 
