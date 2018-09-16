@@ -16,9 +16,12 @@ namespace MB_Studio_Updater
 
             this.updater = updater;
 
-            Shown += GUI_Shown;
-
             InitializeComponent();
+        }
+
+        private void Console_richtxt_TextChanged(object sender, EventArgs e)
+        {
+            progressInfo_lbl.Text = console_richtxt.Lines[console_richtxt.Lines.LongLength];
         }
 
         private void GUI_Shown(object sender, EventArgs e)
@@ -31,7 +34,9 @@ namespace MB_Studio_Updater
 
         private void GUI_Load(object sender, EventArgs e)
         {
-            // Load data here
+            Shown += GUI_Shown;
+
+            console_richtxt.TextChanged += Console_richtxt_TextChanged;
         }
 
         private void RunUpdater()
@@ -39,6 +44,8 @@ namespace MB_Studio_Updater
             try
             {
                 updater.SetGuiConsole(console_richtxt);
+                updater.SetInfoControl(progressInfo_lbl);
+                updater.SetProgressBar(update_pb);
 
                 if (updater.SelfUpdateActive)
                     updater.SelfUpdate();
@@ -64,6 +71,16 @@ namespace MB_Studio_Updater
             {
                 MessageBox.Show(exp.ToString());
             }
+        }
+
+        private void Show_hide_details_btn_Click(object sender, EventArgs e)
+        {
+            bool show = show_hide_details_btn.Text.Equals("Show details");
+            if (show)
+                show_hide_details_btn.Text = "Hide details";
+            else
+                show_hide_details_btn.Text = "Show details";
+            console_richtxt.Visible = show;
         }
     }
 }

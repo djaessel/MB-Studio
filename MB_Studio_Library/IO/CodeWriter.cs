@@ -15,7 +15,8 @@ namespace MB_Studio_Library.IO
     {
         #region Attributes
 
-        public static bool IsFinished { get; private set; }
+        public static bool WriteIDFile { get; private set; } = false;
+        public static bool IsFinished { get; private set; } = false;
         public static string ModuleSystem { get; private set; }
         public static string DefaultModuleSystemPath { get; private set; }
 
@@ -318,11 +319,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> strings = types[(int)ObjectType.GameString];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_strings.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < strings.Count; i++)
-                    writer.WriteLine("str_{0} = {1}", ConvertToIdentifier(strings[i].ID), i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_strings.py"))
+                {
+                    for (int i = 0; i < strings.Count; i++)
+                        writer.WriteLine("str_{0} = {1}", ConvertToIdentifier(strings[i].ID), i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save game string
@@ -344,11 +348,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> skills = types[(int)ObjectType.Skill];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_skills.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < skills.Count; i++)
-                    writer.WriteLine("skl_{0} = {1}", ConvertToIdentifier(skills[i].ID), i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_skills.py"))
+                {
+                    for (int i = 0; i < skills.Count; i++)
+                        writer.WriteLine("skl_{0} = {1}", ConvertToIdentifier(skills[i].ID), i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save skills
@@ -372,11 +379,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> tracks = types[(int)ObjectType.Music];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_music.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < tracks.Count; i++)
-                    writer.WriteLine("track_{0} = {1}", tracks[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_music.py"))
+                {
+                    for (int i = 0; i < tracks.Count; i++)
+                        writer.WriteLine("track_{0} = {1}", tracks[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save tracks
@@ -429,11 +439,14 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_actions.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < animations.Count; i++)
-                    writer.WriteLine("anim_{0} = {1}", animations[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_actions.py"))
+                {
+                    for (int i = 0; i < animations.Count; i++)
+                        writer.WriteLine("anim_{0} = {1}", animations[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save animations
@@ -484,11 +497,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> meshes = types[(int)ObjectType.Mesh];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_meshes.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < meshes.Count; i++)
-                    writer.WriteLine("mesh_{0} = {1}", meshes[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_meshes.py"))
+                {
+                    for (int i = 0; i < meshes.Count; i++)
+                        writer.WriteLine("mesh_{0} = {1}", meshes[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save meshes
@@ -576,11 +592,14 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_sounds.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < sounds.Count; i++)
-                    writer.WriteLine("snd_{0} = {1}", sounds[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_sounds.py"))
+                {
+                    for (int i = 0; i < sounds.Count; i++)
+                        writer.WriteLine("snd_{0} = {1}", sounds[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             //Console.WriteLine(/*"Done"*/);
@@ -657,11 +676,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> factions = types[(int)ObjectType.Faction];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_factions.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < factions.Count; i++)
-                    writer.WriteLine("fac_{0} = {1}", factions[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_factions.py"))
+                {
+                    for (int i = 0; i < factions.Count; i++)
+                        writer.WriteLine("fac_{0} = {1}", factions[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             List<double[]> relations = CompileRelations(factions);
@@ -702,11 +724,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> scenes = types[(int)ObjectType.Scene];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scenes.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < scenes.Count; i++)
-                    writer.WriteLine("scn_{0} = {1}", scenes[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scenes.py"))
+                {
+                    for (int i = 0; i < scenes.Count; i++)
+                        writer.WriteLine("scn_{0} = {1}", scenes[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             List<string> variables = LoadVariables(exportDir, out List<int> variableUses);
@@ -816,11 +841,14 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_particle_systems.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < particleSystems.Count; i++)
-                    writer.WriteLine("psys_{0} = {1}", particleSystems[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_particle_systems.py"))
+                {
+                    for (int i = 0; i < particleSystems.Count; i++)
+                        writer.WriteLine("psys_{0} = {1}", particleSystems[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             //Console.WriteLine(/*"Done"*/);
@@ -833,11 +861,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> sceneProps = types[(int)ObjectType.SceneProp];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scene_props.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < sceneProps.Count; i++)
-                    writer.WriteLine("spr_{0} = {1}", sceneProps[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scene_props.py"))
+                {
+                    for (int i = 0; i < sceneProps.Count; i++)
+                        writer.WriteLine("spr_{0} = {1}", sceneProps[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
@@ -883,16 +914,19 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_quests.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < quests.Count; i++)
-                    writer.WriteLine("qst_{0} = {1}", quests[i].ID, i);
-                for (int i = 0; i < quests.Count; i++)
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_quests.py"))
                 {
-                    ulong idx = ((ulong)i);
-                    writer.WriteLine("qsttag_{0} = {1}", quests[i].ID, OP_MASK_QUEST_INDEX | idx);
+                    for (int i = 0; i < quests.Count; i++)
+                        writer.WriteLine("qst_{0} = {1}", quests[i].ID, i);
+                    for (int i = 0; i < quests.Count; i++)
+                    {
+                        ulong idx = ((ulong)i);
+                        writer.WriteLine("qsttag_{0} = {1}", quests[i].ID, OP_MASK_QUEST_INDEX | idx);
+                    }
+                    writer.WriteLine(Environment.NewLine);
                 }
-                writer.WriteLine(Environment.NewLine);
             }
 
             //Console.WriteLine(/*"Done"*/);
@@ -914,11 +948,14 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_info_pages.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < infoPages.Count; i++)
-                    writer.WriteLine("ip_{0} = {1}", infoPages[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_info_pages.py"))
+                {
+                    for (int i = 0; i < infoPages.Count; i++)
+                        writer.WriteLine("ip_{0} = {1}", infoPages[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             //Console.WriteLine(/*"Done"*/);
@@ -1074,11 +1111,14 @@ namespace MB_Studio_Library.IO
             }
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_postfx_params.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < postfxParams.Count; i++)
-                    writer.WriteLine("pfx_{0} = {1}", postfxParams[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_postfx_params.py"))
+                {
+                    for (int i = 0; i < postfxParams.Count; i++)
+                        writer.WriteLine("pfx_{0} = {1}", postfxParams[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             //Console.WriteLine(/*"Done"*/);
@@ -1091,11 +1131,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> items = types[(int)ObjectType.Item];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_items.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < items.Count; i++)
-                    writer.WriteLine("itm_{0} = {1}", ConvertToIdentifier(items[i].ID), i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_items.py"))
+                {
+                    for (int i = 0; i < items.Count; i++)
+                        writer.WriteLine("itm_{0} = {1}", ConvertToIdentifier(items[i].ID), i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save items
@@ -1177,11 +1220,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> mapIcons = types[(int)ObjectType.MapIcon];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_map_icons.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < mapIcons.Count; i++)
-                    writer.WriteLine("icon_{0} = {1}", mapIcons[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_map_icons.py"))
+                {
+                    for (int i = 0; i < mapIcons.Count; i++)
+                        writer.WriteLine("icon_{0} = {1}", mapIcons[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save map icons
@@ -1229,11 +1275,14 @@ namespace MB_Studio_Library.IO
             List<Skriptum> troops = types[(int)ObjectType.Troop];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_troops.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < troops.Count; i++)
-                    writer.WriteLine("trp_{0} = {1}", troops[i].ID, i);
-                writer.WriteLine(Environment.NewLine);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_troops.py"))
+                {
+                    for (int i = 0; i < troops.Count; i++)
+                        writer.WriteLine("trp_{0} = {1}", troops[i].ID, i);
+                    writer.WriteLine(Environment.NewLine);
+                }
             }
 
             // save troops
@@ -1342,10 +1391,13 @@ namespace MB_Studio_Library.IO
             List<Skriptum> tableaus = types[(int)ObjectType.TableauMaterial];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_tableau_materials.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < tableaus.Count; i++)
-                    writer.WriteLine("tableau_{0} = {1}", tableaus[i].ID, i);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_tableau_materials.py"))
+                {
+                    for (int i = 0; i < tableaus.Count; i++)
+                        writer.WriteLine("tableau_{0} = {1}", tableaus[i].ID, i);
+                }
             }
 
             // save tableaus
@@ -1388,10 +1440,13 @@ namespace MB_Studio_Library.IO
             List<Skriptum> presentations = types[(int)ObjectType.Presentation];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_presentations.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < presentations.Count; i++)
-                    writer.WriteLine("prsnt_{0} = {1}", presentations[i].ID, i);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_presentations.py"))
+                {
+                    for (int i = 0; i < presentations.Count; i++)
+                        writer.WriteLine("prsnt_{0} = {1}", presentations[i].ID, i);
+                }
             }
 
             // save presentations
@@ -1425,9 +1480,12 @@ namespace MB_Studio_Library.IO
             List<Skriptum> scripts = types[(int)ObjectType.Script];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scripts.py"))
-                for (int i = 0; i < scripts.Count; i++)
-                    writer.WriteLine("script_{0} = {1}", scripts[i].ID, i);
+            if (WriteIDFile)
+            {
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_scripts.py"))
+                    for (int i = 0; i < scripts.Count; i++)
+                        writer.WriteLine("script_{0} = {1}", scripts[i].ID, i);
+            }
 
             // save presentations
             List<string> variableList = LoadVariables(exportDir, out List<int> variableUses);
@@ -1475,10 +1533,13 @@ namespace MB_Studio_Library.IO
             List<Skriptum> menus = types[(int)ObjectType.GameMenu];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_menus.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < menus.Count; i++)
-                    writer.WriteLine("menu_{0} = {1}", menus[i].ID, i);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_menus.py"))
+                {
+                    for (int i = 0; i < menus.Count; i++)
+                        writer.WriteLine("menu_{0} = {1}", menus[i].ID, i);
+                }
             }
 
             // save menus
@@ -1523,10 +1584,13 @@ namespace MB_Studio_Library.IO
             List<Skriptum> missionTemplates = types[(int)ObjectType.MissionTemplate];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_mission_templates.py"))
+            if (WriteIDFile)
             {
-                for (int i = 0; i < missionTemplates.Count; i++)
-                    writer.WriteLine("mst_{0} = {1}", missionTemplates[i].ID, i);
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_mission_templates.py"))
+                {
+                    for (int i = 0; i < missionTemplates.Count; i++)
+                        writer.WriteLine("mst_{0} = {1}", missionTemplates[i].ID, i);
+                }
             }
 
             // save mission templates
@@ -1573,9 +1637,12 @@ namespace MB_Studio_Library.IO
             List<Skriptum> partyTemplates = types[(int)ObjectType.PartyTemplate];
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_party_templates.py"))
-                for (int i = 0; i < partyTemplates.Count; i++)
-                    writer.WriteLine("pt_{0} = {1}", partyTemplates[i].ID, i);
+            if (WriteIDFile)
+            {
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_party_templates.py"))
+                    for (int i = 0; i < partyTemplates.Count; i++)
+                        writer.WriteLine("pt_{0} = {1}", partyTemplates[i].ID, i);
+            }
 
             // save party template
             using (StreamWriter writer = new StreamWriter(exportDir + "party_templates.txt"))
@@ -1617,9 +1684,12 @@ namespace MB_Studio_Library.IO
             List<List<int>> tagUses = LoadTagUses(exportDir);
 
             // save python header
-            using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_parties.py"))
-                for (int i = 0; i < parties.Count; i++)
-                    writer.WriteLine("p_{0} = {1}", parties[i].ID, i);
+            if (WriteIDFile)
+            {
+                using (StreamWriter writer = new StreamWriter(ModuleSystem + "ID_parties.py"))
+                    for (int i = 0; i < parties.Count; i++)
+                        writer.WriteLine("p_{0} = {1}", parties[i].ID, i);
+            }
 
             // save parties
             using (StreamWriter writer = new StreamWriter(exportDir + "parties.txt"))

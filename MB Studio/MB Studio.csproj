@@ -137,6 +137,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Changelog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Changelog.Designer.cs">
+      <DependentUpon>Changelog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main\CreateProject.Designer.cs">
       <DependentUpon>CreateProject.cs</DependentUpon>
     </Compile>
@@ -148,6 +154,9 @@
     </Compile>
     <Compile Include="Manager\ScriptCommander.cs" />
     <None Include="debugMode.enabled">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="changelog">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="installerScripts\Compile x64.bat" />
@@ -306,6 +315,9 @@
     <Compile Include="Manager\TroopManager.Designer.cs">
       <DependentUpon>TroopManager.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Changelog.resx">
+      <DependentUpon>Changelog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main\CreateProject.resx">
       <DependentUpon>CreateProject.cs</DependentUpon>
     </EmbeddedResource>

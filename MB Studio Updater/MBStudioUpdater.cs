@@ -65,11 +65,16 @@ namespace MB_Studio_Updater
 
         #region Attributes
 
+        private Control infoControl = null;
+        private ProgressBar progessBar = null;
+        
         public static string ConsoleTitle = DEFAULT_CONSOLE_TITLE;
 
         public string Channel { get; private set; }
         public string CurFile { get; private set; }
         public string FolderPath { get; private set; }
+
+        public int CurProgress { get; private set; } = 0;
 
         private List<string> list;
 
@@ -218,13 +223,11 @@ namespace MB_Studio_Updater
             {
                 LoadData();
 
-                wr.WriteLine("[" + DateTime.Now + "]  Data loadad." + Environment.NewLine);
+                WriteLog(wr, "Data loaded." + Environment.NewLine + Environment.NewLine);
 
                 string logInfo = "Check " + list.Count + " files for Updates..." + Environment.NewLine;
-
-                wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
-
                 Console.WriteLine(logInfo);
+                WriteLog(wr, logInfo);
 
                 List<string[]> updateFiles = new List<string[]>();
                 List<string> indexList = new List<string>(File.ReadAllLines("index.mbi"));
@@ -255,22 +258,21 @@ namespace MB_Studio_Updater
 
                 logInfo = "Removing old binary files..." + Environment.NewLine;
 
-                wr.WriteLine(Environment.NewLine + "[" + DateTime.Now + "]  " + logInfo);
-
                 Console.WriteLine(logInfo);
+                WriteLog(wr, string.Empty, false);
+                WriteLog(wr, logInfo);
 
                 RemoveUnknownBinaries(indexList);
 
                 logInfo = " --> Files to be updated: " + updateFiles.Count + " " + Environment.NewLine;
 
                 Console.WriteLine(Environment.NewLine + logInfo);
-
-                wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
+                WriteLog(wr, logInfo);
 
                 if (IsUpdaterOutdated(updateFiles))
                 {
                     logInfo = "Executing Self Update...";
-                    wr.WriteLine("[" + DateTime.Now + "]  " + logInfo);
+                    WriteLog(wr, logInfo);
 
                     wr.Flush();
                     wr.Close();
@@ -282,37 +284,44 @@ namespace MB_Studio_Updater
                     return;
                 }
 
-                wr.WriteLine("[" + DateTime.Now + "]  Updater up-to-date");
+                WriteLog(wr, "Updater up-to-date");
 
                 if (updateFiles.Count != 0)
                 {
-                    wr.Write("[" + DateTime.Now + "]  Closing MB Studio (if open)...");
+                    WriteLog(wr, "Closing MB Studio (if open)...", true, false);
                     CloseAllMBStudioIfRunning();
-                    wr.WriteLine("Done" + Environment.NewLine);
+                    WriteLog(wr, "Done" + Environment.NewLine, false);
 
                     using (WebClient client = new WebClient())
                     {
                         try
                         {
+                            int fileNo = 0;
                             foreach (string[] updateFile in updateFiles)
                             {
                                 string file = updateFile[0].Substring(2);
                                 //file = Path.GetFileName(file);//if path not needed to be shown
-                                CurFile = " Updating \"" + file + '\"';
-                                wr.WriteLine("[" + DateTime.Now + "]" + CurFile);
-
-                                Console.Write(CurFile);
+                                CurFile = "Updating \"" + file + '\"';
+                                UpdateInfoText();
+                                Console.Write(" " + CurFile);
+                                WriteLog(wr, CurFile, true, false);
 
                                 file = FolderPath + updateFile[0].Substring(1);
 
                                 string folder = Path.GetDirectoryName(file);
                                 Directory.CreateDirectory(folder);
-                                Console.WriteLine(" >> " + file);
+                                logInfo = " >> " + file;
+                                Console.WriteLine(logInfo);
+                                WriteLog(wr, logInfo, false);
 
-                                wr.WriteLine("[" + DateTime.Now + "]  Download Token: " + updateFile[1]);
-                                wr.WriteLine("[" + DateTime.Now + "]  Destination: \"" + file + '\"');
+                                WriteLog(wr, "Download Token: " + updateFile[1]);
+                                WriteLog(wr, "Destination: \"" + file + '\"');
 
                                 client.DownloadFile("https://www.dropbox.com/s/" + updateFile[1] + "?dl=1", file);
+                                fileNo++;
+
+                                CurProgress = fileNo / updateFiles.Count * 100;
+                                UpdateInfoText();
                             }
                         }
                         catch (Exception ex)
@@ -321,13 +330,14 @@ namespace MB_Studio_Updater
 
                             Console.WriteLine(error);
 
-                            wr.WriteLine("[" + DateTime.Now + "]  " + error);
+                            WriteLog(wr, error);
                         }
                     }
 
                     if (StartStudioOnExit)
                     {
-                        wr.Write(Environment.NewLine + "[" + DateTime.Now + "]  Starting MB Studio...");
+                        WriteLog(wr, string.Empty, false);
+                        WriteLog(wr, "Starting MB Studio...", true, false);
 
                         string curPath = Path.GetFullPath(".");
                         string filePath = curPath + "\\MB Studio.exe";
@@ -343,15 +353,43 @@ namespace MB_Studio_Updater
 
                         Process.Start(studioPsi);
 
-                        wr.WriteLine("Done");
+                        WriteLog(wr, "Done", false);
                     }
-
                 }
 
-                wr.WriteLine(Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine);
+                WriteLog(wr, Environment.NewLine + " - - - Updating finished - - - " + Environment.NewLine, false);
 
                 Console.Title = ConsoleTitle + " - Finished Updating";
             }
+        }
+
+        public void SetInfoControl(Control control)
+        {
+            infoControl = control;
+        }
+
+        public void SetProgressBar(ProgressBar bar)
+        {
+            progessBar = bar;
+        }
+
+        public void UpdateInfoText()
+        {
+            if (infoControl != null)
+                infoControl.Text = "( " + CurProgress + " % ) " + CurFile + "...";
+            if (progessBar != null)
+                progessBar.Value = CurProgress;
+        }
+
+        private static void WriteLog(StreamWriter logWriter, string text, bool writeDateTime = true, bool newLine = true)
+        {
+            string dateTimeNow = "[" + DateTime.Now + "]";
+            if (writeDateTime)
+                text = dateTimeNow + "  " + text;
+            if (newLine)
+                logWriter.WriteLine(text);
+            else
+                logWriter.Write(text);
         }
 
         public static bool IsUpdaterOutdated(List<string[]> updateFiles)

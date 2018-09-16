@@ -34,6 +34,8 @@ namespace MB_Studio
 
         #region Attributes
 
+        private bool IsEqualVersion = false;
+
         private bool FullScreen = true;
 
         private ScriptCommander scriptCommander = new ScriptCommander();
@@ -176,11 +178,11 @@ namespace MB_Studio
         {
             string versionFile = "version.dat";
             string startPath = Application.StartupPath + "\\MB Studio Updater.exe";
-            
-            bool fileExists = File.Exists(versionFile);
-            if (fileExists) fileExists = File.ReadAllText(versionFile).Equals(ProductVersion);
 
-            if (!fileExists)
+            bool fileExists = File.Exists(versionFile);
+            if (fileExists) IsEqualVersion = File.ReadAllText(versionFile).Equals(ProductVersion);
+
+            if (!IsEqualVersion)
                 File.WriteAllText(versionFile, Application.ProductVersion);
 
             Process process = new Process();
@@ -220,6 +222,8 @@ namespace MB_Studio
 
             Shown += MB_Studio_Shown;//SetFullScreenByHandle(Handle);
 
+            name_lbl.Text += " - " + Properties.Resources.buildName;
+
             InitializeProject();
             LoadLastOpenedProjects();
 
@@ -232,6 +236,13 @@ namespace MB_Studio
         {
             SetFullScreenByHandle();
             SetTabControlFixedHeight();
+
+            //if (!IsEqualVersion)
+            //{
+                Changelog changelog = new Changelog();
+                changelog.LoadCurrentChangelog();
+                changelog.ShowDialog();
+            //}
         }
 
         //Not finished yet - just started

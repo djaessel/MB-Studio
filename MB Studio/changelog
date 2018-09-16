@@ -1,0 +1,51 @@
+﻿:3.1.0.0:Klethi
+- -
+# fixed start
+some 3D view bugs (TroopManager)
+Tab bottom bug
+data conversion bugs
+# fixed end
+. changed start
+Build process
+config
+. end
+- removed
+python compiler
+source file creation
+- config end
++ added start
+updater GUI
+script compiler
+changelog
+old config upgrade
++ added end
+{ infotext start
+This update fixed many module system code bugs and also removed the need of 
+creating source files to compile the changes.
+
+The tutorials are still missing, but in case there aren't too many bugs left 
+which I didn't find yet, I could use my time
+to create some tutorials and also new "Managers".
+
+The first Managers where hard-coded, but because I wanted to make this a little 
+bit more transparent, the future ones won't be hard-coded.
+If want to know more about it, take a look in the Manager folder inside your 
+MB Studio installation folder.
+
+As you can see on top of this changelog, this build is called "Klethi". 
+I decided to call my feature updates after Mount&Blade charaters and started 
+with this one.
+
+In the future I probably will add some community features too, because at the 
+moment the only way users can contact me is via ModDB.
+These features would allow you to write some short feedback messages and 
+bugreports or maybe some voting etc.
+
+I hope you like this tool and you are able to make something out of it in the future!
+
+
+Have fun!
+
+Johandros
+} infotext end
+- -

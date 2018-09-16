@@ -59,5 +59,14 @@ namespace MB_Studio.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Klethi ähnelt.
+        /// </summary>
+        internal static string buildName {
+            get {
+                return ResourceManager.GetString("buildName", resourceCulture);
+            }
+        }
     }
 }
