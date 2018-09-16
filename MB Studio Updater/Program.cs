@@ -66,8 +66,9 @@ namespace MB_Studio_Updater
             if (hasArguments && !selfUpdate && args.Length > 1)
             {
                 string channel = args[1].TrimStart('-');
-                string folderPath = ".";
+                textArguments.Add(channel);
 
+                string folderPath = ".";
                 if (args.Length > 2)
                 {
                     folderPath = args[2];
@@ -106,6 +107,8 @@ namespace MB_Studio_Updater
                 }
 
                 folderPath = Path.GetFullPath(folderPath);
+
+                textArguments.Add(folderPath);
 
                 if (useGUI)
                     updaterMode |= MB_UPDATER_MODE.USE_GUI;

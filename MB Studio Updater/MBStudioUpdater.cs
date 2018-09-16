@@ -656,6 +656,8 @@ namespace MB_Studio_Updater
                 ".mbi",
                 ".config",
                 ".path",
+                ".enabled",
+                ".dat",
             };
 
             List<string> unusedDirectories = new List<string>() {
