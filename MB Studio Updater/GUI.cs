@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace MB_Studio_Updater
 {
-    public partial class GUI : Form
+    public partial class GUI : SpecialFormBlack
     {
         MBStudioUpdater updater;
 
@@ -35,9 +35,7 @@ namespace MB_Studio_Updater
         {
             try
             {
-                updater.SetGuiConsole(console_richtxt);
-                updater.SetInfoControl(progressInfo_lbl);
-                updater.SetProgressBar(update_pb);
+                updater.SetGui(this);
 
                 if (updater.SelfUpdateActive)
                     updater.SelfUpdate();

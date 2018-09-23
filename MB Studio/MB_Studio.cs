@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
+using Microsoft.Win32;
+using System.Security.AccessControl;
 
 namespace MB_Studio
 {
@@ -58,8 +60,6 @@ namespace MB_Studio
 
         public static bool Show3DView { get { return Properties.Settings.Default.show3DView; } }
 
-        public static bool ShowUpdaterConsole { get { return Properties.Settings.Default.showUpdaterConsole; } }
-
         #endregion
 
         #region Loading
@@ -67,6 +67,8 @@ namespace MB_Studio
         public MB_Studio()
         {
             StartLoadingForm();
+
+            UpdateVersionData();
 
             if (Properties.Settings.Default.firstRun)
                 AskForOldConfigImport();
@@ -174,30 +176,66 @@ namespace MB_Studio
             }
         }
 
-        private void CheckForUpdates()
+        /// <summary>
+        /// Updates version in version.dat if necessary
+        /// </summary>
+        /// <returns>Update was necessary</returns>
+        private bool UpdateVersionData()
         {
             string versionFile = "version.dat";
-            string startPath = Application.StartupPath + "\\MB Studio Updater.exe";
-
             bool fileExists = File.Exists(versionFile);
             if (fileExists) IsEqualVersion = File.ReadAllText(versionFile).Equals(ProductVersion);
 
             if (!IsEqualVersion)
                 File.WriteAllText(versionFile, Application.ProductVersion);
 
-            Process process = new Process();
-            process.StartInfo.Arguments = "-gui " + Properties.Settings.Default.updateChannel + " . -startOE";
+            UpdateRegistryData();
 
-            if (!ShowUpdaterConsole)//change default to false later + add progressbar as alternative
+            return !IsEqualVersion;
+        }
+
+        private void UpdateRegistryData()
+        {
+            bool updateProductVersion = false;
+            bool updateProductName = false;
+
+            using (RegistryKey reg32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
             {
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.UseShellExecute = false;
+                using (RegistryKey appReg = reg32.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\MB Studio"))
+                {
+                    string valName = "DisplayVersion";
+                    string oldProductVersion = appReg.GetValue(valName, string.Empty).ToString();
+                    updateProductVersion = (oldProductVersion.Length != 0 && !oldProductVersion.Equals(Application.ProductVersion));
+                    //if (updateProductVersion)
+                    //    appReg.SetValue(valName, Application.ProductVersion, RegistryValueKind.String);
+
+                    valName = "DisplayName";
+                    string oldProductName = appReg.GetValue(valName, string.Empty).ToString();
+                    updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductVersion));
+                    //if (updateProductName)
+                    //    appReg.SetValue(valName, Application.ProductName, RegistryValueKind.String);
+                }
             }
 
-            process.StartInfo.FileName = startPath;
+            if (!updateProductName && !updateProductVersion) return;
 
-            if (RunAutoUpdate)
-                process.Start();
+            Process process = new Process();
+            process.StartInfo.Arguments = "updateRegistry.bat";
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.UseShellExecute = true;
+            process.StartInfo.FileName = "cmd.exe";
+            process.Start();
+            process.WaitForExit();
+        }
+
+        private void CheckForUpdates()
+        {
+            Process process = new Process();
+            process.StartInfo.Arguments = "-gui " + Properties.Settings.Default.updateChannel + " . -startOE";
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.FileName = Application.StartupPath + "\\MB Studio Updater.exe";
+            process.Start();
         }
 
         private void SetTabControlFixedHeight()

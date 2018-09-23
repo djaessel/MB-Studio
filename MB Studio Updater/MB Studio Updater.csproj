@@ -80,6 +80,12 @@
     <Compile Include="MD5Maker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpecialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpecialFormBlack.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -87,6 +93,12 @@
   <ItemGroup>
     <EmbeddedResource Include="GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpecialForm.resx">
+      <DependentUpon>SpecialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpecialFormBlack.resx">
+      <DependentUpon>SpecialFormBlack.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

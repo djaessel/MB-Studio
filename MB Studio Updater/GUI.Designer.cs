@@ -25,11 +25,8 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        private new void InitializeComponent()
         {
-            this.min_btn = new System.Windows.Forms.Button();
-            this.exit_btn = new System.Windows.Forms.Button();
-            this.title_lbl = new System.Windows.Forms.Label();
             this.console_richtxt = new System.Windows.Forms.RichTextBox();
             this.show_hide_details_btn = new System.Windows.Forms.Button();
             this.update_pb = new System.Windows.Forms.ProgressBar();
@@ -52,9 +49,10 @@
             // 
             // title_lbl
             // 
-            this.title_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.title_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.title_lbl.Size = new System.Drawing.Size(704, 24);
-            this.title_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.title_lbl.Text = "";
+            this.title_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // console_richtxt
             // 
@@ -113,9 +111,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(768, 512);
-            this.Controls.Add(this.min_btn);
-            this.Controls.Add(this.exit_btn);
-            this.Controls.Add(this.title_lbl);
             this.Controls.Add(this.progressInfo_lbl);
             this.Controls.Add(this.update_pb);
             this.Controls.Add(this.show_hide_details_btn);
@@ -135,13 +130,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button min_btn;
-        private System.Windows.Forms.Button exit_btn;
-        private System.Windows.Forms.Label title_lbl;
-        private System.Windows.Forms.RichTextBox console_richtxt;
+        internal System.Windows.Forms.ProgressBar update_pb;
+        internal System.Windows.Forms.Label progressInfo_lbl;
+        internal System.Windows.Forms.RichTextBox console_richtxt;
         private System.Windows.Forms.Button show_hide_details_btn;
-        private System.Windows.Forms.ProgressBar update_pb;
-        private System.Windows.Forms.Label progressInfo_lbl;
     }
 }

@@ -4,6 +4,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace MB_Studio_Updater
 {
@@ -11,12 +12,15 @@ namespace MB_Studio_Updater
     {
         #region Constants
 
-        public const string IMPORTANT_LIB = "importantLib.dll";
+        //public const string IMPORTANT_LIB = "importantLib.dll";
 
         public const string MB_STUDIO_UPDATER = "MB Studio Updater.exe";
         public const string MB_STUDIO_UPDATER_TEMP = "mbstudioupdater_temp";
 
         private const string DEFAULT_CONSOLE_TITLE = "MB Studio Updater [by JSYS]";
+
+        private const string DROPBOX_URL_START = "https://www.dropbox.com/s/";
+        private const string DROPBOX_URL_END = "?dl=1";
 
         public enum MB_UPDATER_MODE : byte
         {
@@ -26,8 +30,8 @@ namespace MB_Studio_Updater
             SELF_UPDATE = 8,
             ADD_NEW_FILES = 16,
             FORCE_32_BIT = 32,
-            //RESERVED_2 = 64,
-            //RESERVED_1 = 128,
+            RESERVED_2 = 64,
+            RESERVED_1 = 128,
         }
 
         #region UPDATE_DOWNLOAD_TOKENS
@@ -64,8 +68,7 @@ namespace MB_Studio_Updater
 
         #region Attributes
 
-        private Control infoControl = null;
-        private ProgressBar progessBar = null;
+        private GUI gui;
         
         public static string ConsoleTitle = DEFAULT_CONSOLE_TITLE;
 
@@ -92,7 +95,6 @@ namespace MB_Studio_Updater
 
         #endregion
 
-        //public MBStudioUpdater(bool selfUpdate = false, bool addNewFiles = false, bool force32BitBinaries = false, string channel = "stable", string folderPath = ".", bool startOE = false)
         public MBStudioUpdater(MB_UPDATER_MODE mode = 0, List<string> textArguments = null)
         {
             UseGUI = ((mode & MB_UPDATER_MODE.USE_GUI) == MB_UPDATER_MODE.USE_GUI);
@@ -133,9 +135,11 @@ namespace MB_Studio_Updater
             }
         }
 
-        public void SetGuiConsole(RichTextBox console)
+        public void SetGui(GUI gui)
         {
-            ControlWriter writer = new ControlWriter(console, console.FindForm());
+            this.gui = gui;
+
+            ControlWriter writer = new ControlWriter(gui.console_richtxt, gui);
             Console.SetOut(writer);
         }
 
@@ -291,47 +295,8 @@ namespace MB_Studio_Updater
                     CloseAllMBStudioIfRunning();
                     WriteLog(wr, "Done" + Environment.NewLine, false);
 
-                    using (WebClient client = new WebClient())
-                    {
-                        try
-                        {
-                            int fileNo = 0;
-                            foreach (string[] updateFile in updateFiles)
-                            {
-                                string file = updateFile[0].Substring(2);
-                                //file = Path.GetFileName(file);//if path not needed to be shown
-                                CurFile = "Updating \"" + file + '\"';
-                                UpdateInfoText();
-                                Console.Write(" " + CurFile);
-                                WriteLog(wr, CurFile, true, false);
-
-                                file = FolderPath + updateFile[0].Substring(1);
-
-                                string folder = Path.GetDirectoryName(file);
-                                Directory.CreateDirectory(folder);
-                                logInfo = " >> " + file;
-                                Console.WriteLine(logInfo);
-                                WriteLog(wr, logInfo, false);
-
-                                WriteLog(wr, "Download Token: " + updateFile[1]);
-                                WriteLog(wr, "Destination: \"" + file + '\"');
-
-                                client.DownloadFile("https://www.dropbox.com/s/" + updateFile[1] + "?dl=1", file);
-                                fileNo++;
-
-                                CurProgress = fileNo / updateFiles.Count * 100;
-                                UpdateInfoText();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            string error = ex.ToString() + Environment.NewLine;
-
-                            Console.WriteLine(error);
-
-                            WriteLog(wr, error);
-                        }
-                    }
+                    Thread clientThread = new Thread(new ParameterizedThreadStart(ClientWork)) { IsBackground = true };
+                    clientThread.Start(new object[] { wr, updateFiles });
 
                     if (StartStudioOnExit)
                     {
@@ -362,22 +327,61 @@ namespace MB_Studio_Updater
             }
         }
 
-        public void SetInfoControl(Control control)
+        private void ClientWork(object param)
         {
-            infoControl = control;
+            object[] paramS = (object[])param;
+
+            StreamWriter wr = (StreamWriter)paramS[0];
+            List<string[]> updateFiles = (List<string[]>)paramS[1];
+
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    int fileNo = 0;
+                    foreach (string[] updateFile in updateFiles)
+                    {
+                        string file = updateFile[0].Substring(2);
+                        //file = Path.GetFileName(file);//if path not needed to be shown
+                        CurFile = "Updating \"" + file + '\"';
+                        UpdateInfoText();
+                        Console.Write(" " + CurFile);
+                        WriteLog(wr, CurFile, true, false);
+
+                        file = FolderPath + updateFile[0].Substring(1);
+
+                        string folder = Path.GetDirectoryName(file);
+                        Directory.CreateDirectory(folder);
+                        string logInfo = " >> " + file;
+                        Console.WriteLine(logInfo);
+                        WriteLog(wr, logInfo, false);
+
+                        WriteLog(wr, "Download Token: " + updateFile[1]);
+                        WriteLog(wr, "Destination: \"" + file + '\"');
+
+                        client.DownloadFile(DROPBOX_URL_START + updateFile[1] + DROPBOX_URL_END, file);
+                        fileNo++;
+
+                        CurProgress = fileNo / updateFiles.Count * 100;
+                        UpdateInfoText();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string error = ex.ToString() + Environment.NewLine;
+                    Console.WriteLine(error);
+                    WriteLog(wr, error);
+                }
+            }
         }
 
-        public void SetProgressBar(ProgressBar bar)
+        private void UpdateInfoText()
         {
-            progessBar = bar;
-        }
-
-        public void UpdateInfoText()
-        {
-            if (infoControl != null)
-                infoControl.Text = "( " + CurProgress + " % ) " + CurFile + "...";
-            if (progessBar != null)
-                progessBar.Value = CurProgress;
+            gui.Invoke((MethodInvoker)delegate
+            {
+                gui.progressInfo_lbl.Text = "( " + CurProgress + " % ) " + CurFile + "...";
+                gui.update_pb.Value = CurProgress;
+            });
         }
 
         private static void WriteLog(StreamWriter logWriter, string text, bool writeDateTime = true, bool newLine = true)
@@ -488,7 +492,7 @@ namespace MB_Studio_Updater
             Directory.CreateDirectory(MB_STUDIO_UPDATER_TEMP);
 
             File.Copy(currentPath + '\\' + MB_STUDIO_UPDATER, MB_STUDIO_UPDATER_TEMP + '\\' + MB_STUDIO_UPDATER, true);
-            File.Copy(currentPath + '\\' + IMPORTANT_LIB, MB_STUDIO_UPDATER_TEMP + '\\' + IMPORTANT_LIB, true);
+            //File.Copy(currentPath + '\\' + IMPORTANT_LIB, MB_STUDIO_UPDATER_TEMP + '\\' + IMPORTANT_LIB, true);
             File.WriteAllText(MB_STUDIO_UPDATER_TEMP + "\\path.info", currentPath);
 
             string fullTempPath = Path.GetFullPath(MB_STUDIO_UPDATER_TEMP);
