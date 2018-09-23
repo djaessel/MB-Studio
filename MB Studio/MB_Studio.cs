@@ -199,31 +199,31 @@ namespace MB_Studio
             bool updateProductVersion = false;
             bool updateProductName = false;
 
+            string regKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\MB Studio";
             using (RegistryKey reg32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
             {
-                using (RegistryKey appReg = reg32.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\MB Studio"))
+                using (RegistryKey appReg = reg32.OpenSubKey(regKey))
                 {
-                    string valName = "DisplayVersion";
-                    string oldProductVersion = appReg.GetValue(valName, string.Empty).ToString();
+                    string oldProductVersion = appReg.GetValue("DisplayVersion", string.Empty).ToString();
                     updateProductVersion = (oldProductVersion.Length != 0 && !oldProductVersion.Equals(Application.ProductVersion));
-                    //if (updateProductVersion)
-                    //    appReg.SetValue(valName, Application.ProductVersion, RegistryValueKind.String);
 
-                    valName = "DisplayName";
-                    string oldProductName = appReg.GetValue(valName, string.Empty).ToString();
-                    updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductVersion));
-                    //if (updateProductName)
-                    //    appReg.SetValue(valName, Application.ProductName, RegistryValueKind.String);
+                    string oldProductName = appReg.GetValue("DisplayName", string.Empty).ToString();
+                    updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductName));
                 }
             }
 
             if (!updateProductName && !updateProductVersion) return;
 
-            Process process = new Process();
-            process.StartInfo.Arguments = "updateRegistry.bat";
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.UseShellExecute = true;
-            process.StartInfo.FileName = "cmd.exe";
+            var psi = new ProcessStartInfo {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                FileName = "RegUpdater.exe",
+                Arguments = "\"" + regKey + "\" \"" + Application.ProductVersion + "\" \"" + Application.ProductName + "\""
+            };
+
+            var process = new Process {
+                StartInfo = psi
+            };
             process.Start();
             process.WaitForExit();
         }
