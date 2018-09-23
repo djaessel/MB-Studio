@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Diagnostics;
 using System.Security.AccessControl;
 
@@ -13,8 +12,6 @@ namespace RegUpdater
             {
                 if (args[0].EndsWith("useAdmin"))
                 {
-                    Console.WriteLine("UPDATING REGISTRY!");
-
                     using (RegistryKey reg32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
                     {
                         using (RegistryKey appReg = reg32.OpenSubKey(args[1], RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.WriteKey))
@@ -29,11 +26,9 @@ namespace RegUpdater
                 }
                 else
                 {
-                    Console.Write("STARTING RegUpdater.exe AS ADMIN...");
-
                     var psi = new ProcessStartInfo
                     {
-                        CreateNoWindow = false,
+                        CreateNoWindow = true,
                         UseShellExecute = true,
                         Verb = "runas",
                         FileName = @"F:\WORKINGAREA\Visual Studio Projects\MB Studio\MB Studio\bin\x86\Release\RegUpdater.exe",

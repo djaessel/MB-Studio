@@ -215,7 +215,7 @@ namespace MB_Studio
             if (!updateProductName && !updateProductVersion) return;
 
             var psi = new ProcessStartInfo {
-                CreateNoWindow = false,
+                CreateNoWindow = true,
                 UseShellExecute = false,
                 FileName = "RegUpdater.exe",
                 Arguments = "\"" + regKey + "\" \"" + Application.ProductVersion + "\" \"" + Application.ProductName + "\""
