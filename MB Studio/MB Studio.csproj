@@ -219,6 +219,12 @@
     <Compile Include="Manager\Support\External\AddTypeFromOtherMod.Designer.cs">
       <DependentUpon>AddTypeFromOtherMod.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manager\Support\TutorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\Support\TutorForm.Designer.cs">
+      <DependentUpon>TutorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\ToolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -350,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main\ProjectProperties.resx">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\Support\TutorForm.resx">
+      <DependentUpon>TutorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\ToolForm.resx">
       <DependentUpon>ToolForm.cs</DependentUpon>

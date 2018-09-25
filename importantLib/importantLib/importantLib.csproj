@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>net462</TargetFrameworks>
     <AssemblyOriginatorKeyFile>MB-Studio-importantLib.pfx</AssemblyOriginatorKeyFile>
     <Title>importtantLib</Title>
     <Version>2.1.1.0</Version>
@@ -11,11 +11,12 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyVersion>2.1.1.0</AssemblyVersion>
     <FileVersion>2.1.1.0</FileVersion>
+    <DefineConstants>$(TargetFramework.Replace(".","_").ToUpper());$(DefineConstants)</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System" />
-    <!--<Reference Include="System.Drawing" />-->
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
