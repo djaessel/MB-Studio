@@ -51,6 +51,7 @@ namespace MB_Studio.Manager
             this.language_cbb = new System.Windows.Forms.ComboBox();
             this.save_translation_btn = new System.Windows.Forms.Button();
             this.addFromOtherMod_btn = new System.Windows.Forms.Button();
+            this.help_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +83,7 @@ namespace MB_Studio.Manager
             // 
             this.save_btn.BackColor = System.Drawing.Color.DimGray;
             this.save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.save_btn.Location = new System.Drawing.Point(699, 149);
+            this.save_btn.Location = new System.Drawing.Point(632, 149);
             this.save_btn.Name = "save_btn";
             this.save_btn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.save_btn.Size = new System.Drawing.Size(95, 23);
@@ -374,13 +375,26 @@ namespace MB_Studio.Manager
             this.addFromOtherMod_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addFromOtherMod_btn.Location = new System.Drawing.Point(511, 149);
             this.addFromOtherMod_btn.Name = "addFromOtherMod_btn";
-            this.addFromOtherMod_btn.Size = new System.Drawing.Size(182, 23);
+            this.addFromOtherMod_btn.Size = new System.Drawing.Size(115, 23);
             this.addFromOtherMod_btn.TabIndex = 39;
             this.addFromOtherMod_btn.TabStop = false;
-            this.addFromOtherMod_btn.Tag = string.Empty;
+            this.addFromOtherMod_btn.Tag = "";
             this.addFromOtherMod_btn.Text = "ADD EXTERNAL ";
             this.addFromOtherMod_btn.UseVisualStyleBackColor = false;
             this.addFromOtherMod_btn.Click += new System.EventHandler(this.AddFromOtherMod_btn_Click);
+            // 
+            // help_btn
+            // 
+            this.help_btn.BackColor = System.Drawing.Color.DimGray;
+            this.help_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.help_btn.Location = new System.Drawing.Point(733, 149);
+            this.help_btn.Name = "help_btn";
+            this.help_btn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.help_btn.Size = new System.Drawing.Size(61, 23);
+            this.help_btn.TabIndex = 40;
+            this.help_btn.Text = "HELP";
+            this.help_btn.UseVisualStyleBackColor = false;
+            this.help_btn.Click += new System.EventHandler(this.Help_btn_Click);
             // 
             // ToolForm
             // 
@@ -388,6 +402,7 @@ namespace MB_Studio.Manager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.ClientSize = new System.Drawing.Size(814, 220);
+            this.Controls.Add(this.help_btn);
             this.Controls.Add(this.addFromOtherMod_btn);
             this.Controls.Add(this.toolPanel);
             this.Controls.Add(this.searchType_SearchTextBox);
@@ -448,5 +463,6 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Button exit_btn;
         protected System.Windows.Forms.Button addFromOtherMod_btn;
         private ToolTipListBox typeSelect_lb;
+        protected System.Windows.Forms.Button help_btn;
     }
 }

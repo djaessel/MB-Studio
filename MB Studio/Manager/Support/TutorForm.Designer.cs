@@ -45,6 +45,7 @@
             // 
             // exit_btn
             // 
+            this.exit_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.exit_btn.FlatAppearance.BorderSize = 0;
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
@@ -55,6 +56,7 @@
             // 
             // title_lbl
             // 
+            this.title_lbl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.title_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.title_lbl.Size = new System.Drawing.Size(420, 32);
             this.title_lbl.Text = "Form";
@@ -74,7 +76,7 @@
             // 
             // step_lbl
             // 
-            this.step_lbl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
+            this.step_lbl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.step_lbl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.step_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.step_lbl.Location = new System.Drawing.Point(0, 74);
@@ -88,6 +90,8 @@
             this.step_left_btn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.step_left_btn.FlatAppearance.BorderSize = 0;
+            this.step_left_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.step_left_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.step_left_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.step_left_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.step_left_btn.Location = new System.Drawing.Point(0, 35);
@@ -103,6 +107,8 @@
             this.step_right_btn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.step_right_btn.FlatAppearance.BorderSize = 0;
+            this.step_right_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.step_right_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.step_right_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.step_right_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.step_right_btn.Location = new System.Drawing.Point(388, 35);
@@ -115,6 +121,7 @@
             // 
             // TutorForm
             // 
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.ClientSize = new System.Drawing.Size(420, 100);
             this.Controls.Add(this.step_right_btn);
             this.Controls.Add(this.step_left_btn);

@@ -15,6 +15,7 @@ using importantLib.ToolTipsListBox;
 using MB_Studio.Manager.Support.External;
 using static MB_Studio_Library.Objects.Skriptum;
 using MB_Studio_Library.Objects;
+using MB_Studio.Manager.Support;
 
 namespace MB_Studio.Manager
 {
@@ -1002,6 +1003,16 @@ namespace MB_Studio.Manager
 
             typeSelect_lb.SelectedIndex = 0;
             SetupType(f.SelectedType);
+        }
+
+        #endregion
+
+        #region Help
+
+        private void Help_btn_Click(object sender, EventArgs e)
+        {
+            TutorForm tutorForm = new TutorForm();
+            tutorForm.Show();
         }
 
         #endregion
