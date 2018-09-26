@@ -1011,7 +1011,12 @@ namespace MB_Studio.Manager
 
         private void Help_btn_Click(object sender, EventArgs e)
         {
+            List<TutorStep> ts = new List<TutorStep>();
+            for (int i = 0; i < 5; i++)
+                ts.Add(new TutorStep("Heading " + (i + 1), "Info" + (i + 1), (TutorStep.Option)Math.Pow(2, i)));
+
             TutorForm tutorForm = new TutorForm();
+            tutorForm.AddTutorSteps(ts);
             tutorForm.Show();
         }
 

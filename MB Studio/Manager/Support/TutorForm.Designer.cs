@@ -52,7 +52,6 @@
             this.exit_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exit_btn.Location = new System.Drawing.Point(388, 0);
             this.exit_btn.Size = new System.Drawing.Size(32, 32);
-            this.exit_btn.Visible = false;
             // 
             // title_lbl
             // 

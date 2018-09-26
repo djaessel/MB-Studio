@@ -1,5 +1,6 @@
 ﻿using importantLib;
 using System;
+using System.Collections.Generic;
 
 namespace MB_Studio.Manager.Support
 {
@@ -14,20 +15,22 @@ namespace MB_Studio.Manager.Support
         private const string STEP_TEXT = "Step "; // default - later multi lingual?
         private const string ST_OF_TEXT = " of "; // default - later multi lingual?
 
-        protected int MinStep { get; private set; } = 1;
-        protected int CurStep { get; private set; } = 1;
-        protected int MaxStep { get; private set; } = 1;
+        protected int MinStep { get; private set; }
+        protected int CurStep { get; private set; }
+        protected int MaxStep { get; private set; }
+
+        private List<TutorStep> tutors = new List<TutorStep>();
 
         public TutorForm()
         {
             InitializeComponent();
-
+            Reset();
             info_lbl.TextChanged += Info_lbl_TextChanged;
         }
 
         private void TutorForm_Load(object sender, EventArgs e)
         {
-            HandleStepButtons();
+            UpdateGui();
         }
 
         private void Info_lbl_TextChanged(object sender, EventArgs e)
@@ -41,13 +44,13 @@ namespace MB_Studio.Manager.Support
         private void Step_left_btn_Click(object sender, EventArgs e)
         {
             CurStep--;
-            HandleStepButtons();
+            UpdateGui();
         }
 
         private void Step_right_btn_Click(object sender, EventArgs e)
         {
             CurStep++;
-            HandleStepButtons();
+            UpdateGui();
         }
 
         private void HandleStepButtons()
@@ -56,6 +59,80 @@ namespace MB_Studio.Manager.Support
             step_right_btn.Enabled = (CurStep < MaxStep);
 
             step_lbl.Text = STEP_TEXT + CurStep + ST_OF_TEXT + MaxStep;
+        }
+
+        private void UpdateGui()
+        {
+            int curIdx = CurStep - 1;
+            if (curIdx < tutors.Count && curIdx >= 0)
+            {
+                title_lbl.Text = tutors[curIdx].Heading;
+                info_lbl.Text = tutors[curIdx].InfoText;
+            }
+            else
+            {
+                title_lbl.ResetText();
+                info_lbl.ResetText();
+            }
+            HandleStepButtons();
+        }
+
+        private void InitializeTutorSteps()
+        {
+            int x = tutors.Count - 1;
+            MinStep = tutors.Count - x;
+            CurStep = MinStep;
+            MaxStep = tutors.Count;
+
+            UpdateGui();
+        }
+
+        internal void AddTutorStep(TutorStep tutor, int number = 0)
+        {
+            number--; // for index
+            if (number < tutors.Count && number > 0)
+                tutors.Insert(number, tutor);
+            else
+                tutors.Add(tutor);
+
+            InitializeTutorSteps();
+        }
+
+        internal void AddTutorSteps(List<TutorStep> tutors, int startNumber = 0)
+        {
+            startNumber--; // for index
+            if (startNumber < tutors.Count && startNumber > 0)
+                this.tutors.InsertRange(startNumber, tutors);
+            else
+                this.tutors.AddRange(tutors);
+
+            InitializeTutorSteps();
+        }
+
+        internal void RemoveTutorStep(TutorStep tutor)
+        {
+            tutors.Remove(tutor);
+
+            InitializeTutorSteps();
+        }
+
+        internal void RemoveTutorStep(int number)
+        {
+            number--; // for index
+            tutors.RemoveAt(number);
+
+            InitializeTutorSteps();
+        }
+
+        internal void Reset()
+        {
+            MaxStep = 1;
+            CurStep = MaxStep;
+            MinStep = MaxStep;
+
+            tutors.Clear();
+
+            InitializeTutorSteps();
         }
     }
 }
