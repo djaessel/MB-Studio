@@ -12,6 +12,7 @@
     <AssemblyVersion>2.1.1.0</AssemblyVersion>
     <FileVersion>2.1.1.0</FileVersion>
     <DefineConstants>$(TargetFramework.Replace(".","_").ToUpper());$(DefineConstants)</DefineConstants>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">

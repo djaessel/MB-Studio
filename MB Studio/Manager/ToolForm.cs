@@ -1013,9 +1013,15 @@ namespace MB_Studio.Manager
         {
             List<TutorStep> ts = new List<TutorStep>();
             for (int i = 0; i < 5; i++)
-                ts.Add(new TutorStep("Heading " + (i + 1), "Info" + (i + 1), (TutorStep.Option)Math.Pow(2, i)));
+            {
+                string controlName = "showGroup_" + i + "_btn";
+                if (Controls.Find(controlName, true).Length == 0)
+                    controlName = showGroup_0_btn.Name;
+                int idd = i + 1;
+                ts.Add(new TutorStep("Heading " + idd, "Info" + idd, controlName, (TutorStep.Option)Math.Pow(2, i)));
+            }
 
-            TutorForm tutorForm = new TutorForm();
+            TutorForm tutorForm = new TutorForm(this);
             tutorForm.AddTutorSteps(ts);
             tutorForm.Show();
         }
