@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MB_Studio.Manager.Support
+﻿namespace MB_Studio.Manager.Support
 {
     class TutorStep
     {
         public enum Option : short
         {
-            None = 0,
+            None  = 0,
             Click = 1,
             Hover = 2,
             Enter = 4,
@@ -53,5 +47,10 @@ namespace MB_Studio.Manager.Support
         public string ControlName { get; } = string.Empty;
 
         public Option Options { get; } = 0;
+
+        public bool IsFinished { get; private set; } = false;
+
+        public void SetFinished() { IsFinished = true; }
+
     }
 }
