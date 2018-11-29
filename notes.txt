@@ -1,0 +1,4 @@
+for face editor:
+	- meshes_face_gen.brf
+	- textures_face_gen.brf
+	- ... (*._face_gen.brf)
