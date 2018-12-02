@@ -1,4 +1,6 @@
-﻿using importantLib;
+﻿//#define WRITE_ALL_OBJECTS
+
+using importantLib;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
 using static MB_Studio_Library.Objects.Skriptum;
@@ -208,20 +210,26 @@ namespace MB_Studio_Library.IO
         private static void PrepareAndProcessFiles()
         {
             string headerFilesPath = CodeReader.ProjectPath + "\\headerFiles";
-            /*string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";*/
+#if (WRITE_ALL_OBJECTS)
+            string moduleFilesPath = CodeReader.ProjectPath + "\\moduleFiles";
+#endif
 
             string[] headerFiles = Directory.GetFiles(headerFilesPath);
-            /*string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
+#if (WRITE_ALL_OBJECTS)
+            string[] moduleFiles;// = Directory.GetFiles(moduleFilesPath);
 
             SourceWriter.WriteAllObjects();
-            moduleFiles = Directory.GetFiles(moduleFilesPath);*/
+            moduleFiles = Directory.GetFiles(moduleFilesPath);
+#endif
             types = CodeReader.ReadAllObjects();
 
             foreach (string file in headerFiles)
                 File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
 
-            /*foreach (string file in moduleFiles)
-                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);*/
+#if (WRITE_ALL_OBJECTS)
+            foreach (string file in moduleFiles)
+                File.Copy(file, ModuleSystem + Path.GetFileName(file), true);
+#endif
 
             //string module_info = ModuleSystem + "module_info.py";
             //File.WriteAllText(module_info, File.ReadAllText(module_info).Replace("%MOD_NAME%", objs[1].ToString()));
@@ -261,9 +269,9 @@ namespace MB_Studio_Library.IO
             ProcessGlobalVariablesUnused(exportDir);
         }
 
-        #endregion
+#endregion
 
-        #region Process Methods
+#region Process Methods
 
         private static void ProcessInit(string exportDir)
         {
@@ -1762,9 +1770,9 @@ namespace MB_Studio_Library.IO
             //Console.WriteLine(/*"Done"*/);
         }
 
-        #endregion
+#endregion
 
-        #region Helper Methods
+#region Helper Methods
 
         private static ulong GetOpcodeValue(string opcode)
         {
@@ -3243,9 +3251,9 @@ namespace MB_Studio_Library.IO
                     writer.WriteLine(variableUse);
         }
 
-        #endregion
+#endregion
 
-        #region Pseudo Code
+#region Pseudo Code
 
         public static void SavePseudoCodeByType(Skriptum type, string[] code)
         {
@@ -3343,6 +3351,6 @@ namespace MB_Studio_Library.IO
             return b;
         }
 
-        #endregion
+#endregion
     }
 }
