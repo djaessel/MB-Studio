@@ -410,15 +410,21 @@ namespace MB_Studio.Manager
                 {
                     designer.UpdateGameMenuText(singleNameTranslation_txt.Text);
                     PrepareOptionsLanguage();
-                    string[] a;
-                    if (mno_translations[0] == null)
+
+                    string[] a = null;
+                    if (mno_translations.Length > 0)
                     {
-                        a = new string[menu.MenuOptions.Length];
-                        for (int i = 0; i < a.Length; i++)
-                            a[i] = menu.MenuOptions[i].Text.Replace('_', ' ');
+                        if (mno_translations[0] == null)
+                        {
+                            a = new string[menu.MenuOptions.Length];
+                            for (int i = 0; i < a.Length; i++)
+                                a[i] = menu.MenuOptions[i].Text.Replace('_', ' ');
+                        }
                     }
-                    else
+
+                    if (a == null)
                         a = CodeReader.GetStringArrayStartFromIndex(mno_translations, 0, mno_translations.Length - menu.MenuOptions.Length);
+
                     designer.UpdateGameMenuOptionsTexts(a);
                 }
             }
