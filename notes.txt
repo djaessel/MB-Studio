@@ -2,3 +2,8 @@ for face editor:
 	- meshes_face_gen.brf
 	- textures_face_gen.brf
 	- ... (*._face_gen.brf)
+	- Rotieren-Skalieren-Verschieben (in openBrf menu: Selected)
+	- openGL scale object: https://stackoverflow.com/questions/35397631/how-to-simply-scale-an-object-in-opengl
+	- (20,0, 0.75,-0.9, "Pucker"), --> (frameNo, positiveScale, negativeScale, "Label Name") // frameNo 20 = 2
+	- face code starts always with 0x0000000 (7 zeros start) and ends with 0000000000000000 (16 zeros end)
+	- face code has 64 hexNumbers in total => 256 Bit Number (= 32 Bytes)

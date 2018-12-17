@@ -585,38 +585,53 @@ void MeshMorpher::Emphatize(float k){
 }
 
 void BrfMesh::MorphFrame(int framei, int framej, const MeshMorpher& m){
-  for (uint vi = 0; vi<vert.size(); vi++){
-    int pi = vert[vi].index;
+	for (uint vi = 0; vi<vert.size(); vi++){
+		int pi = vert[vi].index;
 
-    Pos p0 = frame[framei].pos[pi];
+		Pos p0 = frame[framei].pos[pi];
 
-    Pos scale(0,0,0);
-    Pos trans(0,0,0);
-    for (int k=0; k<4; k++) {
-      int bi = skinning[pi].boneIndex[k];
-      if (bi==-1) continue;
+		Pos scale(0,0,0);
+		Pos trans(0,0,0);
+		for (int k=0; k<4; k++) {
+			int bi = skinning[pi].boneIndex[k];
+			if (bi==-1) continue;
 
-      if (p0.Z()>0) bi+=MeshMorpher::POSZ_BONES;
+			if (p0.Z()>0) bi+=MeshMorpher::POSZ_BONES;
 
-      if (bi>=MeshMorpher::MAX_BONES) continue;
-      float w = skinning[pi].boneWeight[k];
-      if (!w) continue;
-      scale += m.s[bi]*w;
-      trans += m.t[bi]*w;
-    }
+			if (bi>=MeshMorpher::MAX_BONES) continue;
+			float w = skinning[pi].boneWeight[k];
+			if (!w) continue;
+			scale += m.s[bi]*w;
+			trans += m.t[bi]*w;
+		}
 
 
-    p0.X() *= scale.X();
-    p0.Y() *= scale.Y();
-    p0.Z() *= scale.Z();
-    frame[framej].pos[pi] = p0 + trans;
+		p0.X() *= scale.X();
+		p0.Y() *= scale.Y();
+		p0.Z() *= scale.Z();
+		frame[framej].pos[pi] = p0 + trans;
 
-  }
+	}
 
 	AddALittleOfBreast(framej, m.extraBreast);
-
 }
 
+void BrfMesh::MakeBigRound(int framei, float howMuch) {
+	Pos p0(+0.1f, 1.3443f, 0.2f);
+	Pos p1(-0.1f, 0.9f, 0.2f);
+	float r = 0.066f;
+	BrfFrame& f(frame[framei]);
+	for (uint i = 0; i < f.pos.size(); i++) {
+		Pos &q(f.pos[i]);
+		float s0 = 1 - (q - p0).Norm() / r;
+		float s1 = 1 - (q - p1).Norm() / r;
+		float s = max(s0, s1);
+		if (s > 0) {
+			s = (float)pow(s, 0.3);
+			q.Z() += s * howMuch;
+		}
+	}
+}
 
 void BrfMesh::AddALittleOfBreast(int framei, float howMuch){
   Pos p0(+0.0793f, 1.3443f, 0.1210f);
