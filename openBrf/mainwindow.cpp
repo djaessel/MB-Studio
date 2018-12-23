@@ -3908,6 +3908,11 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 /* method created by Johandros */
 void MainWindow::showTroop3DPreview() {
 
+	BOOL retur = searchIniExplicit(QString("head"), MESH);
+	if (retur) {
+		addLastSelectedToXViewMesh(9);
+	}
+
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
 	createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
 	loadFile(xViewMeshFile);
@@ -3915,7 +3920,10 @@ void MainWindow::showTroop3DPreview() {
 	size_t fMeshSize = brfdata.mesh.size();
 	bool newFile = (tmpSize == fMeshSize);
 	if (newFile && tmpSize != 0) {
-		newFile = (strcmp(tempMeshList[0].name, brfdata.mesh[0].name) == strcmp(tempMeshList[tmpSize - 1].name, brfdata.mesh[tmpSize - 1].name) == 0);
+		newFile = (
+				strcmp(tempMeshList[0].name, brfdata.mesh[0].name) == 0 && 
+				strcmp(tempMeshList[tmpSize - 1].name, brfdata.mesh[tmpSize - 1].name) == 0
+			);
 	}
 	if (!newFile) {//for time saving
 		brfdata.mesh.clear();

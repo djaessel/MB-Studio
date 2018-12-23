@@ -7,3 +7,7 @@ for face editor:
 	- (20,0, 0.75,-0.9, "Pucker"), --> (frameNo, positiveScale, negativeScale, "Label Name") // frameNo 20 = 2
 	- face code starts always with 0x0000000 (7 zeros start) and ends with 0000000000000000 (16 zeros end)
 	- face code has 64 hexNumbers in total => 256 Bit Number (= 32 Bytes)
+
+module.ini - Module Settings:
+	- make form for project menu (top)
+	
