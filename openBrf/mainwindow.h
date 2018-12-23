@@ -70,6 +70,7 @@ public:
 	void removeLastSelectedFromXViewMesh();
 
 	void showTroop3DPreview();
+	void showTroop3DPreview(QString face1Code, QString face2Code);
 	//void clearTroop3DPreview();
 	void clearTempTroop3DPreviewMeshes();
 

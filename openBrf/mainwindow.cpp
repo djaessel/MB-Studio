@@ -3906,13 +3906,28 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 }
 
 /* method created by Johandros */
-void MainWindow::showTroop3DPreview() {
-
+void MainWindow::showTroop3DPreview(QString face1Code, QString face2Code) {
 	BOOL retur = searchIniExplicit(QString("head"), MESH);
 	if (retur) {
 		addLastSelectedToXViewMesh(9);
+		// clone if needed
 	}
 
+	if (face1Code.trimmed().length() > 0)
+	{
+		// get specific mesh data
+	}
+
+	if (face2Code.trimmed().length() > 0)
+	{
+		// get specific mesh data
+	}
+
+	showTroop3DPreview();
+}
+
+/* method created by Johandros */
+void MainWindow::showTroop3DPreview() {
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
 	createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
 	loadFile(xViewMeshFile);

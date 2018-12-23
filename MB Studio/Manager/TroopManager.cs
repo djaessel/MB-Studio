@@ -93,7 +93,7 @@ namespace MB_Studio.Manager
                     if (GetNameEndOfControl(c).Equals("cbb"))
                         if (((ComboBox)c).SelectedIndex >= 0)
                             SetupTroopItemBone(((ComboBox)c).SelectedItem.ToString());
-                OpenBrfManager.Troop3DPreviewShow();//change later so only the specific bone will be updated!
+                OpenBrfManager.Troop3DPreviewShow((Troop)types[CurrentTypeIndex]);//change later so only the specific bone will be updated!
             }
         }
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using MB_Studio_Library.Objects;
 
 namespace brfManager
 {
@@ -36,6 +37,9 @@ namespace brfManager
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool RemoveMeshFromXViewModel(string meshName);
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static void ShowTroop3DPreviewFace(string face1, string face2);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void ShowTroop3DPreview();
@@ -153,9 +157,12 @@ namespace brfManager
             ClearTempMeshesTroop3DPreview();
         }
 
-        public void Troop3DPreviewShow()
+        public void Troop3DPreviewShow(Troop troop = null)
         {
-            ShowTroop3DPreview();
+            if (troop != null)
+                ShowTroop3DPreviewFace(troop.Face1, troop.Face2);
+            else
+                ShowTroop3DPreview();
         }
 
         public void ChangeModule(string moduleName)

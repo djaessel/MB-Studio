@@ -88,6 +88,10 @@
       <Project>{DCFF1576-1736-4BFD-9A3E-901246B7E8C9}</Project>
       <Name>importantLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MB_Studio_Library\MB Studio Library.csproj">
+      <Project>{FC643914-80E5-42FF-806B-C23E37DD9EC5}</Project>
+      <Name>MB Studio Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
