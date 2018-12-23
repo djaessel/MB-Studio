@@ -3905,13 +3905,110 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 	statusBar()->showMessage(tr("Removed mesh %1 from Troop 3D Preview!").arg(name), 5000);
 }
 
+void MainWindow::setSkinBodyParts(BYTE skinType) {
+	vector<QString> bodyParts = vector<QString>();
+	vector<byte> boneIndices = vector<byte>();
+	switch (skinType)
+	{
+	case 1:
+		// only if not overlapping with armor
+		bodyParts.push_back(QString("woman_body_new"));
+		boneIndices.push_back(9);
+
+		bodyParts.push_back(QString("f_handL"));
+		boneIndices.push_back(13);
+
+		bodyParts.push_back(QString("f_handR"));
+		boneIndices.push_back(18);
+
+		bodyParts.push_back(QString("woman_calf_l"));
+		boneIndices.push_back(2);
+
+		bodyParts.push_back(QString("woman_calf_r"));
+		boneIndices.push_back(5);
+		break;
+	default:
+		// only if not overlapping with armor
+		bodyParts.push_back(QString("man_body_new"));
+		boneIndices.push_back(9);
+
+		bodyParts.push_back(QString("m_handL"));
+		boneIndices.push_back(13);
+
+		bodyParts.push_back(QString("m_handR"));
+		boneIndices.push_back(18);
+
+		bodyParts.push_back(QString("man_calf_l"));
+		boneIndices.push_back(2);
+
+		bodyParts.push_back(QString("man_calf_r"));
+		boneIndices.push_back(5);
+		break;
+	}
+
+	for (size_t i = 0; i < bodyParts.size(); i++)
+	{
+		BOOL success = searchIniExplicit(bodyParts[i], MESH);
+		if (success)
+		{
+			// set material
+			addLastSelectedToXViewMesh(boneIndices[i]);
+			// clone if needed
+		}
+	}
+}
+
 /* method created by Johandros */
-void MainWindow::showTroop3DPreview(QString face1Code, QString face2Code) {
+void MainWindow::showTroop3DPreview(BYTE skinType, QString face1Code, QString face2Code) {
+	
 	BOOL retur = searchIniExplicit(QString("head"), MESH);
 	if (retur) {
+		// set material
 		addLastSelectedToXViewMesh(9);
 		// clone if needed
 	}
+
+	/* SKELETONS */
+	// 0 human
+	// 1 human_horse
+
+	/* BONES */
+	// 0 abdomen   -  X X
+	// 1 thighL    -  4 thighR
+	// 2 calfL     -  5 calfR
+	// 3 footL     -  6 footR
+	// 7 spine     -  X X
+	// 8 thorax    -  X X
+	// 9 head      -  X X
+	//10 shoulderL - 15 shoulderR 
+	//11 upperarmL - 16 upperarmR
+	//12 forearmL  - 17 forearmR
+	//13 handL     - 18 handR
+	//14 itemL     - 19 itemR
+
+
+
+	// first	0000000
+	// second	fff
+	// age		ab
+	// skin		c
+	// beard	de
+	// hair		efg
+	// ...		...
+
+	bool worked = false;
+	int age = (face1Code.mid(10, 2).toInt(&worked, 16) & 0x0FF);
+	int skin = (face1Code.mid(12, 1).toInt(&worked, 16) & 0x00F);
+	int beard = (face1Code.mid(13, 2).toInt(&worked, 16) & 0x0FF);
+	int hair = (face1Code.mid(14, 3).toInt(&worked, 16) & 0x1FF);
+
+	string s = "";
+	s += "Age: " + to_string(age) + "\n";
+	s += "Skin: " + to_string(skin) + "\n";
+	s += "Beard: " + to_string(beard) + "\n";
+	s += "Hair: " + to_string(hair) + "\n";
+
+	MessageBoxA(NULL, s.c_str(), "INFO", 0);
 
 	if (face1Code.trimmed().length() > 0)
 	{

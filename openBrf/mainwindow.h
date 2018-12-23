@@ -69,8 +69,9 @@ public:
 	void removeMeshByNameFromXViewMesh(char* meshName);
 	void removeLastSelectedFromXViewMesh();
 
+	void setSkinBodyParts(BYTE skinType);
 	void showTroop3DPreview();
-	void showTroop3DPreview(QString face1Code, QString face2Code);
+	void showTroop3DPreview(BYTE skinType, QString face1Code, QString face2Code);
 	//void clearTroop3DPreview();
 	void clearTempTroop3DPreviewMeshes();
 

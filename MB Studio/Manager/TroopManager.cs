@@ -87,13 +87,15 @@ namespace MB_Studio.Manager
         {
             if (IsDataLoaded && Has3DView)
             {//change later so only the specific bone will be updated!
+                Troop curTroop = (Troop)types[CurrentTypeIndex];
                 OpenBrfManager.Troop3DPreviewClearData();//doesn't clear correct?
+                OpenBrfManager.SetSkinBody((byte)(curTroop.FlagsGZ & 0x0F));
                 //openBrfManager.Troop3DPreviewShow();//workaround (it saves cleared state)
                 foreach (Control c in showItemsInOpenBrf_gb.Controls)
                     if (GetNameEndOfControl(c).Equals("cbb"))
                         if (((ComboBox)c).SelectedIndex >= 0)
                             SetupTroopItemBone(((ComboBox)c).SelectedItem.ToString());
-                OpenBrfManager.Troop3DPreviewShow((Troop)types[CurrentTypeIndex]);//change later so only the specific bone will be updated!
+                OpenBrfManager.Troop3DPreviewShow(curTroop);//change later so only the specific bone will be updated!
             }
         }
 

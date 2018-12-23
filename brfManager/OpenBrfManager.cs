@@ -33,13 +33,16 @@ namespace brfManager
         public extern static void AddCurSelectedMeshsAllDataToMod(string modName);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static void SetSkinBodyParts(byte skinType);
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool RemoveMeshFromXViewModel(string meshName);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        public extern static void ShowTroop3DPreviewFace(string face1, string face2);
+        public extern static void ShowTroop3DPreviewFace(byte skin, string face1, string face2);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static void ShowTroop3DPreview();
@@ -142,6 +145,11 @@ namespace brfManager
             CloseApp();
         }
 
+        public void SetSkinBody(byte skinType)
+        {
+            SetSkinBodyParts(skinType);
+        }
+
         public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
         {
             return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
@@ -160,7 +168,7 @@ namespace brfManager
         public void Troop3DPreviewShow(Troop troop = null)
         {
             if (troop != null)
-                ShowTroop3DPreviewFace(troop.Face1, troop.Face2);
+                ShowTroop3DPreviewFace((byte)(troop.FlagsGZ & 0xF), troop.Face1, troop.Face2);
             else
                 ShowTroop3DPreview();
         }
