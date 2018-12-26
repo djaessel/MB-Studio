@@ -53,7 +53,7 @@ public:
 	void createFileIfNotExists(const QString& filePath);
 
 	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
-	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
+	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, char* material = nullptr);
 
 	bool hasTextQLineEdit(QLineEdit* le);
 
@@ -70,6 +70,7 @@ public:
 	void removeLastSelectedFromXViewMesh();
 
 	void setSkinBodyParts(BYTE skinType);
+	BOOL setMaterial(QString material);
 	void showTroop3DPreview();
 	void showTroop3DPreview(BYTE skinType, QString face1Code, QString face2Code);
 	//void clearTroop3DPreview();

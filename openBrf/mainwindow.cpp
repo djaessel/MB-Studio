@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QAction>
 #include <QStatusBar>
+#include <QCompleter>
 
 #include <algorithm>
 
@@ -3838,9 +3839,12 @@ void MainWindow::createFileIfNotExists(const QString& filePath) {
 }
 
 /* method created by Johandros */
-void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/) {
+void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, char* material) {
 
 	int i = selector->firstSelected();
+	if (material != nullptr) {
+		setMaterial(QString(material));
+	}
 	assert(selector->currentTabName() == MESH);
 	assert(i < (int)brfdata.mesh.size() && i >= 0);
 	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/);
@@ -3910,10 +3914,10 @@ void MainWindow::setSkinBodyParts(BYTE skinType) {
 	vector<byte> boneIndices = vector<byte>();
 	switch (skinType)
 	{
-	case 1:
+	  case 1:
 		// only if not overlapping with armor
 		bodyParts.push_back(QString("woman_body_new"));
-		boneIndices.push_back(9);
+		boneIndices.push_back(0);
 
 		bodyParts.push_back(QString("f_handL"));
 		boneIndices.push_back(13);
@@ -3927,10 +3931,10 @@ void MainWindow::setSkinBodyParts(BYTE skinType) {
 		bodyParts.push_back(QString("woman_calf_r"));
 		boneIndices.push_back(5);
 		break;
-	default:
+	  default:
 		// only if not overlapping with armor
 		bodyParts.push_back(QString("man_body_new"));
-		boneIndices.push_back(9);
+		boneIndices.push_back(0);
 
 		bodyParts.push_back(QString("m_handL"));
 		boneIndices.push_back(13);
@@ -3959,34 +3963,22 @@ void MainWindow::setSkinBodyParts(BYTE skinType) {
 }
 
 /* method created by Johandros */
+BOOL MainWindow::setMaterial(QString material) {
+	QLineEdit* materialBox = guiPanel->ui->boxMaterial;
+	QCompleter* completer = materialBox->completer();
+	materialBox->setText(material);
+	save();
+	return (completer->completionModel()->rowCount() > 0);
+}
+
+/* method created by Johandros */
 void MainWindow::showTroop3DPreview(BYTE skinType, QString face1Code, QString face2Code) {
-	
 	BOOL retur = searchIniExplicit(QString("head"), MESH);
 	if (retur) {
 		// set material
 		addLastSelectedToXViewMesh(9);
 		// clone if needed
 	}
-
-	/* SKELETONS */
-	// 0 human
-	// 1 human_horse
-
-	/* BONES */
-	// 0 abdomen   -  X X
-	// 1 thighL    -  4 thighR
-	// 2 calfL     -  5 calfR
-	// 3 footL     -  6 footR
-	// 7 spine     -  X X
-	// 8 thorax    -  X X
-	// 9 head      -  X X
-	//10 shoulderL - 15 shoulderR 
-	//11 upperarmL - 16 upperarmR
-	//12 forearmL  - 17 forearmR
-	//13 handL     - 18 handR
-	//14 itemL     - 19 itemR
-
-
 
 	// first	0000000
 	// second	fff
@@ -3997,10 +3989,10 @@ void MainWindow::showTroop3DPreview(BYTE skinType, QString face1Code, QString fa
 	// ...		...
 
 	bool worked = false;
-	int age = (face1Code.mid(10, 2).toInt(&worked, 16) & 0x0FF);
-	int skin = (face1Code.mid(12, 1).toInt(&worked, 16) & 0x00F);
-	int beard = (face1Code.mid(13, 2).toInt(&worked, 16) & 0x0FF);
-	int hair = (face1Code.mid(14, 3).toInt(&worked, 16) & 0x1FF);
+	int age	  = ((face1Code.mid(10, 2).toInt(&worked, 16) & 0xFF000000) >> 24 & 0x0FF) / 2; // check again
+	int skin  = ((face1Code.mid(12, 1).toInt(&worked, 16) & 0x00F00000) >> 16 & 0x00F);
+	int beard = ((face1Code.mid(13, 2).toInt(&worked, 16) & 0x000FF000) >> 12 & 0x0FF) / 4; // check again
+	int hair  = ((face1Code.mid(14, 3).toInt(&worked, 16) & 0x00001FF0) >>  8 & 0x1FF);
 
 	string s = "";
 	s += "Age: " + to_string(age) + "\n";
@@ -4049,7 +4041,7 @@ void MainWindow::showTroop3DPreview() {
 	selector->selectAll();
 
 	//guiPanel->setRefAnimation(2);//alternative usage(?)
-	guiPanel->ui->cbRefani->setCurrentIndex(1);//maybe optional animation?
+	guiPanel->ui->cbRefani->setCurrentIndex(2);//maybe optional animation?
 	//guiPanel->ui->cbHitboxes->setChecked(true);//optional?
 	guiPanel->ui->buPlay->click();
 

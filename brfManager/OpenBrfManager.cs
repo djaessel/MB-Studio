@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using MB_Studio_Library.Objects;
+using MB_Studio_Library.IO;
+using System.Globalization;
 
 namespace brfManager
 {
@@ -36,7 +38,10 @@ namespace brfManager
         public extern static void SetSkinBodyParts(byte skinType);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/);
+        public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/, string material);
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public extern static bool SetMaterialLastSel(string material);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool RemoveMeshFromXViewModel(string meshName);
@@ -150,9 +155,9 @@ namespace brfManager
             SetSkinBodyParts(skinType);
         }
 
-        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/)
+        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, string material = "")
         {
-            return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/);
+            return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/, material);
         }
 
         public bool RemoveMeshFromTroop3DPreview(string meshName)
@@ -168,9 +173,73 @@ namespace brfManager
         public void Troop3DPreviewShow(Troop troop = null)
         {
             if (troop != null)
-                ShowTroop3DPreviewFace((byte)(troop.FlagsGZ & 0xF), troop.Face1, troop.Face2);
-            else
-                ShowTroop3DPreview();
+            {
+                byte skinType = (byte)(troop.FlagsGZ & 0x0F);
+                string fileName = CodeReader.Files[(int)Skriptum.ObjectType.Skin];
+
+                var cr = new CodeReader(CodeReader.ModPath + fileName);
+                List<Skin> skins = cr.ReadSkin();
+                Skin skin = skins[skinType];
+
+                string faceCode = TroopCombinedFaceCode(troop);
+
+                ulong age         = ((ulong.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFF000000) >> 24 & 0x0FF) / 2; // check again
+                ulong face        = ((ulong.Parse(faceCode.Substring(12, 1), NumberStyles.HexNumber) & 0x00F00000) >> 16 & 0x00F) / 1; // check again
+                ulong beard       = ((ulong.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0x000FF000) >> 12 & 0x0FF) / 4; // check again
+                ulong hair        = ((ulong.Parse(faceCode.Substring(14, 3), NumberStyles.HexNumber) & 0x00001FF0) >>  8 & 0x1FF) / 1; // check again
+
+                var faceTexture = skin.FaceTextures[face];
+
+                bool success = true;
+                success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0, 0, -1, faceTexture.Name);//check later for color and real material
+                success &= AddMeshToTroop3DPreview(skin.HandMesh, 13, 0, -1, faceTexture.Name);//check later for color and real material
+                success &= AddMeshToTroop3DPreview(skin.HandMesh.TrimEnd('l') + "r", 18, 0, -1, faceTexture.Name);//check later for color and real material
+                success &= AddMeshToTroop3DPreview(skin.CalfMesh, 2, 0, -1, faceTexture.Name);//check later for color and real material
+                success &= AddMeshToTroop3DPreview(skin.CalfMesh.TrimEnd('L') + "R", 5, 0, -1, faceTexture.Name);//check later for color and real material
+
+                if (skin.HairMeshes.Length != 0)
+                {
+                    string hairMesh = skin.HairMeshes[hair];
+                    string hairTexture = skin.HairTextures[face];
+                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, hairTexture);
+                }
+
+                if (skin.BeardMeshes.Length != 0)
+                {
+                    string beardMesh = skin.BeardMeshes[beard];
+                    string beardTexture = skin.BeardTextures[face];
+                    success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, beardTexture);
+                }
+
+                success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, faceTexture.Name);
+                // add mirror here if needed
+
+                Console.WriteLine("FaceTexture: " + faceTexture.Name);
+
+                Console.Write("Troop base body set ");
+                if (!success)
+                    Console.WriteLine("successful");
+                else
+                    Console.WriteLine("failed");
+            }
+            //else
+            ShowTroop3DPreview();
+        }
+
+        public bool SetMaterialLastSelected(string material)
+        {
+            return SetMaterialLastSel(material);
+        }
+
+        private string TroopCombinedFaceCode(Troop troop)
+        {
+            //char[] face1X = troop.Face1.ToCharArray();
+            //char[] face2X = troop.Face2.ToCharArray();
+            //string result = string.Empty;
+            //for (int i = 0; i < face1X.Length; i++)
+            //    result += (char)(face1X[i] + face2X[i] / 2); // theoretical function - double/triple numbers not included
+            //return result;
+            return troop.Face1.Substring(2);
         }
 
         public void ChangeModule(string moduleName)

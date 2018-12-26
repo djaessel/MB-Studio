@@ -922,18 +922,16 @@ void MainWindow::createConnections(){
 	connect(guiPanel->ui->rbAlphaColor      ,SIGNAL(clicked()),glWidget,SLOT(showAlphaPurple()));
 	connect(guiPanel->ui->rbAlphaNo         ,SIGNAL(clicked()),glWidget,SLOT(showAlphaNo()));
 	connect(guiPanel->ui->rbAlphaTransparent,SIGNAL(clicked()),glWidget,SLOT(showAlphaTransparent()));
-	connect(guiPanel->ui->boxMaterial    ,SIGNAL(textChanged(QString)),
-	        this,SLOT(onChangeMeshMaterial(QString)));
-	connect(guiPanel->ui->boxMaterial    ,SIGNAL(textChanged(QString)),
-            guiPanel,SLOT(updateSingleMaterial(QString)));
-	connect(guiPanel->ui->rulerSlid, SIGNAL(sliderMoved(int)),glWidget,SLOT(setRulerLenght(int)));
-	connect(guiPanel->ui->rulerSpin, SIGNAL(valueChanged(int)),glWidget,SLOT(setRulerLenght(int)));
-	connect(guiPanel->ui->labMatName, SIGNAL(linkActivated(QString)), this, SLOT(navigateRight()) ) ;
-	connect(guiPanel, SIGNAL(followLink()), this, SLOT(navigateRight()) ) ;
-	connect(guiPanel->ui->labBackM, SIGNAL(linkActivated(QString)), this, SLOT(navigateLeft()) ) ;
-	connect(guiPanel->ui->labBackT, SIGNAL(linkActivated(QString)), this, SLOT(navigateLeft()) ) ;
-	connect(guiPanel->ui->labBackS, SIGNAL(linkActivated(QString)), this, SLOT(navigateLeft()) ) ;
-	connect(guiPanel->ui->labShaFallback, SIGNAL(linkActivated(QString)), this, SLOT(navigateRight()) ) ;
+	connect(guiPanel->ui->boxMaterial		,SIGNAL(textChanged(QString)), this,SLOT(onChangeMeshMaterial(QString)));
+	connect(guiPanel->ui->boxMaterial		,SIGNAL(textChanged(QString)), guiPanel,SLOT(updateSingleMaterial(QString)));
+	connect(guiPanel->ui->rulerSlid			,SIGNAL(sliderMoved(int)),glWidget,SLOT(setRulerLenght(int)));
+	connect(guiPanel->ui->rulerSpin			,SIGNAL(valueChanged(int)),glWidget,SLOT(setRulerLenght(int)));
+	connect(guiPanel->ui->labMatName		,SIGNAL(linkActivated(QString)), this, SLOT(navigateRight()) ) ;
+	connect(guiPanel						,SIGNAL(followLink()), this, SLOT(navigateRight()) ) ;
+	connect(guiPanel->ui->labBackM			,SIGNAL(linkActivated(QString)), this, SLOT(navigateLeft()) ) ;
+	connect(guiPanel->ui->labBackT			,SIGNAL(linkActivated(QString)), this, SLOT(navigateLeft()) ) ;
+	connect(guiPanel->ui->labBackS			,SIGNAL(linkActivated(QString)), this, SLOT(navigateLeft()) ) ;
+	connect(guiPanel->ui->labShaFallback	,SIGNAL(linkActivated(QString)), this, SLOT(navigateRight()) ) ;
 
 	// edit material
 	connect(guiPanel->ui->leMatR,SIGNAL(textEdited(QString)), this, SLOT(updateDataMaterial()));

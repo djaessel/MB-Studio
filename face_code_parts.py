@@ -209,69 +209,75 @@ xxxxxxxxxxxxxxxxxxxxxxx6dbxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
  CONTINUE VIDEO AT 02:47 AND MAKE THE SAME AS BEFORE
 
 ___________________________________________________________________
-xxxxxxxxxxxx0000xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
- 
+xxxxxxxxxx000000xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+AGE:
+000000
+xx0000
+00
+... ?
+
 SKIN:
-0
-x
-0
-1
-2
-3
-4
-5
-6
-7
+000000
+00x000
+  0
+  1
+  2
+  3
+  4
+  5
+  6
+  7
 
 BEARD:
-000
-0xx
- 00
- 04
- 08
- 0c
- 10
- 14
- 18
- 1c
- 20
- 24
- 28
- 2c
- 30
- 34
- 38
- 3c
- 40
- 44
- 48
- 4c
- 50
- 54
- 58
- 5c
- ... ?
+00000
+000xx
+   00
+   04
+   08
+   0c
+   10
+   14
+   18
+   1c
+   20
+   24
+   28
+   2c
+   30
+   34
+   38
+   3c
+   40
+   44
+   48
+   4c
+   50
+   54
+   58
+   5c
+   ... ?
 
 HAIR:
-0000
-0xxx
- 005
- 015
- 025
- 035
- 045
- 055
- 065
- 075
- 085
- 095
- 0a5
- 0b5
- 0c5
- 0d5
- 0e5
- 0f5
- 105
- 115
- ... ?
- 
+000000
+000xx5
+   00
+   01
+   02
+   03
+   04
+   05
+   06
+   07
+   08
+   09
+   0a
+   0b
+   0c
+   0d
+   0e
+   0f
+   10
+   11
+   ... ?
+

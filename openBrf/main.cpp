@@ -106,11 +106,11 @@ DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(STRIN
 	return found;
 }
 
-DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/)
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, char* material = nullptr)
 {
 	BOOL retur = SelectItemByNameAndKind(meshName);
 	if (retur) {//includes CurWindowIsShown()
-		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition/*, isAtOrigin*/);
+		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition/*, isAtOrigin*/, material);
 	}
 	return retur;
 	//if (CurWindowIsShown()) {
@@ -120,9 +120,17 @@ DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int
 	//return false;
 }
 
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SetMaterialLastSel(char* material)
+{
+	BOOL success = false;
+	if (CurWindowIsShown())
+		success = curWindow->setMaterial(QString(material));
+	return success;
+}
+
 DLL_EXPORT_VOID SetSkinBodyParts(BYTE skinType)
 {
-	if (CurWindowIsShown)
+	if (CurWindowIsShown())
 		curWindow->setSkinBodyParts(skinType);
 }
 
