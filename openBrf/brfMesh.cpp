@@ -2606,7 +2606,6 @@ void BrfMesh::Hasten(float timemult){
 }
 
 void BrfMesh::Flip(){
-
   for (unsigned int j=0; j<frame.size(); j++) {
     for (unsigned int i=0; i<frame[j].pos.size(); i++){
       frame[j].pos[i].X()*=-1;

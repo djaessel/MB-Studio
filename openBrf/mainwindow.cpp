@@ -3883,8 +3883,9 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	tempMeshList.push_back(newMesh);
 
 	if (mirror) {
-		BrfMesh mirrorMesh = m;
-		mirrorMesh.Flip();
+		newMesh.Flip();
+		BrfMesh mirrorMesh = newMesh;
+		//mirrorMesh.Flip();
 		tempMeshList.push_back(newMesh);
 	}
 
@@ -3919,112 +3920,6 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 	save();
 
 	statusBar()->showMessage(tr("Removed mesh %1 from Troop 3D Preview!").arg(name), 5000);
-}
-
-void MainWindow::setSkinBodyParts(BYTE skinType) {
-	vector<QString> bodyParts = vector<QString>();
-	vector<byte> boneIndices = vector<byte>();
-	switch (skinType)
-	{
-	  case 1:
-		// only if not overlapping with armor
-		bodyParts.push_back(QString("woman_body_new"));
-		boneIndices.push_back(0);
-
-		bodyParts.push_back(QString("f_handL"));
-		boneIndices.push_back(13);
-
-		bodyParts.push_back(QString("f_handR"));
-		boneIndices.push_back(18);
-
-		bodyParts.push_back(QString("woman_calf_l"));
-		boneIndices.push_back(2);
-
-		bodyParts.push_back(QString("woman_calf_r"));
-		boneIndices.push_back(5);
-		break;
-	  default:
-		// only if not overlapping with armor
-		bodyParts.push_back(QString("man_body_new"));
-		boneIndices.push_back(0);
-
-		bodyParts.push_back(QString("m_handL"));
-		boneIndices.push_back(13);
-
-		bodyParts.push_back(QString("m_handR"));
-		boneIndices.push_back(18);
-
-		bodyParts.push_back(QString("man_calf_l"));
-		boneIndices.push_back(2);
-
-		bodyParts.push_back(QString("man_calf_r"));
-		boneIndices.push_back(5);
-		break;
-	}
-
-	for (size_t i = 0; i < bodyParts.size(); i++)
-	{
-		BOOL success = searchIniExplicit(bodyParts[i], MESH);
-		if (success)
-		{
-			// set material
-			addLastSelectedToXViewMesh(boneIndices[i]);
-			// clone if needed
-		}
-	}
-}
-
-/* method created by Johandros */
-BOOL MainWindow::setMaterial(QString material) {
-	QLineEdit* materialBox = guiPanel->ui->boxMaterial;
-	QCompleter* completer = materialBox->completer();
-	materialBox->setText(material);
-	save();
-	return (completer->completionModel()->rowCount() > 0);
-}
-
-/* method created by Johandros */
-void MainWindow::showTroop3DPreview(BYTE skinType, QString face1Code, QString face2Code) {
-	BOOL retur = searchIniExplicit(QString("head"), MESH);
-	if (retur) {
-		// set material
-		addLastSelectedToXViewMesh(9);
-		// clone if needed
-	}
-
-	// first	0000000
-	// second	fff
-	// age		ab
-	// skin		c
-	// beard	de
-	// hair		efg
-	// ...		...
-
-	bool worked = false;
-	int age	  = ((face1Code.mid(10, 2).toInt(&worked, 16) & 0xFF000000) >> 24 & 0x0FF) / 2; // check again
-	int skin  = ((face1Code.mid(12, 1).toInt(&worked, 16) & 0x00F00000) >> 16 & 0x00F);
-	int beard = ((face1Code.mid(13, 2).toInt(&worked, 16) & 0x000FF000) >> 12 & 0x0FF) / 4; // check again
-	int hair  = ((face1Code.mid(14, 3).toInt(&worked, 16) & 0x00001FF0) >>  8 & 0x1FF);
-
-	string s = "";
-	s += "Age: " + to_string(age) + "\n";
-	s += "Skin: " + to_string(skin) + "\n";
-	s += "Beard: " + to_string(beard) + "\n";
-	s += "Hair: " + to_string(hair) + "\n";
-
-	MessageBoxA(NULL, s.c_str(), "INFO", 0);
-
-	if (face1Code.trimmed().length() > 0)
-	{
-		// get specific mesh data
-	}
-
-	if (face2Code.trimmed().length() > 0)
-	{
-		// get specific mesh data
-	}
-
-	showTroop3DPreview();
 }
 
 /* method created by Johandros */

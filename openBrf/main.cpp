@@ -120,30 +120,10 @@ DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int
 	//return false;
 }
 
-DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SetMaterialLastSel(char* material)
-{
-	BOOL success = false;
-	if (CurWindowIsShown())
-		success = curWindow->setMaterial(QString(material));
-	return success;
-}
-
-DLL_EXPORT_VOID SetSkinBodyParts(BYTE skinType)
-{
-	if (CurWindowIsShown())
-		curWindow->setSkinBodyParts(skinType);
-}
-
 DLL_EXPORT_VOID ShowTroop3DPreview()
 {
 	if (CurWindowIsShown())
 		curWindow->showTroop3DPreview();
-}
-
-DLL_EXPORT_VOID ShowTroop3DPreviewFace(BYTE skin, char* face1Code, char* face2Code)
-{
-	if (CurWindowIsShown())
-		curWindow->showTroop3DPreview(skin, QString(face1Code), QString(face2Code));
 }
 
 DLL_EXPORT_VOID RemoveMeshFromXViewModel(STRING meshName)
