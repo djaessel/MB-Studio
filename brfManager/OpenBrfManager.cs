@@ -171,12 +171,18 @@ namespace brfManager
 
                 string faceCode = TroopCombinedFaceCode(troop);
 
-                Console.WriteLine("Merged FaceCode: 0x" + faceCode);
+                Console.Write("Merged FaceCode: ");
+                Console.Write("0x | " + faceCode.Substring(0, 7));
+                Console.Write(" | " + faceCode.Substring(7, 9));
+                Console.WriteLine(" | " + faceCode.Substring(16));
 
-                ulong age         = ((ulong.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFF000000) >> 24 & 0x0FF) / 2; // check again
-                ulong face        = ((ulong.Parse(faceCode.Substring(12, 1), NumberStyles.HexNumber) & 0x00F00000) >> 16 & 0x00F) / 1; // check again
-                ulong beard       = ((ulong.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0x000FF000) >> 12 & 0x0FF) / 4; // check again
-                ulong hair        = ((ulong.Parse(faceCode.Substring(14, 3), NumberStyles.HexNumber) & 0x00001FF0) >>  8 & 0x1FF) / 1; // check again
+                uint age      = (uint.Parse(faceCode.Substring(7, 2),  NumberStyles.HexNumber) & 0xFC) / 4;
+                uint hairColC = (uint.Parse(faceCode.Substring(8, 2),  NumberStyles.HexNumber) & 0x3F);
+                uint rsved    = (uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC); // check again
+                uint face     = (uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F);
+                uint beard    = (uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) / 4;
+                uint hair     = (uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F); // check again
+                uint nan      = (uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08); // check again
 
                 FaceTexture faceTexture;
                 if ((troop.FlagsGZ >> 12 & 0xF) >= 0x8)//tf_randomize_face
@@ -184,32 +190,63 @@ namespace brfManager
                     Random random = new Random();
                     faceTexture = skin.FaceTextures[random.Next(0, skin.FaceTextures.Length)];
                     // random face gen here
+                    Console.WriteLine("Randomize face flag set!");
                 }
                 else
                     faceTexture = skin.FaceTextures[face];
 
+                Console.WriteLine("Selected FaceTexture: " + faceTexture.Name);
+
                 bool success = true;
                 success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name);
-                success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0/*, 0, -1, <meshname>*/);//check later for color and real material
-                success &= AddMeshToTroop3DPreview(skin.HandMesh, 13/*, 0, -1, <meshname>*/);//check later for color and real material
-                success &= AddMeshToTroop3DPreview(skin.HandMesh.TrimEnd('L') + "R", 18/*, 0, -1, <meshname>*/);//check later for color and real material
-                success &= AddMeshToTroop3DPreview(skin.CalfMesh, 2/*, 0, -1, <meshname>*/);//check later for color and real material
-                success &= AddMeshToTroop3DPreview(skin.CalfMesh.TrimEnd('l') + "l", 5/*, 0, -1, <meshname>*/);//check later for color and real material
-                
-                // remove beard, hair, head, body, legs depending on item properties later
+                success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0);
+                success &= AddMeshToTroop3DPreview(skin.HandMesh, 13);
+                success &= AddMeshToTroop3DPreview(skin.HandMesh.TrimEnd('L') + "R", 18);
+                success &= AddMeshToTroop3DPreview(skin.CalfMesh, 2);
+                success &= AddMeshToTroop3DPreview(skin.CalfMesh.TrimEnd('l') + "l", 5);
 
-                if (skin.HairMeshes.Length != 0)
+                // remove beard, hair, head, body, legs depending on item properties later and check skin color
+
+                if (skin.HairMeshes.Length != 0 && hair > 0 && hair <= skin.HairMeshes.Length)
                 {
-                    string hairMesh = skin.HairMeshes[hair];
-                    string hairTexture = skin.HairTextures[face];
-                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, false, hairTexture);
+                    string hairTexture = string.Empty;
+                    int hairPerc = (int)hairColC / faceTexture.HairColors.Length;
+                    if (hairColC == 0)
+                    {
+                        hairColC++;
+                        hairPerc++;
+                    }
+
+                    int hairIdx = (int)hairColC / hairPerc - 1;
+                    if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length && skin.HairTextures.Length >= (hairIdx + 1))
+                        hairTexture = skin.HairTextures[skin.HairTextures.Length - (hairIdx + 1)];
+
+                    Console.WriteLine("HairTexture: " + hairTexture);
+
+                    string hairMesh = skin.HairMeshes[hair - 1];
+                    // add hair color perc to mesh
+                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, true, hairTexture); // fix log bug
                 }
 
-                if (skin.BeardMeshes.Length != 0)
+                if (skin.BeardMeshes.Length != 0 && beard > 0 && beard <= skin.BeardMeshes.Length)
                 {
-                    string beardMesh = skin.BeardMeshes[beard];
-                    string beardTexture = skin.BeardTextures[face];
-                    success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture);
+                    string beardTexture = string.Empty;
+                    int hairPerc = (int)hairColC / faceTexture.HairColors.Length;
+                    if (hairColC == 0)
+                    {
+                        hairColC++;
+                        hairPerc++;
+                    }
+
+                    int hairIdx = ((int)hairColC / hairPerc) - 1;
+                    if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length && skin.BeardMeshes.Length >= (hairIdx + 1))
+                        beardTexture = skin.BeardTextures[skin.BeardTextures.Length - (hairIdx + 1)];
+
+                    Console.WriteLine("BeardTexture: " + beardTexture);
+
+                    string beardMesh = skin.BeardMeshes[beard - 1];
+                    // add hair color perc to mesh
+                    success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture); // fix log bug
                 }
 
                 Console.WriteLine("Troop skin body parts: " + success);

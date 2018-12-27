@@ -518,6 +518,7 @@ namespace MB_Studio.Manager
             if (IsResetActive) return;
 
             bool noTypesInList = (typeSelect_lb.Items.Count == 0);
+            // bug if search active!!! fix search bug!!!
             bool isNewType = typeSelect_lb.SelectedItem.ToString().Equals("New");
             if (!noTypesInList && !isNewType)
             {
