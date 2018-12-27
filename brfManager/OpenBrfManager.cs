@@ -36,7 +36,7 @@ namespace brfManager
         public extern static void AddCurSelectedMeshsAllDataToMod(string modName);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/, bool mirror, string material);
+        public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/, bool mirror, string material, ulong vertColor);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool RemoveMeshFromXViewModel(string meshName);
@@ -142,9 +142,9 @@ namespace brfManager
             CloseApp();
         }
 
-        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, bool mirror = false, string material = "")
+        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, bool mirror = false, string material = "", ulong vertColor = ulong.MinValue)
         {
-            return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material);
+            return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material, vertColor);
         }
 
         public bool RemoveMeshFromTroop3DPreview(string meshName)
@@ -217,15 +217,19 @@ namespace brfManager
                         hairPerc++;
                     }
 
+                    ulong colorX = 0;
                     int hairIdx = (int)hairColC / hairPerc - 1;
-                    if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length && skin.HairTextures.Length >= (hairIdx + 1))
-                        hairTexture = skin.HairTextures[skin.HairTextures.Length - (hairIdx + 1)];
+                    if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length)
+                        colorX = faceTexture.HairColors[faceTexture.HairColors.Length - hairIdx]; //hairTexture = skin.HairTextures[skin.HairTextures.Length - (hairIdx + 1)];
 
-                    Console.WriteLine("HairTexture: " + hairTexture);
+                    // only blonde is used!!!
+                    // use hairPerc for color intesity
+
+                    Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)(uint)colorX));
 
                     string hairMesh = skin.HairMeshes[hair - 1];
                     // add hair color perc to mesh
-                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, true, hairTexture); // fix log bug
+                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, true, hairTexture, colorX); // fix log bug
                 }
 
                 if (skin.BeardMeshes.Length != 0 && beard > 0 && beard <= skin.BeardMeshes.Length)
@@ -241,6 +245,8 @@ namespace brfManager
                     int hairIdx = ((int)hairColC / hairPerc) - 1;
                     if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length && skin.BeardMeshes.Length >= (hairIdx + 1))
                         beardTexture = skin.BeardTextures[skin.BeardTextures.Length - (hairIdx + 1)];
+
+                    // only blonde is used!!!
 
                     Console.WriteLine("BeardTexture: " + beardTexture);
 

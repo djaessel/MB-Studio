@@ -106,11 +106,11 @@ DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(STRIN
 	return found;
 }
 
-DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, BOOL mirror = false, char* material = NULL)
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, BOOL mirror = false, char* material = NULL, ulong vertColor = NULL)
 {
 	BOOL retur = SelectItemByNameAndKind(meshName);
 	if (retur) {//includes CurWindowIsShown()
-		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material);
+		curWindow->addLastSelectedToXViewMesh(bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material, vertColor);
 	}
 	return retur;
 	//if (CurWindowIsShown()) {

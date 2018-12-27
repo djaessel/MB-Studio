@@ -3839,7 +3839,7 @@ void MainWindow::createFileIfNotExists(const QString& filePath) {
 }
 
 /* method created by Johandros */
-void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material) {
+void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, ulong vertColor) {
 
 	int i = selector->firstSelected();
 	//if (material) {
@@ -3847,11 +3847,11 @@ void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPos
 	//}
 	assert(selector->currentTabName() == MESH);
 	assert(i < (int)brfdata.mesh.size() && i >= 0);
-	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material);
+	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material, vertColor);
 }
 
 /* method created by Johandros */
-void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material) {
+void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, ulong vertColor) {
 
 	int meshIdx = GetBrfMeshIndexByName(meshName);
 	if (hasDependencyProblems() || meshIdx < 0) {
@@ -3873,6 +3873,9 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	BrfMesh newMesh = m;
 	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
+	//if (newMesh.hasVertexColor) {
+		newMesh.ColorAll((uint)vertColor & 0xffffffff);
+	//}
 
 	if (material != NULL && strlen(material) > 0) {
 		char newMaterial[255];
