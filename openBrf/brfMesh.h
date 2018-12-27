@@ -279,6 +279,7 @@ public:
 	static unsigned int multCol( unsigned int col, unsigned int colb);
 
 	void SetName(const char* st);
+	void SetMaterial(const char* st);
 private:
 	void CopyTimesFrom(const BrfMesh &brf);
 	void Blend(const BrfMesh &brf);

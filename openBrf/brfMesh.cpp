@@ -1751,7 +1751,11 @@ void BrfMesh::FixTextcoord(const BrfMesh &brf,BrfMesh &ref, int fi){
 
 void BrfMesh::SetName(const char* st){
   sprintf(name,"%s",st);
-	AnalyzeName();
+  AnalyzeName();
+}
+
+void BrfMesh::SetMaterial(const char* st) {
+  sprintf(material,"%s",st);
 }
 
 void BrfMesh::DeleteSelected(){

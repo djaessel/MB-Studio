@@ -52,8 +52,8 @@ public:
 
 	void createFileIfNotExists(const QString& filePath);
 
-	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/);
-	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, char* material = nullptr);
+	void addMeshByNameToXViewMesh(char* meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, BOOL mirror = false, char* material = NULL);
+	void addLastSelectedToXViewMesh(int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, BOOL mirror = false, char* material = NULL);
 
 	bool hasTextQLineEdit(QLineEdit* le);
 

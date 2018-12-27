@@ -3839,19 +3839,19 @@ void MainWindow::createFileIfNotExists(const QString& filePath) {
 }
 
 /* method created by Johandros */
-void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, char* material) {
+void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material) {
 
 	int i = selector->firstSelected();
-	if (material != nullptr) {
-		setMaterial(QString(material));
-	}
+	//if (material) {
+	//	setMaterial(QString(material));
+	//}
 	assert(selector->currentTabName() == MESH);
 	assert(i < (int)brfdata.mesh.size() && i >= 0);
-	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/);
+	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material);
 }
 
 /* method created by Johandros */
-void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/) {
+void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material) {
 
 	int meshIdx = GetBrfMeshIndexByName(meshName);
 	if (hasDependencyProblems() || meshIdx < 0) {
@@ -3874,7 +3874,19 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
 
+	if (material != NULL && strlen(material) > 0) {
+		char newMaterial[255];
+		sprintf(newMaterial, "%s", material);
+		newMesh.SetMaterial(newMaterial);
+	}
+
 	tempMeshList.push_back(newMesh);
+
+	if (mirror) {
+		BrfMesh mirrorMesh = m;
+		mirrorMesh.Flip();
+		tempMeshList.push_back(newMesh);
+	}
 
 	//statusBar()->showMessage(tr("Added mesh %1 to Troop 3D Preview!").arg(/*loadedNewMesh->name*/newName), 5000);
 }
