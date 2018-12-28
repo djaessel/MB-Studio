@@ -3780,7 +3780,11 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPo
 	else {
 		CarryPosition &cp(carryPositionSet[carryPositon]);
 		if (cp.needExtraTrasl) {
-			if (!guiPanel->ui->rulerSpin->isVisible()) {//Fehler mit guiPanel Deklaration class GuiPanel; --> class GuiPanel { /* members */ }
+			/*if (!guiPanel->ui->rulerSpin->isVisible()) {
+			    //Fehler mit guiPanel Deklaration class GuiPanel; -->
+				//class GuiPanel { 
+				//	members
+				//}
 				int answ = QMessageBox::warning(this, "OpenBrf",
 					tr("To apply carry position '%1', I need to know the weapon lenght.\nUse the ruler tool to tell me the lenght of weapon '%2'.\n\nActivate ruler tool?")
 						.arg(cp.name).arg(m.name),
@@ -3790,7 +3794,7 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPo
 					guiPanel->setMeasuringTool(0);
 				}
 				return false;
-			}
+			}*/
 		}
 		float weaponLenght = guiPanel->ui->rulerSpin->value() / 100.0;//Fehler mit guiPanel Deklaration class GuiPanel; --> class GuiPanel { /* members */ }
 		m.Apply(cp, s, weaponLenght, isAtOrigin);
@@ -3839,19 +3843,16 @@ void MainWindow::createFileIfNotExists(const QString& filePath) {
 }
 
 /* method created by Johandros */
-void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, ulong vertColor) {
+void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, uint vertColor) {
 
 	int i = selector->firstSelected();
-	//if (material) {
-	//	setMaterial(QString(material));
-	//}
 	assert(selector->currentTabName() == MESH);
 	assert(i < (int)brfdata.mesh.size() && i >= 0);
 	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material, vertColor);
 }
 
 /* method created by Johandros */
-void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, ulong vertColor) {
+void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, uint vertColor) {
 
 	int meshIdx = GetBrfMeshIndexByName(meshName);
 	if (hasDependencyProblems() || meshIdx < 0) {
@@ -3873,9 +3874,9 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 	BrfMesh newMesh = m;
 	sprintf(newName, "Troop3DPreview.%s", meshName);
 	newMesh.SetName(newName);
-	//if (newMesh.hasVertexColor) {
-		newMesh.ColorAll((uint)vertColor & 0xffffffff);
-	//}
+	if (/*newMesh.hasVertexColor && */vertColor != 0) {
+		newMesh.MultColorAll(vertColor);
+	}
 
 	if (material != NULL && strlen(material) > 0) {
 		char newMaterial[255];
@@ -3951,7 +3952,8 @@ void MainWindow::showTroop3DPreview() {
 	selector->selectAll();
 
 	//guiPanel->setRefAnimation(2);//alternative usage(?)
-	guiPanel->ui->cbRefani->setCurrentIndex(2);//maybe optional animation?
+	QComboBox* aniBox = guiPanel->ui->cbRefani;
+	aniBox->setCurrentIndex(aniBox->count() - 1);//maybe optional animation later?
 	//guiPanel->ui->cbHitboxes->setChecked(true);//optional?
 	guiPanel->ui->buPlay->click();
 

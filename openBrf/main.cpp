@@ -106,7 +106,7 @@ DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV SelectItemByNameAndKindFromCurFile(STRIN
 	return found;
 }
 
-DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, BOOL mirror = false, char* material = NULL, ulong vertColor = NULL)
+DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin = true*/, BOOL mirror = false, STRING material = NULL, uint vertColor = 0)
 {
 	BOOL retur = SelectItemByNameAndKind(meshName);
 	if (retur) {//includes CurWindowIsShown()

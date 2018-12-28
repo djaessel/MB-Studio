@@ -85,7 +85,7 @@ namespace MB_Studio.Manager
 
         private void TroopManager_OpenBrfItems_SelectedIndexChanged(object sender = null, EventArgs e = null)
         {
-            if (IsDataLoaded && Has3DView)
+            if (IsDataLoaded && Has3DView && CurrentTypeIndex >= 0)
             {//change later so only the specific bone will be updated!
                 Troop curTroop = (Troop)types[CurrentTypeIndex];
                 OpenBrfManager.Troop3DPreviewClearData();//doesn't clear correct?

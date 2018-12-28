@@ -37,6 +37,8 @@ namespace MB_Studio.Manager
 
         #region Protected
 
+        //protected static string NEW_TYPE_TEXT = "< new >";
+
         protected static string moduleName;
         protected static List<string> modMeshResourceNames = new List<string>();
 
@@ -145,6 +147,8 @@ namespace MB_Studio.Manager
         private void Init(ObjectType objectType = ObjectType.Script, bool uses3DView = false)
         {
             InitializeComponent();
+
+            //typeSelect_lb.Items.Add(NEW_TYPE_TEXT);
 
             BackColor = BaseColor;
 
@@ -270,7 +274,7 @@ namespace MB_Studio.Manager
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 translations.Add(new string[2]);
 
-            typeSelect_lb.SelectedIndex = 0;
+            //typeSelect_lb.SelectedIndex = 0;
         }
 
         protected virtual void LoadSettingsAndLists()
@@ -464,7 +468,13 @@ namespace MB_Studio.Manager
 
             int newIdx = -1;
             int sIdx = newIdx;
-            for (int i = 1; i < typeSelect_lb.Items.Count; i++)
+            int startIdx = 0;
+            //if (typeSelect_lb.Items.Count != 0)
+            //{
+            //    if (typeSelect_lb.Items[0].Equals(NEW_TYPE_TEXT))
+            //        startIdx++;
+            //}
+            for (int i = startIdx; i < typeSelect_lb.Items.Count; i++)
             {
                 if (id.Equals(typeSelect_lb.Items[i].ToString()))
                 {
@@ -488,7 +498,7 @@ namespace MB_Studio.Manager
             SearchForContaining(lb, new List<Skriptum>(orgList), searchText, usedList, addID);
         }
 
-        protected void SearchForContaining(ListBox lb, List<Skriptum> orgList, string searchText, List<Skriptum> usedList = null, bool addID = false, bool addNew = false)
+        protected void SearchForContaining(ListBox lb, List<Skriptum> orgList, string searchText, List<Skriptum> usedList = null, bool addID = false/*, bool addNew = false*/)
         {
             List<Skriptum> list;
             if (usedList == null)
@@ -497,8 +507,8 @@ namespace MB_Studio.Manager
                 list = usedList;
             lb.Items.Clear();
             bool defaultList = searchText.Contains("Search ...") || searchText.Length == 0;
-            if (defaultList && addNew)
-                lb.Items.Add("New");
+            //if (defaultList && addNew)
+            //    lb.Items.Add(NEW_TYPE_TEXT);
             if (!int.TryParse(searchText, out int id))
             {
                 foreach (Skriptum type in list)
@@ -518,12 +528,14 @@ namespace MB_Studio.Manager
             if (IsResetActive) return;
 
             bool noTypesInList = (typeSelect_lb.Items.Count == 0);
-            // bug if search active!!! fix search bug!!!
-            bool isNewType = typeSelect_lb.SelectedItem.ToString().Equals("New");
-            if (!noTypesInList && !isNewType)
+            if (typeSelect_lb.SelectedIndex >= 0)
             {
-                CurrentTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
-                SetupType(types[CurrentTypeIndex]);
+                //bool isNewType = typeSelect_lb.SelectedItem.ToString().Equals(NEW_TYPE_TEXT);
+                if (!noTypesInList/* && !isNewType*/)
+                {
+                    CurrentTypeIndex = GetIndexOfTypeByID(typeSelect_lb.SelectedItem.ToString());
+                    SetupType(types[CurrentTypeIndex]);
+                }
                 return;
             }
 

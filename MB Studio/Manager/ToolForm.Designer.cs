@@ -112,8 +112,6 @@ namespace MB_Studio.Manager
             this.typeSelect_lb.ForeColor = System.Drawing.Color.White;
             this.typeSelect_lb.FormattingEnabled = true;
             this.typeSelect_lb.ItemHeight = 16;
-            this.typeSelect_lb.Items.AddRange(new object[] {
-            "New"});
             this.typeSelect_lb.Location = new System.Drawing.Point(87, 58);
             this.typeSelect_lb.Name = "typeSelect_lb";
             this.typeSelect_lb.Size = new System.Drawing.Size(317, 114);

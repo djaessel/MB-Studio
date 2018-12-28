@@ -36,7 +36,7 @@ namespace brfManager
         public extern static void AddCurSelectedMeshsAllDataToMod(string modName);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/, bool mirror, string material, ulong vertColor);
+        public extern static bool AddMeshToXViewModel(string meshName, int boneIndex, int skeletonIndex, int carryPostionIndex/*, bool isAtOrigin*/, bool mirror, string material, uint vertColor);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static bool RemoveMeshFromXViewModel(string meshName);
@@ -87,6 +87,8 @@ namespace brfManager
 
         public IntPtr Handle { get { return GetCurWindowPtr(); } }
 
+        private static readonly List<string> ExcludedMeshes = new List<string>() { "flying_missile" };
+
         #endregion
 
         public OpenBrfManager(string mabPath, string modName = "Native", string[] args = null)
@@ -96,7 +98,8 @@ namespace brfManager
 
             ModulesPath = mabPath + "\\Modules";
 
-            if (IsShown) Close();//is this even doing something?
+            if (IsShown)
+                Close();//is this even doing something?
 
             if (args != null)
                 SArray = args;
@@ -142,9 +145,14 @@ namespace brfManager
             CloseApp();
         }
 
-        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, bool mirror = false, string material = "", ulong vertColor = ulong.MinValue)
+        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, bool mirror = false, string material = "", uint vertColor = 0)
         {
-            return AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material, vertColor);
+            bool success = false;
+            if (!ExcludedMeshes.Contains(meshName))
+                success = AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material, vertColor);
+            else
+                Console.WriteLine("Excluded mesh: " + meshName);
+            return success;
         }
 
         public bool RemoveMeshFromTroop3DPreview(string meshName)
@@ -176,11 +184,11 @@ namespace brfManager
                 Console.Write(" | " + faceCode.Substring(7, 9));
                 Console.WriteLine(" | " + faceCode.Substring(16));
 
-                uint age      = (uint.Parse(faceCode.Substring(7, 2),  NumberStyles.HexNumber) & 0xFC) / 4;
-                uint hairColC = (uint.Parse(faceCode.Substring(8, 2),  NumberStyles.HexNumber) & 0x3F);
-                uint rsved    = (uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC); // check again
+                uint age      = ((uint.Parse(faceCode.Substring(7, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
+                uint hairColC = (uint.Parse(faceCode.Substring(8, 2), NumberStyles.HexNumber) & 0x3F);
+                uint rsved    = ((uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC) >> 3); // check again
                 uint face     = (uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F);
-                uint beard    = (uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) / 4;
+                uint beard    = ((uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
                 uint hair     = (uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F); // check again
                 uint nan      = (uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08); // check again
 
@@ -198,7 +206,7 @@ namespace brfManager
                 Console.WriteLine("Selected FaceTexture: " + faceTexture.Name);
 
                 bool success = true;
-                success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name);
+                success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color);
                 success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0);
                 success &= AddMeshToTroop3DPreview(skin.HandMesh, 13);
                 success &= AddMeshToTroop3DPreview(skin.HandMesh.TrimEnd('L') + "R", 18);
@@ -210,22 +218,20 @@ namespace brfManager
                 if (skin.HairMeshes.Length != 0 && hair > 0 && hair <= skin.HairMeshes.Length)
                 {
                     string hairTexture = string.Empty;
-                    int hairPerc = (int)hairColC / faceTexture.HairColors.Length;
-                    if (hairColC == 0)
-                    {
-                        hairColC++;
-                        hairPerc++;
-                    }
+                    float hairPerc = 0x3F / faceTexture.HairColors.Length;
 
-                    ulong colorX = 0;
-                    int hairIdx = (int)hairColC / hairPerc - 1;
-                    if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length)
-                        colorX = faceTexture.HairColors[faceTexture.HairColors.Length - hairIdx]; //hairTexture = skin.HairTextures[skin.HairTextures.Length - (hairIdx + 1)];
+                    int hairIdx = (int)(hairColC / hairPerc);
+                    if (hairIdx >= faceTexture.HairColors.Length)
+                        hairIdx = faceTexture.HairColors.Length - 1;
 
-                    // only blonde is used!!!
+                    uint colorX = 0;
+                    if (hairIdx >= 0)
+                        colorX = (uint)(faceTexture.HairColors[hairIdx] & uint.MaxValue);
+
                     // use hairPerc for color intesity
+                    // morph color index + 1 and find color position in between
 
-                    Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)(uint)colorX));
+                    Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
 
                     string hairMesh = skin.HairMeshes[hair - 1];
                     // add hair color perc to mesh
@@ -235,20 +241,20 @@ namespace brfManager
                 if (skin.BeardMeshes.Length != 0 && beard > 0 && beard <= skin.BeardMeshes.Length)
                 {
                     string beardTexture = string.Empty;
-                    int hairPerc = (int)hairColC / faceTexture.HairColors.Length;
-                    if (hairColC == 0)
-                    {
-                        hairColC++;
-                        hairPerc++;
-                    }
+                    float hairPerc = 0x3F / faceTexture.HairColors.Length;
 
-                    int hairIdx = ((int)hairColC / hairPerc) - 1;
-                    if (hairIdx >= 0 && hairIdx < faceTexture.HairColors.Length && skin.BeardMeshes.Length >= (hairIdx + 1))
-                        beardTexture = skin.BeardTextures[skin.BeardTextures.Length - (hairIdx + 1)];
+                    int hairIdx = (int)(hairColC / hairPerc);
+                    if (hairIdx >= faceTexture.HairColors.Length)
+                        hairIdx = faceTexture.HairColors.Length - 1;
 
-                    // only blonde is used!!!
+                    uint colorX = 0;
+                    if (hairIdx >= 0)
+                        colorX = (uint)(faceTexture.HairColors[hairIdx] & uint.MaxValue);
 
-                    Console.WriteLine("BeardTexture: " + beardTexture);
+                    // use hairPerc for color intesity
+                    // morph color index + 1 and find color position in between
+
+                    Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
 
                     string beardMesh = skin.BeardMeshes[beard - 1];
                     // add hair color perc to mesh
@@ -265,13 +271,19 @@ namespace brfManager
 
         private string TroopCombinedFaceCode(Troop troop)
         {
-            //char[] face1X = troop.Face1.ToCharArray();
-            //char[] face2X = troop.Face2.ToCharArray();
-            //string result = string.Empty;
-            //for (int i = 0; i < face1X.Length; i++)
-            //    result += (char)(face1X[i] + face2X[i] / 2); // theoretical function - double/triple numbers not included
-            //return result;
-            return troop.Face1.Substring(2);
+            string result = string.Empty;
+            string face1 = troop.Face1.Substring(2);
+            //string face2 = troop.Face2.Substring(2);
+            //if (face2.Trim('0').Length != 0) // work out good algorithm for this first!!!
+            //{
+            //    char[] face1X = face1.ToCharArray();
+            //    char[] face2X = face2.ToCharArray();
+            //    for (int i = 0; i < face1X.Length; i++)
+            //        result += ((int.Parse(face1X[i].ToString(), NumberStyles.HexNumber) + int.Parse(face2X[i].ToString(), NumberStyles.HexNumber)) / 2).ToString("X1");
+            //}
+            //else // 
+                result = face1;
+            return result.ToLower();
         }
 
         public void ChangeModule(string moduleName)
