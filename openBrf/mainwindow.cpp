@@ -9,6 +9,7 @@
 #include <QAction>
 #include <QStatusBar>
 #include <QCompleter>
+#include <QString>
 
 #include <algorithm>
 
@@ -3826,8 +3827,10 @@ bool MainWindow::hasDependencyProblems() {
 int MainWindow::GetBrfMeshIndexByName(char* name) {
 	int idx = -1;
 	size_t bsize = brfdata.mesh.size();
+	char fName[255];
+	sprintf(fName, "%s", name);
 	for (size_t i = 0; i < bsize; i++) {
-		if (brfdata.mesh[i].name == name) {
+		if (strcmp(brfdata.mesh[i].name, fName) == 0) {
 			idx = i;
 			i = bsize;
 		}
@@ -3844,16 +3847,20 @@ void MainWindow::createFileIfNotExists(const QString& filePath) {
 
 /* method created by Johandros */
 void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, uint vertColor) {
-
-	int i = selector->firstSelected();
+	vector<int> ix = selector->allSelected();// int i = selector->firstSelected();
 	assert(selector->currentTabName() == MESH);
-	assert(i < (int)brfdata.mesh.size() && i >= 0);
-	addMeshByNameToXViewMesh(brfdata.mesh[i].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material, vertColor);
+	for (size_t x = 0; x < ix.size(); x++)
+	{
+		assert(ix[x] < (int)brfdata.mesh.size() && ix[x] >= 0);
+		if (!QString(brfdata.mesh[ix[x]].name).contains('.')) {
+		//if (!strstr(brfdata.mesh[ix[x]].name, ".")) {
+			addMeshByNameToXViewMesh(brfdata.mesh[ix[x]].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material, vertColor);
+		}
+	}
 }
 
 /* method created by Johandros */
 void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, uint vertColor) {
-
 	int meshIdx = GetBrfMeshIndexByName(meshName);
 	if (hasDependencyProblems() || meshIdx < 0) {
 		statusBar()->showMessage(tr("ERROR - Mesh %1 not found!").arg(meshName), 5000);

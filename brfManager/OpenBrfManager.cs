@@ -231,13 +231,15 @@ namespace brfManager
                     // use hairPerc for color intesity
                     // morph color index + 1 and find color position in between
 
-                    Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
+                    //Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
 
                     string hairMesh = skin.HairMeshes[hair - 1];
-                    // add hair color perc to mesh
-                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, true, hairTexture, colorX); // fix log bug
-                }
+                    Console.WriteLine("Used hairMesh: " + hairMesh);
 
+                    // add hair color perc to mesh
+                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, true, hairTexture, colorX);
+                }
+                
                 if (skin.BeardMeshes.Length != 0 && beard > 0 && beard <= skin.BeardMeshes.Length)
                 {
                     string beardTexture = string.Empty;
@@ -257,8 +259,10 @@ namespace brfManager
                     Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
 
                     string beardMesh = skin.BeardMeshes[beard - 1];
+                    Console.WriteLine("Used beardMesh: " + beardMesh); // wrong mesh?
+
                     // add hair color perc to mesh
-                    success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture); // fix log bug
+                    success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture, colorX);
                 }
 
                 Console.WriteLine("Troop skin body parts: " + success);
