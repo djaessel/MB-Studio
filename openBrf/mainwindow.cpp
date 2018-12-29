@@ -3849,11 +3849,9 @@ void MainWindow::createFileIfNotExists(const QString& filePath) {
 void MainWindow::addLastSelectedToXViewMesh(int bone, int skeleton, int carryPosition/*, bool isAtOrigin*/, BOOL mirror, char* material, uint vertColor) {
 	vector<int> ix = selector->allSelected();// int i = selector->firstSelected();
 	assert(selector->currentTabName() == MESH);
-	for (size_t x = 0; x < ix.size(); x++)
-	{
+	for (size_t x = 0; x < ix.size(); x++){
 		assert(ix[x] < (int)brfdata.mesh.size() && ix[x] >= 0);
-		if (!QString(brfdata.mesh[ix[x]].name).contains('.')) {
-		//if (!strstr(brfdata.mesh[ix[x]].name, ".")) {
+		if (!QString(brfdata.mesh[ix[x]].name).contains('.')) {//if (!strstr(brfdata.mesh[ix[x]].name, ".")) {
 			addMeshByNameToXViewMesh(brfdata.mesh[ix[x]].name, bone, skeleton, carryPosition/*, bool isAtOrigin*/, mirror, material, vertColor);
 		}
 	}
@@ -3963,6 +3961,7 @@ void MainWindow::showTroop3DPreview() {
 	aniBox->setCurrentIndex(aniBox->count() - 1);//maybe optional animation later?
 	//guiPanel->ui->cbHitboxes->setChecked(true);//optional?
 	guiPanel->ui->buPlay->click();
+	guiPanel->ui->buPause->click();
 
 	//statusBar()->showMessage(tr("Troop 3D Preview"), 5000);
 }

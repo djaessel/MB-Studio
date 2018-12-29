@@ -8,6 +8,7 @@ using MB_Studio_Library.Objects;
 using MB_Studio_Library.IO;
 using System.Globalization;
 using MB_Studio_Library.Objects.Support;
+using System.Drawing;
 
 namespace brfManager
 {
@@ -171,6 +172,7 @@ namespace brfManager
 
             if (troop != null)
             {
+                bool success = true;
                 byte troopType = (byte)(troop.FlagsGZ & 0x0F);
                 string fileName = CodeReader.Files[(int)Skriptum.ObjectType.Skin];
 
@@ -185,12 +187,12 @@ namespace brfManager
                 Console.WriteLine(" | " + faceCode.Substring(16));
 
                 uint age      = ((uint.Parse(faceCode.Substring(7, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
-                uint hairColC = (uint.Parse(faceCode.Substring(8, 2), NumberStyles.HexNumber) & 0x3F);
-                uint rsved    = ((uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC) >> 3); // check again
-                uint face     = (uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F);
+                uint hairColC = uint.Parse(faceCode.Substring(8, 2), NumberStyles.HexNumber) & 0x3F;
+                uint reserved = (uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC) >> 3;        // check again
+                uint face     = uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F;
                 uint beard    = ((uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
-                uint hair     = (uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F); // check again
-                uint nan      = (uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08); // check again
+                uint hair     = uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F;               // check again
+                uint nan      = uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08;               // check again
 
                 FaceTexture faceTexture;
                 if ((troop.FlagsGZ >> 12 & 0xF) >= 0x8)//tf_randomize_face
@@ -203,9 +205,12 @@ namespace brfManager
                 else
                     faceTexture = skin.FaceTextures[face];
 
-                Console.WriteLine("Selected FaceTexture: " + faceTexture.Name);
+                List<int> hairColorList = new List<int>();
+                foreach (var color in faceTexture.HairColors)
+                    hairColorList.Add((int)color);
 
-                bool success = true;
+                Console.WriteLine("Selected FaceTexture: " + faceTexture.Name);
+                
                 success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color);
                 success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0);
                 success &= AddMeshToTroop3DPreview(skin.HandMesh, 13);
@@ -215,55 +220,8 @@ namespace brfManager
 
                 // remove beard, hair, head, body, legs depending on item properties later and check skin color
 
-                if (skin.HairMeshes.Length != 0 && hair > 0 && hair <= skin.HairMeshes.Length)
-                {
-                    string hairTexture = string.Empty;
-                    float hairPerc = 0x3F / faceTexture.HairColors.Length;
-
-                    int hairIdx = (int)(hairColC / hairPerc);
-                    if (hairIdx >= faceTexture.HairColors.Length)
-                        hairIdx = faceTexture.HairColors.Length - 1;
-
-                    uint colorX = 0;
-                    if (hairIdx >= 0)
-                        colorX = (uint)(faceTexture.HairColors[hairIdx] & uint.MaxValue);
-
-                    // use hairPerc for color intesity
-                    // morph color index + 1 and find color position in between
-
-                    //Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
-
-                    string hairMesh = skin.HairMeshes[hair - 1];
-                    Console.WriteLine("Used hairMesh: " + hairMesh);
-
-                    // add hair color perc to mesh
-                    success &= AddMeshToTroop3DPreview(hairMesh, 9, 0, -1, true, hairTexture, colorX);
-                }
-                
-                if (skin.BeardMeshes.Length != 0 && beard > 0 && beard <= skin.BeardMeshes.Length)
-                {
-                    string beardTexture = string.Empty;
-                    float hairPerc = 0x3F / faceTexture.HairColors.Length;
-
-                    int hairIdx = (int)(hairColC / hairPerc);
-                    if (hairIdx >= faceTexture.HairColors.Length)
-                        hairIdx = faceTexture.HairColors.Length - 1;
-
-                    uint colorX = 0;
-                    if (hairIdx >= 0)
-                        colorX = (uint)(faceTexture.HairColors[hairIdx] & uint.MaxValue);
-
-                    // use hairPerc for color intesity
-                    // morph color index + 1 and find color position in between
-
-                    Console.WriteLine("HairColor: " + System.Drawing.Color.FromArgb((int)colorX) + " | " + hairColC + " | " + hairPerc + " | " + hairIdx + " | " + faceTexture.HairColors.Length);
-
-                    string beardMesh = skin.BeardMeshes[beard - 1];
-                    Console.WriteLine("Used beardMesh: " + beardMesh); // wrong mesh?
-
-                    // add hair color perc to mesh
-                    success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture, colorX);
-                }
+                success &= Troop3DPreviewAddFacialHairs(skin.HairMeshes, hair, hairColorList, hairColC);
+                success &= Troop3DPreviewAddFacialHairs(skin.BeardMeshes, beard, hairColorList, hairColC);
 
                 Console.WriteLine("Troop skin body parts: " + success);
             }
@@ -271,6 +229,92 @@ namespace brfManager
             #endregion
 
             ShowTroop3DPreview();
+        }
+
+        private bool Troop3DPreviewAddFacialHairs(string[] facialHairTypes, uint hairIndex, List<int> hairColors, uint hairColorVal)
+        {
+            bool success = true;
+            if (facialHairTypes.Length != 0 && hairIndex > 0 && hairIndex <= facialHairTypes.Length)
+            {
+                string beardTexture = string.Empty;
+                double hairPerc = 0x3F;
+                hairPerc /= hairColors.Count;
+
+                int hairIdx = (int)(hairColorVal / hairPerc);
+                if (hairIdx >= hairColors.Count)
+                    hairIdx = hairColors.Count - 1;
+
+                int mergedColor = Color.FromArgb(byte.MaxValue, default(Color)).ToArgb();
+                if (hairIdx >= 0)
+                    mergedColor = (int)((MergeColorsInList(hairColors, hairIdx, hairColorVal, hairPerc) & 0x00FFFFFF) | 0xFF000000);
+
+                // use hairPerc for color intesity
+                // morph color index + 1 and find color position in between
+
+                //Console.WriteLine("HairColorVal: " + hairColorVal + " | HairPerc: " + hairPerc + " | HairIndex: " + hairIdx + " | HairCount: " + hairColors.Count);
+                //Console.WriteLine(" Base Hair" + Color.FromArgb(hairColors[hairIdx]));
+                Console.WriteLine(" Final Hair" + Color.FromArgb(mergedColor));
+
+                string beardMesh = facialHairTypes[hairIndex - 1];
+                Console.WriteLine("Add hairMesh: " + beardMesh); // wrong mesh?
+
+                // add hair color perc to mesh
+                success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture, (uint)mergedColor);
+            }
+            return success;
+        }
+
+        private int MergeColorsInList(List<int> hairColors, int hairIdx, uint hairColorVal, double hairPerc)
+        {
+            int mergedColor, minorColor;
+            int mainColor = hairColors[hairIdx] & int.MaxValue;
+            double percentage = Math.Round((hairColorVal % hairPerc) / hairPerc, 4);
+
+            Console.WriteLine("Percentage: " + percentage);
+
+            if (hairColors.Count > 1 && percentage > 0d && percentage != hairPerc)
+            {
+                if (hairIdx < hairColors.Count - 1)
+                    hairIdx++; // upper color
+                else
+                    hairIdx--; // lower color
+
+                minorColor = hairColors[hairIdx];
+                var mac = Color.FromArgb(mainColor);
+                var mic = Color.FromArgb(minorColor);
+
+                int a = CalcValDifference(mac.A, mic.A, percentage);
+                int r = CalcValDifference(mac.R, mic.R, percentage);
+                int g = CalcValDifference(mac.G, mic.G, percentage);
+                int b = CalcValDifference(mac.B, mic.B, percentage);
+
+                mergedColor = Color.FromArgb(a, r, g, b).ToArgb();
+
+                Console.WriteLine("Minor Color: " + Color.FromArgb(minorColor));
+            }
+            else
+            {
+                mergedColor = mainColor;
+                Console.WriteLine("Used main color!");
+            }
+
+            return mergedColor;
+        }
+
+        private int CalcValDifference(int mac, int mic, double percentage)
+        {
+            int differ;
+            if (mac > mic)
+            {
+                differ = mac - mic;
+                mac -= (int)(differ * percentage);
+            }
+            else
+            {
+                differ = mic - mac;
+                mac += (int)(differ * percentage);
+            }
+            return mac;
         }
 
         private string TroopCombinedFaceCode(Troop troop)
