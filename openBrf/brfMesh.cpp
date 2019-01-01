@@ -575,8 +575,6 @@ bool MeshMorpher::Load(const char *text){
   return true;
 }
 
-
-
 void MeshMorpher::Emphatize(float k){
   for (int bi=0; bi<MAX_BONES; bi++) {
     s[bi] += s[bi]*k - Pos(k,k,k);
@@ -589,7 +587,6 @@ void BrfMesh::MorphFrame(int framei, int framej, const MeshMorpher& m){
 		int pi = vert[vi].index;
 
 		Pos p0 = frame[framei].pos[pi];
-
 		Pos scale(0,0,0);
 		Pos trans(0,0,0);
 		for (int k=0; k<4; k++) {
@@ -605,12 +602,10 @@ void BrfMesh::MorphFrame(int framei, int framej, const MeshMorpher& m){
 			trans += m.t[bi]*w;
 		}
 
-
 		p0.X() *= scale.X();
 		p0.Y() *= scale.Y();
 		p0.Z() *= scale.Z();
 		frame[framej].pos[pi] = p0 + trans;
-
 	}
 
 	AddALittleOfBreast(framej, m.extraBreast);

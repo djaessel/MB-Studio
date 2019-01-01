@@ -146,13 +146,46 @@ namespace brfManager
             CloseApp();
         }
 
-        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, bool mirror = false, string material = "", uint vertColor = 0)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="meshName"></param>
+        /// <param name="bone"></param>
+        /// <param name="skeleton"></param>
+        /// <param name="carryPosition"></param>
+        /// <param name="mirror"></param>
+        /// <param name="material"></param>
+        /// <param name="vertColor"></param>
+        /// <returns></returns>
+        public bool AddMeshToTroop3DPreview(string meshName, int bone = 0, int skeleton = 0, int carryPosition = -1/*, bool isAtOrigin*/, params object[] additionalOptions)
         {
             bool success = false;
             if (!ExcludedMeshes.Contains(meshName))
+            {
+                bool mirror = false;
+                if (additionalOptions.Length >= 1)
+                {
+                    mirror = (bool)additionalOptions[0];
+                }
+
+                string material = "";
+                if (additionalOptions.Length > 1)
+                {
+                    material = (string)additionalOptions[1];
+                }
+
+                uint vertColor = 0;
+                if (additionalOptions.Length > 2)
+                {
+                    vertColor = (uint)additionalOptions[2];
+                }
+
                 success = AddMeshToXViewModel(meshName, bone, skeleton, carryPosition/*, isAtOrigin*/, mirror, material, vertColor);
+            }
             else
+            {
                 Console.WriteLine("Excluded mesh: " + meshName);
+            }
             return success;
         }
 
@@ -210,8 +243,11 @@ namespace brfManager
                     hairColorList.Add((int)color);
 
                 Console.WriteLine("Selected FaceTexture: " + faceTexture.Name);
-                
-                success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color);
+
+                int mergeFrame = 20;
+                double mergeWeight = 0.5;
+
+                success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color, mergeFrame, mergeWeight);
                 success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0);
                 success &= AddMeshToTroop3DPreview(skin.HandMesh, 13);
                 success &= AddMeshToTroop3DPreview(skin.HandMesh.TrimEnd('L') + "R", 18);
@@ -266,7 +302,7 @@ namespace brfManager
 
         private int MergeColorsInList(List<int> hairColors, int hairIdx, uint hairColorVal, double hairPerc)
         {
-            int mergedColor, minorColor;
+            int mergedColor;
             int mainColor = hairColors[hairIdx] & int.MaxValue;
             double percentage = Math.Round((hairColorVal % hairPerc) / hairPerc, 4);
 
@@ -279,9 +315,10 @@ namespace brfManager
                 else
                     hairIdx--; // lower color
 
-                minorColor = hairColors[hairIdx];
-                var mac = Color.FromArgb(mainColor);
-                var mic = Color.FromArgb(minorColor);
+                int minorColor = hairColors[hairIdx];
+
+                Color mac = Color.FromArgb(mainColor);
+                Color mic = Color.FromArgb(minorColor);
 
                 int a = CalcValDifference(mac.A, mic.A, percentage);
                 int r = CalcValDifference(mac.R, mic.R, percentage);
@@ -321,15 +358,17 @@ namespace brfManager
         {
             string result = string.Empty;
             string face1 = troop.Face1.Substring(2);
-            //string face2 = troop.Face2.Substring(2);
-            //if (face2.Trim('0').Length != 0) // work out good algorithm for this first!!!
-            //{
-            //    char[] face1X = face1.ToCharArray();
-            //    char[] face2X = face2.ToCharArray();
-            //    for (int i = 0; i < face1X.Length; i++)
-            //        result += ((int.Parse(face1X[i].ToString(), NumberStyles.HexNumber) + int.Parse(face2X[i].ToString(), NumberStyles.HexNumber)) / 2).ToString("X1");
-            //}
-            //else // 
+            string face2 = troop.Face2.Substring(2);
+            if (face2.Trim('0').Length != 0) // work out good algorithm for this first!!!
+            {
+                //char[] face1X = face1.ToCharArray();
+                //char[] face2X = face2.ToCharArray();
+                //for (int i = 0; i < face1X.Length; i++)
+                //    result += ((int.Parse(face1X[i].ToString(), NumberStyles.HexNumber) + int.Parse(face2X[i].ToString(), NumberStyles.HexNumber)) / 2).ToString("X1");
+
+                result = face1; // CHANGE LATER TO REAL ALGORITHM IF WORKING!!!
+            }
+            else
                 result = face1;
             return result.ToLower();
         }

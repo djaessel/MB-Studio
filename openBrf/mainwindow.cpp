@@ -35,6 +35,14 @@
 #include "askLodOptionsDialog.h"
 #include "askColorDialog.h"
 
+#include <vcg/space/box3.h>
+#include <vcg/math/matrix44.h>
+#include <vcg/space/point3.h>
+#include <vcg/space/point2.h>
+
+using namespace vcg;
+
+typedef vcg::Point3f Pos;
 typedef QPair<int, int> Pair;
 
 const QColor defaultBackgroundColor(178,178,178,255);
@@ -1707,7 +1715,6 @@ void MainWindow::optionFemininzationUseDefault(){
 		                     );
 	}
 }
-
 
 void MainWindow::learnFemininzation(){
 	int ndone = 0;
@@ -3887,6 +3894,78 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 		char newMaterial[255];
 		sprintf(newMaterial, "%s", material);
 		newMesh.SetMaterial(newMaterial);
+	}
+
+	if (newMesh.frame.size() > 3) { //if (mergeFrame > 0) {
+		string iii = "";
+		/*for (size_t i = 0; i < newMesh.face.size(); i++)
+		{
+			string iiiX = "Face" + to_string(i) + ": " + to_string(newMesh.face[i].index[0]) + ", " + to_string(newMesh.face[i].index[1]) + ", " + to_string(newMesh.face[i].index[2]);
+			iii += iiiX;
+		}*/
+		//vector<int> changedFaces = vector<int>();
+		//vector<BrfFace> faces = vector<BrfFace>();
+		//vector<BrfFrame> frames = newMesh.frame
+		//for (size_t i = 1; i < frames.size(); i++)
+		//{
+		//	for (size_t j = 0; j < frames[i].norm.size(); j++)
+		//	{
+		//		BrfFrame *
+		//		if (frames[i].norm[j].Z() != .Z() &&)
+		//		{
+
+		//		}
+		//	}
+		//}
+
+		//MeshMorpher mm = MeshMorpher();
+		//newMesh.MorphFrame(0, 1, mm);
+
+		float minX = 10.0f, minY = minX, minZ = minX;
+		float maxX = 0.0f, maxY = maxX, maxZ = maxX;
+
+		BrfFrame& f(newMesh.frame[0]);
+
+		for (uint i = 0; i < f.pos.size(); i++) {
+			Pos &q(f.pos[i]);
+
+			if (f.pos[i].X() > maxX) maxX = f.pos[i].X();
+			if (f.pos[i].X() < minX) minX = f.pos[i].X();
+
+			if (f.pos[i].Y() > maxY) maxY = f.pos[i].Y();
+			if (f.pos[i].Y() < minY) minY = f.pos[i].Y();
+
+			if (f.pos[i].Z() > maxZ) maxZ = f.pos[i].Z();
+			if (f.pos[i].Z() < minZ) minZ = f.pos[i].Z();
+
+			//string iiix = to_string(f.pos[i].X()) + ", " + to_string(f.pos[i].Y()) + ", " + to_string(f.pos[i].Z());
+			//iii += iiix;
+		}
+
+		Pos p0(maxX * 0.9f, maxY * 0.9f, maxZ * 0.9f);
+		//Pos p0(+0.0793f, 1.0f, 0.1f);
+		//Pos p1(-0.0793f, 1.0f, 0.1f);
+		float r = 0.025f;
+		float howMuch = 0.5f;
+
+		for (uint i = 0; i < f.pos.size(); i++) {
+			Pos &q(f.pos[i]);
+			float s = 1 - (q - p0).Norm() / r;
+			//float s0 = 1 - (q - p0).Norm() / r;
+			//float s1 = 1 - (q - p1).Norm() / r;
+			//float s = max(s0, s1);
+			if (s > 0) {
+				s = (float)pow(s, 0.3);
+				q.Z() += s * howMuch;
+			}
+		}
+
+		string iiix = to_string(minX) + ", " + to_string(minY) + ", " + to_string(minZ);
+		iii += iiix + "\n";
+		iiix = to_string(maxX) + ", " + to_string(maxY) + ", " + to_string(maxZ);
+		iii += iiix;
+
+		MessageBoxA(NULL, iii.c_str(), "INFO", 0);
 	}
 
 	tempMeshList.push_back(newMesh);
