@@ -158,7 +158,6 @@ public:
 	void StiffenRigging(float howmuch);
 	void TuneColors(int contast, int hue, int sat, int brigh);
 	void MorphFrame(int framei, int framej, const MeshMorpher& m);
-	void MakeBigRound(int framei, float howMuch);
 	void AddALittleOfBreast(int framei, float howMuch);
 
 	unsigned int GetAverageColor() const;

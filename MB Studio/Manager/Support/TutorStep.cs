@@ -1,6 +1,6 @@
 ﻿namespace MB_Studio.Manager.Support
 {
-    class TutorStep
+    public class TutorStep
     {
         public enum Option : short
         {

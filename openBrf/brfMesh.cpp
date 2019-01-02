@@ -611,23 +611,6 @@ void BrfMesh::MorphFrame(int framei, int framej, const MeshMorpher& m){
 	AddALittleOfBreast(framej, m.extraBreast);
 }
 
-void BrfMesh::MakeBigRound(int framei, float howMuch) {
-	Pos p0(+0.1f, 1.3443f, 0.2f);
-	Pos p1(-0.1f, 0.9f, 0.2f);
-	float r = 0.066f;
-	BrfFrame& f(frame[framei]);
-	for (uint i = 0; i < f.pos.size(); i++) {
-		Pos &q(f.pos[i]);
-		float s0 = 1 - (q - p0).Norm() / r;
-		float s1 = 1 - (q - p1).Norm() / r;
-		float s = max(s0, s1);
-		if (s > 0) {
-			s = (float)pow(s, 0.3);
-			q.Z() += s * howMuch;
-		}
-	}
-}
-
 void BrfMesh::AddALittleOfBreast(int framei, float howMuch){
   Pos p0(+0.0793f, 1.3443f, 0.1210f);
   Pos p1(-0.0793f, 1.3443f, 0.1210f);

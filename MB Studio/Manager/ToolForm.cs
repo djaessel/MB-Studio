@@ -1033,10 +1033,18 @@ namespace MB_Studio.Manager
                 int idd = i + 1;
                 ts.Add(new TutorStep("Heading " + idd, "Info" + idd, controlName, (TutorStep.Option)Math.Pow(2, i)));
             }
+            ts = HelpActionData(ts);
 
             TutorForm tutorForm = new TutorForm(this);
             tutorForm.AddTutorSteps(ts);
             tutorForm.Show();
+        }
+
+        protected virtual List<TutorStep> HelpActionData(List<TutorStep> ts = null)
+        {
+            if (ts == null)
+                ts = new List<TutorStep>();
+            return ts;
         }
 
         #endregion

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using MB_Studio.Manager.Support;
 
 namespace MB_Studio.Manager
 {
@@ -175,6 +176,12 @@ namespace MB_Studio.Manager
             f = new AddTroopFromOtherMod();
 
             base.AddFromOtherMod(f);
+        }
+
+        protected override List<TutorStep> HelpActionData(List<TutorStep> ts = null)
+        {
+            ts.Add(new TutorStep("Change 3D View meshes/items", "Open the items box and use the combo boxes (drop down menus) to select a different mesh/item", showGroup_3_btn.Name, TutorStep.Option.Click));
+            return ts;
         }
 
         #endregion

@@ -86,15 +86,30 @@ namespace MB_Studio.Manager.Support
                 if (step.Options == TutorStep.Option.None) return;
 
                 if ((step.Options & TutorStep.Option.Click) == TutorStep.Option.Click)
+                {
                     c.Click += C_Click;
+                    c.Click += MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Hover) == TutorStep.Option.Hover)
+                {
                     c.MouseHover += C_MouseHover;
+                    c.MouseHover += MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Enter) == TutorStep.Option.Enter)
+                {
                     c.Enter += C_Enter;
+                    c.Enter += MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Leave) == TutorStep.Option.Leave)
+                {
                     c.Leave += C_Leave;
+                    c.Leave += MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Input) == TutorStep.Option.Input)
+                {
                     c.TextChanged += C_TextChanged;
+                    c.TextChanged += MoveToNextStep;
+                }
             }
         }
 
@@ -106,15 +121,43 @@ namespace MB_Studio.Manager.Support
                 if (step.Options == TutorStep.Option.None) return;
 
                 if ((step.Options & TutorStep.Option.Click) == TutorStep.Option.Click)
+                {
                     c.Click -= C_Click;
+                    c.Click -= MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Hover) == TutorStep.Option.Hover)
+                {
                     c.MouseHover -= C_MouseHover;
+                    c.MouseHover -= MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Enter) == TutorStep.Option.Enter)
+                {
                     c.Enter -= C_Enter;
+                    c.Enter -= MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Leave) == TutorStep.Option.Leave)
+                {
                     c.Leave -= C_Leave;
+                    c.Leave -= MoveToNextStep;
+                }
                 if ((step.Options & TutorStep.Option.Input) == TutorStep.Option.Input)
+                {
                     c.TextChanged -= C_TextChanged;
+                    c.TextChanged -= MoveToNextStep;
+                }
+            }
+        }
+
+        private void MoveToNextStep(object sender, EventArgs e)
+        {
+            if (CurStep < MaxStep)
+            {
+                CurStep++;
+                UpdateGui();
+            }
+            else
+            {
+                Close();
             }
         }
 

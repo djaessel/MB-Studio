@@ -3918,53 +3918,121 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 		//	}
 		//}
 
-		//MeshMorpher mm = MeshMorpher();
-		//newMesh.MorphFrame(0, 1, mm);
+		////MeshMorpher mm = MeshMorpher();
+		////newMesh.MorphFrame(0, 1, mm);
 
-		float minX = 10.0f, minY = minX, minZ = minX;
-		float maxX = 0.0f, maxY = maxX, maxZ = maxX;
+		////float minX = 10.0f, minY = minX, minZ = minX;
+		//float maxX = 0.0f, maxY = maxX, maxZ = maxX;
 
-		BrfFrame& f(newMesh.frame[0]);
+		//BrfFrame& f(newMesh.frame[0]);
 
-		for (uint i = 0; i < f.pos.size(); i++) {
-			Pos &q(f.pos[i]);
+		//for (uint i = 0; i < f.pos.size(); i++) {
+		//	Pos &q(f.pos[i]);
 
-			if (f.pos[i].X() > maxX) maxX = f.pos[i].X();
-			if (f.pos[i].X() < minX) minX = f.pos[i].X();
+		//	if (f.pos[i].X() > maxX) maxX = f.pos[i].X();
+		//	//if (f.pos[i].X() < minX) minX = f.pos[i].X();
 
-			if (f.pos[i].Y() > maxY) maxY = f.pos[i].Y();
-			if (f.pos[i].Y() < minY) minY = f.pos[i].Y();
+		//	if (f.pos[i].Y() > maxY) maxY = f.pos[i].Y();
+		//	//if (f.pos[i].Y() < minY) minY = f.pos[i].Y();
 
-			if (f.pos[i].Z() > maxZ) maxZ = f.pos[i].Z();
-			if (f.pos[i].Z() < minZ) minZ = f.pos[i].Z();
+		//	if (f.pos[i].Z() > maxZ) maxZ = f.pos[i].Z();
+		//	//if (f.pos[i].Z() < minZ) minZ = f.pos[i].Z();
 
-			//string iiix = to_string(f.pos[i].X()) + ", " + to_string(f.pos[i].Y()) + ", " + to_string(f.pos[i].Z());
-			//iii += iiix;
-		}
+		//	//string iiix = to_string(f.pos[i].X()) + ", " + to_string(f.pos[i].Y()) + ", " + to_string(f.pos[i].Z());
+		//	//iii += iiix;
+		//}
 
-		Pos p0(maxX * 0.9f, maxY * 0.9f, maxZ * 0.9f);
-		//Pos p0(+0.0793f, 1.0f, 0.1f);
-		//Pos p1(-0.0793f, 1.0f, 0.1f);
-		float r = 0.025f;
-		float howMuch = 0.5f;
+		//Pos p0(f.pos[10]);
+		////Pos p0(0.001f, 1.65f, 1.2f);
+		////Pos p0(maxX, maxY, maxZ);
+		////Pos p0(+0.0793f, 1.0f, 0.1f);
+		////Pos p1(-0.0793f, 1.0f, 0.1f);
+		//float r = 0.025f;
+		//float howMuch = 0.5f;
 
-		for (uint i = 0; i < f.pos.size(); i++) {
-			Pos &q(f.pos[i]);
-			float s = 1 - (q - p0).Norm() / r;
-			//float s0 = 1 - (q - p0).Norm() / r;
-			//float s1 = 1 - (q - p1).Norm() / r;
-			//float s = max(s0, s1);
-			if (s > 0) {
-				s = (float)pow(s, 0.3);
-				q.Z() += s * howMuch;
+		//for (uint i = 0; i < f.pos.size(); i++) {
+		//	Pos &q(f.pos[i]);
+		//	float s = 1 - (q - p0).Norm() / r;
+		//	//float s0 = 1 - (q - p0).Norm() / r;
+		//	//float s1 = 1 - (q - p1).Norm() / r;
+		//	//float s = max(s0, s1);
+		//	if (s > 0) {
+		//		s = (float)pow(s, 0.3);
+		//		q.Z() += s * howMuch;
+		//		string ix = to_string(f.pos[i].X()) + ", " + to_string(f.pos[i].Y()) + ", " + to_string(f.pos[i].Z()) + " - " + to_string(s * howMuch) + "\n";
+		//		iii += ix;
+		//		//MessageBoxA(NULL, ix.c_str(), "INFO - MINI", 0);
+		//	}
+		//}
+
+		//iii += to_string(p0.X()) + ", " + to_string(p0.Y()) + ", " + to_string(p0.Z());
+
+		vector<Pos> &f0Pos = newMesh.frame[0].pos;
+		vector<BrfFrame> &frames = newMesh.frame;
+
+		iii += "Position Count: " + to_string(f0Pos.size());
+		iii += "\nDifferent Positions:\n";
+
+		vector<vector<size_t>> posIdx = vector<vector<size_t>>();
+
+		for (size_t i = 1; i < frames.size(); i++)
+		{
+			vector<size_t> dddddd = vector<size_t>();
+			vector<Pos> &positions = frames[i].pos;
+
+			//string iiix = to_string(positions.size()) + " - Frame[" + to_string(i) + "]: { ";
+
+			for (size_t j = 0; j < positions.size(); j++)
+			{
+				if (f0Pos[j].Norm() != positions[j].Norm())
+				{
+					bool unfound = true;
+					for (size_t x = 0; x < posIdx.size(); x++)
+					{
+						if (std::find(posIdx[x].begin(), posIdx[x].end(), j) != posIdx[x].end())
+						{
+							unfound = false;
+							x = posIdx.size();
+						}
+					}
+
+					if (unfound) {
+						dddddd.push_back(j);
+					}
+
+					//iiix += to_string(j);
+					//if (j < positions.size() - 1) {
+					//	iiix += ", ";
+					//}
+				}
 			}
+
+			posIdx.push_back(dddddd);
+
+			//iiix += " }\n";
+			//MessageBoxA(NULL, iiix.c_str(), "INFO", 0);
 		}
 
-		string iiix = to_string(minX) + ", " + to_string(minY) + ", " + to_string(minZ);
-		iii += iiix + "\n";
-		iiix = to_string(maxX) + ", " + to_string(maxY) + ", " + to_string(maxZ);
-		iii += iiix;
+		for (size_t i = 0; i < posIdx.size(); i++)
+		{
+			iii += "Frame[" + to_string(i + 1) + "]: { ";
+			for (size_t j = 0; j < posIdx[i].size(); j++)
+			{
+				iii += to_string(j);
+				if (j < posIdx[i].size() - 1) {
+					iii += ", ";
+				}
+			}
+			iii += " }\n";
+		}
 
+		MessageBoxA(NULL, iii.c_str(), "INFO", 0);
+
+		iii = "Face Count: " + to_string(newMesh.face.size()) + "\n";
+		for (size_t i = 0; i < newMesh.face.size(); i++)
+		{
+			iii += to_string(newMesh.face[i].index[0]) + ", " + to_string(newMesh.face[i].index[1]) + ", " + to_string(newMesh.face[i].index[2]) + "\n";
+		}
 		MessageBoxA(NULL, iii.c_str(), "INFO", 0);
 	}
 
