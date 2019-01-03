@@ -725,9 +725,10 @@ namespace MB_Studio.Manager
                 foreach (string item in items_lb.SelectedItems)
                 {
                     int itemID = int.Parse(item.Split('-')[0].TrimEnd());
-                    AddItemToInventarComboboxByKind(itemID, item);
-                    //SetupTroopItemBone(itemsRList[itemID]);
                     usedItems_lb.Items.Add(item);
+                    string[] tmp = item.Split('-');
+                    AddItemToInventarComboboxByKind(itemID, tmp[tmp.Length - 1].Trim());
+                    //SetupTroopItemBone(itemsRList[itemID]);
                 }
                 inventoryItemFlags.Add(0);//check
             }

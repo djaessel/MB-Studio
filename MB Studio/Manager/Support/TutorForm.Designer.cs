@@ -127,6 +127,8 @@
             this.Controls.Add(this.step_lbl);
             this.Controls.Add(this.info_lbl);
             this.Name = "TutorForm";
+            this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TutorForm_FormClosing);
             this.Load += new System.EventHandler(this.TutorForm_Load);
             this.Controls.SetChildIndex(this.info_lbl, 0);
             this.Controls.SetChildIndex(this.step_lbl, 0);

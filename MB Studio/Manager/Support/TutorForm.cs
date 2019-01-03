@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MB_Studio.Manager.Support
 {
@@ -10,6 +11,9 @@ namespace MB_Studio.Manager.Support
         private const int DEFAULT_HEIGHT = 100;
         private const int DEFAULT_INFO_HEIGHT = 24;
         private const int DEFAULT_INFO_SPACE = 4;
+
+        private const int ADDITIONAL_TOP = 70; // 178 + 70;
+        private const int ADDITIONAL_LEFT = 5; // 18 + 3 + 2;
 
         private const int INFO_TEXT_LENGTH = 32;
 
@@ -21,6 +25,10 @@ namespace MB_Studio.Manager.Support
         protected int MaxStep { get; private set; }
 
         private Form parentForm;
+
+        private PictureBox arrow;
+
+        private bool addedArrow = false;
 
         private List<TutorStep> tutorSteps = new List<TutorStep>();
 
@@ -49,14 +57,12 @@ namespace MB_Studio.Manager.Support
 
         private void Step_left_btn_Click(object sender, EventArgs e)
         {
-            CurStep--;
-            UpdateGui();
+            MoveToPreviousStep();
         }
 
         private void Step_right_btn_Click(object sender, EventArgs e)
         {
-            CurStep++;
-            UpdateGui();
+            MoveToNextStep();
         }
 
         private Control GetStepControl(TutorStep step)
@@ -65,10 +71,10 @@ namespace MB_Studio.Manager.Support
             bool foundIt = (controls.Length >= 1);// only == 1 should be correct - investigate later
             if (foundIt)
             {
-                //if (controls.Length > 1)
-                //    Console.WriteLine("Found multiple " + step.ControlName + "!");
-                //else
-                Console.WriteLine("Found " + step.ControlName + "!");
+                if (controls.Length > 1)
+                    Console.WriteLine("Found multiple " + step.ControlName + "!");
+                else
+                    Console.WriteLine("Found " + step.ControlName + "!");
 
                 return controls[0];
             }
@@ -148,7 +154,7 @@ namespace MB_Studio.Manager.Support
             }
         }
 
-        private void MoveToNextStep(object sender, EventArgs e)
+        private void MoveToNextStep(object sender = null, EventArgs e = null)
         {
             if (CurStep < MaxStep)
             {
@@ -157,7 +163,18 @@ namespace MB_Studio.Manager.Support
             }
             else
             {
+                foreach (var step in tutorSteps)
+                    RemoveStepControlEvents(step);
                 Close();
+            }
+        }
+
+        private void MoveToPreviousStep(object sender = null, EventArgs e = null)
+        {
+            if (CurStep > MinStep)
+            {
+                CurStep--;
+                UpdateGui();
             }
         }
 
@@ -208,6 +225,7 @@ namespace MB_Studio.Manager.Support
             int curIdx = CurStep - 1;
             if (curIdx < tutorSteps.Count && curIdx >= 0)
             {
+                MoveWindowNextToControl(tutorSteps[curIdx]);
                 title_lbl.Text = tutorSteps[curIdx].Heading;
                 info_lbl.Text = tutorSteps[curIdx].InfoText;
             }
@@ -219,14 +237,72 @@ namespace MB_Studio.Manager.Support
             HandleStepButtons();
         }
 
+        private void MoveWindowNextToControl(TutorStep step)
+        {
+            Control control = GetStepControl(step);
+
+            int x = control.Location.X + control.Width;
+            int y = control.Location.Y + (control.Height / 2);
+
+            x += parentForm.DesktopLocation.X;
+            y += parentForm.DesktopLocation.Y;
+
+            var ccc = ((ToolForm)parentForm).Controls.Find("toolPanel", true)[0];
+            x += ccc.Left;
+            y += ccc.Top;
+
+            if (!addedArrow)
+            {
+                arrow = new PictureBox
+                {
+                    //Parent = parentForm,
+                    Width = 64,
+                    Height = 32,
+                    Tag = true,
+                };
+                arrow.Paint += P_Paint;
+                parentForm.Controls.Add(arrow);
+
+                int arrowX = x;
+                x += arrow.Width;
+                int arrowY = y;
+
+                arrow.Location = new Point(arrowX, arrowY);
+                arrow.BringToFront();
+                parentForm.Update();
+
+                addedArrow = true;
+            }
+
+            SetDesktopLocation(x, y);
+        }
+
+        private void P_Paint(object sender, PaintEventArgs e)
+        {
+            var p = (PictureBox)sender;
+            if ((bool)p.Tag)
+            {
+                Rectangle ee = new Rectangle(10, 10, 30, 30);
+                var points = new PointF[] { new PointF(p.Width, 0), new PointF(p.Width, p.Height), new PointF(0, p.Height / 2) };
+                var g = e.Graphics;
+                using (Pen pen = new Pen(Color.Wheat, 2))
+                {
+                    e.Graphics.FillPolygon(Brushes.Gray, points);
+                    //g.FillPolygon(Brushes.Gray, points);
+                }
+                var bbb = new Bitmap(p.Width, p.Height, g);
+                //p.Image = bbb;
+                p.Tag = false;
+            }
+        }
+
         private void InitializeTutorSteps()
         {
             int x = tutorSteps.Count - 1;
             MinStep = tutorSteps.Count - x;
-            CurStep = MinStep;
             MaxStep = tutorSteps.Count;
-
-            UpdateGui();
+            CurStep = MinStep;
+            //MoveToNextStep();
         }
 
         internal void AddTutorStep(TutorStep step, int number = 0)
@@ -278,6 +354,12 @@ namespace MB_Studio.Manager.Support
             tutorSteps.Clear();
 
             InitializeTutorSteps();
+        }
+
+        private void TutorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            parentForm.Controls.Remove(arrow);
+            parentForm.Update();
         }
     }
 }
