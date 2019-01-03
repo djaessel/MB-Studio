@@ -26,7 +26,7 @@ namespace MB_Studio.Manager.Support
 
         private Form parentForm;
 
-        private PictureBox arrow;
+        private GlassPanel arrow;
 
         private bool addedArrow = false;
 
@@ -163,8 +163,6 @@ namespace MB_Studio.Manager.Support
             }
             else
             {
-                foreach (var step in tutorSteps)
-                    RemoveStepControlEvents(step);
                 Close();
             }
         }
@@ -253,9 +251,8 @@ namespace MB_Studio.Manager.Support
 
             if (!addedArrow)
             {
-                arrow = new PictureBox
+                arrow = new GlassPanel
                 {
-                    //Parent = parentForm,
                     Width = 64,
                     Height = 32,
                     Tag = true,
@@ -279,20 +276,13 @@ namespace MB_Studio.Manager.Support
 
         private void P_Paint(object sender, PaintEventArgs e)
         {
-            var p = (PictureBox)sender;
+            var p = (Control)sender;
             if ((bool)p.Tag)
             {
-                Rectangle ee = new Rectangle(10, 10, 30, 30);
-                var points = new PointF[] { new PointF(p.Width, 0), new PointF(p.Width, p.Height), new PointF(0, p.Height / 2) };
-                var g = e.Graphics;
-                using (Pen pen = new Pen(Color.Wheat, 2))
-                {
-                    e.Graphics.FillPolygon(Brushes.Gray, points);
-                    //g.FillPolygon(Brushes.Gray, points);
-                }
-                var bbb = new Bitmap(p.Width, p.Height, g);
-                //p.Image = bbb;
                 p.Tag = false;
+
+                var points = new PointF[] { new PointF(p.Width, 0), new PointF(p.Width, p.Height), new PointF(0, p.Height / 2) };
+                e.Graphics.FillPolygon(new SolidBrush(BackColor), points);
             }
         }
 
@@ -360,6 +350,9 @@ namespace MB_Studio.Manager.Support
         {
             parentForm.Controls.Remove(arrow);
             parentForm.Update();
+
+            foreach (var step in tutorSteps)
+                RemoveStepControlEvents(step);
         }
     }
 }

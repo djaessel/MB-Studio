@@ -219,6 +219,9 @@
     <Compile Include="Manager\Support\External\AddTypeFromOtherMod.Designer.cs">
       <DependentUpon>AddTypeFromOtherMod.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manager\Support\GlassPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Manager\Support\TutorStep.cs" />
     <Compile Include="Manager\Support\TutorForm.cs">
       <SubType>Form</SubType>
