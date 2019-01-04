@@ -47,6 +47,11 @@ namespace MB_Studio.Manager.Support
             UpdateGui();
         }
 
+        protected override void Control_MoveForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            //base.Control_MoveForm_MouseDown(sender, e);
+        }
+
         private void Info_lbl_TextChanged(object sender, EventArgs e)
         {
             int multi = info_lbl.Text.Length / INFO_TEXT_LENGTH;
@@ -251,6 +256,7 @@ namespace MB_Studio.Manager.Support
 
             if (!addedArrow)
             {
+                addedArrow = true;
                 arrow = new GlassPanel
                 {
                     Width = 64,
@@ -259,17 +265,19 @@ namespace MB_Studio.Manager.Support
                 };
                 arrow.Paint += P_Paint;
                 parentForm.Controls.Add(arrow);
-
-                int arrowX = x;
-                x += arrow.Width;
-                int arrowY = y;
-
-                arrow.Location = new Point(arrowX, arrowY);
-                arrow.BringToFront();
-                parentForm.Update();
-
-                addedArrow = true;
             }
+
+            int arrowX = x;
+            int arrowY = y;
+
+            // graphics bug when switching between steps
+            arrow.Location = new Point(arrowX, arrowY);
+            arrow.BringToFront();
+            arrow.Invalidate();
+            arrow.Update();
+            parentForm.Update();
+
+            x += arrow.Width;
 
             SetDesktopLocation(x, y);
         }

@@ -1024,15 +1024,47 @@ namespace MB_Studio.Manager
 
         private void Help_btn_Click(object sender, EventArgs e)
         {
-            List<TutorStep> ts = new List<TutorStep>();
-            /*for (int i = 0; i < 5; i++)
+            List<TutorStep> ts = new List<TutorStep>
             {
-                string controlName = "showGroup_" + i + "_btn";
-                if (Controls.Find(controlName, true).Length == 0)
-                    controlName = showGroup_0_btn.Name;
-                int idd = i + 1;
-                ts.Add(new TutorStep("Heading " + idd, "Info" + idd, controlName, (TutorStep.Option)Math.Pow(2, i)));
-            }*/
+                new TutorStep(
+                    "Close All",
+                    "If you open up all boxes in the GUI it is possible that the bottom part is cut or even worse glitches appear." + Environment.NewLine +
+                    "If this should be the case just click on this button to close all boxes and resume your work. Click on it.",
+                    closeAll_btn.Name,
+                    TutorStep.Option.Click
+                ),
+                new TutorStep(
+                    "Help",
+                    "This button always opens the shown tutorial and all available infos about the current so called \"Manager\"",
+                    help_btn.Name,
+                    TutorStep.Option.Enter
+                ),
+                new TutorStep(
+                    "Add External",
+                    "If it is available, you can add here objects (depending on the used Manager) from another module. Attention - Don't publish any code or resources which are owned by someone else and you don't have the right to use them!",
+                    addFromOtherMod_btn.Name,
+                    TutorStep.Option.Enter
+                ),
+                new TutorStep(
+                    "Create / Save",
+                    "When you change the object ID the button will change from 'Save' to 'Create' if it is an unknown ID. Otherwise all data will be overwritten with the data of the existing object with the entered ID. (Later you will be able to change the position in the list as well.) - Move over the button.",
+                    save_btn.Name,
+                    TutorStep.Option.Enter
+                ),
+                new TutorStep(
+                    "Translation",
+                    "Here you are able to view all the different translations which are available for the current object and change them if necessary. Click on the button.",
+                    showGroup_0_btn.Name,
+                    TutorStep.Option.Click
+                ),
+                new TutorStep(
+                    "ID",
+                    "This is the ID of the current object. Here you can enter any text which will represent the object in scripting or some game menus for identification. Type some text in it.",
+                    id_txt.Name,
+                    TutorStep.Option.Input
+                ),
+            };
+
             ts = HelpActionData(ts);
 
             TutorForm tutorForm = new TutorForm(this);

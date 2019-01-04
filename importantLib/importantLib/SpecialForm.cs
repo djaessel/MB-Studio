@@ -59,7 +59,7 @@ namespace importantLib
             SetFullScreenByScreen(screen);
         }
 
-        protected void Control_MoveForm_MouseDown(object sender, MouseEventArgs e)
+        protected virtual void Control_MoveForm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {

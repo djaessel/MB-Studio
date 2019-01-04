@@ -181,6 +181,7 @@ namespace MB_Studio.Manager
         protected override List<TutorStep> HelpActionData(List<TutorStep> ts = null)
         {
             ts.Add(new TutorStep("Change 3D View meshes/items", "Open the items box and use the combo boxes (drop down menus) to select a different mesh/item", showGroup_3_btn.Name, TutorStep.Option.Click));
+            ts.Add(new TutorStep("Edit Troop Face", "Open the face box and select different beards, hair, age and color. (More options will be available later.)", showGroup_7_btn.Name, TutorStep.Option.Click));
             return ts;
         }
 
