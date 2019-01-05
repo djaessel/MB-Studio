@@ -251,17 +251,20 @@ namespace MB_Studio.Manager.Support
             y += parentForm.DesktopLocation.Y;
 
             var ccc = ((ToolForm)parentForm).Controls.Find("toolPanel", true)[0];
-            x += ccc.Left;
-            y += ccc.Top;
+            if (ccc.Controls.Find(control.Name, true).Length != 0)
+            {
+                x += ccc.Left;
+                y += ccc.Top;
+            }
 
             if (!addedArrow)
             {
                 addedArrow = true;
                 arrow = new GlassPanel
                 {
+                    //Parent = parentForm,
                     Width = 64,
                     Height = 32,
-                    Tag = true,
                 };
                 arrow.Paint += P_Paint;
                 parentForm.Controls.Add(arrow);
@@ -270,28 +273,32 @@ namespace MB_Studio.Manager.Support
             int arrowX = x;
             int arrowY = y;
 
-            // graphics bug when switching between steps
+            // arrow background not redrawn
             arrow.Location = new Point(arrowX, arrowY);
             arrow.BringToFront();
+
+            arrow.Refresh();
             arrow.Invalidate();
-            arrow.Update();
-            parentForm.Update();
 
             x += arrow.Width;
+
+            int maxX = parentForm.Width + parentForm.DesktopLocation.X;
+            if (x > maxX)
+                x = maxX;
 
             SetDesktopLocation(x, y);
         }
 
         private void P_Paint(object sender, PaintEventArgs e)
         {
-            var p = (Control)sender;
-            if ((bool)p.Tag)
-            {
-                p.Tag = false;
+            var p = (GlassPanel)sender;
+            var points = new PointF[] { new PointF(p.Width, 0), new PointF(p.Width, p.Height), new PointF(0, p.Height / 2) };
+            var solidBrush = new SolidBrush(BackColor);
 
-                var points = new PointF[] { new PointF(p.Width, 0), new PointF(p.Width, p.Height), new PointF(0, p.Height / 2) };
-                e.Graphics.FillPolygon(new SolidBrush(BackColor), points);
-            }
+            p.ForceBackgroundRedraw();
+            e.Graphics.FillPolygon(solidBrush, points);
+
+            solidBrush.Dispose();
         }
 
         private void InitializeTutorSteps()

@@ -1037,19 +1037,19 @@ namespace MB_Studio.Manager
                     "Help",
                     "This button always opens the shown tutorial and all available infos about the current so called \"Manager\"",
                     help_btn.Name,
-                    TutorStep.Option.Enter
+                    TutorStep.Option.Hover
                 ),
                 new TutorStep(
                     "Add External",
                     "If it is available, you can add here objects (depending on the used Manager) from another module. Attention - Don't publish any code or resources which are owned by someone else and you don't have the right to use them!",
                     addFromOtherMod_btn.Name,
-                    TutorStep.Option.Enter
+                    TutorStep.Option.Hover
                 ),
                 new TutorStep(
                     "Create / Save",
                     "When you change the object ID the button will change from 'Save' to 'Create' if it is an unknown ID. Otherwise all data will be overwritten with the data of the existing object with the entered ID. (Later you will be able to change the position in the list as well.) - Move over the button.",
                     save_btn.Name,
-                    TutorStep.Option.Enter
+                    TutorStep.Option.Hover
                 ),
                 new TutorStep(
                     "Translation",
