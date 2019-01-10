@@ -46,6 +46,7 @@ namespace MB_Studio.Main
             treeNode7});
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("TroopManager", new System.Windows.Forms.TreeNode[] {
             treeNode8});
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Settings (module.ini)");
             this.min_btn = new System.Windows.Forms.Button();
             this.maxnorm_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
@@ -179,6 +180,7 @@ namespace MB_Studio.Main
             this.extraOptions_tree.Name = "extraOptions_tree";
             treeNode1.Name = "projectsFolder_node";
             treeNode1.Text = "Project Folder & Module";
+            treeNode1.ToolTipText = "Project Folder & Module";
             treeNode2.Name = "set_1";
             treeNode2.Text = "#Set1";
             treeNode3.Name = "set_2";
@@ -195,9 +197,14 @@ namespace MB_Studio.Main
             treeNode8.Text = "Itemsets";
             treeNode9.Name = "troopManager_node";
             treeNode9.Text = "TroopManager";
+            treeNode9.ToolTipText = "Special Settings for the TroopManager";
+            treeNode10.Name = "module_ini_node";
+            treeNode10.Text = "Settings (module.ini)";
+            treeNode10.ToolTipText = "Almost all possible settings for module.ini are available here";
             this.extraOptions_tree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
-            treeNode9});
+            treeNode9,
+            treeNode10});
             this.extraOptions_tree.Size = new System.Drawing.Size(192, 258);
             this.extraOptions_tree.TabIndex = 20;
             this.extraOptions_tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ExtraOptions_tree_AfterSelect);
@@ -402,7 +409,7 @@ namespace MB_Studio.Main
             this.valueInfo_lbl.ForeColor = System.Drawing.Color.White;
             this.valueInfo_lbl.Location = new System.Drawing.Point(124, 182);
             this.valueInfo_lbl.Name = "valueInfo_lbl";
-            this.valueInfo_lbl.Size = new System.Drawing.Size(88, 13);
+            this.valueInfo_lbl.Size = new System.Drawing.Size(76, 13);
             this.valueInfo_lbl.TabIndex = 25;
             this.valueInfo_lbl.Text = "(e.g. 5 or 5-10)";
             // 
@@ -482,7 +489,7 @@ namespace MB_Studio.Main
             this.swingDamage_lbl.ForeColor = System.Drawing.Color.White;
             this.swingDamage_lbl.Location = new System.Drawing.Point(39, 158);
             this.swingDamage_lbl.Name = "swingDamage_lbl";
-            this.swingDamage_lbl.Size = new System.Drawing.Size(89, 13);
+            this.swingDamage_lbl.Size = new System.Drawing.Size(79, 13);
             this.swingDamage_lbl.TabIndex = 9;
             this.swingDamage_lbl.Text = "Swing Damage";
             // 
@@ -499,7 +506,7 @@ namespace MB_Studio.Main
             this.thrustDamage_lbl.ForeColor = System.Drawing.Color.White;
             this.thrustDamage_lbl.Location = new System.Drawing.Point(58, 132);
             this.thrustDamage_lbl.Name = "thrustDamage_lbl";
-            this.thrustDamage_lbl.Size = new System.Drawing.Size(70, 13);
+            this.thrustDamage_lbl.Size = new System.Drawing.Size(80, 13);
             this.thrustDamage_lbl.TabIndex = 7;
             this.thrustDamage_lbl.Text = "Thrust Damage";
             // 
@@ -516,7 +523,7 @@ namespace MB_Studio.Main
             this.legArmor_lbl.ForeColor = System.Drawing.Color.White;
             this.legArmor_lbl.Location = new System.Drawing.Point(68, 106);
             this.legArmor_lbl.Name = "legArmor_lbl";
-            this.legArmor_lbl.Size = new System.Drawing.Size(59, 13);
+            this.legArmor_lbl.Size = new System.Drawing.Size(55, 13);
             this.legArmor_lbl.TabIndex = 5;
             this.legArmor_lbl.Text = "Leg Armor";
             // 
@@ -533,7 +540,7 @@ namespace MB_Studio.Main
             this.bodyArmor_lbl.ForeColor = System.Drawing.Color.White;
             this.bodyArmor_lbl.Location = new System.Drawing.Point(59, 80);
             this.bodyArmor_lbl.Name = "bodyArmor_lbl";
-            this.bodyArmor_lbl.Size = new System.Drawing.Size(69, 13);
+            this.bodyArmor_lbl.Size = new System.Drawing.Size(61, 13);
             this.bodyArmor_lbl.TabIndex = 3;
             this.bodyArmor_lbl.Text = "Body Armor";
             // 
@@ -550,7 +557,7 @@ namespace MB_Studio.Main
             this.headArmor_lbl.ForeColor = System.Drawing.Color.White;
             this.headArmor_lbl.Location = new System.Drawing.Point(68, 54);
             this.headArmor_lbl.Name = "headArmor_lbl";
-            this.headArmor_lbl.Size = new System.Drawing.Size(60, 13);
+            this.headArmor_lbl.Size = new System.Drawing.Size(63, 13);
             this.headArmor_lbl.TabIndex = 1;
             this.headArmor_lbl.Text = "Head Armor";
             // 

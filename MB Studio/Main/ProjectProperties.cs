@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using static MB_Studio_Library.Objects.Skriptum;
+using MB_Studio_Library.Objects.Support;
+using System.Drawing;
 
 namespace MB_Studio.Main
 {
@@ -18,22 +20,131 @@ namespace MB_Studio.Main
         private List<Item> items = new List<Item>();
         private List<ulong> itemsFlags = new List<ulong>();
 
+        private Panel moduleIniPanel;
+
         public ProjectProperties()
         {
             InitializeComponent();
+
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
         }
 
         private void ExtraOptions_Load(object sender, EventArgs e)
         {
             title_lbl.Text = Text;
+
             for (int i = 0; i < CodeReader.Items.Count; i++)
                 itemsIDs.Add(i + " - " + CodeReader.Items[i]);
+
             CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)ObjectType.Item]);
             foreach (Item item in cr.ReadItem())
                 items.Add(item);
+
+            moduleIniPanel = new Panel
+            {
+                Width = itemsets_panel.Width,
+                Height = itemsets_panel.Height,
+                Left = itemsets_panel.Left,
+                Top = itemsets_panel.Top,
+                AutoScroll = true,
+            };
+            Controls.Add(moduleIniPanel);
+            moduleIniPanel.SendToBack();
+
+            //TextBox textBox = new TextBox
+            //{
+            //    Multiline = true,
+            //    Dock = DockStyle.Fill
+            //};
+            //moduleIniPanel.Controls.Add(textBox);
+
+            string curName;
+            var iniVars = ReadModuleIniSettings();
+            for (int i = 0; i < iniVars.Count; i++)
+            {
+                curName = iniVars[i].VariableName.ToLower();
+
+                Label label = new Label
+                {
+                    Name = curName + "_lbl",
+                    AutoSize = false,
+                    Width = 256,
+                    Height = 32,
+                    Text = iniVars[i].VariableName,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Left = 8
+                };
+                label.Top = 8 + (i * label.Height);
+                moduleIniPanel.Controls.Add(label);
+
+                TextBox textBox = new TextBox
+                {
+                    Name = curName + "_txt",
+                    Width = label.Width,
+                    Height = label.Height,
+                    Text = iniVars[i].VariableValue,
+                    Tag = iniVars[i].VariableValue,
+                    TextAlign = HorizontalAlignment.Center,
+                    Left = label.Left + label.Width + 8,
+                    Top = label.Top
+                };
+                textBox.LostFocus += TextBox_LostFocus;
+                moduleIniPanel.Controls.Add(textBox);
+            }
+
             ResetControls();
             LoadItemSets();
+        }
+
+        private void TextBox_LostFocus(object sender, EventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (!textBox.Text.Equals(textBox.Tag.ToString()))
+            {
+                string moduleIniFile = CodeReader.ModPath + "module.ini";
+                string varName = textBox.Name.Remove(textBox.Name.LastIndexOf('_'));
+                var label = moduleIniPanel.Controls.Find(varName + "_lbl", false)[0];
+                string[] iniLines = File.ReadAllLines(moduleIniFile);
+                for (int i = 0; i < iniLines.Length; i++)
+                {
+                    if (iniLines[i].Trim().StartsWith(label.Text))
+                    {
+                        //MessageBox.Show("FOUND ORIGINAL ENTRY!");
+                        iniLines[i] = label.Text + " = " + textBox.Text;
+                        i = iniLines.Length;
+                    }
+                }
+                File.WriteAllLines(moduleIniFile, iniLines);
+                MessageBox.Show("Saved Changes!"); // just for testing - later with gui flash message / popup / infobar ...
+                textBox.Tag = textBox.Text;
+            }
+        }
+
+        private List<HeaderVariable> ReadModuleIniSettings()
+        {
+            List<HeaderVariable> variables = new List<HeaderVariable>();
+            using (StreamReader sr = new StreamReader(CodeReader.ModPath + "module.ini"))
+            {
+                string line;
+                string[] sp;
+                while (!sr.EndOfStream)
+                {
+                    line = CodeReader.RemNTrimAllXtraSp(sr.ReadLine().Split('#')[0]); // check wether # not only for comment
+                    if (line.Length != 0)
+                    {
+                        sp = line.Split();
+                        line = sp[0].ToUpper();
+                        if (!line.Equals("LOAD_RESOURCE") && !line.Equals("LOAD_MOD_RESOURCE"))
+                        {
+                            if (sp.Length > 2)
+                                variables.Add(new HeaderVariable(sp[2], sp[0]));
+                            else
+                                variables.Add(new HeaderVariable("!VALUE_NOT_FOUND!", sp[0]));
+                        }
+                    }
+                }
+            }
+            return variables;
         }
 
         private void Exit_btn_Click(object sender, EventArgs e)
@@ -94,14 +205,14 @@ namespace MB_Studio.Main
         {
             itemsets_panel.Visible = false;
             projects_panel.Visible = false;
-            if (e.Node.Name.Substring(0, 4).Equals("set_"))
+            if (e.Node.Name.StartsWith("set_"))
             {
                 itemsets_panel.Visible = true;
                 itemsets_panel.BringToFront();
                 currentSetIndex = int.Parse(e.Node.Name.Split('_')[1]) - 1;
                 SetupCurrentSet();
             }
-            else if (e.Node.Name.Substring(0, 4).Equals("proj"))
+            else if (e.Node.Name.StartsWith("proj"))
             {
                 projects_panel.Visible = true;
                 projects_panel.BringToFront();
@@ -119,8 +230,14 @@ namespace MB_Studio.Main
                 destinationMod_cbb.SelectedItem = info[4];
                 copyDefaultVariables_cb.Checked = bool.Parse(info[6]);
             }
-            else if (e.Node.Name.Substring(0, 5).Equals("gener"))
+            else if (e.Node.Name.StartsWith("gener"))
+            {
                 new HeaderValueTool().ShowDialog();
+            }
+            else if (e.Node.Name.StartsWith("Settings"))
+            {
+                moduleIniPanel.BringToFront();
+            }
         }
 
         private void ResetControls()
