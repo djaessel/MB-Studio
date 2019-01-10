@@ -109,13 +109,13 @@ namespace MB_Studio.Main
                 {
                     if (iniLines[i].Trim().StartsWith(label.Text))
                     {
-                        //MessageBox.Show("FOUND ORIGINAL ENTRY!");
-                        iniLines[i] = label.Text + " = " + textBox.Text;
+                        iniLines[i] = label.Text + " = " + textBox.Text.Replace("\t", "    ").Replace(' ', '_');
                         i = iniLines.Length;
                     }
                 }
                 File.WriteAllLines(moduleIniFile, iniLines);
-                MessageBox.Show("Saved Changes!"); // just for testing - later with gui flash message / popup / infobar ...
+                // TODO: make save button as well later and the option to just save if the button was pressed!
+                //MessageBox.Show("Saved Changes!"); // just for testing - later with gui flash message / infobar etc.
                 textBox.Tag = textBox.Text;
             }
         }
