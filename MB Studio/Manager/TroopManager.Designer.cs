@@ -73,10 +73,6 @@ namespace MB_Studio.Manager
             this.upgradeTroop2_lbl = new System.Windows.Forms.Label();
             this.upgradeTroop1_lbl = new System.Windows.Forms.Label();
             this.upgradeTroop1_lb = new System.Windows.Forms.ListBox();
-            this.face2_lbl = new System.Windows.Forms.Label();
-            this.face2_txt = new System.Windows.Forms.TextBox();
-            this.face1_lbl = new System.Windows.Forms.Label();
-            this.face1_txt = new System.Windows.Forms.TextBox();
             this.showGroup_6_btn = new System.Windows.Forms.Button();
             this.showGroup_5_btn = new System.Windows.Forms.Button();
             this.groupBox_5_gb = new System.Windows.Forms.GroupBox();
@@ -131,8 +127,8 @@ namespace MB_Studio.Manager
             this.mounted_cb = new System.Windows.Forms.CheckBox();
             this.is_merchant_cb = new System.Windows.Forms.CheckBox();
             this.hero_cb = new System.Windows.Forms.CheckBox();
-            this.skin_lbl = new System.Windows.Forms.Label();
-            this.skins_lb = new System.Windows.Forms.ListBox();
+            this.type_lbl = new System.Windows.Forms.Label();
+            this.troopTypes_lb = new System.Windows.Forms.ListBox();
             this.guarantee_gb = new System.Windows.Forms.GroupBox();
             this.polearm_cb = new System.Windows.Forms.CheckBox();
             this.ranged_cb = new System.Windows.Forms.CheckBox();
@@ -147,6 +143,22 @@ namespace MB_Studio.Manager
             this.reserved_XVIII_lbl = new System.Windows.Forms.Label();
             this.reserved_XVII_num = new System.Windows.Forms.NumericUpDown();
             this.reserved_XVII_lbl = new System.Windows.Forms.Label();
+            this.showGroup_8_btn = new System.Windows.Forms.Button();
+            this.groupBox_8_gb = new System.Windows.Forms.GroupBox();
+            this.hairColor_tb = new System.Windows.Forms.TrackBar();
+            this.hairColor_lbl = new System.Windows.Forms.Label();
+            this.age_tb = new System.Windows.Forms.TrackBar();
+            this.age_lbl = new System.Windows.Forms.Label();
+            this.hair_tb = new System.Windows.Forms.TrackBar();
+            this.beard_tb = new System.Windows.Forms.TrackBar();
+            this.skin_tb = new System.Windows.Forms.TrackBar();
+            this.hair_lbl = new System.Windows.Forms.Label();
+            this.beard_lbl = new System.Windows.Forms.Label();
+            this.skin_lbl = new System.Windows.Forms.Label();
+            this.face2_lbl = new System.Windows.Forms.Label();
+            this.face2_txt = new System.Windows.Forms.TextBox();
+            this.face1_lbl = new System.Windows.Forms.Label();
+            this.face1_txt = new System.Windows.Forms.TextBox();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_3_gb.SuspendLayout();
@@ -162,6 +174,12 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVIII_num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVII_num)).BeginInit();
+            this.groupBox_8_gb.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.hairColor_tb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.age_tb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hair_tb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.beard_tb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skin_tb)).BeginInit();
             this.SuspendLayout();
             // 
             // title_lbl
@@ -178,6 +196,8 @@ namespace MB_Studio.Manager
             // 
             // toolPanel
             // 
+            this.toolPanel.Controls.Add(this.showGroup_8_btn);
+            this.toolPanel.Controls.Add(this.groupBox_8_gb);
             this.toolPanel.Controls.Add(this.groupBox_2_gb);
             this.toolPanel.Controls.Add(this.groupBox_3_gb);
             this.toolPanel.Controls.Add(this.showGroup_7_btn);
@@ -190,11 +210,11 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.Add(this.showGroup_3_btn);
             this.toolPanel.Controls.Add(this.showGroup_2_btn);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Controls.Add(this.groupBox_1_gb);
             this.toolPanel.Controls.Add(this.groupBox_6_gb);
-            this.toolPanel.Size = new System.Drawing.Size(779, 225);
-            this.toolPanel.Controls.SetChildIndex(this.groupBox_6_gb, 0);
+            this.toolPanel.Controls.Add(this.groupBox_1_gb);
+            this.toolPanel.Size = new System.Drawing.Size(779, 255);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_1_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_6_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_2_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_3_btn, 0);
@@ -206,9 +226,11 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.SetChildIndex(this.groupBox_7_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_7_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_3_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_8_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_8_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
-            this.toolPanel.Controls.SetChildIndex(this.groupBox_2_gb, 0);
             // 
             // pluralNameTranslation_lbl
             // 
@@ -752,7 +774,7 @@ namespace MB_Studio.Manager
             this.showGroup_7_btn.Name = "showGroup_7_btn";
             this.showGroup_7_btn.Size = new System.Drawing.Size(26, 25);
             this.showGroup_7_btn.TabIndex = 13;
-            this.showGroup_7_btn.Tag = "0";
+            this.showGroup_7_btn.Tag = "-25";
             this.showGroup_7_btn.Text = "v";
             this.showGroup_7_btn.UseVisualStyleBackColor = false;
             // 
@@ -762,10 +784,6 @@ namespace MB_Studio.Manager
             this.groupBox_7_gb.Controls.Add(this.upgradeTroop2_lbl);
             this.groupBox_7_gb.Controls.Add(this.upgradeTroop1_lbl);
             this.groupBox_7_gb.Controls.Add(this.upgradeTroop1_lb);
-            this.groupBox_7_gb.Controls.Add(this.face2_lbl);
-            this.groupBox_7_gb.Controls.Add(this.face2_txt);
-            this.groupBox_7_gb.Controls.Add(this.face1_lbl);
-            this.groupBox_7_gb.Controls.Add(this.face1_txt);
             this.groupBox_7_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_7_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_7_gb.ForeColor = System.Drawing.Color.White;
@@ -774,7 +792,7 @@ namespace MB_Studio.Manager
             this.groupBox_7_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_7_gb.TabIndex = 14;
             this.groupBox_7_gb.TabStop = false;
-            this.groupBox_7_gb.Text = "Faces && Upgrade Paths";
+            this.groupBox_7_gb.Text = "Upgrade Paths";
             // 
             // upgradeTroop2_lb
             // 
@@ -786,7 +804,7 @@ namespace MB_Studio.Manager
             this.upgradeTroop2_lb.ItemHeight = 18;
             this.upgradeTroop2_lb.Items.AddRange(new object[] {
             "None"});
-            this.upgradeTroop2_lb.Location = new System.Drawing.Point(445, 73);
+            this.upgradeTroop2_lb.Location = new System.Drawing.Point(439, 47);
             this.upgradeTroop2_lb.Name = "upgradeTroop2_lb";
             this.upgradeTroop2_lb.Size = new System.Drawing.Size(274, 20);
             this.upgradeTroop2_lb.TabIndex = 13;
@@ -795,7 +813,7 @@ namespace MB_Studio.Manager
             // 
             this.upgradeTroop2_lbl.AutoSize = true;
             this.upgradeTroop2_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.upgradeTroop2_lbl.Location = new System.Drawing.Point(377, 73);
+            this.upgradeTroop2_lbl.Location = new System.Drawing.Point(371, 47);
             this.upgradeTroop2_lbl.Name = "upgradeTroop2_lbl";
             this.upgradeTroop2_lbl.Size = new System.Drawing.Size(62, 16);
             this.upgradeTroop2_lbl.TabIndex = 12;
@@ -805,7 +823,7 @@ namespace MB_Studio.Manager
             // 
             this.upgradeTroop1_lbl.AutoSize = true;
             this.upgradeTroop1_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.upgradeTroop1_lbl.Location = new System.Drawing.Point(377, 47);
+            this.upgradeTroop1_lbl.Location = new System.Drawing.Point(9, 47);
             this.upgradeTroop1_lbl.Name = "upgradeTroop1_lbl";
             this.upgradeTroop1_lbl.Size = new System.Drawing.Size(62, 16);
             this.upgradeTroop1_lbl.TabIndex = 11;
@@ -821,54 +839,10 @@ namespace MB_Studio.Manager
             this.upgradeTroop1_lb.ItemHeight = 18;
             this.upgradeTroop1_lb.Items.AddRange(new object[] {
             "None"});
-            this.upgradeTroop1_lb.Location = new System.Drawing.Point(445, 47);
+            this.upgradeTroop1_lb.Location = new System.Drawing.Point(77, 47);
             this.upgradeTroop1_lb.Name = "upgradeTroop1_lb";
             this.upgradeTroop1_lb.Size = new System.Drawing.Size(274, 20);
             this.upgradeTroop1_lb.TabIndex = 10;
-            // 
-            // face2_lbl
-            // 
-            this.face2_lbl.AutoSize = true;
-            this.face2_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.face2_lbl.Location = new System.Drawing.Point(12, 73);
-            this.face2_lbl.Name = "face2_lbl";
-            this.face2_lbl.Size = new System.Drawing.Size(99, 16);
-            this.face2_lbl.TabIndex = 9;
-            this.face2_lbl.Text = "Face2 (HEX):";
-            // 
-            // face2_txt
-            // 
-            this.face2_txt.BackColor = System.Drawing.Color.DimGray;
-            this.face2_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.face2_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.face2_txt.ForeColor = System.Drawing.Color.White;
-            this.face2_txt.Location = new System.Drawing.Point(117, 71);
-            this.face2_txt.Name = "face2_txt";
-            this.face2_txt.Size = new System.Drawing.Size(252, 22);
-            this.face2_txt.TabIndex = 8;
-            this.face2_txt.Text = "0";
-            // 
-            // face1_lbl
-            // 
-            this.face1_lbl.AutoSize = true;
-            this.face1_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.face1_lbl.Location = new System.Drawing.Point(12, 47);
-            this.face1_lbl.Name = "face1_lbl";
-            this.face1_lbl.Size = new System.Drawing.Size(99, 16);
-            this.face1_lbl.TabIndex = 7;
-            this.face1_lbl.Text = "Face1 (HEX):";
-            // 
-            // face1_txt
-            // 
-            this.face1_txt.BackColor = System.Drawing.Color.DimGray;
-            this.face1_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.face1_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.face1_txt.ForeColor = System.Drawing.Color.White;
-            this.face1_txt.Location = new System.Drawing.Point(117, 45);
-            this.face1_txt.Name = "face1_txt";
-            this.face1_txt.Size = new System.Drawing.Size(252, 22);
-            this.face1_txt.TabIndex = 6;
-            this.face1_txt.Text = "0";
             // 
             // showGroup_6_btn
             // 
@@ -1390,8 +1364,8 @@ namespace MB_Studio.Manager
             this.groupBox_1_gb.Controls.Add(this.mounted_cb);
             this.groupBox_1_gb.Controls.Add(this.is_merchant_cb);
             this.groupBox_1_gb.Controls.Add(this.hero_cb);
-            this.groupBox_1_gb.Controls.Add(this.skin_lbl);
-            this.groupBox_1_gb.Controls.Add(this.skins_lb);
+            this.groupBox_1_gb.Controls.Add(this.type_lbl);
+            this.groupBox_1_gb.Controls.Add(this.troopTypes_lb);
             this.groupBox_1_gb.Controls.Add(this.guarantee_gb);
             this.groupBox_1_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox_1_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1511,45 +1485,45 @@ namespace MB_Studio.Manager
             this.hero_cb.Text = "Hero";
             this.hero_cb.UseVisualStyleBackColor = true;
             // 
-            // skin_lbl
+            // type_lbl
             // 
-            this.skin_lbl.AutoSize = true;
-            this.skin_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.skin_lbl.Location = new System.Drawing.Point(5, 30);
-            this.skin_lbl.Name = "skin_lbl";
-            this.skin_lbl.Size = new System.Drawing.Size(42, 16);
-            this.skin_lbl.TabIndex = 6;
-            this.skin_lbl.Text = "Skin:";
+            this.type_lbl.AutoSize = true;
+            this.type_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.type_lbl.Location = new System.Drawing.Point(2, 30);
+            this.type_lbl.Name = "type_lbl";
+            this.type_lbl.Size = new System.Drawing.Size(48, 16);
+            this.type_lbl.TabIndex = 6;
+            this.type_lbl.Text = "Type:";
             // 
-            // skins_lb
+            // troopTypes_lb
             // 
-            this.skins_lb.BackColor = System.Drawing.Color.DimGray;
-            this.skins_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.skins_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.skins_lb.ForeColor = System.Drawing.Color.White;
-            this.skins_lb.FormattingEnabled = true;
-            this.skins_lb.ItemHeight = 18;
-            this.skins_lb.Items.AddRange(new object[] {
-            "Skin0 (Male)",
-            "Skin1 (Female)",
-            "Skin2",
-            "Skin3",
-            "Skin4",
-            "Skin5",
-            "Skin6",
-            "Skin7",
-            "Skin8",
-            "Skin9",
-            "Skin10",
-            "Skin11",
-            "Skin12",
-            "Skin13",
-            "Skin14",
-            "Skin15"});
-            this.skins_lb.Location = new System.Drawing.Point(51, 28);
-            this.skins_lb.Name = "skins_lb";
-            this.skins_lb.Size = new System.Drawing.Size(124, 74);
-            this.skins_lb.TabIndex = 5;
+            this.troopTypes_lb.BackColor = System.Drawing.Color.DimGray;
+            this.troopTypes_lb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.troopTypes_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.troopTypes_lb.ForeColor = System.Drawing.Color.White;
+            this.troopTypes_lb.FormattingEnabled = true;
+            this.troopTypes_lb.ItemHeight = 18;
+            this.troopTypes_lb.Items.AddRange(new object[] {
+            "Type0 (Male)",
+            "Type1 (Female)",
+            "Type2",
+            "Type3",
+            "Type4",
+            "Type5",
+            "Type6",
+            "Type7",
+            "Type8",
+            "Type9",
+            "Type10",
+            "Type11",
+            "Type12",
+            "Type13",
+            "Type14",
+            "Type15"});
+            this.troopTypes_lb.Location = new System.Drawing.Point(51, 28);
+            this.troopTypes_lb.Name = "troopTypes_lb";
+            this.troopTypes_lb.Size = new System.Drawing.Size(124, 74);
+            this.troopTypes_lb.TabIndex = 5;
             // 
             // guarantee_gb
             // 
@@ -1741,11 +1715,193 @@ namespace MB_Studio.Manager
             this.reserved_XVII_lbl.Text = "Reserved 17:";
             this.reserved_XVII_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // showGroup_8_btn
+            // 
+            this.showGroup_8_btn.BackColor = System.Drawing.Color.DimGray;
+            this.showGroup_8_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showGroup_8_btn.Location = new System.Drawing.Point(3, 228);
+            this.showGroup_8_btn.Name = "showGroup_8_btn";
+            this.showGroup_8_btn.Size = new System.Drawing.Size(26, 25);
+            this.showGroup_8_btn.TabIndex = 23;
+            this.showGroup_8_btn.Tag = "75";
+            this.showGroup_8_btn.Text = "v";
+            this.showGroup_8_btn.UseVisualStyleBackColor = false;
+            // 
+            // groupBox_8_gb
+            // 
+            this.groupBox_8_gb.Controls.Add(this.hairColor_tb);
+            this.groupBox_8_gb.Controls.Add(this.hairColor_lbl);
+            this.groupBox_8_gb.Controls.Add(this.age_tb);
+            this.groupBox_8_gb.Controls.Add(this.age_lbl);
+            this.groupBox_8_gb.Controls.Add(this.hair_tb);
+            this.groupBox_8_gb.Controls.Add(this.beard_tb);
+            this.groupBox_8_gb.Controls.Add(this.skin_tb);
+            this.groupBox_8_gb.Controls.Add(this.hair_lbl);
+            this.groupBox_8_gb.Controls.Add(this.beard_lbl);
+            this.groupBox_8_gb.Controls.Add(this.skin_lbl);
+            this.groupBox_8_gb.Controls.Add(this.face2_lbl);
+            this.groupBox_8_gb.Controls.Add(this.face2_txt);
+            this.groupBox_8_gb.Controls.Add(this.face1_lbl);
+            this.groupBox_8_gb.Controls.Add(this.face1_txt);
+            this.groupBox_8_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox_8_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox_8_gb.ForeColor = System.Drawing.Color.White;
+            this.groupBox_8_gb.Location = new System.Drawing.Point(39, 226);
+            this.groupBox_8_gb.Name = "groupBox_8_gb";
+            this.groupBox_8_gb.Size = new System.Drawing.Size(737, 25);
+            this.groupBox_8_gb.TabIndex = 24;
+            this.groupBox_8_gb.TabStop = false;
+            this.groupBox_8_gb.Text = "Face";
+            // 
+            // hairColor_tb
+            // 
+            this.hairColor_tb.AutoSize = false;
+            this.hairColor_tb.LargeChange = 3;
+            this.hairColor_tb.Location = new System.Drawing.Point(477, 118);
+            this.hairColor_tb.Maximum = 120;
+            this.hairColor_tb.Name = "hairColor_tb";
+            this.hairColor_tb.Size = new System.Drawing.Size(250, 30);
+            this.hairColor_tb.TabIndex = 25;
+            // 
+            // hairColor_lbl
+            // 
+            this.hairColor_lbl.AutoSize = true;
+            this.hairColor_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hairColor_lbl.Location = new System.Drawing.Point(389, 118);
+            this.hairColor_lbl.Name = "hairColor_lbl";
+            this.hairColor_lbl.Size = new System.Drawing.Size(82, 16);
+            this.hairColor_lbl.TabIndex = 24;
+            this.hairColor_lbl.Text = "Hair Color:";
+            // 
+            // age_tb
+            // 
+            this.age_tb.AutoSize = false;
+            this.age_tb.LargeChange = 3;
+            this.age_tb.Location = new System.Drawing.Point(477, 80);
+            this.age_tb.Maximum = 48;
+            this.age_tb.Name = "age_tb";
+            this.age_tb.Size = new System.Drawing.Size(250, 30);
+            this.age_tb.TabIndex = 23;
+            // 
+            // age_lbl
+            // 
+            this.age_lbl.AutoSize = true;
+            this.age_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.age_lbl.Location = new System.Drawing.Point(431, 82);
+            this.age_lbl.Name = "age_lbl";
+            this.age_lbl.Size = new System.Drawing.Size(40, 16);
+            this.age_lbl.TabIndex = 22;
+            this.age_lbl.Text = "Age:";
+            // 
+            // hair_tb
+            // 
+            this.hair_tb.AutoSize = false;
+            this.hair_tb.LargeChange = 3;
+            this.hair_tb.Location = new System.Drawing.Point(114, 158);
+            this.hair_tb.Maximum = 50;
+            this.hair_tb.Name = "hair_tb";
+            this.hair_tb.Size = new System.Drawing.Size(250, 30);
+            this.hair_tb.TabIndex = 21;
+            // 
+            // beard_tb
+            // 
+            this.beard_tb.AutoSize = false;
+            this.beard_tb.LargeChange = 3;
+            this.beard_tb.Location = new System.Drawing.Point(114, 118);
+            this.beard_tb.Maximum = 50;
+            this.beard_tb.Name = "beard_tb";
+            this.beard_tb.Size = new System.Drawing.Size(250, 30);
+            this.beard_tb.TabIndex = 19;
+            // 
+            // skin_tb
+            // 
+            this.skin_tb.AutoSize = false;
+            this.skin_tb.LargeChange = 3;
+            this.skin_tb.Location = new System.Drawing.Point(114, 80);
+            this.skin_tb.Maximum = 50;
+            this.skin_tb.Name = "skin_tb";
+            this.skin_tb.Size = new System.Drawing.Size(250, 30);
+            this.skin_tb.TabIndex = 18;
+            // 
+            // hair_lbl
+            // 
+            this.hair_lbl.AutoSize = true;
+            this.hair_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hair_lbl.Location = new System.Drawing.Point(67, 158);
+            this.hair_lbl.Name = "hair_lbl";
+            this.hair_lbl.Size = new System.Drawing.Size(41, 16);
+            this.hair_lbl.TabIndex = 17;
+            this.hair_lbl.Text = "Hair:";
+            // 
+            // beard_lbl
+            // 
+            this.beard_lbl.AutoSize = true;
+            this.beard_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.beard_lbl.Location = new System.Drawing.Point(54, 118);
+            this.beard_lbl.Name = "beard_lbl";
+            this.beard_lbl.Size = new System.Drawing.Size(54, 16);
+            this.beard_lbl.TabIndex = 15;
+            this.beard_lbl.Text = "Beard:";
+            // 
+            // skin_lbl
+            // 
+            this.skin_lbl.AutoSize = true;
+            this.skin_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.skin_lbl.Location = new System.Drawing.Point(67, 82);
+            this.skin_lbl.Name = "skin_lbl";
+            this.skin_lbl.Size = new System.Drawing.Size(42, 16);
+            this.skin_lbl.TabIndex = 13;
+            this.skin_lbl.Text = "Skin:";
+            // 
+            // face2_lbl
+            // 
+            this.face2_lbl.AutoSize = true;
+            this.face2_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.face2_lbl.Location = new System.Drawing.Point(372, 47);
+            this.face2_lbl.Name = "face2_lbl";
+            this.face2_lbl.Size = new System.Drawing.Size(99, 16);
+            this.face2_lbl.TabIndex = 9;
+            this.face2_lbl.Text = "Face2 (HEX):";
+            // 
+            // face2_txt
+            // 
+            this.face2_txt.BackColor = System.Drawing.Color.DimGray;
+            this.face2_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.face2_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.face2_txt.ForeColor = System.Drawing.Color.White;
+            this.face2_txt.Location = new System.Drawing.Point(477, 45);
+            this.face2_txt.Name = "face2_txt";
+            this.face2_txt.Size = new System.Drawing.Size(250, 22);
+            this.face2_txt.TabIndex = 8;
+            this.face2_txt.Text = "0";
+            // 
+            // face1_lbl
+            // 
+            this.face1_lbl.AutoSize = true;
+            this.face1_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.face1_lbl.Location = new System.Drawing.Point(9, 47);
+            this.face1_lbl.Name = "face1_lbl";
+            this.face1_lbl.Size = new System.Drawing.Size(99, 16);
+            this.face1_lbl.TabIndex = 7;
+            this.face1_lbl.Text = "Face1 (HEX):";
+            // 
+            // face1_txt
+            // 
+            this.face1_txt.BackColor = System.Drawing.Color.DimGray;
+            this.face1_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.face1_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.face1_txt.ForeColor = System.Drawing.Color.White;
+            this.face1_txt.Location = new System.Drawing.Point(114, 45);
+            this.face1_txt.Name = "face1_txt";
+            this.face1_txt.Size = new System.Drawing.Size(250, 22);
+            this.face1_txt.TabIndex = 6;
+            this.face1_txt.Text = "0";
+            // 
             // TroopManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(815, 415);
+            this.ClientSize = new System.Drawing.Size(815, 445);
             this.DoubleBuffered = true;
             this.Name = "TroopManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1774,6 +1930,13 @@ namespace MB_Studio.Manager
             this.groupBox_6_gb.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVIII_num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reserved_XVII_num)).EndInit();
+            this.groupBox_8_gb.ResumeLayout(false);
+            this.groupBox_8_gb.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.hairColor_tb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.age_tb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hair_tb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.beard_tb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skin_tb)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1789,8 +1952,8 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.GroupBox groupBox_2_gb;
         private System.Windows.Forms.Button showGroup_1_btn;
         private System.Windows.Forms.GroupBox groupBox_1_gb;
-        private System.Windows.Forms.Label skin_lbl;
-        private System.Windows.Forms.ListBox skins_lb;
+        private System.Windows.Forms.Label type_lbl;
+        private System.Windows.Forms.ListBox troopTypes_lb;
         private System.Windows.Forms.CheckBox ranged_cb;
         private System.Windows.Forms.CheckBox horse_cb;
         private System.Windows.Forms.CheckBox shield_cb;
@@ -1850,10 +2013,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.GroupBox groupBox_6_gb;
         private System.Windows.Forms.Button showGroup_7_btn;
         private System.Windows.Forms.GroupBox groupBox_7_gb;
-        private System.Windows.Forms.Label face2_lbl;
-        private System.Windows.Forms.TextBox face2_txt;
-        private System.Windows.Forms.Label face1_lbl;
-        private System.Windows.Forms.TextBox face1_txt;
         private System.Windows.Forms.ListBox upgradeTroop2_lb;
         private System.Windows.Forms.Label upgradeTroop2_lbl;
         private System.Windows.Forms.Label upgradeTroop1_lbl;
@@ -1898,5 +2057,21 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label calfR_lbl;
         private System.Windows.Forms.ComboBox hand_cbb;
         private System.Windows.Forms.Label hand_lbl;
+        private System.Windows.Forms.Button showGroup_8_btn;
+        private System.Windows.Forms.GroupBox groupBox_8_gb;
+        private System.Windows.Forms.Label face2_lbl;
+        private System.Windows.Forms.TextBox face2_txt;
+        private System.Windows.Forms.Label face1_lbl;
+        private System.Windows.Forms.TextBox face1_txt;
+        private System.Windows.Forms.TrackBar hair_tb;
+        private System.Windows.Forms.TrackBar beard_tb;
+        private System.Windows.Forms.TrackBar skin_tb;
+        private System.Windows.Forms.Label hair_lbl;
+        private System.Windows.Forms.Label beard_lbl;
+        private System.Windows.Forms.Label skin_lbl;
+        private System.Windows.Forms.TrackBar hairColor_tb;
+        private System.Windows.Forms.Label hairColor_lbl;
+        private System.Windows.Forms.TrackBar age_tb;
+        private System.Windows.Forms.Label age_lbl;
     }
 }

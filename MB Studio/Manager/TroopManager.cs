@@ -197,7 +197,7 @@ namespace MB_Studio.Manager
 
             #region GROUP1 - Flags & Guarantee
 
-            skins_lb.SelectedIndex = (int)(troop.FlagsGZ & 0xF);
+            troopTypes_lb.SelectedIndex = (int)(troop.FlagsGZ & 0xF);
             if (troop.FlagsGZ > 0)
             {
                 foreach (string flag in troop.Flags.Split('|'))
@@ -303,10 +303,7 @@ namespace MB_Studio.Manager
 
             #endregion
 
-            #region GROUP7 - Faces & Upgrade Paths
-
-            face1_txt.Text = troop.Face1;
-            face2_txt.Text = troop.Face2;
+            #region GROUP7 - Upgrade Paths
 
             if (troop.UpgradeTroop1 < upgradeTroop1_lb.Items.Count)
                 upgradeTroop1_lb.SelectedIndex = troop.UpgradeTroop1;
@@ -316,6 +313,24 @@ namespace MB_Studio.Manager
                 upgradeTroop2_lb.SelectedIndex = troop.UpgradeTroop2;
             else
                 MessageBox.Show("TROOP_UPGRADE_PATH2:" + Environment.NewLine + troop.UpgradeTroop2ErrorCode);
+
+            #endregion
+
+            #region GROUP8 - Face
+
+            face1_txt.Text = troop.Face1;
+            face2_txt.Text = troop.Face2;
+
+            var mergedFace = Face.MergeTroopFaces(troop);
+
+            // Set trackbar maximum / minimum values first !!!
+
+            skin_tb.Value = (int)mergedFace.Skin;
+            beard_tb.Value = (int)mergedFace.Beard;
+            hair_tb.Value = (int)mergedFace.Hair;
+
+            age_tb.Value = (int)mergedFace.Age;
+            hairColor_tb.Value = (int)mergedFace.HairColorCode;
 
             #endregion
         }
@@ -618,8 +633,8 @@ namespace MB_Studio.Manager
         {
             uint x = 0x00000000;
 
-            if (skins_lb.SelectedIndex > 0)
-                x |= (uint)skins_lb.SelectedIndex; // skins
+            if (troopTypes_lb.SelectedIndex > 0)
+                x |= (uint)troopTypes_lb.SelectedIndex; // skins
 
             if (hero_cb.Checked)
                 x |= 0x00000010; // tf_hero

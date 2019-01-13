@@ -210,33 +210,33 @@ namespace brfManager
                 string fileName = CodeReader.Files[(int)Skriptum.ObjectType.Skin];
 
                 List<Skin> skins = new CodeReader(CodeReader.ModPath + fileName).ReadSkin();
-                Skin skin = skins[troopType];
+                Skin type = skins[troopType];
 
-                string faceCode = TroopCombinedFaceCode(troop);
+                var face = Face.MergeTroopFaces(troop);
 
                 Console.Write("Merged FaceCode: ");
-                Console.Write("0x | " + faceCode.Substring(0, 7));
-                Console.Write(" | " + faceCode.Substring(7, 9));
-                Console.WriteLine(" | " + faceCode.Substring(16));
+                Console.Write("0x | " + face.FaceCode.Substring(0, 7));
+                Console.Write(" | " + face.FaceCode.Substring(7, 9));
+                Console.WriteLine(" | " + face.FaceCode.Substring(16));
 
-                uint age      = ((uint.Parse(faceCode.Substring(7, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
-                uint hairColC = uint.Parse(faceCode.Substring(8, 2), NumberStyles.HexNumber) & 0x3F;
-                uint reserved = (uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC) >> 3;        // check again
-                uint face     = uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F;
-                uint beard    = ((uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
-                uint hair     = uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F;               // check again
-                uint nan      = uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08;               // check again
+                //uint age      = ((uint.Parse(faceCode.Substring(7, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
+                //uint hairColC = uint.Parse(faceCode.Substring(8, 2), NumberStyles.HexNumber) & 0x3F;
+                //uint reserved = (uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC) >> 3;        // check again
+                //uint skin     = uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F;
+                //uint beard    = ((uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
+                //uint hair     = uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F;               // check again
+                //uint nan      = uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08;               // check again
 
                 FaceTexture faceTexture;
                 if ((troop.FlagsGZ >> 12 & 0xF) >= 0x8)//tf_randomize_face
                 {
-                    Random random = new Random();
-                    faceTexture = skin.FaceTextures[random.Next(0, skin.FaceTextures.Length)];
+                //    Random random = new Random();
+                //    //faceTexture = skin.FaceTextures[random.Next(0, skin.FaceTextures.Length)];
                     // random face gen here
                     Console.WriteLine("Randomize face flag set!");
                 }
-                else
-                    faceTexture = skin.FaceTextures[face];
+                //else
+                    faceTexture = type.FaceTextures[face.Skin];
 
                 List<int> hairColorList = new List<int>();
                 foreach (var color in faceTexture.HairColors)
@@ -247,17 +247,17 @@ namespace brfManager
                 int mergeFrame = 20;
                 double mergeWeight = 0.5;
 
-                success &= AddMeshToTroop3DPreview(skin.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color, mergeFrame, mergeWeight);
-                success &= AddMeshToTroop3DPreview(skin.BodyMesh, 0);
-                success &= AddMeshToTroop3DPreview(skin.HandMesh, 13);
-                success &= AddMeshToTroop3DPreview(skin.HandMesh.TrimEnd('L') + "R", 18);
-                success &= AddMeshToTroop3DPreview(skin.CalfMesh, 2);
-                success &= AddMeshToTroop3DPreview(skin.CalfMesh.TrimEnd('l') + "l", 5);
+                success &= AddMeshToTroop3DPreview(type.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color, mergeFrame, mergeWeight);
+                success &= AddMeshToTroop3DPreview(type.BodyMesh, 0);
+                success &= AddMeshToTroop3DPreview(type.HandMesh, 13);
+                success &= AddMeshToTroop3DPreview(type.HandMesh.TrimEnd('L') + "R", 18);
+                success &= AddMeshToTroop3DPreview(type.CalfMesh, 2);
+                success &= AddMeshToTroop3DPreview(type.CalfMesh.TrimEnd('l') + "l", 5);
 
                 // remove beard, hair, head, body, legs depending on item properties later and check skin color
 
-                success &= Troop3DPreviewAddFacialHairs(skin.HairMeshes, hair, hairColorList, hairColC);
-                success &= Troop3DPreviewAddFacialHairs(skin.BeardMeshes, beard, hairColorList, hairColC);
+                success &= Troop3DPreviewAddFacialHairs(type.HairMeshes, face.Hair, hairColorList, face.HairColorCode);
+                success &= Troop3DPreviewAddFacialHairs(type.BeardMeshes, face.Beard, hairColorList, face.HairColorCode);
 
                 Console.WriteLine("Troop skin body parts: " + success);
             }
@@ -352,25 +352,6 @@ namespace brfManager
                 mac += (int)(differ * percentage);
             }
             return mac;
-        }
-
-        private string TroopCombinedFaceCode(Troop troop)
-        {
-            string result = string.Empty;
-            string face1 = troop.Face1.Substring(2);
-            string face2 = troop.Face2.Substring(2);
-            if (face2.Trim('0').Length != 0) // work out good algorithm for this first!!!
-            {
-                //char[] face1X = face1.ToCharArray();
-                //char[] face2X = face2.ToCharArray();
-                //for (int i = 0; i < face1X.Length; i++)
-                //    result += ((int.Parse(face1X[i].ToString(), NumberStyles.HexNumber) + int.Parse(face2X[i].ToString(), NumberStyles.HexNumber)) / 2).ToString("X1");
-
-                result = face1; // CHANGE LATER TO REAL ALGORITHM IF WORKING!!!
-            }
-            else
-                result = face1;
-            return result.ToLower();
         }
 
         public void ChangeModule(string moduleName)

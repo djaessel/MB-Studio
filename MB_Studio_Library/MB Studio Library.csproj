@@ -105,6 +105,7 @@
     <Compile Include="Objects\Support\Entrypoint.cs" />
     <Compile Include="IO\ExchangeObject.cs" />
     <Compile Include="IO\ExchangeObjectBox.cs" />
+    <Compile Include="Objects\Support\Face.cs" />
     <Compile Include="Objects\Support\FaceFinder.cs" />
     <Compile Include="Objects\Support\FaceKey.cs" />
     <Compile Include="Objects\Support\FaceKeyConstraint.cs" />
