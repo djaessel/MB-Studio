@@ -1984,7 +1984,7 @@ namespace MB_Studio.Manager
             // trackBar1
             // 
             this.trackBar1.AutoSize = false;
-            this.trackBar1.LargeChange = 3;
+            this.trackBar1.LargeChange = 1;
             this.trackBar1.Location = new System.Drawing.Point(477, 158);
             this.trackBar1.Maximum = 63;
             this.trackBar1.Name = "trackBar1";
@@ -2004,7 +2004,7 @@ namespace MB_Studio.Manager
             // trackBar2
             // 
             this.trackBar2.AutoSize = false;
-            this.trackBar2.LargeChange = 3;
+            this.trackBar2.LargeChange = 1;
             this.trackBar2.Location = new System.Drawing.Point(477, 80);
             this.trackBar2.Maximum = 63;
             this.trackBar2.Name = "trackBar2";
@@ -2024,7 +2024,7 @@ namespace MB_Studio.Manager
             // trackBar3
             // 
             this.trackBar3.AutoSize = false;
-            this.trackBar3.LargeChange = 3;
+            this.trackBar3.LargeChange = 1;
             this.trackBar3.Location = new System.Drawing.Point(114, 158);
             this.trackBar3.Maximum = 63;
             this.trackBar3.Name = "trackBar3";
@@ -2034,7 +2034,7 @@ namespace MB_Studio.Manager
             // trackBar4
             // 
             this.trackBar4.AutoSize = false;
-            this.trackBar4.LargeChange = 3;
+            this.trackBar4.LargeChange = 1;
             this.trackBar4.Location = new System.Drawing.Point(114, 118);
             this.trackBar4.Maximum = 63;
             this.trackBar4.Name = "trackBar4";
@@ -2044,7 +2044,7 @@ namespace MB_Studio.Manager
             // trackBar5
             // 
             this.trackBar5.AutoSize = false;
-            this.trackBar5.LargeChange = 3;
+            this.trackBar5.LargeChange = 1;
             this.trackBar5.Location = new System.Drawing.Point(114, 80);
             this.trackBar5.Maximum = 63;
             this.trackBar5.Name = "trackBar5";

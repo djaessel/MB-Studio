@@ -236,7 +236,7 @@ namespace brfManager
                 // remove beard, hair, head, body, legs depending on item properties later and check skin color
 
                 success &= Troop3DPreviewAddFacialHairs(troopType.HairMeshes, face.Hair, face.HairColor);
-                success &= Troop3DPreviewAddFacialHairs(troopType.BeardMeshes, face.Beard, face.HairColor);
+                success &= Troop3DPreviewAddFacialHairs(troopType.BeardMeshes, face.Beard, face.HairColor, true);
 
                 Console.WriteLine("Troop skin body parts: " + success);
             }
@@ -246,12 +246,12 @@ namespace brfManager
             ShowTroop3DPreview(forceOverride);
         }
 
-        private bool Troop3DPreviewAddFacialHairs(string[] facialHairTypes, uint hairIndex, int hairColor)
+        private bool Troop3DPreviewAddFacialHairs(string[] facialHairTypes, uint hairIndex, int hairColor, bool mirror = false)
         {
             bool success = true;
             if (facialHairTypes.Length != 0 && hairIndex > 0 && hairIndex <= facialHairTypes.Length)
             {
-                string beardTexture = string.Empty; // change if needed
+                string texture = string.Empty; // change if needed
 
                 // use hairPerc for color intesity
                 // morph color index + 1 and find color position in between
@@ -264,7 +264,7 @@ namespace brfManager
                 Console.WriteLine("Add hairMesh: " + beardMesh); // wrong mesh?
 
                 // add hair color perc to mesh
-                success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, true, beardTexture, (uint)hairColor);
+                success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, mirror, texture, (uint)hairColor);
             }
             return success;
         }
