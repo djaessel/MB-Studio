@@ -3967,6 +3967,8 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 
 		//iii += to_string(p0.X()) + ", " + to_string(p0.Y()) + ", " + to_string(p0.Z());
 
+		/// EXPERIMENTS
+		/*
 		vector<Pos> &f0Pos = newMesh.frame[0].pos;
 		vector<BrfFrame> &frames = newMesh.frame;
 
@@ -4026,14 +4028,16 @@ void MainWindow::addMeshByNameToXViewMesh(char* meshName, int bone, int skeleton
 			iii += " }\n";
 		}
 
-		MessageBoxA(NULL, iii.c_str(), "INFO", 0);
+		//MessageBoxA(NULL, iii.c_str(), "INFO", 0);
 
 		iii = "Face Count: " + to_string(newMesh.face.size()) + "\n";
 		for (size_t i = 0; i < newMesh.face.size(); i++)
 		{
 			iii += to_string(newMesh.face[i].index[0]) + ", " + to_string(newMesh.face[i].index[1]) + ", " + to_string(newMesh.face[i].index[2]) + "\n";
 		}
-		MessageBoxA(NULL, iii.c_str(), "INFO", 0);
+		//MessageBoxA(NULL, iii.c_str(), "INFO", 0);
+		*/
+		/// EXPERIMENTS
 	}
 
 	tempMeshList.push_back(newMesh);
@@ -4079,20 +4083,20 @@ void MainWindow::removeMeshByNameFromXViewMesh(char* meshName) {
 }
 
 /* method created by Johandros */
-void MainWindow::showTroop3DPreview() {
+void MainWindow::showTroop3DPreview(bool forceUpdate) {
 	QString xViewMeshFile = QString(modPath() + "/Resource/Troop3DPreview.brf");
 	createFileIfNotExists(xViewMeshFile);//Warband only for now! - just in case
 	loadFile(xViewMeshFile);
 	size_t tmpSize = tempMeshList.size();
 	size_t fMeshSize = brfdata.mesh.size();
 	bool newFile = (tmpSize == fMeshSize);
-	if (newFile && tmpSize != 0) {
+	if (newFile && tmpSize != 0 && !forceUpdate) {
 		newFile = (
 				strcmp(tempMeshList[0].name, brfdata.mesh[0].name) == 0 && 
 				strcmp(tempMeshList[tmpSize - 1].name, brfdata.mesh[tmpSize - 1].name) == 0
 			);
 	}
-	if (!newFile) {//for time saving
+	if (!newFile || forceUpdate) {//for time saving
 		brfdata.mesh.clear();
 		//save();//workaround?
 		for each (BrfMesh m in tempMeshList)

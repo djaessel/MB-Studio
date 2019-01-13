@@ -68,7 +68,7 @@ public:
 
 	void removeMeshByNameFromXViewMesh(char* meshName);
 	void removeLastSelectedFromXViewMesh();
-	void showTroop3DPreview();
+	void showTroop3DPreview(bool forceUpdate = false);
 	//void clearTroop3DPreview();
 	void clearTempTroop3DPreviewMeshes();
 

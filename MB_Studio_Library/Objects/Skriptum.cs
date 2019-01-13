@@ -10,7 +10,7 @@
         public static readonly string[] CodePrefixes = {"script", "mt", "prsnt", "menu", "trp", "itm", "str", "simple_trigger", "trigger", "ip", "mesh", "track", "qst", "snd", "spr", "tab", "icon",
                                                     "dlga", "fac", "anim", "pt", "p", "skl", "pfx", "skin", "psys", "scn"};
 
-        public enum ObjectType
+        public enum ObjectType : int
         {
             Script,
             MissionTemplate,

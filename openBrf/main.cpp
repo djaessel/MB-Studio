@@ -120,10 +120,10 @@ DLL_EXPORT BOOL DLL_EXPORT_DEF_CALLCONV AddMeshToXViewModel(STRING meshName, int
 	//return false;
 }
 
-DLL_EXPORT_VOID ShowTroop3DPreview()
+DLL_EXPORT_VOID ShowTroop3DPreview(bool forceUpdate = false)
 {
 	if (CurWindowIsShown())
-		curWindow->showTroop3DPreview();
+		curWindow->showTroop3DPreview(forceUpdate);
 }
 
 DLL_EXPORT_VOID RemoveMeshFromXViewModel(STRING meshName)

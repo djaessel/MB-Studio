@@ -93,6 +93,10 @@ namespace MB_Studio_Library.Objects
 
         public double Scale { get; }
 
+        public bool HasHair { get { return HairMeshes.Length != 0; } }
+
+        public bool HasBeard { get { return BeardMeshes.Length != 0; } }
+
         #endregion
 
         #region Methods

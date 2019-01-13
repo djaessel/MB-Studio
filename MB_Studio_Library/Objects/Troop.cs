@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using MB_Studio_Library.IO;
 
 namespace MB_Studio_Library.Objects
 {
@@ -63,9 +64,9 @@ namespace MB_Studio_Library.Objects
 
         #region Faces
 
-        public string Face1 { get; private set; }
+        public string Face1 { get; set; }
 
-        public string Face2 { get; private set; }
+        public string Face2 { get; set; }
 
         #endregion
 
@@ -816,6 +817,15 @@ namespace MB_Studio_Library.Objects
                 retur = "0";
 
             return retur;
+        }
+
+        public Skin GetTroopType()
+        {
+            byte troopType = (byte)(FlagsGZ & 0x0F);
+            string fileName = CodeReader.Files[(int)ObjectType.Skin];
+
+            List<Skin> skins = new CodeReader(CodeReader.ModPath + fileName).ReadSkin();
+            return skins[troopType];
         }
 
         #endregion

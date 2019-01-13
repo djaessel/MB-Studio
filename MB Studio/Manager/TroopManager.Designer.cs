@@ -145,6 +145,7 @@ namespace MB_Studio.Manager
             this.reserved_XVII_lbl = new System.Windows.Forms.Label();
             this.showGroup_8_btn = new System.Windows.Forms.Button();
             this.groupBox_8_gb = new System.Windows.Forms.GroupBox();
+            this.update3DFace_btn = new System.Windows.Forms.Button();
             this.hairColor_tb = new System.Windows.Forms.TrackBar();
             this.hairColor_lbl = new System.Windows.Forms.Label();
             this.age_tb = new System.Windows.Forms.TrackBar();
@@ -159,6 +160,22 @@ namespace MB_Studio.Manager
             this.face2_txt = new System.Windows.Forms.TextBox();
             this.face1_lbl = new System.Windows.Forms.Label();
             this.face1_txt = new System.Windows.Forms.TextBox();
+            this.showGroup_9_btn = new System.Windows.Forms.Button();
+            this.groupBox_9_gb = new System.Windows.Forms.GroupBox();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.trackBar2 = new System.Windows.Forms.TrackBar();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBar3 = new System.Windows.Forms.TrackBar();
+            this.trackBar4 = new System.Windows.Forms.TrackBar();
+            this.trackBar5 = new System.Windows.Forms.TrackBar();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.groupBox_3_gb.SuspendLayout();
@@ -180,6 +197,12 @@ namespace MB_Studio.Manager
             ((System.ComponentModel.ISupportInitialize)(this.hair_tb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.beard_tb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skin_tb)).BeginInit();
+            this.groupBox_9_gb.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).BeginInit();
             this.SuspendLayout();
             // 
             // title_lbl
@@ -196,6 +219,8 @@ namespace MB_Studio.Manager
             // 
             // toolPanel
             // 
+            this.toolPanel.Controls.Add(this.showGroup_9_btn);
+            this.toolPanel.Controls.Add(this.groupBox_9_gb);
             this.toolPanel.Controls.Add(this.showGroup_8_btn);
             this.toolPanel.Controls.Add(this.groupBox_8_gb);
             this.toolPanel.Controls.Add(this.groupBox_2_gb);
@@ -212,7 +237,7 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
             this.toolPanel.Controls.Add(this.groupBox_6_gb);
             this.toolPanel.Controls.Add(this.groupBox_1_gb);
-            this.toolPanel.Size = new System.Drawing.Size(779, 255);
+            this.toolPanel.Size = new System.Drawing.Size(779, 285);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_1_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_6_gb, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
@@ -231,6 +256,8 @@ namespace MB_Studio.Manager
             this.toolPanel.Controls.SetChildIndex(this.showGroup_8_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_0_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.groupBox_9_gb, 0);
+            this.toolPanel.Controls.SetChildIndex(this.showGroup_9_btn, 0);
             // 
             // pluralNameTranslation_lbl
             // 
@@ -1729,6 +1756,7 @@ namespace MB_Studio.Manager
             // 
             // groupBox_8_gb
             // 
+            this.groupBox_8_gb.Controls.Add(this.update3DFace_btn);
             this.groupBox_8_gb.Controls.Add(this.hairColor_tb);
             this.groupBox_8_gb.Controls.Add(this.hairColor_lbl);
             this.groupBox_8_gb.Controls.Add(this.age_tb);
@@ -1751,23 +1779,37 @@ namespace MB_Studio.Manager
             this.groupBox_8_gb.Size = new System.Drawing.Size(737, 25);
             this.groupBox_8_gb.TabIndex = 24;
             this.groupBox_8_gb.TabStop = false;
-            this.groupBox_8_gb.Text = "Face";
+            this.groupBox_8_gb.Text = "Face - General Settings";
+            // 
+            // update3DFace_btn
+            // 
+            this.update3DFace_btn.BackColor = System.Drawing.Color.DimGray;
+            this.update3DFace_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.update3DFace_btn.Location = new System.Drawing.Point(477, 118);
+            this.update3DFace_btn.Name = "update3DFace_btn";
+            this.update3DFace_btn.Size = new System.Drawing.Size(250, 30);
+            this.update3DFace_btn.TabIndex = 26;
+            this.update3DFace_btn.Tag = "150";
+            this.update3DFace_btn.Text = "Update 3D Face";
+            this.update3DFace_btn.UseVisualStyleBackColor = false;
+            this.update3DFace_btn.Click += new System.EventHandler(this.Update3DFace_btn_Click);
             // 
             // hairColor_tb
             // 
             this.hairColor_tb.AutoSize = false;
             this.hairColor_tb.LargeChange = 3;
-            this.hairColor_tb.Location = new System.Drawing.Point(477, 118);
-            this.hairColor_tb.Maximum = 120;
+            this.hairColor_tb.Location = new System.Drawing.Point(477, 158);
+            this.hairColor_tb.Maximum = 63;
             this.hairColor_tb.Name = "hairColor_tb";
             this.hairColor_tb.Size = new System.Drawing.Size(250, 30);
             this.hairColor_tb.TabIndex = 25;
+            this.hairColor_tb.Scroll += new System.EventHandler(this.HairColor_tb_Scroll);
             // 
             // hairColor_lbl
             // 
             this.hairColor_lbl.AutoSize = true;
             this.hairColor_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hairColor_lbl.Location = new System.Drawing.Point(389, 118);
+            this.hairColor_lbl.Location = new System.Drawing.Point(389, 158);
             this.hairColor_lbl.Name = "hairColor_lbl";
             this.hairColor_lbl.Size = new System.Drawing.Size(82, 16);
             this.hairColor_lbl.TabIndex = 24;
@@ -1778,10 +1820,11 @@ namespace MB_Studio.Manager
             this.age_tb.AutoSize = false;
             this.age_tb.LargeChange = 3;
             this.age_tb.Location = new System.Drawing.Point(477, 80);
-            this.age_tb.Maximum = 48;
+            this.age_tb.Maximum = 63;
             this.age_tb.Name = "age_tb";
             this.age_tb.Size = new System.Drawing.Size(250, 30);
             this.age_tb.TabIndex = 23;
+            this.age_tb.Scroll += new System.EventHandler(this.Age_tb_Scroll);
             // 
             // age_lbl
             // 
@@ -1798,30 +1841,33 @@ namespace MB_Studio.Manager
             this.hair_tb.AutoSize = false;
             this.hair_tb.LargeChange = 3;
             this.hair_tb.Location = new System.Drawing.Point(114, 158);
-            this.hair_tb.Maximum = 50;
+            this.hair_tb.Maximum = 63;
             this.hair_tb.Name = "hair_tb";
             this.hair_tb.Size = new System.Drawing.Size(250, 30);
             this.hair_tb.TabIndex = 21;
+            this.hair_tb.Scroll += new System.EventHandler(this.Hair_tb_Scroll);
             // 
             // beard_tb
             // 
             this.beard_tb.AutoSize = false;
             this.beard_tb.LargeChange = 3;
             this.beard_tb.Location = new System.Drawing.Point(114, 118);
-            this.beard_tb.Maximum = 50;
+            this.beard_tb.Maximum = 63;
             this.beard_tb.Name = "beard_tb";
             this.beard_tb.Size = new System.Drawing.Size(250, 30);
             this.beard_tb.TabIndex = 19;
+            this.beard_tb.Scroll += new System.EventHandler(this.Beard_tb_Scroll);
             // 
             // skin_tb
             // 
             this.skin_tb.AutoSize = false;
             this.skin_tb.LargeChange = 3;
             this.skin_tb.Location = new System.Drawing.Point(114, 80);
-            this.skin_tb.Maximum = 50;
+            this.skin_tb.Maximum = 63;
             this.skin_tb.Name = "skin_tb";
             this.skin_tb.Size = new System.Drawing.Size(250, 30);
             this.skin_tb.TabIndex = 18;
+            this.skin_tb.Scroll += new System.EventHandler(this.Skin_tb_Scroll);
             // 
             // hair_lbl
             // 
@@ -1897,11 +1943,193 @@ namespace MB_Studio.Manager
             this.face1_txt.TabIndex = 6;
             this.face1_txt.Text = "0";
             // 
+            // showGroup_9_btn
+            // 
+            this.showGroup_9_btn.BackColor = System.Drawing.Color.DimGray;
+            this.showGroup_9_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showGroup_9_btn.Location = new System.Drawing.Point(3, 256);
+            this.showGroup_9_btn.Name = "showGroup_9_btn";
+            this.showGroup_9_btn.Size = new System.Drawing.Size(26, 25);
+            this.showGroup_9_btn.TabIndex = 25;
+            this.showGroup_9_btn.Tag = "150";
+            this.showGroup_9_btn.Text = "v";
+            this.showGroup_9_btn.UseVisualStyleBackColor = false;
+            // 
+            // groupBox_9_gb
+            // 
+            this.groupBox_9_gb.Controls.Add(this.trackBar1);
+            this.groupBox_9_gb.Controls.Add(this.label1);
+            this.groupBox_9_gb.Controls.Add(this.trackBar2);
+            this.groupBox_9_gb.Controls.Add(this.label2);
+            this.groupBox_9_gb.Controls.Add(this.trackBar3);
+            this.groupBox_9_gb.Controls.Add(this.trackBar4);
+            this.groupBox_9_gb.Controls.Add(this.trackBar5);
+            this.groupBox_9_gb.Controls.Add(this.label3);
+            this.groupBox_9_gb.Controls.Add(this.label4);
+            this.groupBox_9_gb.Controls.Add(this.label5);
+            this.groupBox_9_gb.Controls.Add(this.label6);
+            this.groupBox_9_gb.Controls.Add(this.textBox1);
+            this.groupBox_9_gb.Controls.Add(this.label7);
+            this.groupBox_9_gb.Controls.Add(this.textBox2);
+            this.groupBox_9_gb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox_9_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox_9_gb.ForeColor = System.Drawing.Color.White;
+            this.groupBox_9_gb.Location = new System.Drawing.Point(39, 254);
+            this.groupBox_9_gb.Name = "groupBox_9_gb";
+            this.groupBox_9_gb.Size = new System.Drawing.Size(737, 25);
+            this.groupBox_9_gb.TabIndex = 26;
+            this.groupBox_9_gb.TabStop = false;
+            this.groupBox_9_gb.Text = "Face - Dynamic Settings";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.AutoSize = false;
+            this.trackBar1.LargeChange = 3;
+            this.trackBar1.Location = new System.Drawing.Point(477, 158);
+            this.trackBar1.Maximum = 63;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(250, 30);
+            this.trackBar1.TabIndex = 25;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(389, 158);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(82, 16);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Hair Color:";
+            // 
+            // trackBar2
+            // 
+            this.trackBar2.AutoSize = false;
+            this.trackBar2.LargeChange = 3;
+            this.trackBar2.Location = new System.Drawing.Point(477, 80);
+            this.trackBar2.Maximum = 63;
+            this.trackBar2.Name = "trackBar2";
+            this.trackBar2.Size = new System.Drawing.Size(250, 30);
+            this.trackBar2.TabIndex = 23;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(431, 82);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 16);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Age:";
+            // 
+            // trackBar3
+            // 
+            this.trackBar3.AutoSize = false;
+            this.trackBar3.LargeChange = 3;
+            this.trackBar3.Location = new System.Drawing.Point(114, 158);
+            this.trackBar3.Maximum = 63;
+            this.trackBar3.Name = "trackBar3";
+            this.trackBar3.Size = new System.Drawing.Size(250, 30);
+            this.trackBar3.TabIndex = 21;
+            // 
+            // trackBar4
+            // 
+            this.trackBar4.AutoSize = false;
+            this.trackBar4.LargeChange = 3;
+            this.trackBar4.Location = new System.Drawing.Point(114, 118);
+            this.trackBar4.Maximum = 63;
+            this.trackBar4.Name = "trackBar4";
+            this.trackBar4.Size = new System.Drawing.Size(250, 30);
+            this.trackBar4.TabIndex = 19;
+            // 
+            // trackBar5
+            // 
+            this.trackBar5.AutoSize = false;
+            this.trackBar5.LargeChange = 3;
+            this.trackBar5.Location = new System.Drawing.Point(114, 80);
+            this.trackBar5.Maximum = 63;
+            this.trackBar5.Name = "trackBar5";
+            this.trackBar5.Size = new System.Drawing.Size(250, 30);
+            this.trackBar5.TabIndex = 18;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(67, 158);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 16);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "Hair:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(54, 118);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(54, 16);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Beard:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(67, 82);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(42, 16);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Skin:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(372, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(99, 16);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Face2 (HEX):";
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.DimGray;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.White;
+            this.textBox1.Location = new System.Drawing.Point(477, 45);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(250, 22);
+            this.textBox1.TabIndex = 8;
+            this.textBox1.Text = "0";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(9, 47);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(99, 16);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "Face1 (HEX):";
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.Color.DimGray;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.ForeColor = System.Drawing.Color.White;
+            this.textBox2.Location = new System.Drawing.Point(114, 45);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(250, 22);
+            this.textBox2.TabIndex = 6;
+            this.textBox2.Text = "0";
+            // 
             // TroopManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(815, 445);
+            this.ClientSize = new System.Drawing.Size(815, 475);
             this.DoubleBuffered = true;
             this.Name = "TroopManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1937,6 +2165,13 @@ namespace MB_Studio.Manager
             ((System.ComponentModel.ISupportInitialize)(this.hair_tb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.beard_tb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.skin_tb)).EndInit();
+            this.groupBox_9_gb.ResumeLayout(false);
+            this.groupBox_9_gb.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2073,5 +2308,22 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.Label hairColor_lbl;
         private System.Windows.Forms.TrackBar age_tb;
         private System.Windows.Forms.Label age_lbl;
+        private System.Windows.Forms.Button showGroup_9_btn;
+        private System.Windows.Forms.GroupBox groupBox_9_gb;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TrackBar trackBar2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar trackBar3;
+        private System.Windows.Forms.TrackBar trackBar4;
+        private System.Windows.Forms.TrackBar trackBar5;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button update3DFace_btn;
     }
 }

@@ -84,9 +84,15 @@ namespace MB_Studio.Manager
             ResetControls();
         }
 
-        private void TroopManager_OpenBrfItems_SelectedIndexChanged(object sender = null, EventArgs e = null)
+        private void TroopManager_OpenBrfItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (IsDataLoaded && Has3DView && CurrentTypeIndex >= 0)
+            UpdateOpenBrfView();
+        }
+
+        private void UpdateOpenBrfView(bool forceOverride = false)
+        {
+            bool makeOpenBrfUpdate = (IsDataLoaded && Has3DView && CurrentTypeIndex >= 0);
+            if (makeOpenBrfUpdate)
             {//change later so only the specific bone will be updated!
                 Troop curTroop = (Troop)types[CurrentTypeIndex];
                 OpenBrfManager.Troop3DPreviewClearData();//doesn't clear correct?
@@ -95,8 +101,9 @@ namespace MB_Studio.Manager
                     if (GetNameEndOfControl(c).Equals("cbb"))
                         if (((ComboBox)c).SelectedIndex >= 0)
                             SetupTroopItemBone(((ComboBox)c).SelectedItem.ToString());
-                OpenBrfManager.Troop3DPreviewShow(curTroop);//change later so only the specific bone will be updated!
+                OpenBrfManager.Troop3DPreviewShow(curTroop, forceOverride);//change later so only the specific bone will be updated!
             }
+            Console.WriteLine("OpenBrf Update executed: " + makeOpenBrfUpdate);
         }
 
         private void CreateSkillGroupBox()
@@ -321,15 +328,36 @@ namespace MB_Studio.Manager
             face1_txt.Text = troop.Face1;
             face2_txt.Text = troop.Face2;
 
+            var troopType = troop.GetTroopType();
             var mergedFace = Face.MergeTroopFaces(troop);
 
-            // Set trackbar maximum / minimum values first !!!
+            // - - - 
 
+            skin_tb.Maximum = mergedFace.MaxSkin;
             skin_tb.Value = (int)mergedFace.Skin;
-            beard_tb.Value = (int)mergedFace.Beard;
-            hair_tb.Value = (int)mergedFace.Hair;
 
+            if (troopType.HasHair)
+            {
+                hair_tb.Maximum = mergedFace.MaxHair;
+                hair_tb.Value = (int)mergedFace.Hair;
+            }
+            hair_lbl.Visible = troopType.HasHair;
+            hair_tb.Visible = troopType.HasHair;
+
+            if (troopType.HasBeard)
+            {
+                beard_tb.Maximum = mergedFace.MaxBeard;
+                beard_tb.Value = (int)mergedFace.Beard;
+            }
+            beard_lbl.Visible = troopType.HasBeard;
+            beard_tb.Visible = troopType.HasBeard;
+
+            // - - - 
+
+            age_tb.Maximum = Face.MAX_AGE_P;
             age_tb.Value = (int)mergedFace.Age;
+
+            hairColor_tb.Maximum = Face.MAX_HAIR_COLOR_P;
             hairColor_tb.Value = (int)mergedFace.HairColorCode;
 
             #endregion
@@ -348,7 +376,7 @@ namespace MB_Studio.Manager
 
             IsDataLoaded = true;
 
-            TroopManager_OpenBrfItems_SelectedIndexChanged();
+            UpdateOpenBrfView();
         }
 
         private void SetupTroopItemBone(string itemId)
@@ -1018,6 +1046,89 @@ namespace MB_Studio.Manager
                     Console.WriteLine(ex.ToString());
                 }
             }
+        }
+
+        #endregion
+
+        #region Face Settings
+
+        private void UpdateTroopFace(Troop troop, string newFaceCode)
+        {
+            if (!newFaceCode.StartsWith("0x"))
+                newFaceCode = "0x" + newFaceCode;
+
+            troop.Face1 = newFaceCode;
+
+            IsDataLoaded = !IsDataLoaded;
+            face1_txt.Text = newFaceCode;
+            IsDataLoaded = !IsDataLoaded;
+
+            types[CurrentTypeIndex] = troop;
+        }
+
+        private void Skin_tb_Scroll(object sender, EventArgs e)
+        {
+            Troop troop = (Troop)types[CurrentTypeIndex];
+
+            // check what second face does here if not randomize active
+            var faceX = new Face(troop.Face1, troop.GetTroopType());
+
+            Console.WriteLine(faceX.FaceCode);
+
+            faceX.SetSkin(skin_tb.Value);
+
+            Console.WriteLine(faceX.FaceCode);
+
+            UpdateTroopFace(troop, faceX.FaceCode);
+        }
+
+        private void Beard_tb_Scroll(object sender, EventArgs e)
+        {
+            Troop troop = (Troop)types[CurrentTypeIndex];
+
+            // check what second face does here if not randomize active
+            var faceX = new Face(troop.Face1, troop.GetTroopType());
+            faceX.SetBeard(beard_tb.Value);
+
+            UpdateTroopFace(troop, faceX.FaceCode);
+        }
+
+        private void Hair_tb_Scroll(object sender, EventArgs e)
+        {
+            Troop troop = (Troop)types[CurrentTypeIndex];
+
+            // check what second face does here if not randomize active
+            var faceX = new Face(troop.Face1, troop.GetTroopType());
+            faceX.SetHair(hair_tb.Value);
+
+            UpdateTroopFace(troop, faceX.FaceCode);
+        }
+
+        private void Age_tb_Scroll(object sender, EventArgs e)
+        {
+            Troop troop = (Troop)types[CurrentTypeIndex];
+
+            // check what second face does here if not randomize active
+            var faceX = new Face(troop.Face1, troop.GetTroopType());
+            faceX.SetAgeP(age_tb.Value);
+
+            UpdateTroopFace(troop, faceX.FaceCode);
+        }
+
+        private void HairColor_tb_Scroll(object sender, EventArgs e)
+        {
+            Troop troop = (Troop)types[CurrentTypeIndex];
+
+            // check what second face does here if not randomize active
+            var faceX = new Face(troop.Face1, troop.GetTroopType());
+            faceX.SetHairColorP(hairColor_tb.Value);
+
+            UpdateTroopFace(troop, faceX.FaceCode);
+        }
+
+        private void Update3DFace_btn_Click(object sender, EventArgs e)
+        {
+            UpdateOpenBrfView(true);
         }
 
         #endregion
