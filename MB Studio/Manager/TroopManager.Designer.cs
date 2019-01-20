@@ -32,6 +32,7 @@ namespace MB_Studio.Manager
         {
             this.groupBox_3_gb = new System.Windows.Forms.GroupBox();
             this.showItemsInOpenBrf_gb = new System.Windows.Forms.GroupBox();
+            this.update_items_3d_view_btn = new System.Windows.Forms.Button();
             this.calfR_cbb = new System.Windows.Forms.ComboBox();
             this.calfR_lbl = new System.Windows.Forms.Label();
             this.hand_cbb = new System.Windows.Forms.ComboBox();
@@ -297,6 +298,7 @@ namespace MB_Studio.Manager
             // 
             // showItemsInOpenBrf_gb
             // 
+            this.showItemsInOpenBrf_gb.Controls.Add(this.update_items_3d_view_btn);
             this.showItemsInOpenBrf_gb.Controls.Add(this.calfR_cbb);
             this.showItemsInOpenBrf_gb.Controls.Add(this.calfR_lbl);
             this.showItemsInOpenBrf_gb.Controls.Add(this.hand_cbb);
@@ -322,6 +324,25 @@ namespace MB_Studio.Manager
             this.showItemsInOpenBrf_gb.TabIndex = 29;
             this.showItemsInOpenBrf_gb.TabStop = false;
             this.showItemsInOpenBrf_gb.Text = "Show In OpenBrf";
+            // 
+            // update_items_3d_view_btn
+            // 
+            this.update_items_3d_view_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.update_items_3d_view_btn.BackColor = System.Drawing.Color.Gray;
+            this.update_items_3d_view_btn.FlatAppearance.BorderSize = 0;
+            this.update_items_3d_view_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            this.update_items_3d_view_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
+            this.update_items_3d_view_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.update_items_3d_view_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.update_items_3d_view_btn.ForeColor = System.Drawing.Color.White;
+            this.update_items_3d_view_btn.Location = new System.Drawing.Point(544, 102);
+            this.update_items_3d_view_btn.Name = "update_items_3d_view_btn";
+            this.update_items_3d_view_btn.Size = new System.Drawing.Size(144, 30);
+            this.update_items_3d_view_btn.TabIndex = 34;
+            this.update_items_3d_view_btn.TabStop = false;
+            this.update_items_3d_view_btn.Text = "Update 3D View";
+            this.update_items_3d_view_btn.UseVisualStyleBackColor = false;
+            this.update_items_3d_view_btn.Click += new System.EventHandler(this.Update_items_3d_view_btn_Click);
             // 
             // calfR_cbb
             // 
@@ -2159,5 +2180,6 @@ namespace MB_Studio.Manager
         private System.Windows.Forms.TrackBar trackBar5;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button update3DFace_btn;
+        private System.Windows.Forms.Button update_items_3d_view_btn;
     }
 }

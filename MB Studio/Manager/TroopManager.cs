@@ -1131,6 +1131,11 @@ namespace MB_Studio.Manager
             UpdateOpenBrfView(true);
         }
 
+        private void Update_items_3d_view_btn_Click(object sender, EventArgs e)
+        {
+            UpdateOpenBrfView(true);
+        }
+
         #endregion
     }
 }
