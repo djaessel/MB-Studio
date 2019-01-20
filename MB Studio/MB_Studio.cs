@@ -19,6 +19,14 @@ namespace MB_Studio
     {
         #region Constants
 
+        public enum TabMode
+        {
+            Default = 0,
+            FillWidth = 1,
+            FillHeight = 2,
+            FillTab = FillWidth | FillHeight,
+        }
+
         private const int LEADING_SPACE = 12;
         private const int CLOSE_SPACE = 15;
         private const int CLOSE_AREA = CLOSE_SPACE;
@@ -542,7 +550,7 @@ namespace MB_Studio
 
         private void MbOptions_btn_Click(object sender, EventArgs e)
         {
-            AddNewTab(new MBOptions());
+            AddNewTab(new MBOptions(), TabMode.FillTab);
         }
 
         private void Edit_btn_Click(object sender, EventArgs e)
@@ -567,12 +575,12 @@ namespace MB_Studio
                 MessageBoxIcon.Warning
             );
             if (dlr == DialogResult.Yes)
-                AddNewTab(new ImportsManagerGUI()); //new ImportsManagerGUI().Show();
+                AddNewTab(new ImportsManagerGUI(), TabMode.FillTab); //new ImportsManagerGUI().Show();
         }
 
         private void Properties_ToolStrip_Click(object sender, EventArgs e)
         {
-            AddNewTab(new ProjectProperties());//.ShowDialog();
+            AddNewTab(new ProjectProperties(), TabMode.FillTab);//.ShowDialog();
         }
 
         private void Help_btn_Click(object sender, EventArgs e)
@@ -696,7 +704,7 @@ namespace MB_Studio
             }
         }*/
 
-        private void AddNewTab(SpecialForm form)
+        private void AddNewTab(SpecialForm form, TabMode tabMode = TabMode.Default)
         {
             if (IsShownAsTab(form))
             {
@@ -719,9 +727,6 @@ namespace MB_Studio
             form.TopLevel = false;
             form.Parent = tab;
 
-            //frm.Anchor = AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top;
-            //frm.Dock = DockStyle.Left;
-
             tabControl.SelectedTab = tab;
 
             tab.BackColor = form.BackColor;//check for problems with baseColor here
@@ -731,6 +736,23 @@ namespace MB_Studio
                 form.FormBorderStyle = FormBorderStyle.None;
             else
                 form.Top = form.Top - ccc[0].Height;
+
+            if (tabMode != TabMode.Default)
+            {
+                if ((tabMode & TabMode.FillWidth) == TabMode.FillWidth)
+                {
+                    form.Width = tab.Width;
+                }
+                if ((tabMode & TabMode.FillHeight) == TabMode.FillHeight)
+                {
+                    form.Height = tab.Height;
+                }
+            }
+            //else
+            //{
+            //    form.Anchor = AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top;
+            //    form.Dock = DockStyle.Left;
+            //}
 
             form.Visible = true;
         }
@@ -927,7 +949,7 @@ namespace MB_Studio
             }
 
             if (form != null)
-                AddNewTab(form);
+                AddNewTab(form, TabMode.FillHeight);
         }
 
         private void PrepareToolBar(bool projectShown = true)

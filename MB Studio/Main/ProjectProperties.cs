@@ -28,6 +28,7 @@ namespace MB_Studio.Main
         {
             InitializeComponent();
 
+            DoubleBuffered = true;
             title_lbl.MouseDown += Control_MoveForm_MouseDown;
         }
 
@@ -53,23 +54,30 @@ namespace MB_Studio.Main
             Controls.Add(moduleIniPanel);
             moduleIniPanel.SendToBack();
 
-            //TextBox textBox = new TextBox
-            //{
-            //    Multiline = true,
-            //    Dock = DockStyle.Fill
-            //};
-            //moduleIniPanel.Controls.Add(textBox);
-
             CreateModuleIniPanel();
 
             ResetControls();
             LoadItemSets();
         }
 
+        private Button saveIni_btn;
         private void CreateModuleIniPanel()
         {
             string curName;
             var iniVars = ReadModuleIniSettings();
+
+            saveIni_btn = new Button
+            {
+                Name = "saveIni_btn",
+                Width = 128,
+                Height = 32,
+                Text = "Save module.ini",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Arial", 11f, FontStyle.Bold, GraphicsUnit.Point),
+                FlatStyle = FlatStyle.Flat,
+            };
+
+            Control valueBox = null;
             for (int i = 0; i < iniVars.Count; i++)
             {
                 curName = iniVars[i].VariableName.ToLower();
@@ -79,18 +87,19 @@ namespace MB_Studio.Main
                     Name = curName + "_lbl",
                     AutoSize = false,
                     Width = 256,
-                    Height = 48,
+                    Height = 42,
                     Text = iniVars[i].VariableName,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Left = 8,
-                    Font = new Font("Arial", 12f, FontStyle.Bold, GraphicsUnit.Point),
+                    Top = 8,
+                    Font = saveIni_btn.Font,
                 };
-                label.Top = 8 + (i * label.Height);
+                if (valueBox != null)
+                    label.Top = valueBox.Top + valueBox.Height + 4;
                 moduleIniPanel.Controls.Add(label);
 
                 if (iniDict.TryGetValue(iniVars[i].VariableName, out string varVal))
                 {
-                    Control valueBox;
                     switch (varVal)
                     {
                         case "Boolean":
@@ -101,6 +110,7 @@ namespace MB_Studio.Main
                                 Text = string.Empty,
                                 Tag = iniVars[i].VariableValue.Equals("1").ToString(),
                                 CheckAlign = ContentAlignment.MiddleLeft,
+                                Font = new Font("Arial", 13f, FontStyle.Bold),
                             };
                             break;
                         case "UInt16":
@@ -121,6 +131,7 @@ namespace MB_Studio.Main
                                 Value = decimal.Parse(iniVars[i].VariableValue, NumberStyles.Number),
                                 Tag = decimal.Parse(iniVars[i].VariableValue, NumberStyles.Number).ToString(),
                                 TextAlign = HorizontalAlignment.Left,
+                                Font = new Font("Arial", 13f, FontStyle.Bold),
                             };
                             break;
                         case "String":
@@ -131,23 +142,45 @@ namespace MB_Studio.Main
                                 Text = iniVars[i].VariableValue,
                                 Tag = iniVars[i].VariableValue,
                                 TextAlign = HorizontalAlignment.Left,
+                                Font = new Font("Arial", 13f, FontStyle.Bold),
+                                Multiline = true,
                             };
                             break;
                     }
 
-                    valueBox.Width = label.Width / 2;
-                    valueBox.Height = label.Height;
+                    valueBox.Width = label.Width/* / 2*/;
+                    //valueBox.Height = label.Height;
                     valueBox.Left = label.Left + label.Width + 8;
-                    valueBox.Top = label.Top + 2;
-                    valueBox.Font = label.Font;
-                    valueBox.LostFocus += ValueBox_LostFocus;
+                    valueBox.Top = label.Top + 8;
+                    //valueBox.Font = label.Font;
+                    //valueBox.LostFocus += ValueBox_LostFocus;
 
                     moduleIniPanel.Controls.Add(valueBox);
                 }
             }
+
+            saveIni_btn.Left = moduleIniPanel.Width - saveIni_btn.Width - 32;
+            saveIni_btn.Click += SaveIni_btn_Click;
+            moduleIniPanel.Controls.Add(saveIni_btn);
+
+            moduleIniPanel.Paint += ModuleIniPanel_Paint;
         }
 
-        private void ValueBox_LostFocus(object sender, EventArgs e)
+        private void ModuleIniPanel_Paint(object sender, PaintEventArgs e)
+        {
+            moduleIniPanel.SuspendLayout();
+
+            saveIni_btn.Top = 8;
+
+            moduleIniPanel.ResumeLayout();
+        }
+
+        private void SaveIni_btn_Click(object sender, EventArgs e)
+        {
+            ValueBox_LostFocus();
+        }
+
+        private void ValueBox_LostFocus(object sender = null, EventArgs e = null)
         {
             bool changed = false;
             Control valBox = (Control)sender;
