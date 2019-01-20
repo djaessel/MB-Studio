@@ -159,6 +159,9 @@
     <None Include="changelog">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="files\module.ini.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="installerScripts\Compile x64.bat" />
     <None Include="installerScripts\Compile x86.bat" />
     <None Include="Manager\Scripts\Template\CustomManagerTemplate.cs">

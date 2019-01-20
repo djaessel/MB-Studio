@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static MB_Studio_Library.Objects.Skriptum;
 using MB_Studio_Library.Objects.Support;
 using System.Drawing;
+using System.Globalization;
 
 namespace MB_Studio.Main
 {
@@ -19,6 +20,7 @@ namespace MB_Studio.Main
         private List<string> itemsIDs = new List<string>();
         private List<Item> items = new List<Item>();
         private List<ulong> itemsFlags = new List<ulong>();
+        private Dictionary<string, string> iniDict = new Dictionary<string, string>();
 
         private Panel moduleIniPanel;
 
@@ -58,6 +60,14 @@ namespace MB_Studio.Main
             //};
             //moduleIniPanel.Controls.Add(textBox);
 
+            CreateModuleIniPanel();
+
+            ResetControls();
+            LoadItemSets();
+        }
+
+        private void CreateModuleIniPanel()
+        {
             string curName;
             var iniVars = ReadModuleIniSettings();
             for (int i = 0; i < iniVars.Count; i++)
@@ -69,64 +79,169 @@ namespace MB_Studio.Main
                     Name = curName + "_lbl",
                     AutoSize = false,
                     Width = 256,
-                    Height = 32,
+                    Height = 48,
                     Text = iniVars[i].VariableName,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Left = 8
+                    Left = 8,
+                    Font = new Font("Arial", 12f, FontStyle.Bold, GraphicsUnit.Point),
                 };
                 label.Top = 8 + (i * label.Height);
                 moduleIniPanel.Controls.Add(label);
 
-                TextBox textBox = new TextBox
+                if (iniDict.TryGetValue(iniVars[i].VariableName, out string varVal))
                 {
-                    Name = curName + "_txt",
-                    Width = label.Width,
-                    Height = label.Height,
-                    Text = iniVars[i].VariableValue,
-                    Tag = iniVars[i].VariableValue,
-                    TextAlign = HorizontalAlignment.Center,
-                    Left = label.Left + label.Width + 8,
-                    Top = label.Top
-                };
-                textBox.LostFocus += TextBox_LostFocus;
-                moduleIniPanel.Controls.Add(textBox);
-            }
+                    Control valueBox;
+                    switch (varVal)
+                    {
+                        case "Boolean":
+                            valueBox = new CheckBox {
+                                AutoSize = false,
+                                Name = curName + "_cb",
+                                Checked = iniVars[i].VariableValue.Equals("1"),
+                                Text = string.Empty,
+                                Tag = iniVars[i].VariableValue.Equals("1").ToString(),
+                                CheckAlign = ContentAlignment.MiddleLeft,
+                            };
+                            break;
+                        case "UInt16":
+                        case "Int16":
+                        case "UInt32":
+                        case "Int32":
+                        case "UInt64":
+                        case "Int64":
+                        case "Float":
+                        case "Double":
+                        case "Decimal":
+                            valueBox = new NumericUpDown
+                            {
+                                AutoSize = false,
+                                Name = curName + "_num",
+                                Minimum = decimal.MinValue,//change later to specific type
+                                Maximum = decimal.MaxValue,//change later to specific type
+                                Value = decimal.Parse(iniVars[i].VariableValue, NumberStyles.Number),
+                                Tag = decimal.Parse(iniVars[i].VariableValue, NumberStyles.Number).ToString(),
+                                TextAlign = HorizontalAlignment.Left,
+                            };
+                            break;
+                        case "String":
+                        default:
+                            valueBox = new TextBox
+                            {
+                                Name = curName + "_txt",
+                                Text = iniVars[i].VariableValue,
+                                Tag = iniVars[i].VariableValue,
+                                TextAlign = HorizontalAlignment.Left,
+                            };
+                            break;
+                    }
 
-            ResetControls();
-            LoadItemSets();
+                    valueBox.Width = label.Width / 2;
+                    valueBox.Height = label.Height;
+                    valueBox.Left = label.Left + label.Width + 8;
+                    valueBox.Top = label.Top + 2;
+                    valueBox.Font = label.Font;
+                    valueBox.LostFocus += ValueBox_LostFocus;
+
+                    moduleIniPanel.Controls.Add(valueBox);
+                }
+            }
         }
 
-        private void TextBox_LostFocus(object sender, EventArgs e)
+        private void ValueBox_LostFocus(object sender, EventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
-            if (!textBox.Text.Equals(textBox.Tag.ToString()))
+            bool changed = false;
+            Control valBox = (Control)sender;
+            var valType = GetNameEndOfControl(valBox);
+
+            switch (valType)
+            {
+                case "cb":
+                    changed = !(((CheckBox)valBox).Checked != bool.Parse(valBox.Tag.ToString()));
+                    break;
+                case "num":
+                    changed = !(((NumericUpDown)valBox).Value != decimal.Parse(valBox.Tag.ToString(), NumberStyles.Number));
+                    break;
+                case "txt":
+                default:
+                    changed = !valBox.Text.Equals(valBox.Tag.ToString());
+                    break;
+            }
+
+            if (changed)
             {
                 string moduleIniFile = CodeReader.ModPath + "module.ini";
-                string varName = textBox.Name.Remove(textBox.Name.LastIndexOf('_'));
+                string varName = valBox.Name.Remove(valBox.Name.LastIndexOf('_'));
                 var label = moduleIniPanel.Controls.Find(varName + "_lbl", false)[0];
                 string[] iniLines = File.ReadAllLines(moduleIniFile);
                 for (int i = 0; i < iniLines.Length; i++)
                 {
-                    if (iniLines[i].Trim().StartsWith(label.Text))
+                    if (iniLines[i].TrimStart().StartsWith(label.Text))
                     {
-                        iniLines[i] = label.Text + " = " + textBox.Text.Replace("\t", "    ").Replace(' ', '_');
+                        switch (valType)
+                        {
+                            case "cb":
+                                iniLines[i] = label.Text + " = " + (((CheckBox)valBox).Checked ? '1' : '0');
+                                break;
+                            case "num":
+                                iniLines[i] = label.Text + " = " + ((NumericUpDown)valBox).Value.ToString();//correct format later
+                                break;
+                            case "txt":
+                            default:
+                                iniLines[i] = label.Text + " = " + valBox.Text.Replace("\t", "    ").Replace(' ', '_');
+                                break;
+                        }
                         i = iniLines.Length;
                     }
                 }
+
                 File.WriteAllLines(moduleIniFile, iniLines);
+
                 // TODO: make save button as well later and the option to just save if the button was pressed!
                 //MessageBox.Show("Saved Changes!"); // just for testing - later with gui flash message / infobar etc.
-                textBox.Tag = textBox.Text;
+
+                switch (valType)
+                {
+                    case "cb":
+                        valBox.Tag = ((CheckBox)valBox).Checked;
+                        break;
+                    case "num":
+                        valBox.Tag = ((NumericUpDown)valBox).Value;
+                        break;
+                    case "txt":
+                    default:
+                        valBox.Tag = valBox.Text;
+                        break;
+                }
+
+                MessageBox.Show("Saved data!");
+            }
+        }
+
+        private void InitDictionryForModuleIni()
+        {
+            string tmp;
+            string[] sp;
+            foreach (string s in File.ReadAllLines(CodeReader.FILES_PATH + "module.ini.dat"))
+            {
+                tmp = s.Split('#')[0];
+                if (tmp.Length != 0)
+                {
+                    sp = tmp.Split('=', '|');
+                    iniDict.Add(sp[0], sp[2]);
+                }
             }
         }
 
         private List<HeaderVariable> ReadModuleIniSettings()
         {
+            if (iniDict.Count == 0)
+                InitDictionryForModuleIni();
+
             List<HeaderVariable> variables = new List<HeaderVariable>();
             using (StreamReader sr = new StreamReader(CodeReader.ModPath + "module.ini"))
             {
-                string line;
                 string[] sp;
+                string line;
                 while (!sr.EndOfStream)
                 {
                     line = CodeReader.RemNTrimAllXtraSp(sr.ReadLine().Split('#')[0]); // check wether # not only for comment
@@ -140,6 +255,21 @@ namespace MB_Studio.Main
                                 variables.Add(new HeaderVariable(sp[2], sp[0]));
                             else
                                 variables.Add(new HeaderVariable("!VALUE_NOT_FOUND!", sp[0]));
+
+                            if (!iniDict.ContainsKey(sp[0]))
+                            {
+                                bool isNumericComma;
+                                string type = "String";
+                                bool isNumeric = IsNumeric(sp[1], true);
+                                if (isNumeric)
+                                {
+                                    type = "Int64";
+                                    isNumericComma = IsNumericComma(sp[1]);
+                                    if (isNumericComma)
+                                        type = "Double";
+                                }
+                                iniDict.Add(sp[0], type);
+                            }
                         }
                     }
                 }
