@@ -153,7 +153,8 @@ namespace MB_Studio
 
             if (last != null)
             {
-                DialogResult result = MessageBox.Show(
+                DialogResult result = DialogResult.Yes;
+                /*DialogResult result = MessageBox.Show(
                     "Do you want to import the old config from version " +
                     last[0] + "." + last[1] + "." + last[2] + "." + last[3] +
                     "?"// + 
@@ -163,7 +164,7 @@ namespace MB_Studio
                     MessageBoxButtons.YesNoCancel,
                     MessageBoxIcon.Information,
                     MessageBoxDefaultButton.Button1
-                );
+                );*/
 
                 if (result != DialogResult.Cancel)
                 {
@@ -171,7 +172,6 @@ namespace MB_Studio
                     {
                         //File.Copy(path, "studio.config");
                         Properties.Settings.Default.Upgrade();
-                        Properties.Settings.Default.Reload();
                     }
 
                     Properties.Settings.Default.firstRun = false;

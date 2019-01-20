@@ -39,17 +39,17 @@ namespace MB_Studio_Library.Objects.Support
 
         public uint Beard { get; private set; }
 
-        public uint Hair { get; private set; }           // check again
+        public uint Hair { get; private set; }      // check again
 
         public uint Reserved2 { get; private set; } // check again
 
         // - - - 
 
-        public int MaxSkin { get { return troopType.FaceTextures.Length - 1; } }
+        public int MaxSkin { get { return troopType.FaceTextures.Length; } }
 
-        public int MaxBeard { get { return troopType.BeardMeshes.Length - 1; } }
+        public int MaxBeard { get { return troopType.BeardMeshes.Length; } }
 
-        public int MaxHair { get { return troopType.HairMeshes.Length - 1; } }
+        public int MaxHair { get { return troopType.HairMeshes.Length; } }
 
         #endregion
 
@@ -95,16 +95,48 @@ namespace MB_Studio_Library.Objects.Support
             if (hairColorIdx >= 0)
                 mergedColor = (int)((MergeColorsInList(hairColorList, hairColorIdx, HairColorCode, hairPerc) & 0x00FFFFFF) | 0xFF000000);
 
+            //mergedColor = AddAgeColor(mergedColor, hairPerc);
+            //mergedColor = Blend(Color.WhiteSmoke, Color.FromArgb(mergedColor), hairPerc).ToArgb();
+
             HairColor = mergedColor;
+        }
+
+        private static Color Blend(Color color, Color backColor, double amount)
+        {
+            byte r = (byte)((color.R * amount) + backColor.R * (1 - amount));
+            byte g = (byte)((color.G * amount) + backColor.G * (1 - amount));
+            byte b = (byte)((color.B * amount) + backColor.B * (1 - amount));
+            return Color.FromArgb(r, g, b);
+        }
+
+        private int AddAgeColor(int color, double hairPerc)
+        {
+            int agedColor = 0;
+            double percentage = Math.Round((int)Age % hairPerc / hairPerc, 4);
+
+            Color mic = Color.FromArgb(color);
+            Color mac = Color.White;
+            //Color mic = Color.FromArgb(byte.MaxValue, Color.White);
+
+            int a = CalcValDifference(mac.A, mic.A, percentage);
+            int r = CalcValDifference(mac.R, mic.R, percentage);
+            int g = CalcValDifference(mac.G, mic.G, percentage);
+            int b = CalcValDifference(mac.B, mic.B, percentage);
+
+            agedColor = Color.FromArgb(a, r, g, b).ToArgb();
+
+            //Console.WriteLine("Aged Color: " + Color.FromArgb(agedColor));
+
+            return agedColor;
         }
 
         private int MergeColorsInList(List<int> hairColors, int hairIdx, uint hairColorVal, double hairPerc)
         {
             int mergedColor;
             int mainColor = hairColors[hairIdx] & int.MaxValue;
-            double percentage = Math.Round((hairColorVal % hairPerc) / hairPerc, 4);
+            double percentage = Math.Round(hairColorVal % hairPerc / hairPerc, 4);
 
-            Console.WriteLine("Percentage: " + percentage);
+            //Console.WriteLine("Percentage: " + percentage);
 
             if (hairColors.Count > 1 && percentage > 0d && percentage != hairPerc)
             {
@@ -125,13 +157,15 @@ namespace MB_Studio_Library.Objects.Support
 
                 mergedColor = Color.FromArgb(a, r, g, b).ToArgb();
 
-                Console.WriteLine("Minor Color: " + Color.FromArgb(minorColor));
+                //Console.WriteLine("Minor Color: " + Color.FromArgb(minorColor));
             }
             else
             {
                 mergedColor = mainColor;
-                Console.WriteLine("Used main color!");
+                //Console.WriteLine("Used main color!");
             }
+
+            //Console.WriteLine("Merged Color: " + Color.FromArgb(mergedColor));
 
             return mergedColor;
         }

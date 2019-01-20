@@ -53,6 +53,7 @@
             // title_lbl
             // 
             this.title_lbl.Size = new System.Drawing.Size(743, 24);
+            this.title_lbl.Text = "Form";
             // 
             // background_pb
             // 
@@ -96,7 +97,7 @@
             this.menuText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.menuText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuText.ForeColor = System.Drawing.Color.Black;
-            this.menuText.Location = new System.Drawing.Point(2, 2);
+            this.menuText.Location = new System.Drawing.Point(10, 10);
             this.menuText.Name = "menuText";
             this.menuText.Size = new System.Drawing.Size(0, 20);
             this.menuText.TabIndex = 0;

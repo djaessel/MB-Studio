@@ -293,7 +293,8 @@
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.startPage_tab);
             this.tabControl.Controls.Add(this.console_tab);
@@ -326,19 +327,19 @@
             this.zuletztVerwendet_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.zuletztVerwendet_panel.Controls.Add(this.zuletztVerwendet_lbl);
-            this.zuletztVerwendet_panel.Location = new System.Drawing.Point(3, 194);
+            this.zuletztVerwendet_panel.Location = new System.Drawing.Point(3, 6);
             this.zuletztVerwendet_panel.Name = "zuletztVerwendet_panel";
-            this.zuletztVerwendet_panel.Size = new System.Drawing.Size(325, 218);
+            this.zuletztVerwendet_panel.Size = new System.Drawing.Size(325, 406);
             this.zuletztVerwendet_panel.TabIndex = 9;
             // 
             // zuletztVerwendet_lbl
             // 
             this.zuletztVerwendet_lbl.AutoSize = true;
-            this.zuletztVerwendet_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.zuletztVerwendet_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.zuletztVerwendet_lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(254)))));
-            this.zuletztVerwendet_lbl.Location = new System.Drawing.Point(13, 11);
+            this.zuletztVerwendet_lbl.Location = new System.Drawing.Point(14, 16);
             this.zuletztVerwendet_lbl.Name = "zuletztVerwendet_lbl";
-            this.zuletztVerwendet_lbl.Size = new System.Drawing.Size(107, 33);
+            this.zuletztVerwendet_lbl.Size = new System.Drawing.Size(89, 29);
             this.zuletztVerwendet_lbl.TabIndex = 6;
             this.zuletztVerwendet_lbl.Text = "Recent";
             // 
@@ -350,8 +351,9 @@
             this.ersteSchritte_panel.Controls.Add(this.ersteSchritte_lbl);
             this.ersteSchritte_panel.Location = new System.Drawing.Point(3, 6);
             this.ersteSchritte_panel.Name = "ersteSchritte_panel";
-            this.ersteSchritte_panel.Size = new System.Drawing.Size(325, 186);
+            this.ersteSchritte_panel.Size = new System.Drawing.Size(325, 182);
             this.ersteSchritte_panel.TabIndex = 8;
+            this.ersteSchritte_panel.Visible = false;
             // 
             // button2
             // 
@@ -413,6 +415,7 @@
             // 
             this.projectVorlagenSearch_txt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.projectVorlagenSearch_txt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.projectVorlagenSearch_txt.Enabled = false;
             this.projectVorlagenSearch_txt.ForeColor = System.Drawing.Color.DarkGray;
             this.projectVorlagenSearch_txt.Location = new System.Drawing.Point(20, 59);
             this.projectVorlagenSearch_txt.Name = "projectVorlagenSearch_txt";

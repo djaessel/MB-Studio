@@ -64,7 +64,7 @@ namespace MB_Studio
                     Tag = i,
                     Text = texts[i].Replace('_', ' '),
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Location = new Point(2, 2 + i * 32),
+                    Location = new Point(10, 8 + i * 32),
                     //Location = new Point(menuText_lbl.Left, 32 + i * 40),
                     Visible = true,
                 };
