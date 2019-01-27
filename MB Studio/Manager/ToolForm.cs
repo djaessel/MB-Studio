@@ -252,7 +252,7 @@ namespace MB_Studio.Manager
 
             Invoke((MethodInvoker)delegate { InitializeControls(); });
 
-            IsDataLoaded = !IsDataLoaded;//true
+            IsDataLoaded = true;
 
             // Update UI
             if (!DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Runtime)

@@ -11,9 +11,37 @@ namespace MB_Studio_Library.Objects
 {
     public class Item : Skriptum
     {
-        #region Consts And HeaderVariables
+        #region Consts, Enums And HeaderVariables
 
         public const string ZERO_15_CHARS = "000000000000000";
+
+        public enum ItemType : byte
+        {
+            None,
+            Horse,
+            OneHanded,
+            TwoHanded,
+            Polearm,
+            Arrows,
+            Bolts,
+            Shield,
+            Bow,
+            Crossbow,
+            Thrown,
+            Goods,
+            HeadArmor,
+            BodyArmor,
+            FootArmor,
+            HandArmor,
+            Pistol,
+            Musket,
+            Bullets,
+            Animal,
+            Book,
+        }
+
+        public static readonly List<string> ItemTypes = new List<string>() {"none","horse","one_handed_wpn","two_handed_wpn","polearm","arrows","bolts","shield","bow","crossbow","thrown","goods",
+                                                      "head_armor","body_armor","foot_armor","hand_armor","pistol","musket","bullets","animal","book"};
 
         public static List<HeaderVariable> HeaderIModBits { get; private set; } = new List<HeaderVariable>();
         public static List<HeaderVariable> HeaderIMods { get; private set; } = new List<HeaderVariable>();
@@ -613,6 +641,143 @@ namespace MB_Studio_Library.Objects
         #endregion
 
         #region Helper Methods
+
+        #region ItemType
+
+        #region ID OVERVIEW
+
+        /* SKELETONS */
+        // 0 human
+        // 1 human_horse
+
+        /* BONES */
+        // 0 abdomen   -  X X
+        // 1 thighL    -  4 thighR
+        // 2 calfL     -  5 calfR
+        // 3 footL     -  6 footR
+        // 7 spine     -  X X
+        // 8 thorax    -  X X
+        // 9 head      -  X X
+        //10 shoulderL - 15 shoulderR 
+        //11 upperarmL - 16 upperarmR
+        //12 forearmL  - 17 forearmR
+        //13 handL     - 18 handR
+        //14 itemL     - 19 itemR
+
+        /* CARRYPOSITIONS */
+        // 0 itcf_carry_sword_left_hip
+        // 1 itcf_carry_axe_left_hip
+        // 2 itcf_carry_mace_left_hip
+        // 3 itcf_carry_dagger_front_left
+        // 4 itcf_carry_dagger_front_right
+        // 5 itcf_carry_axe_back
+        // 6 itcf_carry_sword_back
+        // 7 itcf_carry_spear
+        // 8 itcf_carry_kite_shield
+        // 9 itcf_carry_board_shield
+        //10 itcf_carry_round_shield
+        //11 itcf_carry_crossbow_back
+        //12 itcf_carry_bow_back
+        //13 itcf_carry_quiver_front_right
+        //14 itcf_carry_quiver_back_right
+        //15 itcf_carry_quiver_right_vertical
+        //16 itcf_carry_quiver_back
+        //17 itcf_carry_buckler_left
+        //18 itcf_carry_revolver_right
+        //19 itcf_carry_pistol_front_left
+        //20 itcf_carry_bowcase_left
+        //21 itcf_carry_katana
+        //22 itcf_carry_wakizashi
+
+        #endregion
+
+        public static int GetItemTypeIndex(Item item)
+        {
+            int typeIndex = 0;//default = none
+            string typeStart = "itp_type_";
+            string[] properties = item.Properties.Split('|');
+            foreach (string itemProperty in properties)
+                if (itemProperty.StartsWith(typeStart))
+                    typeIndex = ItemTypes.IndexOf(itemProperty.Substring(typeStart.Length));
+            return typeIndex;
+        }
+
+        public static ItemType GetItemType(Item item)
+        {
+            return (ItemType)GetItemTypeIndex(item);
+        }
+
+        public ItemType GetItemType()
+        {
+            return GetItemType(this);
+        }
+
+        public static bool ItemTypeBodyPosition(ItemType itemType, out int boneIndex, out int skeletonId, out int carryPosition)
+        {
+            bool isAtOrigin = true; // change later
+
+            boneIndex = 0;
+            skeletonId = 0;
+            carryPosition = -1;
+
+            switch (itemType)
+            {
+                case ItemType.Horse:
+                    skeletonId++;//is this correct for horse?
+                    break;
+                case ItemType.Shield:
+                    boneIndex = 14;
+                    break;
+                case ItemType.HeadArmor:
+                    boneIndex = 9;
+                    break;
+                case ItemType.BodyArmor:
+                    boneIndex = 8;//thorax
+                    break;
+                case ItemType.FootArmor:
+                    boneIndex = 9;//wrong index?
+                    break;
+                case ItemType.HandArmor:
+                    boneIndex = 13;//Left
+                    // + boneIndex = 18;//Right
+                    break;
+                case ItemType.Bow:
+                    carryPosition = 12;
+                    break;
+                case ItemType.Crossbow:
+                    carryPosition = 11;
+                    break;
+                case ItemType.Pistol:
+                    carryPosition = 19;//18
+                    break;
+                case ItemType.OneHanded:
+                case ItemType.TwoHanded:
+                case ItemType.Polearm:
+                case ItemType.Thrown:
+                case ItemType.Musket:
+                    boneIndex = 19;
+                    break;
+                case ItemType.Arrows:
+                    carryPosition = 16;
+                    break;
+                case ItemType.Bolts:
+                    carryPosition = 15;
+                    break;
+                case ItemType.Bullets:
+                    carryPosition = 14;
+                    break;
+                //case ItemType.Goods:
+                //case ItemType.Animal:
+                //case ItemType.Book:
+                default://none = 0
+                    boneIndex = 5;
+                    break;
+            }
+
+            return isAtOrigin;
+        }
+
+        #endregion
 
         public static ulong GetModBitStringToValue(string modbitString)
         {

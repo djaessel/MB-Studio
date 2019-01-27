@@ -24,9 +24,6 @@ namespace MB_Studio.Manager
         private const byte MESH_CONTROLS_TOP_HEIGHT = 32;
         private const byte MESH_CONTROLS_TOP_DEFAULT = 24;
 
-        private static readonly List<string> ItemTypes = new List<string>() {"none","horse","one_handed_wpn","two_handed_wpn","polearm","arrows","bolts","shield","bow","crossbow","thrown","goods",
-                                                      "head_armor","body_armor","foot_armor","hand_armor","pistol","musket","bullets","animal","book"};
-
         public static readonly List<string> InvisibleMeshes = new List<string>() { "invalid_item","flying_missile" };
 
         private List<int[]> memberValues = new List<int[]>();
@@ -67,7 +64,7 @@ namespace MB_Studio.Manager
 
             meshTag = int.Parse(showGroup_3_btn.Tag.ToString());
 
-            type_cbb.Items.AddRange(ItemTypes.ToArray());
+            type_cbb.Items.AddRange(Item.ItemTypes.ToArray());
 
             ResetControls();
         }
@@ -1294,17 +1291,6 @@ namespace MB_Studio.Manager
             }
             string btnName = "showGroup_" + groupBox.Name.Split('_')[1] + "_btn";
             Controls.Find(btnName, true)[0].Tag = top + cHeight - GROUP_HEIGHT_DIF;
-        }
-
-        public static int GetItemTypeIndex(Item item)
-        {
-            int typeIndex = 0;//default = none
-            string typeStart = "itp_type_";
-            string[] properties = item.Properties.Split('|');
-            foreach (string itemProperty in properties)
-                if (itemProperty.StartsWith(typeStart))
-                    typeIndex = ItemTypes.IndexOf(itemProperty.Substring(typeStart.Length));
-            return typeIndex;
         }
 
         #endregion

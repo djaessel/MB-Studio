@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
 using System.Drawing;
+using MB_Studio_Library.IO;
 
 namespace brfManager
 {
@@ -197,7 +198,7 @@ namespace brfManager
             ClearTempMeshesTroop3DPreview();
         }
 
-        public void Troop3DPreviewShow(Troop troop = null, bool forceOverride = false)
+        public void Troop3DPreviewShow(Troop troop = null, List<Skriptum> items = null, bool forceOverride = false)
         {
             #region Set Body Parts
 
@@ -207,7 +208,7 @@ namespace brfManager
                 var troopType = troop.GetTroopType();
                 var face = Face.MergeTroopFaces(troop);
 
-                Console.Write("Merged FaceCode: ");
+                Console.Write(" Merged FaceCode: ");
                 Console.Write("0x | " + face.FaceCode.Substring(0, 7));
                 Console.Write(" | " + face.FaceCode.Substring(7, 9));
                 Console.WriteLine(" | " + face.FaceCode.Substring(16));
@@ -216,27 +217,98 @@ namespace brfManager
                 if ((troop.FlagsGZ >> 12 & 0xF) >= 0x8) // tf_randomize_face
                 {
                     // random face gen here
-                    Console.WriteLine("Randomize face flag set!");
+                    Console.WriteLine(" Randomize face flag set!");
                 }
                 //else
                     faceTexture = troopType.FaceTextures[face.Skin];
 
-                Console.WriteLine("Selected FaceTexture: " + faceTexture.Name);
+                Console.WriteLine(" Selected FaceTexture: " + faceTexture.Name);
 
                 int mergeFrame = 20;
                 double mergeWeight = 0.5;
 
-                success &= AddMeshToTroop3DPreview(troopType.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color, mergeFrame, mergeWeight);
-                success &= AddMeshToTroop3DPreview(troopType.BodyMesh, 0);
-                success &= AddMeshToTroop3DPreview(troopType.HandMesh, 13);
-                success &= AddMeshToTroop3DPreview(troopType.HandMesh.TrimEnd('L') + "R", 18);
-                success &= AddMeshToTroop3DPreview(troopType.CalfMesh, 2);
-                success &= AddMeshToTroop3DPreview(troopType.CalfMesh.TrimEnd('l') + "l", 5);
+                bool[] hasBoneX = new bool[8]; // default false
+
+                if (items != null)
+                {
+                    Item item;
+                    foreach (int itemX in troop.Items)
+                    {
+                        item = (Item)items[itemX];
+                        switch (item.GetItemType())
+                        {
+                            case Item.ItemType.HeadArmor:
+                                //if ((item.PropertiesGZ & 0x0000000080000000) == 0x0000000080000000)
+                                //    hasBoneX[0] = true;//head
+                                //if ((item.PropertiesGZ & 0x0000008000000000) == 0x0000008000000000)
+                                //    hasBoneX[6] = true;//hair
+                                //if ((item.PropertiesGZ & 0x0000001000000000) == 0x0000001000000000)
+                                //    hasBoneX[7] = true;//beard
+                                break;
+                            case Item.ItemType.BodyArmor:
+                                if ((item.PropertiesGZ & 0x0000010000000000) != 0x0000010000000000)
+                                    hasBoneX[1] = true;//body
+                                break;
+                            case Item.ItemType.FootArmor:
+                                //if ((item.PropertiesGZ & 0x0000000001000000) == 0x0000000001000000)
+                                //{
+                                //    hasBoneX[4] = true;//calfL
+                                //    hasBoneX[5] = true;//calfR
+                                //}
+                                break;
+                            case Item.ItemType.HandArmor:
+                                if ((item.PropertiesGZ & 0x0000020000000000) != 0x0000020000000000)
+                                    hasBoneX[2] = true;//handL
+                                if ((item.PropertiesGZ & 0x0000040000000000) != 0x0000040000000000)
+                                    hasBoneX[3] = true;//handR
+                                break;
+                            default:
+                                break;
+                        }
+
+                        // check conditions again (header_items.py)
+
+                        if ((item.PropertiesGZ & 0x0000000080000000) == 0x0000000080000000)
+                            hasBoneX[0] = true;//head
+                        if ((item.PropertiesGZ & 0x0000008000000000) == 0x0000008000000000 ||
+                            (item.PropertiesGZ & 0x0000080000000000) == 0x0000080000000000)
+                            hasBoneX[6] = true;//hair
+                        if ((item.PropertiesGZ & 0x0000001000000000) == 0x0000001000000000)
+                            hasBoneX[7] = true;//beard
+
+                        if ((item.PropertiesGZ & 0x0000000001000000) == 0x0000000001000000)
+                        {
+                            hasBoneX[4] = true;//calfL
+                            hasBoneX[5] = true;//calfR
+                        }
+                    }
+                }
+
+                if (!hasBoneX[0])
+                    success &= AddMeshToTroop3DPreview(troopType.HeadMesh, 9, 0, -1, true, faceTexture.Name, faceTexture.Color, mergeFrame, mergeWeight);
+
+                if (!hasBoneX[1])
+                    success &= AddMeshToTroop3DPreview(troopType.BodyMesh, 0);
+
+                if (!hasBoneX[2])
+                    success &= AddMeshToTroop3DPreview(troopType.HandMesh, 13);
+
+                if (!hasBoneX[3])
+                    success &= AddMeshToTroop3DPreview(troopType.HandMesh.TrimEnd('L') + "R", 18);
+
+                if (!hasBoneX[4])
+                    success &= AddMeshToTroop3DPreview(troopType.CalfMesh, 2);
+
+                if (!hasBoneX[5])
+                    success &= AddMeshToTroop3DPreview(troopType.CalfMesh.TrimEnd('l') + "l", 5);
 
                 // remove beard, hair, head, body, legs depending on item properties later and check skin color
 
-                success &= Troop3DPreviewAddFacialHairs(troopType.HairMeshes, face.Hair, face.HairColor);
-                success &= Troop3DPreviewAddFacialHairs(troopType.BeardMeshes, face.Beard, face.HairColor, true);
+                if (!hasBoneX[6])
+                    success &= Troop3DPreviewAddFacialHairs(troopType.HairMeshes, face.Hair, face.HairColor);
+
+                if (!hasBoneX[7])
+                    success &= Troop3DPreviewAddFacialHairs(troopType.BeardMeshes, face.Beard, face.HairColor, true);
 
                 Console.WriteLine("Troop skin body parts: " + success);
             }
@@ -256,12 +328,12 @@ namespace brfManager
                 // use hairPerc for color intesity
                 // morph color index + 1 and find color position in between
 
-                //Console.WriteLine("HairColorVal: " + hairColorVal + " | HairPerc: " + hairPerc + " | HairIndex: " + hairIdx + " | HairCount: " + hairColors.Count);
+                //Console.WriteLine(" HairColorVal: " + hairColorVal + " | HairPerc: " + hairPerc + " | HairIndex: " + hairIdx + " | HairCount: " + hairColors.Count);
                 //Console.WriteLine(" Base Hair" + Color.FromArgb(hairColors[hairIdx]));
                 Console.WriteLine(" Final Hair" + Color.FromArgb(hairColor));
 
                 string beardMesh = facialHairTypes[hairIndex - 1];
-                Console.WriteLine("Add hairMesh: " + beardMesh); // wrong mesh?
+                Console.WriteLine(" Add hairMesh: " + beardMesh); // wrong mesh?
 
                 // add hair color perc to mesh
                 success &= AddMeshToTroop3DPreview(beardMesh, 9, 0, -1, mirror, texture, (uint)hairColor);
