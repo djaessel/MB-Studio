@@ -1,50 +1,34 @@
-﻿:3.1.0.0:Klethi
+﻿:3.2.0.0:Marnid (Preview)
 - -
 # fixed start
-some 3D view bugs (TroopManager)
-Tab bottom bug
-data conversion bugs
+several index out of bounds exceptions
 # fixed end
 . changed start
-Build process
-config
+tab size management -> managers and views should use all space and not just the upper half
 . end
 - removed
-python compiler
-source file creation
-- config end
+old config upgrade (temporarly until config is moved)
+- end
 + added start
-updater GUI
-script compiler
-changelog
-old config upgrade
+Managers: help/tutorial messages (WIP)
+TroopManager: body meshes in 3D view
+TroopManager: ability to select None for 3D view item kind
+TroopManager: face editor (WIP)
 + added end
 { infotext start
-This update fixed many module system code bugs and also removed the need of 
-creating source files to compile the changes.
+This update is just a preview for the upcoming Marnid Update - MountBlade Studio v3.2
+which I will release in February depending on the time and motivation I have.
 
-The tutorials are still missing, but in case there aren't too many bugs left 
-which I didn't find yet, I could use my time
-to create some tutorials and also new "Managers".
+As you can see I added some tutorial messages and new features.
+In the final update there will hopefully be some more.
 
-The first Managers where hard-coded, but because I wanted to make this a little 
-bit more transparent, the future ones won't be hard-coded.
-If want to know more about it, take a look in the Manager folder inside your 
-MB Studio installation folder.
+The face editor was asked for as a new feature and I added it.
+But at the moment it is only for the basic face editing,
+such as hair, beard, hair/beard color, skin and age.
+In the it should have the same ability as the ingame face editor.
 
-As you can see on top of this changelog, this build is called "Klethi". 
-I decided to call my feature updates after Mount&Blade charaters and started 
-with this one.
-
-In the future I probably will add some community features too, because at the 
-moment the only way users can contact me is via ModDB.
-These features would allow you to write some short feedback messages and 
-bugreports or maybe some voting etc.
-
-I hope you like this tool and you are able to make something out of it in the future!
-
-
-Have fun!
+Have a good time and I hope there aren't too many bugs in the stable version.
+Some bugs related to the object list and other minor problems should be fixed in the preview version.
 
 Johandros
 } infotext end
