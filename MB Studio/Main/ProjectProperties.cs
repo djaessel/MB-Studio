@@ -21,6 +21,7 @@ namespace MB_Studio.Main
         private List<Item> items = new List<Item>();
         private List<ulong> itemsFlags = new List<ulong>();
         private Dictionary<string, string> iniDict = new Dictionary<string, string>();
+        private Dictionary<string, string> iniDictDefaults = new Dictionary<string, string>();
 
         private Panel moduleIniPanel;
 
@@ -60,11 +61,11 @@ namespace MB_Studio.Main
             LoadItemSets();
         }
 
-        private Button saveIni_btn;
+        private Button saveIni_btn;//move later
         private void CreateModuleIniPanel()
         {
             string curName;
-            var iniVars = ReadModuleIniSettings();
+            var iniVars = ReadModuleIniSettings(out int lastKnownIndex);
 
             saveIni_btn = new Button
             {
@@ -156,6 +157,21 @@ namespace MB_Studio.Main
                     //valueBox.LostFocus += ValueBox_LostFocus;
 
                     moduleIniPanel.Controls.Add(valueBox);
+
+                    if (i > lastKnownIndex)
+                    {
+                        CheckBox checkBox = new CheckBox
+                        {
+                            Name = curName + "_abc",
+                            Top = valueBox.Top,
+                            Left = valueBox.Left + valueBox.Width + 8,
+                            Height = valueBox.Height,
+                            Width = 64,
+                            Checked = false,
+                            FlatStyle = FlatStyle.Flat,
+                        };
+                        moduleIniPanel.Controls.Add(checkBox);
+                    }
                 }
             }
 
@@ -177,76 +193,99 @@ namespace MB_Studio.Main
 
         private void SaveIni_btn_Click(object sender, EventArgs e)
         {
-            ValueBox_LostFocus();
+            ValueBoxesSaveAll();
         }
 
-        private void ValueBox_LostFocus(object sender = null, EventArgs e = null)
+        private void ValueBoxesSaveAll()
         {
-            bool changed = false;
-            Control valBox = (Control)sender;
-            var valType = GetNameEndOfControl(valBox);
+            string moduleIniFile = CodeReader.ModPath + "module.ini";
+            List<string> iniLines = new List<string>(File.ReadAllLines(moduleIniFile));
 
-            switch (valType)
-            {
-                case "cb":
-                    changed = !(((CheckBox)valBox).Checked != bool.Parse(valBox.Tag.ToString()));
-                    break;
-                case "num":
-                    changed = !(((NumericUpDown)valBox).Value != decimal.Parse(valBox.Tag.ToString(), NumberStyles.Number));
-                    break;
-                case "txt":
-                default:
-                    changed = !valBox.Text.Equals(valBox.Tag.ToString());
-                    break;
-            }
+            List<string> excludedTypes = new List<string>() { "lbl", "btn", "pb", "panel", "abc" };
+            foreach (Control c in moduleIniPanel.Controls)
+                if (!excludedTypes.Contains(GetNameEndOfControl(c)))
+                    Zeta(c, ref iniLines);
 
-            if (changed)
+            File.WriteAllLines(moduleIniFile, iniLines);
+
+            MessageBox.Show("Saved data to \"" + moduleIniFile + "\"", "Saved");
+        }
+
+        private void Zeta(Control valBox, ref List<string> iniLines)
+        {
+            string valType = GetNameEndOfControl(valBox);
+
+            string moduleIniFile = CodeReader.ModPath + "module.ini";
+            string varName = valBox.Name.Remove(valBox.Name.LastIndexOf('_'));
+            try
             {
-                string moduleIniFile = CodeReader.ModPath + "module.ini";
-                string varName = valBox.Name.Remove(valBox.Name.LastIndexOf('_'));
                 var label = moduleIniPanel.Controls.Find(varName + "_lbl", false)[0];
-                string[] iniLines = File.ReadAllLines(moduleIniFile);
-                for (int i = 0; i < iniLines.Length; i++)
+                var abc = moduleIniPanel.Controls.Find(varName + "_abc", false);
+
+                string tmp;
+                if (abc.Length == 0)
                 {
-                    if (iniLines[i].TrimStart().StartsWith(label.Text))
+                    for (int i = 0; i < iniLines.Count; i++)
+                    {
+                        if (iniLines[i].TrimStart().StartsWith(label.Text))
+                        {
+                            switch (valType)
+                            {
+                                case "cb":
+                                    tmp = label.Text + " = " + (((CheckBox)valBox).Checked ? '1' : '0');
+                                    break;
+                                case "num":
+                                    tmp = label.Text + " = " + ((NumericUpDown)valBox).Value.ToString();//correct format later
+                                    break;
+                                case "txt":
+                                default:
+                                    tmp = label.Text + " = " + valBox.Text.Replace("\t", "    ").Replace(' ', '_');
+                                    break;
+                            }
+                            iniLines[i] = tmp;
+                            i = iniLines.Count;
+                        }
+                    }
+                }
+                else
+                {
+                    CheckBox checkBox = (CheckBox)abc[0];
+                    if (checkBox.Checked)
                     {
                         switch (valType)
                         {
                             case "cb":
-                                iniLines[i] = label.Text + " = " + (((CheckBox)valBox).Checked ? '1' : '0');
+                                tmp = label.Text + " = " + (((CheckBox)valBox).Checked ? '1' : '0');
                                 break;
                             case "num":
-                                iniLines[i] = label.Text + " = " + ((NumericUpDown)valBox).Value.ToString();//correct format later
+                                tmp = label.Text + " = " + ((NumericUpDown)valBox).Value.ToString();//correct format later
                                 break;
                             case "txt":
                             default:
-                                iniLines[i] = label.Text + " = " + valBox.Text.Replace("\t", "    ").Replace(' ', '_');
+                                tmp = label.Text + " = " + valBox.Text.Replace("\t", "    ").Replace(' ', '_');
                                 break;
                         }
-                        i = iniLines.Length;
+                        iniLines.Add(tmp);
                     }
                 }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(varName);
+            }
 
-                File.WriteAllLines(moduleIniFile, iniLines);
-
-                // TODO: make save button as well later and the option to just save if the button was pressed!
-                //MessageBox.Show("Saved Changes!"); // just for testing - later with gui flash message / infobar etc.
-
-                switch (valType)
-                {
-                    case "cb":
-                        valBox.Tag = ((CheckBox)valBox).Checked;
-                        break;
-                    case "num":
-                        valBox.Tag = ((NumericUpDown)valBox).Value;
-                        break;
-                    case "txt":
-                    default:
-                        valBox.Tag = valBox.Text;
-                        break;
-                }
-
-                MessageBox.Show("Saved data!");
+            switch (valType)
+            {
+                case "cb":
+                    valBox.Tag = ((CheckBox)valBox).Checked;
+                    break;
+                case "num":
+                    valBox.Tag = ((NumericUpDown)valBox).Value;
+                    break;
+                case "txt":
+                default:
+                    valBox.Tag = valBox.Text;
+                    break;
             }
         }
 
@@ -254,6 +293,7 @@ namespace MB_Studio.Main
         {
             string tmp;
             string[] sp;
+            int defaultIdx = 0;
             foreach (string s in File.ReadAllLines(CodeReader.FILES_PATH + "module.ini.dat"))
             {
                 tmp = s.Split('#')[0];
@@ -261,11 +301,12 @@ namespace MB_Studio.Main
                 {
                     sp = tmp.Split('=', '|');
                     iniDict.Add(sp[0], sp[2]);
+                    iniDictDefaults.Add(sp[0], sp[1].TrimStart('[').TrimEnd(']').Split(',')[defaultIdx]);
                 }
             }
         }
 
-        private List<HeaderVariable> ReadModuleIniSettings()
+        private List<HeaderVariable> ReadModuleIniSettings(out int lastKnownIndex)
         {
             if (iniDict.Count == 0)
                 InitDictionryForModuleIni();
@@ -307,6 +348,24 @@ namespace MB_Studio.Main
                     }
                 }
             }
+
+            lastKnownIndex = variables.Count - 1;
+
+            foreach (var item in iniDictDefaults)
+            {
+                bool foundX = false;
+                for (int i = 0; i < variables.Count; i++)
+                {
+                    if (variables[i].VariableName.Equals(item.Key))
+                    {
+                        foundX = true;
+                        i = variables.Count;
+                    }
+                }
+                if (!foundX)
+                    variables.Add(new HeaderVariable(item.Value, item.Key));
+            }
+
             return variables;
         }
 
