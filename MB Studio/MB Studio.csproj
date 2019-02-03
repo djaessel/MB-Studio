@@ -165,7 +165,7 @@
     <None Include="changelog">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="files\module.ini.dat">
+    <None Include="files\module.ini.wdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="installerScripts\Compile x64.bat" />

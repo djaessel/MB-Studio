@@ -294,7 +294,7 @@ namespace MB_Studio.Main
             string tmp;
             string[] sp;
             int defaultIdx = 0;
-            foreach (string s in File.ReadAllLines(CodeReader.FILES_PATH + "module.ini.dat"))
+            foreach (string s in File.ReadAllLines(CodeReader.FILES_PATH + "module.ini.wdb"))
             {
                 tmp = s.Split('#')[0];
                 if (tmp.Length != 0)
