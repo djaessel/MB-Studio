@@ -52,6 +52,9 @@ namespace MB_Studio.Manager
             this.save_translation_btn = new System.Windows.Forms.Button();
             this.addFromOtherMod_btn = new System.Windows.Forms.Button();
             this.help_btn = new System.Windows.Forms.Button();
+            this.typeUp_btn = new System.Windows.Forms.Button();
+            this.typeDown_btn = new System.Windows.Forms.Button();
+            this.typeDelete_btn = new System.Windows.Forms.Button();
             this.toolPanel.SuspendLayout();
             this.groupBox_0_gb.SuspendLayout();
             this.SuspendLayout();
@@ -394,12 +397,60 @@ namespace MB_Studio.Manager
             this.help_btn.UseVisualStyleBackColor = false;
             this.help_btn.Click += new System.EventHandler(this.Help_btn_Click);
             // 
+            // typeUp_btn
+            // 
+            this.typeUp_btn.BackColor = System.Drawing.Color.DimGray;
+            this.typeUp_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.typeUp_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.typeUp_btn.Location = new System.Drawing.Point(57, 58);
+            this.typeUp_btn.Name = "typeUp_btn";
+            this.typeUp_btn.Size = new System.Drawing.Size(26, 35);
+            this.typeUp_btn.TabIndex = 0;
+            this.typeUp_btn.TabStop = false;
+            this.typeUp_btn.Tag = "";
+            this.typeUp_btn.Text = "ʌ";
+            this.typeUp_btn.UseVisualStyleBackColor = false;
+            this.typeUp_btn.Click += new System.EventHandler(this.TypeUp_btn_Click);
+            // 
+            // typeDown_btn
+            // 
+            this.typeDown_btn.BackColor = System.Drawing.Color.DimGray;
+            this.typeDown_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.typeDown_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.typeDown_btn.Location = new System.Drawing.Point(57, 136);
+            this.typeDown_btn.Name = "typeDown_btn";
+            this.typeDown_btn.Size = new System.Drawing.Size(26, 35);
+            this.typeDown_btn.TabIndex = 0;
+            this.typeDown_btn.TabStop = false;
+            this.typeDown_btn.Tag = "";
+            this.typeDown_btn.Text = "v";
+            this.typeDown_btn.UseVisualStyleBackColor = false;
+            this.typeDown_btn.Click += new System.EventHandler(this.TypeDown_btn_Click);
+            // 
+            // typeDelete_btn
+            // 
+            this.typeDelete_btn.BackColor = System.Drawing.Color.DimGray;
+            this.typeDelete_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.typeDelete_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.typeDelete_btn.Location = new System.Drawing.Point(57, 97);
+            this.typeDelete_btn.Name = "typeDelete_btn";
+            this.typeDelete_btn.Size = new System.Drawing.Size(26, 35);
+            this.typeDelete_btn.TabIndex = 0;
+            this.typeDelete_btn.TabStop = false;
+            this.typeDelete_btn.Tag = "";
+            this.typeDelete_btn.Text = "-";
+            this.typeDelete_btn.UseVisualStyleBackColor = false;
+            this.typeDelete_btn.Click += new System.EventHandler(this.TypeDelete_btn_Click);
+            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.ClientSize = new System.Drawing.Size(814, 220);
+            this.Controls.Add(this.typeDelete_btn);
+            this.Controls.Add(this.typeDown_btn);
+            this.Controls.Add(this.typeUp_btn);
             this.Controls.Add(this.help_btn);
             this.Controls.Add(this.addFromOtherMod_btn);
             this.Controls.Add(this.toolPanel);
@@ -418,6 +469,7 @@ namespace MB_Studio.Manager
             this.Controls.Add(this.name_txt);
             this.Controls.Add(this.id_lbl);
             this.Controls.Add(this.id_txt);
+            this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ToolForm";
@@ -462,5 +514,8 @@ namespace MB_Studio.Manager
         protected System.Windows.Forms.Button addFromOtherMod_btn;
         private ToolTipListBox typeSelect_lb;
         protected System.Windows.Forms.Button help_btn;
+        protected System.Windows.Forms.Button typeUp_btn;
+        protected System.Windows.Forms.Button typeDown_btn;
+        protected System.Windows.Forms.Button typeDelete_btn;
     }
 }

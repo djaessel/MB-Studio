@@ -82,7 +82,7 @@ namespace MB_Studio.Manager
         #endregion
 
         #endregion
-
+        
         #region Properties
 
         #region Static
@@ -433,6 +433,51 @@ namespace MB_Studio.Manager
             SaveTypeByIndex(list, index);
 
             UnsavedDataAvailable = false;//not all is checked yet - just for now
+        }
+
+        private void TypeUp_btn_Click(object sender, EventArgs e)
+        {
+            if (CurrentTypeIndex <= 0) return;
+
+            int newCurIdx = CurrentTypeIndex - 1;
+
+            var changeType = types[newCurIdx];
+            types[newCurIdx] = types[CurrentTypeIndex];
+            types[CurrentTypeIndex] = changeType;
+
+            var changeObj = typeSelect_lb.Items[newCurIdx];
+            typeSelect_lb.Items[newCurIdx] = typeSelect_lb.Items[CurrentTypeIndex];
+            typeSelect_lb.Items[CurrentTypeIndex] = changeObj;
+
+            typeSelect_lb.SelectedIndex = newCurIdx;
+        }
+
+        private void TypeDelete_btn_Click(object sender, EventArgs e)
+        {
+            if (CurrentTypeIndex < 0) return;
+
+            typeSelect_lb.Items.RemoveAt(CurrentTypeIndex);
+            if (CurrentTypeIndex < typeSelect_lb.Items.Count)
+                typeSelect_lb.SelectedIndex = CurrentTypeIndex;
+            else
+                typeSelect_lb.SelectedIndex = typeSelect_lb.Items.Count - 1;
+        }
+
+        private void TypeDown_btn_Click(object sender, EventArgs e)
+        {
+            if (CurrentTypeIndex < 0 || CurrentTypeIndex == typeSelect_lb.Items.Count - 1) return;
+
+            int newCurIdx = CurrentTypeIndex + 1;
+
+            var changeType = types[newCurIdx];
+            types[newCurIdx] = types[CurrentTypeIndex];
+            types[CurrentTypeIndex] = changeType;
+
+            var changeObj = typeSelect_lb.Items[newCurIdx];
+            typeSelect_lb.Items[newCurIdx] = typeSelect_lb.Items[CurrentTypeIndex];
+            typeSelect_lb.Items[CurrentTypeIndex] = changeObj;
+
+            typeSelect_lb.SelectedIndex = newCurIdx;
         }
 
         #endregion
