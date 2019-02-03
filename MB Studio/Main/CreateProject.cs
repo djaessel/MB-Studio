@@ -24,13 +24,22 @@ namespace MB_Studio.Main
 
         private void CreateProject_Load(object sender, EventArgs e)
         {
-            string modulesDir = ImportantMethods.GetDirectoryPathOnly(ProgramConsole.GetModuleInfoPath()) + '\\';
-            string s = "Native";
+            string modulesDir = ImportantMethods.GetDirectoryPathOnly(ProgramConsole.GetModuleInfoPath());
+
+            PathSelector pathSelector = new PathSelector("Modules");
+            while (!Directory.Exists(modulesDir))
+            {
+                pathSelector.ShowDialog();
+                modulesDir = pathSelector.SelectedPath;
+            }
+
+            modulesDir += '\\';
 
             string[] modules = Directory.GetDirectories(modulesDir.TrimEnd('\\'));
             foreach (string module in modules)
                 modules_cbb.Items.Add(ImportantMethods.GetDirectoryNameOnly(module));
 
+            string s = "Native";
             if (!Directory.Exists(modulesDir + s))
             {
 

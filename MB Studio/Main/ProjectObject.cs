@@ -12,13 +12,15 @@ namespace MB_Studio.Main
         public ProjectObject()
         {
             InitializeComponent();
+
             highlightColor = Color.FromArgb(Math.Min(BackColor.R + 16, byte.MaxValue), Math.Min(BackColor.G + 16, byte.MaxValue), Math.Min(BackColor.B + 16, byte.MaxValue));
             defaultColor = BackColor;
-            IconLocation = "J.SYS.ico";
+
             SizeChanged += ProjectObject_SizeChanged;
             MouseHover += ProjectObject_MouseHover;
             MouseEnter += ProjectObject_MouseEnter;
             MouseLeave += ProjectObject_MouseLeave;
+
             foreach (Control c in Controls)
             {
                 c.MouseEnter += ProjectObject_MouseEnter;
@@ -98,6 +100,5 @@ namespace MB_Studio.Main
             get { return icon_pb.ImageLocation; }
             set { icon_pb.ImageLocation = value; }
         }
-
     }
 }

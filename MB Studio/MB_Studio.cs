@@ -355,11 +355,18 @@ namespace MB_Studio
             }
         }
 
-        private void LoadProject(string projectPath)
+        private bool LoadProject(string projectPath)
         {
-            ProgramConsole.LoadProject(projectPath);
-            RemoveAllTabPagesExeptConsole();
-            LoadProjectExplorer();
+            bool success = false;
+            try
+            {
+                ProgramConsole.LoadProject(projectPath);
+                RemoveAllTabPagesExeptConsole();
+                LoadProjectExplorer();
+                success = true;
+            }
+            catch (Exception) { }
+            return success;
         }
 
         private void LoadLastOpenedProjects()
@@ -372,11 +379,18 @@ namespace MB_Studio
 
         private Control GetLastProjectControl(string name, string path)
         {
+            string iconLocation = path + "\\project.ico";
+            if (!File.Exists(iconLocation))
+            {
+                iconLocation = CodeReader.FILES_PATH + "images\\warband.ico"; // later depending on game (version)
+            }
+
             ProjectObject PObject = new ProjectObject()
             {
                 ProjectName = name, //Text = name,
                 ProjectPath = path, //
                 AutoSize = false,
+                IconLocation = iconLocation,
                 //Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0),
                 //Size = new Size(zuletztVerwendet_panel.Width - 20, 72),
                 Width = zuletztVerwendet_panel.Width - 20,
@@ -390,10 +404,13 @@ namespace MB_Studio
                 Parent = zuletztVerwendet_panel,
                 Tag = path
             };
+
             //b.FlatAppearance.BorderSize = 0;
             //b.FlatAppearance.MouseDownBackColor = b.Parent.BackColor;
             //b.FlatAppearance.MouseOverBackColor = b.Parent.BackColor;
+
             PObject.Click += ProjectObject_Click;
+
             return PObject;
         }
 
@@ -401,12 +418,17 @@ namespace MB_Studio
         {
             ProjectObject pObject = (ProjectObject)sender;//Button b = (Button)sender;
             string path = pObject.ProjectPath;//b.Tag.ToString();
+
+            bool loadSuccess = false;
             if (Directory.Exists(path))
-                LoadProject(path);
-            else
+            {
+                loadSuccess = LoadProject(path);
+            }
+
+            if (!loadSuccess)
             {
                 DialogResult result = MessageBox.Show(
-                    "The selected project couldn't be found!" + Environment.NewLine +
+                    "The selected project couldn't be found or is corrupted!" + Environment.NewLine +
                     "Do you want to remove this entry?",
                     Application.ProductName,
                     MessageBoxButtons.YesNo,
