@@ -498,7 +498,7 @@ namespace MB_Studio_Updater
             string fullTempPath = Path.GetFullPath(MB_STUDIO_UPDATER_TEMP);
             updater.StartInfo.FileName = fullTempPath + '\\' + MB_STUDIO_UPDATER;
             updater.StartInfo.WorkingDirectory = fullTempPath;
-            updater.StartInfo.Arguments = "-gui -su";
+            updater.StartInfo.Arguments = "-gui -su -" + Channel;
         }
 
         private void SelfUpdateDownloadNew(ref Process updater, string currentPath)

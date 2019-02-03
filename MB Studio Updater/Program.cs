@@ -60,7 +60,13 @@ namespace MB_Studio_Updater
             {
                 useGUI = args[0].Equals("-gui"); // else -no-gui
                 if (args.Length > 1)
+                {
                     selfUpdate = args[1].Equals("-su");
+                    if (selfUpdate && args.Length > 2)
+                    {
+                        textArguments.Add(args[2].TrimStart('-')); // channel
+                    }
+                }
             }
 
             if (hasArguments && !selfUpdate && args.Length > 1)

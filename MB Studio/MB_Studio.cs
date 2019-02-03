@@ -234,7 +234,7 @@ namespace MB_Studio
             process.Start();
             process.WaitForExit();
         }
-
+        
         private void CheckForUpdates()
         {
             Process process = new Process();

@@ -50,10 +50,11 @@ namespace MB_Studio_Updater
                     updater.UseGUI + " | " +
                     updater.StartStudioOnExit + " | " +
                     updater.Is64BitBinary + " | " +
-                    updater.AddNewFiles
+                    updater.AddNewFiles + " | " +
+                    updater.Channel
                 );*/
 
-                Thread.Sleep(2000);// make optional or depending on lines shown later
+                Thread.Sleep(2000); // make optional or depending on lines shown later
 
                 Application.Exit();
             }
