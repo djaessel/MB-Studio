@@ -203,29 +203,42 @@ namespace MB_Studio
 
         private void UpdateRegistryData()
         {
+            bool foundKey = false;
             bool updateProductVersion = false;
             bool updateProductName = false;
 
             string regKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\MB Studio";
-            using (RegistryKey reg32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+            try
             {
-                using (RegistryKey appReg = reg32.OpenSubKey(regKey))
+                using (RegistryKey reg32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
                 {
-                    string oldProductVersion = appReg.GetValue("DisplayVersion", string.Empty).ToString();
-                    updateProductVersion = (oldProductVersion.Length != 0 && !oldProductVersion.Equals(Application.ProductVersion));
+                    using (RegistryKey appReg = reg32.OpenSubKey(regKey))
+                    {
+                        string oldProductVersion = appReg.GetValue("DisplayVersion", string.Empty).ToString();
+                        updateProductVersion = (oldProductVersion.Length != 0 && !oldProductVersion.Equals(Application.ProductVersion));
 
-                    string oldProductName = appReg.GetValue("DisplayName", string.Empty).ToString();
-                    updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductName));
+                        string oldProductName = appReg.GetValue("DisplayName", string.Empty).ToString();
+                        updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductName));
+
+                        foundKey = true;
+                    }
                 }
             }
+            catch (Exception) { }
 
-            if (!updateProductName && !updateProductVersion) return;
+            if (!updateProductName && !updateProductVersion && foundKey) return;
+
+            string arguments = "\"" + regKey + "\" \"" + Application.ProductVersion + "\" \"" + Application.ProductName + "\"";
+            if (!foundKey)
+            {
+                arguments += " -createNew";
+            }
 
             var psi = new ProcessStartInfo {
                 CreateNoWindow = true,
                 UseShellExecute = false,
                 FileName = "RegUpdater.exe",
-                Arguments = "\"" + regKey + "\" \"" + Application.ProductVersion + "\" \"" + Application.ProductName + "\""
+                Arguments = arguments
             };
 
             var process = new Process {
