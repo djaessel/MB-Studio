@@ -11,3 +11,9 @@ for face editor:
 module.ini - Module Settings:
 	- make form for project menu (top)
 	
+Tool Form:
+    - https://www.codeproject.com/Questions/1208672/Winforms-Csharp-make-a-panel-background-transparen
+	- https://stackoverflow.com/questions/32400320/any-trick-to-use-opacity-on-a-panel-in-visual-studio-window-form
+	- http://www.nullskull.com/q/10128123/make-panel-transparent.aspx
+	- https://www.c-sharpcorner.com/uploadfile/Nildo/making-transparent-control-using-gdi-and-C-Sharp-updated-to-net-3-5/
+

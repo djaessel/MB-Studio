@@ -388,11 +388,20 @@ namespace MB_Studio_Updater
         {
             string dateTimeNow = "[" + DateTime.Now + "]";
             if (writeDateTime)
+            {
                 text = dateTimeNow + "  " + text;
-            if (newLine)
-                logWriter.WriteLine(text);
-            else
-                logWriter.Write(text);
+            }
+            try
+            {
+                if (newLine)
+                    logWriter.WriteLine(text);
+                else
+                    logWriter.Write(text);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("logwriter probably is disposed!");
+            }
         }
 
         public static bool IsUpdaterOutdated(List<string[]> updateFiles)
