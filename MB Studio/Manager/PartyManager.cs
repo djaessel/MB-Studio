@@ -19,7 +19,7 @@ namespace MB_Studio.Manager
         public PartyManager() : base(Skriptum.ObjectType.Party)
         {
             if (DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID, true);// ansonsten für alle in Toolform
 
             InitializeComponent();
             foreach (Control c in groupBox_1_gb.Controls)
@@ -28,11 +28,6 @@ namespace MB_Studio.Manager
                 if (nameEnd.Equals("cb"))
                     ((CheckBox)c).CheckedChanged += Flags_CheckedChanged;
             }
-        }
-
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new Party(raw_data);
         }
 
         protected override void LoadSettingsAndLists()
@@ -318,7 +313,7 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = "   " + values[0] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + party_template_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " ";
+            string tmp = "   " + values[0] + " " + values[1] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + party_template_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " ";
             tmp += GetPersonality() + "  " + ai_bhvr_cbb.SelectedIndex + " " + ai_target_p_cbb.SelectedIndex + "  ";
             tmp += x_axis_txt.Text + " " + y_axis_txt.Text + "      " + stack_troops_lb.Items.Count;
 

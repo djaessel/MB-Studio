@@ -94,7 +94,7 @@ namespace MB_Studio_CLI
                 {
                     List<List<Skriptum>> sss = new List<List<Skriptum>>();
                     CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[typeID]);
-                    sss.Add(cr.ReadObjectType(typeID));
+                    sss.Add(cr.ReadObjectType(typeID, true));
                     SourceWriter.WriteAllObjects(sss);
                     PrintCodeReaderInfo();
                     sss.Clear();//

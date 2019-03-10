@@ -70,7 +70,7 @@ namespace MB_Studio.Manager.Support.External
             type_cbb.Items.Clear();
 
             CodeReader cr = new CodeReader(ToolForm.OpenBrfManager.ModPath + '\\' + CodeReader.Files[ObjectTypeID]);
-            types.AddRange(cr.ReadObjectType(ObjectTypeID));//remove mod inrelevant info in Read Method of type or add other needed types
+            types.AddRange(cr.ReadObjectType(ObjectTypeID, false));//remove mod inrelevant info in Read Method of type or add other needed types
             foreach (Skriptum type in types)
                 type_cbb.Items.Add(type.ID);
 

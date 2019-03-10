@@ -31,14 +31,9 @@ namespace MB_Studio.Manager
         public TroopManager() : base(Skriptum.ObjectType.Troop, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectType);// ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectType, true);// ansonsten für alle in Toolform
 
             InitializeComponent();
-        }
-
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new Troop(raw_data);
         }
 
         protected override void LoadSettingsAndLists()
@@ -462,15 +457,15 @@ namespace MB_Studio.Manager
             if (face2_txt.Text.Length == 0)
                 face2_txt.Text = FACE_CODE_ZERO;
             /// Check if is set by default now - if not make it happen
-            
+
             /*if (!id_txt.Text.StartsWith("trp_"))//should already be done in ToolForm
                 id_txt.Text = "trp_" + id_txt.Text;
             else
                 id_txt.Text = "trp_" + id_txt.Text;*/
-            
+
             string tmp = 
-                /*id_txt.Text.Replace(' ', '_')*/values[0] + ' ' + 
-                name_txt.Text.Replace(' ', '_') + ' ' + 
+                /*id_txt.Text.Replace(' ', '_')*/values[0] + ' ' +
+                /*name_txt.Text.Replace(' ', '_')*/values[1] + ' ' +
                 plural_name_txt.Text.Replace(' ', '_') + ' ' + 
                 troopImage_txt.Text.Replace(' ', '_') + ' ' +
                 GetFlagsValue().ToString() + ' ' + 
@@ -481,20 +476,21 @@ namespace MB_Studio.Manager
                 upgradeTroop2_lb.SelectedIndex.ToString() + ";  ";
 
             for (int i = 0; i < usedItems_lb.Items.Count; i++)
-                tmp += usedItems_lb.Items[i].ToString().Split('-')[0] + inventoryItemFlags[i] + " ";//could be a problem when itemFlags are fucked up
+                tmp += usedItems_lb.Items[i].ToString().Split('-')[0] + inventoryItemFlags[i] + " ";//could be a problem when itemFlags are wrong
 
             for (int i = 0; i < (64 - usedItems_lb.Items.Count); i++)
                 tmp += "-1 0 ";
 
             tmp += ";  ";
 
-            tmp += 
-                str_txt.Text + ' ' + 
-                agi_txt.Text + ' ' + 
-                int_txt.Text + ' ' + 
-                cha_txt.Text + ' ' + 
-                level_txt.Text + ' ' + 
-                onehandedWeapon_txt.Text + ' ' + 
+            tmp +=
+                str_txt.Text + ' ' +
+                agi_txt.Text + ' ' +
+                int_txt.Text + ' ' +
+                cha_txt.Text + ' ' +
+                level_txt.Text + "; ";
+
+            tmp += onehandedWeapon_txt.Text + ' ' + 
                 twohandedWeapon_txt.Text + ' ' + 
                 polearms_txt.Text + ' ' + 
                 archery_txt.Text + ' ' + 

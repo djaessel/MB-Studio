@@ -14,11 +14,6 @@ namespace MB_Studio.Manager
             InitializeComponent();
         }
 
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new Skill(raw_data);
-        }
-
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
             base.AddFromOtherMod(f);
@@ -93,8 +88,8 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0].Split()[0] + ';';
-            tmp += name_txt.Text.Replace(' ', '_') + ';';
+            string tmp = values[0] + ';';
+            tmp += values[1] + ';';
             tmp += GetFlags() + ";";
             tmp += maxLevel_num.Value + ';';
             tmp += description_txt.Text.Replace(' ', '_');

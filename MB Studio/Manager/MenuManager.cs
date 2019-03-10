@@ -31,7 +31,7 @@ namespace MB_Studio.Manager
         public MenuManager() : base(Skriptum.ObjectType.GameMenu)
         {
             if (DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID, true);// ansonsten für alle in Toolform
 
             InitializeComponent();
         }
@@ -53,11 +53,6 @@ namespace MB_Studio.Manager
             mno_ID_text.KeyUp += Mno_ID_text_KeyUp;
 
             ResetControls();
-        }
-
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new GameMenu(raw_data);
         }
 
         #region Setups
@@ -147,11 +142,12 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0].Split()[0] + " " + GetFlags();
+            string tmp = values[0] + " " + GetFlags();
 
             //language_cbb.SelectedIndex = LANGUAGE_EN_GZ;
             //tmp += ' ' + singleNameTranslation_txt.Text.Replace(' ', '_');
-            tmp += ' ' + name_txt.Text.Replace(' ', '_');
+            //tmp += ' ' + name_txt.Text.Replace(' ', '_');
+            tmp += ' ' + values[1];
 
             tmp += ' ' + meshName_txt.Text;
             tmp += SourceReader.GetCompiledCodeLines(opCodes_rtb.Lines);

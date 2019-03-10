@@ -37,14 +37,9 @@ namespace MB_Studio.Manager
         public ItemManager() : base(Skriptum.ObjectType.Item, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID, true);// ansonsten für alle in Toolform
 
             InitializeComponent();
-        }
-
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new Item(raw_data);
         }
 
         protected override void LoadSettingsAndLists()
@@ -551,8 +546,9 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0] + " "
-                + plural_name_txt.Text.Replace(' ', '_') + " "
+            string tmp = values[0] + " " + values[1] + " ";
+
+            tmp += plural_name_txt.Text.Replace(' ', '_') + " "
                 + GetMeshesCount() + GetMeshes() + " "
                 + GetItemProperties() + " "
                 + GetCFlags() + " "

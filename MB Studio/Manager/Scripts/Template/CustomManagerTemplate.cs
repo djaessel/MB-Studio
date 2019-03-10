@@ -34,10 +34,10 @@ namespace MB_Studio.Manager
 			// @SCRIPT LoadSettingsAndLists
         }
 
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-			return new MyClass(raw_data);
-        }
+        //protected override Skriptum GetNewTypeFromClass(string[] raw_data)
+        //{
+		//	return new MyClass(raw_data);
+        //}
 
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
@@ -72,8 +72,8 @@ namespace MB_Studio.Manager
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
             string tmp = string.Empty;
-			tmp += values[0].Split()[0] + ';';
-            tmp += name_txt.Text.Replace(' ', '_') + ';';
+			tmp += values[0] + ';';
+            tmp += values[1] + ';';
 
 			// @SCRIPT SaveTypeByIndex
 

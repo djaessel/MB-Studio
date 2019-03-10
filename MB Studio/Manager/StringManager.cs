@@ -18,11 +18,6 @@ namespace MB_Studio.Manager
             base.LoadSettingsAndLists();
         }
 
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new GameString(raw_data);
-        }
-
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
             base.AddFromOtherMod(f);
@@ -53,8 +48,8 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0].Split()[0] + ';';
-            tmp += name_txt.Text.Replace(' ', '_') + ';';
+            string tmp = values[0] + ';';
+            tmp += values[1] + ';';
 
             values.Clear();
             values = new List<string>(tmp.Split(';'));

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using importantLib;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
+using static MB_Studio_Library.Objects.Skriptum;
 
 namespace MB_Studio_Library.IO
 {
@@ -727,96 +728,265 @@ namespace MB_Studio_Library.IO
             return s;
         }
 
-        public List<Skriptum> ReadObjectType(int objectTypeID)
+        public List<Skriptum> ReadObjectType(int objectTypeID, bool loadSavedTypes/* = true*/)
         {
-            return ReadObjectType((Skriptum.ObjectType)objectTypeID);
+            return ReadObjectType((ObjectType)objectTypeID, loadSavedTypes);
         }
 
-        public List<Skriptum> ReadObjectType(Skriptum.ObjectType objectType)
+        public List<Skriptum> ReadObjectType(ObjectType objectType, bool loadSavedTypes/* = true*/)
         {
             List<Skriptum> skriptums = new List<Skriptum>();
-            if (objectType == Skriptum.ObjectType.Script)
-                foreach (Skriptum s in ReadScript())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.MissionTemplate)
-                foreach (Skriptum s in ReadMissionTemplate())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.Presentation)
-                foreach (Presentation p in ReadPresentation())
-                    skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.GameMenu)
-                foreach (GameMenu g in ReadGameMenu())
-                    skriptums.Add(g);
-            else if (objectType == Skriptum.ObjectType.GameString)
-                foreach (GameString s in ReadString())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.SimpleTrigger)
-                foreach (SimpleTrigger t in ReadSimpleTrigger())
-                    skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.Trigger)
-                foreach (Trigger t in ReadTrigger())
-                    skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.InfoPage)
-                foreach (InfoPage p in ReadInfoPage())
-                    skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.Sound)
-                foreach (Sound s in ReadSound())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.Quest)
-                foreach (Quest q in ReadQuest())
-                    skriptums.Add(q);
-            else if (objectType == Skriptum.ObjectType.Scene)
-                foreach (Scene s in ReadScene())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.SceneProp)
-                foreach (SceneProp s in ReadSceneProp())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.TableauMaterial)
-                foreach (TableauMaterial t in ReadTableauMaterial())
-                    skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.Music)
-                foreach (Music m in ReadMusic())
-                    skriptums.Add(m);
-            else if (objectType == Skriptum.ObjectType.Mesh)
-                foreach (Mesh m in ReadMesh())
-                    skriptums.Add(m);
-            else if (objectType == Skriptum.ObjectType.Faction)
-                foreach (Faction f in ReadFaction())
-                    skriptums.Add(f);
-            else if (objectType == Skriptum.ObjectType.MapIcon)
-                foreach (MapIcon m in ReadMapIcon())
-                    skriptums.Add(m);
-            else if (objectType == Skriptum.ObjectType.Animation)
-                foreach (Animation a in ReadAnimation())
-                    skriptums.Add(a);
-            else if (objectType == Skriptum.ObjectType.PartyTemplate)
-                foreach (PartyTemplate p in ReadPartyTemplate())
-                    skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.Dialog)
-                foreach (Dialog d in ReadDialog())
-                    skriptums.Add(d);
-            else if (objectType == Skriptum.ObjectType.Party)
-                foreach (Party p in ReadParty())
-                    skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.Skill)
-                foreach (Skill s in ReadSkill())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.PostFX)
-                foreach (PostFX p in ReadPostFX())
-                    skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.ParticleSystem)
-                foreach (ParticleSystem p in ReadParticleSystem())
-                    skriptums.Add(p);
-            else if (objectType == Skriptum.ObjectType.Skin)
-                foreach (Skin s in ReadSkin())
-                    skriptums.Add(s);
-            else if (objectType == Skriptum.ObjectType.Troop)
-                foreach (Troop t in ReadTroop())
-                    skriptums.Add(t);
-            else if (objectType == Skriptum.ObjectType.Item)
-                foreach (Item itm in ReadItem())
-                    skriptums.Add(itm);
+
+            switch (objectType)
+            {
+                case ObjectType.Script:
+                    foreach (Skriptum s in ReadScript())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.MissionTemplate:
+                    foreach (Skriptum s in ReadMissionTemplate())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.Presentation:
+                    foreach (Presentation p in ReadPresentation())
+                        skriptums.Add(p);
+                    break;
+                case ObjectType.GameMenu:
+                    foreach (GameMenu g in ReadGameMenu())
+                        skriptums.Add(g);
+                    break;
+                case ObjectType.GameString:
+                    foreach (GameString s in ReadString())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.SimpleTrigger:
+                    foreach (SimpleTrigger t in ReadSimpleTrigger())
+                        skriptums.Add(t);
+                    break;
+                case ObjectType.Trigger:
+                    foreach (Trigger t in ReadTrigger())
+                        skriptums.Add(t);
+                    break;
+                case ObjectType.InfoPage:
+                    foreach (InfoPage p in ReadInfoPage())
+                        skriptums.Add(p);
+                    break;
+                case ObjectType.Sound:
+                    foreach (Sound s in ReadSound())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.Quest:
+                    foreach (Quest q in ReadQuest())
+                        skriptums.Add(q);
+                    break;
+                case ObjectType.Scene:
+                    foreach (Scene s in ReadScene())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.SceneProp:
+                    foreach (SceneProp s in ReadSceneProp())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.TableauMaterial:
+                    foreach (TableauMaterial t in ReadTableauMaterial())
+                        skriptums.Add(t);
+                    break;
+                case ObjectType.Music:
+                    foreach (Music m in ReadMusic())
+                        skriptums.Add(m);
+                    break;
+                case ObjectType.Mesh:
+                    foreach (Mesh m in ReadMesh())
+                        skriptums.Add(m);
+                    break;
+                case ObjectType.Faction:
+                    foreach (Faction f in ReadFaction())
+                        skriptums.Add(f);
+                    break;
+                case ObjectType.MapIcon:
+                    foreach (MapIcon m in ReadMapIcon())
+                        skriptums.Add(m);
+                    break;
+                case ObjectType.Animation:
+                    foreach (Animation a in ReadAnimation())
+                        skriptums.Add(a);
+                    break;
+                case ObjectType.PartyTemplate:
+                    foreach (PartyTemplate p in ReadPartyTemplate())
+                        skriptums.Add(p);
+                    break;
+                case ObjectType.Dialog:
+                    foreach (Dialog d in ReadDialog())
+                        skriptums.Add(d);
+                    break;
+                case ObjectType.Party:
+                    foreach (Party p in ReadParty())
+                        skriptums.Add(p);
+                    break;
+                case ObjectType.Skill:
+                    foreach (Skill s in ReadSkill())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.PostFX:
+                    foreach (PostFX p in ReadPostFX())
+                        skriptums.Add(p);
+                    break;
+                case ObjectType.ParticleSystem:
+                    foreach (ParticleSystem p in ReadParticleSystem())
+                        skriptums.Add(p);
+                    break;
+                case ObjectType.Skin:
+                    foreach (Skin s in ReadSkin())
+                        skriptums.Add(s);
+                    break;
+                case ObjectType.Troop:
+                    foreach (Troop t in ReadTroop())
+                        skriptums.Add(t);
+                    break;
+                case ObjectType.Item:
+                    foreach (Item itm in ReadItem())
+                        skriptums.Add(itm);
+                    break;
+                default:
+                    skriptums = null;
+                    break;
+            }
+
+            if (skriptums != null && skriptums.Count > 0 && loadSavedTypes)//maybe change the access way later
+            {
+                List<Skriptum> savedTypes = new List<Skriptum>();
+                List<List<string>> savedTypesDatas = CodeWriter.LoadAllPseudoCodeByObjectType(objectType);
+
+                foreach (List<string> savedTroopData in savedTypesDatas)
+                    savedTypes.Add(GetNewTypeFromClassByObjectType(GetStringArrayStartFromIndex(savedTroopData.ToArray(), 1), objectType));
+
+                for (int j = 0; j < skriptums.Count; j++)
+                {
+                    for (int i = 0; i < savedTypes.Count; i++)
+                    {
+                        if (skriptums[j].ID.Equals(savedTypes[i].ID))
+                        {
+                            skriptums[j] = savedTypes[i];
+                            i = savedTypes.Count;
+                        }
+                    }
+                }
+            }
+
             return skriptums;
+        }
+
+        public Skriptum GetNewTypeFromClassByObjectTypeId(string[] raw_data, int objectTypeId)
+        {
+            return GetNewTypeFromClassByObjectType(raw_data, (ObjectType)objectTypeId);
+        }
+
+        public Skriptum GetNewTypeFromClassByObjectType(string[] raw_data, ObjectType objectType)
+        {
+            Skriptum skriptum;
+
+            string tmp;
+            List<string[]> rawList = new List<string[]>();
+
+            switch (objectType)
+            {
+                case ObjectType.Script:
+                    skriptum = new Script(raw_data);
+                    break;
+                case ObjectType.MissionTemplate:
+                    skriptum = new MissionTemplate(raw_data);
+                    break;
+                //case ObjectType.Presentation: // TODO: Check for solution
+                //    skriptum = new Presentation(raw_data);
+                //    break;
+                case ObjectType.GameMenu:
+                    skriptum = new GameMenu(raw_data);
+                    break;
+                case ObjectType.GameString:
+                    skriptum = new GameString(raw_data);
+                    break;
+                //case ObjectType.SimpleTrigger: // TODO: Check for solution
+                //    skriptum = new SimpleTrigger(raw_data);
+                //    break;
+                //case ObjectType.Trigger: // TODO: Check for solution
+                //    skriptum = new Trigger(raw_data);
+                //    break;
+                case ObjectType.InfoPage:
+                    skriptum = new InfoPage(raw_data);
+                    break;
+                case ObjectType.Sound:
+                    skriptum = new Sound(raw_data);
+                    break;
+                case ObjectType.Quest:
+                    skriptum = new Quest(raw_data);
+                    break;
+                //case ObjectType.Scene: // TODO: Check for solution
+                //    skriptum = new Scene(raw_data);
+                //    break;
+                case ObjectType.SceneProp:
+                    skriptum = new SceneProp(raw_data);
+                    break;
+                case ObjectType.TableauMaterial:
+                    skriptum = new TableauMaterial(raw_data);
+                    break;
+                case ObjectType.Music:
+                    skriptum = new Music(raw_data);
+                    break;
+                case ObjectType.Mesh:
+                    skriptum = new Mesh(raw_data);
+                    break;
+                case ObjectType.Faction:
+                    skriptum = new Faction(raw_data);
+                    break;
+                case ObjectType.MapIcon:
+                    skriptum = new MapIcon(raw_data);
+                    break;
+                case ObjectType.Animation:
+                    skriptum = new Animation(raw_data);
+                    break;
+                case ObjectType.PartyTemplate:
+                    skriptum = new PartyTemplate(raw_data);
+                    break;
+                case ObjectType.Dialog:
+                    skriptum = new Dialog(raw_data);
+                    break;
+                case ObjectType.Party:
+                    skriptum = new Party(raw_data);
+                    break;
+                case ObjectType.Skill:
+                    skriptum = new Skill(raw_data);
+                    break;
+                //case ObjectType.PostFX: // TODO: Check for solution
+                //    skriptum = new PostFX(raw_data);
+                //    break;
+                case ObjectType.ParticleSystem: // TODO: Check if is working
+                    foreach (string item in raw_data)
+                    {
+                        tmp = RemNTrimAllXtraSp(item);
+                        rawList.Add(tmp.Split());
+                    }
+                    skriptum = new ParticleSystem(rawList);
+                    break;
+                case ObjectType.Skin: // TODO: Check if is working
+                    foreach (string item in raw_data)
+                    {
+                        tmp = RemNTrimAllXtraSp(item);
+                        rawList.Add(tmp.Split());
+                    }
+                    skriptum = new Skin(rawList);
+                    break;
+                case ObjectType.Troop:
+                    skriptum = new Troop(raw_data);
+                    break;
+                case ObjectType.Item:
+                    skriptum = new Item(raw_data);
+                    break;
+                default:
+                    skriptum = null;
+                    break;
+            }
+
+            return skriptum;
         }
 
         public static List<List<Skriptum>> ReadAllObjects()
@@ -824,7 +994,7 @@ namespace MB_Studio_Library.IO
             Reset();
             List<List<Skriptum>> objects = new List<List<Skriptum>>();
             for (int i = 0; i < Files.Count; i++)
-                objects.Add(new CodeReader(ModPath + Files[i]).ReadObjectType(i));
+                objects.Add(new CodeReader(ModPath + Files[i]).ReadObjectType(i, true));
             return objects;
         }
 

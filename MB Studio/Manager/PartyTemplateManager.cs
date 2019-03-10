@@ -19,7 +19,7 @@ namespace MB_Studio.Manager
         public PartyTemplateManager() : base(Skriptum.ObjectType.PartyTemplate)
         {
             if (DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);// ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID, true);// ansonsten für alle in Toolform
 
             InitializeComponent();
             foreach (Control c in groupBox_1_gb.Controls)
@@ -28,11 +28,6 @@ namespace MB_Studio.Manager
                 if (nameEnd.Equals("cb"))
                     ((CheckBox)c).CheckedChanged += Flags_CheckedChanged;
             }
-        }
-
-        protected override Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            return new PartyTemplate(raw_data);
         }
 
         protected override void LoadSettingsAndLists()
@@ -322,7 +317,7 @@ namespace MB_Studio.Manager
 
         protected override void SaveTypeByIndex(List<string> values, int selectedIndex, Skriptum changed = null)
         {
-            string tmp = values[0] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " " + GetPersonality();
+            string tmp = values[0] + " " + values[1] + " " + GetFlags() + " " + menuID_cbb.SelectedIndex + " " + faction_cbb.SelectedIndex + " " + GetPersonality();
 
             for (int i = 0; i < stack_troops_lb.Items.Count; i++)
                 tmp += " " + CodeReader.Troops.IndexOf("trp_" + stack_troops_lb.Items[i].ToString()) + " " + memberValues[i][0] + " " + memberValues[i][1] + " " + memberValues[i][2];

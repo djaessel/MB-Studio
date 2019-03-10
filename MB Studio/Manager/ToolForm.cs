@@ -279,29 +279,31 @@ namespace MB_Studio.Manager
 
         protected virtual void LoadSettingsAndLists()
         {
+            bool loadSavedObjects = Properties.Settings.Default.loadSavedObjects;//maybe change the access way later
+
             if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID);
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID, loadSavedObjects);
 
-            if (Properties.Settings.Default.loadSavedObjects)//maybe change the access way later
-            {
-                List<Skriptum> savedTypes = new List<Skriptum>();
-                List<List<string>> savedTypesDatas = CodeWriter.LoadAllPseudoCodeByObjectTypeID(ObjectTypeID);
-
-                foreach (List<string> savedTroopData in savedTypesDatas)
-                    savedTypes.Add(GetNewTypeFromClass(CodeReader.GetStringArrayStartFromIndex(savedTroopData.ToArray(), 1)));
-
-                for (int j = 0; j < types.Count; j++)
-                {
-                    for (int i = 0; i < savedTypes.Count; i++)
-                    {
-                        if (types[j].ID.Equals(savedTypes[i].ID))
-                        {
-                            types[j] = savedTypes[i];
-                            i = savedTypes.Count;
-                        }
-                    }
-                }
-            }
+            //if (Properties.Settings.Default.loadSavedObjects)//maybe change the access way later
+            //{
+            //    List<Skriptum> savedTypes = new List<Skriptum>();
+            //    List<List<string>> savedTypesDatas = CodeWriter.LoadAllPseudoCodeByObjectTypeID(ObjectTypeID);
+            //
+            //    foreach (List<string> savedTroopData in savedTypesDatas)
+            //        savedTypes.Add(GetNewTypeFromClass(CodeReader.GetStringArrayStartFromIndex(savedTroopData.ToArray(), 1)));
+            //
+            //    for (int j = 0; j < types.Count; j++)
+            //    {
+            //        for (int i = 0; i < savedTypes.Count; i++)
+            //        {
+            //            if (types[j].ID.Equals(savedTypes[i].ID))
+            //            {
+            //                types[j] = savedTypes[i];
+            //                i = savedTypes.Count;
+            //            }
+            //        }
+            //    }
+            //}
 
             for (int i = 0; i < types.Count; i++)
                 typesIDs.Add(Prefix + types[i].ID);
@@ -320,10 +322,10 @@ namespace MB_Studio.Manager
             }
         }
 
-        protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
-        {
-            throw new NotImplementedException();
-        }
+        //protected /*abstract*/virtual Skriptum GetNewTypeFromClass(string[] raw_data)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
 
@@ -419,7 +421,8 @@ namespace MB_Studio.Manager
                 id_txt.Text = Prefix + id_txt.Text;
 
             List<string> list = new List<string> {
-                id_txt.Text.Replace(' ', '_') + ' ' + name_txt.Text.Replace(' ', '_')
+                id_txt.Text.Replace(' ', '_'),
+                name_txt.Text.Replace(' ', '_')
             };
 
             int index = -1;

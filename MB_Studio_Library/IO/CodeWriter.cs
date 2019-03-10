@@ -1,4 +1,4 @@
-﻿//#define WRITE_ALL_OBJECTS
+﻿#define WRITE_ALL_OBJECTS
 
 using importantLib;
 using MB_Studio_Library.Objects;
@@ -3340,6 +3340,11 @@ namespace MB_Studio_Library.IO
         public static List<List<string>> LoadAllPseudoCodeByObjectTypeID(int objectTypeID)
         {
             return LoadAllPseudoCodeByFile(CodeReader.ProjectPath + "\\pseudoCodes\\" + CodeReader.Files[objectTypeID].Split('.')[0] + ".mbpc");
+        }
+
+        public static List<List<string>> LoadAllPseudoCodeByObjectType(ObjectType objectType)
+        {
+            return LoadAllPseudoCodeByObjectTypeID((int)objectType);
         }
 
         private static bool IsNewPseudoCode(string s)
