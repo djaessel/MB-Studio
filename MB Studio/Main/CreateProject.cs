@@ -27,16 +27,16 @@ namespace MB_Studio.Main
             string modulesDir = ImportantMethods.GetDirectoryPathOnly(ProgramConsole.GetModuleInfoPath());
 
             bool invalidModule = true;
-            bool noModuleIni = true;
+            bool noNativeModuleIni = true;
             DialogResult dialogResult = DialogResult.OK;
             PathSelector pathSelector = new PathSelector("Modules");
             while (invalidModule && dialogResult == DialogResult.OK)
             {
                 dialogResult = pathSelector.ShowDialog();
                 modulesDir = pathSelector.SelectedPath;
-                noModuleIni = !File.Exists(modulesDir + "\\module.ini");
+                noNativeModuleIni = !File.Exists(modulesDir + "\\Native\\module.ini");
 
-                invalidModule = (!Directory.Exists(modulesDir) || noModuleIni);
+                invalidModule = (!Directory.Exists(modulesDir) || noNativeModuleIni);
 
                 pathSelector.SetError(invalidModule);
             }
