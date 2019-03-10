@@ -16,35 +16,43 @@ namespace importantLib
 
         public static string[] LibraryFolderPaths { get { return libraryPaths.ToArray(); } }
 
-        public static bool SearchSteamPath(string errorInformationMessage = "Please edit the file \".\\files\\module_info.path\" and change the example path to the real location!")
+        public static bool SearchSteamPath(bool showErrorMsg, string errorInformationMessage = "Please edit the file \".\\files\\module_info.path\" and change the example path to the real location!")
         {
-            bool found_it = SearchSteamRegistryInstallPath();
-            if (!found_it)
+            bool foundIt = SearchSteamRegistryInstallPath();
+            if (!foundIt)
             {
-                string v_name = string.Empty;
+                string vName = string.Empty;
                 string steamNeededFolders = "Steam\\SteamApps\\common";
                 foreach (DriveInfo drinfo in DriveInfo.GetDrives())
                 {
-                    v_name = drinfo.Name;
+                    vName = drinfo.Name;
                     if (drinfo.IsReady)
                     {
-                        if (Directory.Exists(v_name + "Program Files\\" + steamNeededFolders))
-                            SteamPath = v_name + "Program Files";
-                        else if (Directory.Exists(v_name + "Program Files (x86)\\" + steamNeededFolders))
-                            SteamPath = v_name + "Program Files (x86)";
-                        else if (Directory.Exists(v_name + steamNeededFolders))
-                            SteamPath = v_name.Substring(0, v_name.Length - 1);
+                        if (Directory.Exists(vName + "Program Files\\" + steamNeededFolders))
+                            SteamPath = vName + "Program Files";
+                        else if (Directory.Exists(vName + "Program Files (x86)\\" + steamNeededFolders))
+                            SteamPath = vName + "Program Files (x86)";
+                        else if (Directory.Exists(vName + steamNeededFolders))
+                            SteamPath = vName.Substring(0, vName.Length - 1);
                         if (SteamPath.Length > 0)
                         {
                             SteamPath += "\\Steam";
-                            found_it = true;
+                            foundIt = true;
                         }
                     }
                 }
             }
-            if (!found_it)
-                MessageBox.Show("The application couldn't find the Steam path!" + Environment.NewLine + errorInformationMessage, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return found_it;
+
+            if (!foundIt)
+            {
+                errorInformationMessage = "The application couldn't find the Steam path!" + Environment.NewLine + errorInformationMessage;
+                if (showErrorMsg)
+                    MessageBox.Show(errorInformationMessage, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                    Console.WriteLine(errorInformationMessage);
+            }
+
+            return foundIt;
         }
 
         public static bool SearchSteamRegistryInstallPath()

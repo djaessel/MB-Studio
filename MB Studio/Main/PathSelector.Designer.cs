@@ -49,6 +49,7 @@
             this.exit_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.exit_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(72)))), ((int)(((byte)(72)))));
             this.exit_btn.Location = new System.Drawing.Point(480, 0);
+            this.exit_btn.Click += new System.EventHandler(this.Exit_Click);
             // 
             // title_lbl
             // 
@@ -58,6 +59,7 @@
             // selectedDir_txt
             // 
             this.selectedDir_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectedDir_txt.ForeColor = System.Drawing.Color.Black;
             this.selectedDir_txt.Location = new System.Drawing.Point(90, 42);
             this.selectedDir_txt.Name = "selectedDir_txt";
             this.selectedDir_txt.Size = new System.Drawing.Size(334, 22);
@@ -109,6 +111,7 @@
             this.Controls.Add(this.openSelectDialog_btn);
             this.Controls.Add(this.selectedDir_txt);
             this.Name = "PathSelector";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PathSelector_FormClosed);
             this.Controls.SetChildIndex(this.title_lbl, 0);
             this.Controls.SetChildIndex(this.min_btn, 0);
             this.Controls.SetChildIndex(this.exit_btn, 0);

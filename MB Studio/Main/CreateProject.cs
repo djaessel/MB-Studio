@@ -26,11 +26,24 @@ namespace MB_Studio.Main
         {
             string modulesDir = ImportantMethods.GetDirectoryPathOnly(ProgramConsole.GetModuleInfoPath());
 
+            bool invalidModule = true;
+            bool noModuleIni = true;
+            DialogResult dialogResult = DialogResult.OK;
             PathSelector pathSelector = new PathSelector("Modules");
-            while (!Directory.Exists(modulesDir))
+            while (invalidModule && dialogResult == DialogResult.OK)
             {
-                pathSelector.ShowDialog();
+                dialogResult = pathSelector.ShowDialog();
                 modulesDir = pathSelector.SelectedPath;
+                noModuleIni = !File.Exists(modulesDir + "\\module.ini");
+
+                invalidModule = (!Directory.Exists(modulesDir) || noModuleIni);
+
+                pathSelector.SetError(invalidModule);
+            }
+
+            if (dialogResult != DialogResult.OK)
+            {
+                Close();
             }
 
             modulesDir += '\\';
@@ -96,7 +109,7 @@ namespace MB_Studio.Main
 
             if (isOK)
             {
-                ProgramConsole.LoadProject(CodeReader.ProjectPath);
+                ProgramConsole.LoadProject(CodeReader.ProjectPath, true);
                 ProjectCreated = true;
             }
 

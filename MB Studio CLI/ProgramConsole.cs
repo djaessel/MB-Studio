@@ -51,7 +51,7 @@ namespace MB_Studio_CLI
         private static void ConsoleProgram()
         {
             IsConsole = true;
-            Initialize();
+            Initialize(null, false);
             string s;
             do
             {
@@ -207,7 +207,7 @@ namespace MB_Studio_CLI
             Console.BufferHeight = Console.LargestWindowHeight;
         }
 
-        public static void Initialize(string projectPath = null)
+        public static void Initialize(string projectPath = null, bool showErrorMsg = true)
         {
             //if (check)
             //    CheckFilesAndFolders();
@@ -246,18 +246,19 @@ namespace MB_Studio_CLI
             moduleFilesPath += '\\';
             SourceWriter.ModuleFilesPath = moduleFilesPath;
 
-            SetModPath();
+            if (SetModPath(showErrorMsg))
+            {
+                CodeReader.LoadAll();
+                ImportsManager importsManager = new ImportsManager(CodeReader.FILES_PATH);
+                //SourceWriter.MakeBackup = !SourceWriter.MakeBackup; /// --> DEFAULT IS NOW FALSE ///
+                SourceWriter.SetImportsForModuleFiles(importsManager.ReadDataBankInfos());
+                ConstantsFinder.InitializeConstants(CodeReader.FILES_PATH + "module_constants.py");
 
-            CodeReader.LoadAll();
-            ImportsManager importsManager = new ImportsManager(CodeReader.FILES_PATH);
-            //SourceWriter.MakeBackup = !SourceWriter.MakeBackup; /// --> DEFAULT IS NOW FALSE ///
-            SourceWriter.SetImportsForModuleFiles(importsManager.ReadDataBankInfos());
-            ConstantsFinder.InitializeConstants(CodeReader.FILES_PATH + "module_constants.py");
-
-            CopyDefaultFiles();
+                CopyDefaultFiles();
+            }
         }
 
-        public static void SetModPath()
+        public static bool SetModPath(bool showErrorMsg)
         {
             bool found = false;
             //string selectedMod = "\\MountBlade Warband\\Modules\\" + Properties.Settings.Default.SelectedMod;
@@ -268,7 +269,7 @@ namespace MB_Studio_CLI
             Console.WriteLine(getMIP + ":" + DEFAULT_STEAMPATH);
             if (getMIP.Equals(DEFAULT_STEAMPATH))
             {
-                found = SteamSearch.SearchSteamPath();
+                found = SteamSearch.SearchSteamPath(showErrorMsg);
                 if (found)
                 {
                     modPath = SetModPathWithSteam(modPath);
@@ -285,7 +286,7 @@ namespace MB_Studio_CLI
             if (!found)
                 modPath = GetModPathWithoutSteam(modPath);
 
-            if (modPath != null)
+            if (modPath != null && Directory.Exists(modPath))
             {
                 getMIP = GetModuleInfoPath();
                 Console.WriteLine(getMIP + ":" + modPath);
@@ -327,6 +328,8 @@ namespace MB_Studio_CLI
             }
             else
                 ShowErrorMsg("ERRORCODE: 0x72 - No Modpath set!");
+
+            return found;
         }
 
         private static string SetModPathWithSteam(string modPath)
@@ -348,6 +351,7 @@ namespace MB_Studio_CLI
                         if (DebugMode)
                             ShowErrorMsg("DEBUG3X: " + path.TrimEnd('\\') + " + " + modPath);
                         #endregion
+
                         modPath = path.TrimEnd('\\') + modPath;
                     }
                 }
@@ -433,9 +437,9 @@ namespace MB_Studio_CLI
             return info;
         }
 
-        public static void LoadProject(string projectPath)
+        public static void LoadProject(string projectPath, bool showErrorMsg)
         {
-            Initialize(SetMods(projectPath)[1]);
+            Initialize(SetMods(projectPath)[1], showErrorMsg);
         }
 
         private static void CheckResetProjectPathToTemp(string projectPath)
@@ -477,7 +481,7 @@ namespace MB_Studio_CLI
 
             SaveProjectFileInfo(projectPath, info);
 
-            Initialize(projectPath);
+            Initialize(projectPath, true);
         }
 
         public static void SaveNewDestinationMod(string destinationMod, string projectPath = null)
@@ -492,7 +496,7 @@ namespace MB_Studio_CLI
 
             SaveProjectFileInfo(projectPath, info);
 
-            Initialize(projectPath);
+            Initialize(projectPath, true);
         }
 
         public static void SaveProjectFileInfo(string projectPath, string[] info)

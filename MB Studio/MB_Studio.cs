@@ -373,7 +373,7 @@ namespace MB_Studio
             bool success = false;
             try
             {
-                ProgramConsole.LoadProject(projectPath);
+                ProgramConsole.LoadProject(projectPath, true);
                 RemoveAllTabPagesExeptConsole();
                 LoadProjectExplorer();
                 success = true;
@@ -463,7 +463,7 @@ namespace MB_Studio
         {
             string s = ProgramConsole.GetModuleInfoPath();
             if (s.Equals(ProgramConsole.DEFAULT_STEAMPATH))
-                ProgramConsole.SetModPath();
+                ProgramConsole.SetModPath(false);
 
             projectVorlagenSearch_txt.Click += ProjectVorlagenSearch_txt_Click;
             projectVorlagenSearch_txt.LostFocus += ProjectVorlagenSearch_txt_LostFocus;
