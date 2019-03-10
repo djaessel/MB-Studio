@@ -30,49 +30,54 @@ namespace MB_Studio.Main
             bool noNativeModuleIni = true;
             DialogResult dialogResult = DialogResult.OK;
             PathSelector pathSelector = new PathSelector("Modules");
-            while (invalidModule && dialogResult == DialogResult.OK)
+            if (!Directory.Exists(modulesDir))
             {
-                dialogResult = pathSelector.ShowDialog();
-                modulesDir = pathSelector.SelectedPath;
-                noNativeModuleIni = !File.Exists(modulesDir + "\\Native\\module.ini");
+                do
+                {
+                    dialogResult = pathSelector.ShowDialog();
+                    modulesDir = pathSelector.SelectedPath;
+                    noNativeModuleIni = !File.Exists(modulesDir + "\\Native\\module.ini");
 
-                invalidModule = (!Directory.Exists(modulesDir) || noNativeModuleIni);
+                    invalidModule = (!Directory.Exists(modulesDir) || noNativeModuleIni);
 
-                pathSelector.SetError(invalidModule);
+                    pathSelector.SetError(invalidModule);
+                } while (invalidModule && dialogResult == DialogResult.OK);
             }
 
             if (dialogResult != DialogResult.OK)
             {
                 Close();
             }
-
-            modulesDir += '\\';
-
-            string[] modules = Directory.GetDirectories(modulesDir.TrimEnd('\\'));
-            foreach (string module in modules)
-                modules_cbb.Items.Add(ImportantMethods.GetDirectoryNameOnly(module));
-
-            string s = "Native";
-            if (!Directory.Exists(modulesDir + s))
+            else
             {
+                modulesDir += '\\';
 
-                if (modules.Length > 0)
+                string[] modules = Directory.GetDirectories(modulesDir.TrimEnd('\\'));
+                foreach (string module in modules)
+                    modules_cbb.Items.Add(ImportantMethods.GetDirectoryNameOnly(module));
+
+                string s = "Native";
+                if (!Directory.Exists(modulesDir + s))
                 {
-                    s = modules[0];
-                    if (Directory.Exists(modulesDir + s))
+
+                    if (modules.Length > 0)
                     {
-                        int i = 0;
-                        do
+                        s = modules[0];
+                        if (Directory.Exists(modulesDir + s))
                         {
-                            i++;
-                        } while (Directory.Exists(modulesDir + s + i));
-                        s += i;
+                            int i = 0;
+                            do
+                            {
+                                i++;
+                            } while (Directory.Exists(modulesDir + s + i));
+                            s += i;
+                        }
                     }
+                    else
+                        s = string.Empty;
                 }
-                else
-                    s = string.Empty;
+                modules_cbb.SelectedIndex = modules_cbb.Items.IndexOf(s);
             }
-            modules_cbb.SelectedIndex = modules_cbb.Items.IndexOf(s);
         }
 
         private void UseDefaultVariables_cb_CheckedChanged(object sender, EventArgs e)

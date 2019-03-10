@@ -286,7 +286,9 @@ namespace MB_Studio_CLI
             if (!found)
                 modPath = GetModPathWithoutSteam(modPath);
 
-            if (modPath != null && Directory.Exists(modPath))
+            string realPath = modPath.TrimEnd('\\');
+            realPath = realPath.Remove(realPath.LastIndexOf('\\'));
+            if (modPath != null && Directory.Exists(realPath))
             {
                 getMIP = GetModuleInfoPath();
                 Console.WriteLine(getMIP + ":" + modPath);
