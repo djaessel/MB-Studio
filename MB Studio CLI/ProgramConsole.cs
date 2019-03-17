@@ -235,11 +235,11 @@ namespace MB_Studio_CLI
             moduleFilesPath = projectPath + moduleFilesPath;
             moduleSystemPath = projectPath + moduleSystemPath;
 
-            if (!Directory.Exists(headerFilesPath))
+            //if (!Directory.Exists(headerFilesPath))
                 Directory.CreateDirectory(headerFilesPath);
-            if (!Directory.Exists(moduleFilesPath))
+            //if (!Directory.Exists(moduleFilesPath))
                 Directory.CreateDirectory(moduleFilesPath);
-            if (!Directory.Exists(moduleSystemPath))
+            //if (!Directory.Exists(moduleSystemPath))
                 Directory.CreateDirectory(moduleSystemPath);
 
             CodeReader.ProjectPath = projectPath;
@@ -313,8 +313,8 @@ namespace MB_Studio_CLI
 
                 //if (!realText.Equals(newRealText))
                 //{
-                    //if (File.Exists(ModuleInfoRealFile)) // Make a backup just to be sure
-                    //    File.Copy(ModuleInfoRealFile, ModuleInfoRealFile + ".bak", true);
+                //if (File.Exists(ModuleInfoRealFile)) // Make a backup just to be sure
+                //    File.Copy(ModuleInfoRealFile, ModuleInfoRealFile + ".bak", true);
                 //    WriteRealModuleInfo(newRealText);
                 //}
 
@@ -325,6 +325,8 @@ namespace MB_Studio_CLI
                     modPath = GetDestinationModPathFromVariable(GetModuleInfoPath());
                     ShowErrorMsg("MODPATH reset to: " + modPath);
                 }
+                else
+                    found = true;
 
                 CodeReader.SetModPath(modPath);
             }
