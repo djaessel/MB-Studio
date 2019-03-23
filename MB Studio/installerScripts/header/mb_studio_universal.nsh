@@ -11,7 +11,7 @@
 ;Definitions
 
 !define PRODUCT_NAME "MB Studio"
-!define PRODUCT_VERSION "3.0.5"
+!define PRODUCT_VERSION "3.2.1"
 !define MUI_BRANDINGTEXT "MB Studio"
 !define PUBLISHER_NAME "J.SYS"
 
@@ -59,28 +59,28 @@ Done:
 	Exch $R1
 FunctionEnd
 
-!define UninstallPython "Call un.UninstallPython"
-Function un.UninstallPython
-
+;!define UninstallPython "Call un.UninstallPython"
+;Function un.UninstallPython
+;
 ;Remove Python Completly
-  ClearErrors
-  SetRegView 32
-  ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall"
-  
-;  ${IF} ${Errors}
-;  ${ORIF} $R0 == ""
-  ${IF} $R0 == ""
-  ${ORIF} $R0 == "NOT_FOUND"
-    DetailPrint "ERROR: GUID_NOT_FOUND_IN_REGISTRY - Python"
-  ${ELSE}
-    ExecWait '"$SYSDIR\msiexec" /x "$R0" /passive /norestart'
-  ${ENDIF}
-  
-  DetailPrint "$R0"
-  
-  ClearErrors
-
-FunctionEnd
+;  ClearErrors
+;  SetRegView 32
+;  ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall"
+;  
+;;  ${IF} ${Errors}
+;;  ${ORIF} $R0 == ""
+;  ${IF} $R0 == ""
+;  ${ORIF} $R0 == "NOT_FOUND"
+;    DetailPrint "ERROR: GUID_NOT_FOUND_IN_REGISTRY - Python"
+;  ${ELSE}
+;    ExecWait '"$SYSDIR\msiexec" /x "$R0" /passive /norestart'
+;  ${ENDIF}
+;  
+;  DetailPrint "$R0"
+;  
+;  ClearErrors
+;
+;FunctionEnd
 
 !define UninstallDefault "Call un.UninstallDefault"
 Function un.UninstallDefault
@@ -234,32 +234,32 @@ StrCpy $0 0
 !macro WriteMBUninstaller
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
-    
-;write Python uninstall path
-  ClearErrors
-  ${IF} $2 == "" ; if 32Bit System or not found in 64Bit registry part
-    ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 32
-  ${ENDIF}
-  
-;  ${IF} ${Errors}
-;  ${ORIF} $1 == ""
-  ${IF} $1 == 1
-    StrCpy $1 "NOT_FOUND"
-  ${ENDIF}
-    
-  SetRegView 32
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall" "$1"
 
-  ClearErrors
-  SetRegView 32
-  ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall"
-  
+;write Python uninstall path
+;  ClearErrors
+;  ${IF} $2 == "" ; if 32Bit System or not found in 64Bit registry part
+;    ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 32
+;  ${ENDIF}
+
+;;  ${IF} ${Errors}
+;;  ${ORIF} $1 == ""
+;  ${IF} $1 == 1
+;    StrCpy $1 "NOT_FOUND"
+;  ${ENDIF}
+
+;  SetRegView 32
+;  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall" "$1"
+;
+;  ClearErrors
+;  SetRegView 32
+;  ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "PythonUninstall"
+ 
 !macroend
 
 !define UninstallAll "!insertmacro UninstallAll"
 !macro UninstallAll
 
-${UninstallPython}
+;${UninstallPython}
 ${UninstallDefault}
 
 ;vc_redist.x86.exe /uninstall /q

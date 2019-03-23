@@ -12,7 +12,7 @@
 ${UniversalProperties}
 
 OutFile "x86\MB Studio - Installer (x86).exe"
- 
+
 ;-------------------------------- 
 ;Installer Sections     
 Section "Install" installInfo
@@ -27,7 +27,7 @@ Section "Install" installInfo
   
   ${InstallCpp2017_32Bit}
   
-  ${InstallPython32Bit}
+;  ${InstallPython32Bit}
   
   ${WriteMBUninstaller}
   

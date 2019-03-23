@@ -31,17 +31,22 @@
   File "..\universal\common\J.SYS.ico"
   
   File "x64\common\MB_Studio_CLI.exe"
-;  File "..\universal\common\MB_Studio - CONSOLE.lnk"
+;  File "x64\common\MB_Decompiler.exe"
+;  File "..\universal\common\MB_Decompiler -CONSOLE.lnk"
+;  File "x64\common\MB_Decompiler_GUI.exe"
 
   File "..\updater\stable\x64\MB Studio Updater.exe"
   
-  File "x64\common\MB_Studio_Library.dll"
+;  File "x64\common\MB_Decompiler_Library.dll"
+  File "x64\common\MB Studio Library.dll"
   File "x64\common\Warband - Translator.exe"
   
   File "x64\common\importantLib.dll"
   
   File "x64\common\brfManager.dll"
   File "x64\common\openBrf.dll"
+  
+  File "x64\common\RegUpdater.exe"
   
   File "..\universal\common\qt.conf"
   File "..\universal\common\reference.brf"
@@ -61,23 +66,25 @@
   
   File /r "universal\files"
   File /r "..\universal\files"
+    
+  File "universal\changelog"
   
-  CreateDirectory "$INSTDIR\Python"
+;  CreateDirectory "$INSTDIR\Python"
   
   StrCpy $2 ""
 !macroend
 
-!define InstallPython64Bit "!insertmacro InstallPython64Bit"
-!macro InstallPython64Bit
-  CreateDirectory "$PLUGINSDIR\python"
-  inetc::get "https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi" "$PLUGINSDIR\python\python-2.7.13.amd64.msi"
-  Pop $0 ;Return value from download - OK is good!
+;!define InstallPython64Bit "!insertmacro InstallPython64Bit"
+;!macro InstallPython64Bit
+;  CreateDirectory "$PLUGINSDIR\python"
+;  inetc::get "https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi" "$PLUGINSDIR\python\python-2.7.13.amd64.msi"
+;  Pop $0 ;Return value from download - OK is good!
 ; Executes MSI Installer for Python
-  ExecWait '"$SYSDIR\msiexec" /i "$PLUGINSDIR\python\python-2.7.13.amd64.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
-  StrCpy $4 "$PLUGINSDIR\python\"
-  ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 64
-;returns $1
-!macroend
+;  ExecWait '"$SYSDIR\msiexec" /i "$PLUGINSDIR\python\python-2.7.13.amd64.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
+;  StrCpy $4 "$PLUGINSDIR\python\"
+;  ${GetUninstallStringByAppID} HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallSource" $4 64
+;;returns $1
+;!macroend
 
 !define InstallCpp2017_64Bit "!insertmacro InstallCpp2017_64Bit"
 !macro InstallCpp2017_64Bit

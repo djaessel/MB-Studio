@@ -31,17 +31,22 @@
   File "..\universal\common\J.SYS.ico"
   
   File "x86\common\MB_Studio_CLI.exe"
-;  File "..\universal\common\MB_Studio - CONSOLE.lnk"
+;  File "x86\common\MB_Decompiler.exe"
+;  File "..\universal\common\MB_Decompiler -CONSOLE.lnk"
+;  File "x86\common\MB_Decompiler_GUI.exe"
   
   File "..\updater\stable\x86\MB Studio Updater.exe"
   
-  File "x86\common\MB_Studio_Library.dll"
+;  File "x86\common\MB_Decompiler_Library.dll"
+  File "x86\common\MB Studio Library.dll"
   File "x86\common\Warband - Translator.exe"
   
   File "x86\common\importantLib.dll"
   
   File "x86\common\brfManager.dll"
   File "x86\common\openBrf.dll"
+  
+  File "x86\common\RegUpdater.exe"
   
   File "..\universal\common\qt.conf"
   File "..\universal\common\reference.brf"
@@ -62,20 +67,22 @@
   File /r "universal\files"
   File /r "..\universal\files"
   
-  CreateDirectory "$INSTDIR\Python"
+  File "universal\changelog"
+  
+;  CreateDirectory "$INSTDIR\Python"
   
   StrCpy $2 ""
 !macroend
 
-!define InstallPython32Bit "!insertmacro InstallPython32Bit"
-!macro InstallPython32Bit
-  CreateDirectory "$PLUGINSDIR\python"
-  inetc::get "https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi" "$PLUGINSDIR\python\python-2.7.13.msi"
-  Pop $0 ;Return value from download - OK is good!
+;!define InstallPython32Bit "!insertmacro InstallPython32Bit"
+;!macro InstallPython32Bit
+;  CreateDirectory "$PLUGINSDIR\python"
+;  inetc::get "https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi" "$PLUGINSDIR\python\python-2.7.13.msi"
+;  Pop $0 ;Return value from download - OK is good!
 ; Executes MSI Installer for Python
-  ExecWait '"$SYSDIR\msiexec" /i "$PLUGINSDIR\python\python-2.7.13.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
-  StrCpy $4 "$PLUGINSDIR\python\"
-!macroend
+;  ExecWait '"$SYSDIR\msiexec" /i "$PLUGINSDIR\python\python-2.7.13.msi" /passive /norestart ADDLOCAL=ALL TARGETDIR="$INSTDIR\Python"'
+;  StrCpy $4 "$PLUGINSDIR\python\"
+;!macroend
 
 !define InstallCpp2017_32Bit "!insertmacro InstallCpp2017_32Bit"
 !macro InstallCpp2017_32Bit

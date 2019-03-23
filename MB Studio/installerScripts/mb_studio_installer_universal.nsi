@@ -36,10 +36,10 @@ Section "Install" installInfo
   
   ${If} ${RunningX64}
   	${InstallCpp2017_64Bit}
-    ${InstallPython64Bit}
+;    ${InstallPython64Bit}
   ${Else}
   	${InstallCpp2017_32Bit}
-    ${InstallPython32Bit}
+;    ${InstallPython32Bit}
   ${EndIf}
   
   ${WriteMBUninstaller}
