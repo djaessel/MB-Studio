@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using MB_Studio_Library.Objects;
 using MB_Studio_Library.Objects.Support;
 using System.Drawing;
-using MB_Studio_Library.IO;
 
 namespace brfManager
 {
@@ -205,8 +204,8 @@ namespace brfManager
             if (troop != null)
             {
                 bool success = true;
-                var troopType = troop.GetTroopType();
-                var face = Face.MergeTroopFaces(troop);
+                Skin troopType = troop.GetTroopType();
+                Face face = Face.MergeTroopFaces(troop);
 
                 Console.Write(" Merged FaceCode: ");
                 Console.Write("0x | " + face.FaceCode.Substring(0, 7));

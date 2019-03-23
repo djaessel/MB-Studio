@@ -45,11 +45,11 @@ namespace MB_Studio_Library.Objects.Support
 
         // - - - 
 
-        public int MaxSkin { get { return troopType.FaceTextures.Length; } }
+        public int MaxSkin { get { return troopType.FaceTextures.Length - 1; } }
 
-        public int MaxBeard { get { return troopType.BeardMeshes.Length; } }
+        public int MaxBeard { get { return troopType.BeardMeshes.Length; } } // in OpenBrf index = index - 1
 
-        public int MaxHair { get { return troopType.HairMeshes.Length; } }
+        public int MaxHair { get { return troopType.HairMeshes.Length; } } // in OpenBrf index = index - 1
 
         #endregion
 
@@ -67,13 +67,22 @@ namespace MB_Studio_Library.Objects.Support
 
         private void InitializeValues(string faceCode)
         {
-            Age = ((uint.Parse(faceCode.Substring(7, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
-            HairColorCode = uint.Parse(faceCode.Substring(8, 2), NumberStyles.HexNumber) & 0x3F;
-            Reserved1 = (uint.Parse(faceCode.Substring(10, 2), NumberStyles.HexNumber) & 0xFC) >> 3;    // check again
-            Skin = uint.Parse(faceCode.Substring(11, 2), NumberStyles.HexNumber) & 0x3F;
-            Beard = ((uint.Parse(faceCode.Substring(13, 2), NumberStyles.HexNumber) & 0xFC) >> 3) / 4;
-            Hair = uint.Parse(faceCode.Substring(14, 2), NumberStyles.HexNumber) & 0x3F;                // check again
-            Reserved2 = uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08;           // check again
+            string tmp = faceCode.Substring(7, 3);
+            uint ageHairColor = uint.Parse(tmp, NumberStyles.HexNumber) & 0xFFF;
+            Age = (ageHairColor & 0xFC0) >> 6; // check again
+            HairColorCode = ageHairColor & 0x03F; // check again
+
+            tmp = faceCode.Substring(10, 3);
+            uint reserved1Skin = uint.Parse(tmp, NumberStyles.HexNumber) & 0xFFF;
+            Reserved1 = (reserved1Skin & 0xFC0) >> 6; // check again
+            Skin = reserved1Skin & 0x03F; // check again
+
+            tmp = faceCode.Substring(13, 3);
+            uint beardHair = uint.Parse(tmp, NumberStyles.HexNumber) & 0xFFF;
+            Beard = (beardHair & 0xFC0) >> 6; // check again
+            Hair = beardHair & 0x03F; // check again
+
+            Reserved2 = uint.Parse(faceCode.Substring(16, 2), NumberStyles.HexNumber) & 0x08; // check again
 
             InitializeHairColor();
         }
@@ -95,7 +104,9 @@ namespace MB_Studio_Library.Objects.Support
             if (hairColorIdx >= 0)
                 mergedColor = (int)((MergeColorsInList(hairColorList, hairColorIdx, HairColorCode, hairPerc) & 0x00FFFFFF) | 0xFF000000);
 
+            // Later make mesh merge here with percentage
             //mergedColor = AddAgeColor(mergedColor, hairPerc);
+
             //mergedColor = Blend(Color.WhiteSmoke, Color.FromArgb(mergedColor), hairPerc).ToArgb();
 
             HairColor = mergedColor;
@@ -111,22 +122,22 @@ namespace MB_Studio_Library.Objects.Support
 
         private int AddAgeColor(int color, double hairPerc)
         {
-            int agedColor = 0;
-            double percentage = Math.Round((int)Age % hairPerc / hairPerc, 4);
+            double percentage = Math.Round((int)Age / 63d, 4); // 63 max age
 
-            Color mic = Color.FromArgb(color);
-            Color mac = Color.White;
+            Console.WriteLine("Add Age Color Percentage: " + (percentage * 100d) + " %");
+
+            Color mac = Color.FromArgb(color);
+            Color mic = Color.FromArgb(88, 88, 88);
             //Color mic = Color.FromArgb(byte.MaxValue, Color.White);
+
+            /// TODO: age later merge diffuseA and diffuseB for color value
 
             int a = CalcValDifference(mac.A, mic.A, percentage);
             int r = CalcValDifference(mac.R, mic.R, percentage);
             int g = CalcValDifference(mac.G, mic.G, percentage);
             int b = CalcValDifference(mac.B, mic.B, percentage);
 
-            agedColor = Color.FromArgb(a, r, g, b).ToArgb();
-
-            //Console.WriteLine("Aged Color: " + Color.FromArgb(agedColor));
-
+            int agedColor = Color.FromArgb(a, r, g, b).ToArgb();
             return agedColor;
         }
 
@@ -135,8 +146,6 @@ namespace MB_Studio_Library.Objects.Support
             int mergedColor;
             int mainColor = hairColors[hairIdx] & int.MaxValue;
             double percentage = Math.Round(hairColorVal % hairPerc / hairPerc, 4);
-
-            //Console.WriteLine("Percentage: " + percentage);
 
             if (hairColors.Count > 1 && percentage > 0d && percentage != hairPerc)
             {
@@ -155,17 +164,12 @@ namespace MB_Studio_Library.Objects.Support
                 int g = CalcValDifference(mac.G, mic.G, percentage);
                 int b = CalcValDifference(mac.B, mic.B, percentage);
 
-                mergedColor = Color.FromArgb(a, r, g, b).ToArgb();
-
-                //Console.WriteLine("Minor Color: " + Color.FromArgb(minorColor));
+                mergedColor = Color.FromArgb(a, r, g, b).ToArgb(); // minor color check
             }
             else
             {
-                mergedColor = mainColor;
-                //Console.WriteLine("Used main color!");
+                mergedColor = mainColor; // main color
             }
-
-            //Console.WriteLine("Merged Color: " + Color.FromArgb(mergedColor));
 
             return mergedColor;
         }
@@ -190,14 +194,26 @@ namespace MB_Studio_Library.Objects.Support
         {
             string newFaceCode = OriginalFaceCode;
 
-            // generate left settings for face here
+            uint ageM = Age << 6;
+            uint reserved1M = Reserved1 << 6;
+            uint beardM = Beard << 6;
 
-            newFaceCode = newFaceCode.Substring(0, 7) +
-                (((Age * 4) << 19) | HairColorCode).ToString("X3") +
-                ((Reserved1 << 19) | Skin).ToString("X3") +
-                (((Beard * 4) << 19) | Hair).ToString("X3") +
-                //reserved2.ToString("X1") +
-                newFaceCode.Substring(16);
+            uint ageHairColor  = ageM | (HairColorCode & 0x3F); // 0xFFF -> FC0 + 03F
+            uint reserved1Skin = reserved1M | (Skin & 0x3F);    // 0xFFF -> FC0 + 03F
+            uint beardHair     = beardM | (Hair & 0x3F);        // 0xFFF -> FC0 + 03F
+            //uint reserved2 = Reserved2 & 0x08;
+
+            string ageHairHex = ageHairColor.ToString("X3");
+            string reserved1SkinHex = reserved1Skin.ToString("X3");
+            string beardHairHex = beardHair.ToString("X3");
+            //string reserved2Hex = reserved2.ToString("X3");
+
+            newFaceCode = newFaceCode.Substring(0, 7)
+                 + ageHairHex
+                 + reserved1SkinHex
+                 + beardHairHex
+               //+ reserved2Hex
+                 + newFaceCode.Substring(16);
             
             return newFaceCode; 
         }
@@ -249,7 +265,7 @@ namespace MB_Studio_Library.Objects.Support
 
         public void SetBeard(uint beardIndex)
         {
-            Skin = beardIndex;
+            Beard = beardIndex;
         }
 
         public void SetBeard(int beardIndex)
@@ -259,7 +275,7 @@ namespace MB_Studio_Library.Objects.Support
 
         public void SetHairColorP(uint hairColorCode)
         {
-            Skin = hairColorCode;
+            HairColorCode = hairColorCode;
         }
 
         public void SetHairColorP(int hairColorCode)
@@ -269,7 +285,7 @@ namespace MB_Studio_Library.Objects.Support
 
         public void SetAgeP(uint agePercentage)
         {
-            Skin = agePercentage;
+            Age = agePercentage;
         }
 
         public void SetAgeP(int agePercentage)

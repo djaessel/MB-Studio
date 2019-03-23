@@ -960,12 +960,7 @@ namespace MB_Studio.Manager
 
             // check what second face does here if not randomize active
             var faceX = new Face(troop.Face1, troop.GetTroopType());
-
-            Console.WriteLine(faceX.FaceCode);
-
             faceX.SetSkin(skin_tb.Value);
-
-            Console.WriteLine(faceX.FaceCode);
 
             UpdateTroopFace(troop, faceX.FaceCode);
         }
