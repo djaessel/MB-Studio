@@ -950,6 +950,7 @@ namespace MB_Studio
             projectFiles_lb.Items.Add("Menus");
             projectFiles_lb.Items.Add("Items");
             projectFiles_lb.Items.Add("Skills");
+            projectFiles_lb.Items.Add("Strings");
             // VORERST //
             // NEW SOLUTION - WIP //
             scriptCommander.LoadManagers();
@@ -979,6 +980,8 @@ namespace MB_Studio
                     form = new ItemManager();
                 else if (item.Equals("Skills"))
                     form = new SkillManager();
+                else if (item.Equals("Strings"))
+                    form = new StringManager();
                 else
                     foreach (ToolForm cm in scriptCommander.CustomManagers)
                         if (cm.GetType().Name.Equals(itemManagerName))

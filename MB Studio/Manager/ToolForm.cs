@@ -82,7 +82,7 @@ namespace MB_Studio.Manager
         #endregion
 
         #endregion
-        
+
         #region Properties
 
         #region Static
@@ -107,6 +107,8 @@ namespace MB_Studio.Manager
         protected int CurrentTypeIndex { get; private set; } = -1;
 
         protected bool IsResetActive { get; private set; } = false;
+
+        protected bool HasPluralTranslation { get; set; } = true;
 
         public ObjectType ObjectType { get; private set; }
 
@@ -829,7 +831,7 @@ namespace MB_Studio.Manager
             }
             if (!singleFound)
                 list.Add(id + "|" + singleNameTranslation_txt.Text);
-            if (!pluralFound)
+            if (!pluralFound && HasPluralTranslation)
                 list.Add(id + "_pl|" + pluralNameTranslation_txt.Text);
             fileSaver.SaveFile(list, ImportantMethods.StringArrayToList(orgLines, 1));
         }
