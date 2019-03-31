@@ -44,6 +44,8 @@ namespace MB_Studio.Manager
 
         protected override void LoadSettingsAndLists()
         {
+            HasPluralTranslation = true;
+
             base.LoadSettingsAndLists();
 
             AddBrfFileEntryToModuleIni("MB_Studio_Data");

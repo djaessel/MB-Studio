@@ -15,6 +15,8 @@ namespace MB_Studio.Manager
 
         protected override void AddFromOtherMod(AddTypeFromOtherMod f = null)
         {
+            // TODO: add from other mod
+
             base.AddFromOtherMod(f);
         }
 
@@ -38,13 +40,13 @@ namespace MB_Studio.Manager
 
             #region Translation / Description
 
-            //description_txt.Text = skill.Description;
+            pluralNameTranslation_txt.Text = quest.Description;
 
             Language_cbb_SelectedIndexChanged();
 
             #endregion
 
-            #region Flags & MaxLevel
+            #region Flags
 
 
 

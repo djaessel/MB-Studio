@@ -346,8 +346,14 @@
     <EmbeddedResource Include="Main\PathSelector.resx">
       <DependentUpon>PathSelector.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Manager\QuestManager.resx">
+      <DependentUpon>QuestManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Manager\SkillManager.resx">
       <DependentUpon>SkillManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\StringManager.resx">
+      <DependentUpon>StringManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\Support\External\AddTroopFromOtherMod.resx">
       <DependentUpon>AddTroopFromOtherMod.cs</DependentUpon>

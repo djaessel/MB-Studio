@@ -38,6 +38,8 @@ namespace MB_Studio.Manager
 
         protected override void LoadSettingsAndLists()
         {
+            HasPluralTranslation = true;
+
             base.LoadSettingsAndLists();
 
             CodeReader cr = new CodeReader(CodeReader.ModPath + CodeReader.Files[(int)Skriptum.ObjectType.Item]);

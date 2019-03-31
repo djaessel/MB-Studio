@@ -10,18 +10,10 @@ namespace MB_Studio.Manager
         public StringManager() : base(Skriptum.ObjectType.GameString)
         {
             InitializeComponent();
-
-            name_lbl.Text = "Text:";
-            name_lbl.Left = id_lbl.Right - name_lbl.Width;
-
-            singleNameTranslation_lbl.Text = "Translation:";
-            singleNameTranslation_lbl.Left = singleNameTranslation_txt.Left - singleNameTranslation_lbl.Width - 6;
         }
 
         protected override void LoadSettingsAndLists()
         {
-            HasPluralTranslation = false;
-
             base.LoadSettingsAndLists();
         }
 

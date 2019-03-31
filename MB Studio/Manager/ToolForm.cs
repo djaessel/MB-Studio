@@ -108,7 +108,7 @@ namespace MB_Studio.Manager
 
         protected bool IsResetActive { get; private set; } = false;
 
-        protected bool HasPluralTranslation { get; set; } = true;
+        protected bool HasPluralTranslation { get; set; } = false;
 
         public ObjectType ObjectType { get; private set; }
 
