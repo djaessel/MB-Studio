@@ -951,6 +951,7 @@ namespace MB_Studio
             projectFiles_lb.Items.Add("Items");
             projectFiles_lb.Items.Add("Skills");
             projectFiles_lb.Items.Add("Strings");
+            projectFiles_lb.Items.Add("Quests");
             // VORERST //
             // NEW SOLUTION - WIP //
             scriptCommander.LoadManagers();
@@ -982,6 +983,8 @@ namespace MB_Studio
                     form = new SkillManager();
                 else if (item.Equals("Strings"))
                     form = new StringManager();
+                else if (item.Equals("Quests"))
+                    form = new SoundManager();
                 else
                     foreach (ToolForm cm in scriptCommander.CustomManagers)
                         if (cm.GetType().Name.Equals(itemManagerName))

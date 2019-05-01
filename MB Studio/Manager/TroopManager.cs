@@ -38,7 +38,7 @@ namespace MB_Studio.Manager
 
         protected override void LoadSettingsAndLists()
         {
-            HasPluralTranslation = true;
+            HasSecondTranslation = true;
 
             base.LoadSettingsAndLists();
 

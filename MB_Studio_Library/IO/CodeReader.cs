@@ -1318,7 +1318,7 @@ namespace MB_Studio_Library.IO
                 int count = int.Parse(sr.ReadLine());
                 objectsExpected += count;
                 for (int i = 0; i < count && !sr.EndOfStream; i++)
-                    quests.Add(new Quest(sr.ReadLine().Split()));
+                    quests.Add(new Quest(RemNTrimAllXtraSp(sr.ReadLine()).Split()));
             }
             ObjectsRead += quests.Count;
             return quests;

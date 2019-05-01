@@ -108,7 +108,9 @@ namespace MB_Studio.Manager
 
         protected bool IsResetActive { get; private set; } = false;
 
-        protected bool HasPluralTranslation { get; set; } = false;
+        protected bool HasSecondTranslation { get; set; } = false;
+
+        protected string SecondSuffix { get; set; } = "pl";
 
         public ObjectType ObjectType { get; private set; }
 
@@ -671,6 +673,7 @@ namespace MB_Studio.Manager
 
             for (int i = 0; i < language_cbb.Items.Count; i++)
                 PrepareLanguageByIndex(i);
+
             if (language_cbb.SelectedIndex != Properties.Settings.Default.languageIndex)
                 language_cbb.SelectedIndex = Properties.Settings.Default.languageIndex;// other code is in the SelectedIndex Changed Event
             else
@@ -717,17 +720,17 @@ namespace MB_Studio.Manager
 
         #region Translation
 
-        private void PrepareLanguageByIndex(int index, bool plural = false)
+        protected virtual void PrepareLanguageByIndex(int index, bool secondTrans = false)
         {
             string[] tmp;
             bool foundSingleName = false;
-            bool foundPluralName = !plural;//ObjectType == ObjectType.ITEM; // because Item plurals are most times the same
+            bool foundSecondTrans = !secondTrans;//ObjectType == ObjectType.ITEM; // because Item plurals are most times the same
             string filePath = CodeReader.ModPath + GetSecondFilePath(MB_Studio.CSV_FORMAT, GetLanguageFromIndex(index));
             if (File.Exists(filePath))
             {
                 using (StreamReader sr = new StreamReader(filePath))
                 {
-                    while (!sr.EndOfStream && (!foundSingleName || !foundPluralName))
+                    while (!sr.EndOfStream && (!foundSingleName || !foundSecondTrans))
                     {
                         tmp = sr.ReadLine().Split('|');
                         if (!foundSingleName)
@@ -738,12 +741,12 @@ namespace MB_Studio.Manager
                                 foundSingleName = true;
                             }
                         }
-                        if (!foundPluralName)
+                        if (!foundSecondTrans)
                         {
-                            if (tmp[0].Equals(Prefix + id_txt.Text + "_pl") && tmp.Length > 1)
+                            if (tmp[0].Equals(Prefix + id_txt.Text + '_' + SecondSuffix) && tmp.Length > 1)
                             {
                                 translations[index][1] = tmp[1];//pluralNameTranslation_txt.Text = tmp[1];
-                                foundPluralName = true;
+                                foundSecondTrans = true;
                             }
                         }
                     }
@@ -819,9 +822,9 @@ namespace MB_Studio.Manager
                     }
                     if (!pluralFound)
                     {
-                        if (s.Equals(id + "_pl"))
+                        if (s.Equals(id + '_' + SecondSuffix))
                         {
-                            orgLines[i] = id + "_pl|" + pluralNameTranslation_txt.Text;
+                            orgLines[i] = id + '_' + SecondSuffix + '|' + pluralNameTranslation_txt.Text;
                             pluralFound = true;
                         }
                     }
@@ -831,8 +834,8 @@ namespace MB_Studio.Manager
             }
             if (!singleFound)
                 list.Add(id + "|" + singleNameTranslation_txt.Text);
-            if (!pluralFound && HasPluralTranslation)
-                list.Add(id + "_pl|" + pluralNameTranslation_txt.Text);
+            if (!pluralFound && HasSecondTranslation)
+                list.Add(id + '_' + SecondSuffix + '|' + pluralNameTranslation_txt.Text);
             fileSaver.SaveFile(list, ImportantMethods.StringArrayToList(orgLines, 1));
         }
 

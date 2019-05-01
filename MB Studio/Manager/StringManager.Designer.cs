@@ -65,6 +65,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(814, 220);
             this.Name = "StringManager";
+            this.Text = "StringManager";
             this.toolPanel.ResumeLayout(false);
             this.groupBox_0_gb.ResumeLayout(false);
             this.groupBox_0_gb.PerformLayout();

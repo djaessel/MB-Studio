@@ -34,12 +34,13 @@ namespace MB_Studio_Library.Objects
             else
                 flags = FlagsGZ.ToString();
 
-            this.Flags = flags;
+            Flags = flags;
         }
 
         private void SetFlagsGZ()
         {
             ulong flagsGZ = 0;
+
             string[] fl = Flags.Split('|');
             foreach (string flag in fl)
             {
@@ -48,7 +49,40 @@ namespace MB_Studio_Library.Objects
                 else if (flag.Equals("qf_random_quest"))
                     flagsGZ |= 0x2;
             }
-            this.FlagsGZ = flagsGZ;
+
+            FlagsGZ = flagsGZ;
+        }
+
+        public bool ShowProgression
+        {
+            get
+            {
+                return (FlagsGZ & 0b1) == 0b1;
+            }
+            set
+            {
+                if (value)
+                    FlagsGZ |= 0b0001;
+                else
+                    FlagsGZ &= 0b1110;
+                SetFlags();
+            }
+        }
+
+        public bool RandomQuest
+        {
+            get
+            {
+                return (FlagsGZ & 0b10) == 0b10;
+            }
+            set
+            {
+                if (value)
+                    FlagsGZ |= 0b0010;
+                else
+                    FlagsGZ &= 0b1101;
+                SetFlags();
+            }
         }
 
         public ulong FlagsGZ { get; private set; }
