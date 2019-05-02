@@ -67,7 +67,7 @@ namespace importantLib
             exit_btn.FlatAppearance.MouseDownBackColor = Color.Black;
             exit_btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(72, 72, 72);
             exit_btn.FlatStyle = FlatStyle.Flat;
-#if NET462
+#if NET472
             exit_btn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
 #endif
             exit_btn.ForeColor = Color.White;
@@ -88,7 +88,7 @@ namespace importantLib
             min_btn.FlatAppearance.MouseDownBackColor = Color.Black;
             min_btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(72, 72, 72);
             min_btn.FlatStyle = FlatStyle.Flat;
-#if NET462
+#if NET472
             min_btn.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
 #endif
             min_btn.ForeColor = Color.White;
@@ -98,7 +98,7 @@ namespace importantLib
             min_btn.TabIndex = 0;
             min_btn.TabStop = false;
             min_btn.Text = "_";
-#if NET462
+#if NET472
             min_btn.TextAlign = ContentAlignment.TopCenter;
 #endif
             min_btn.UseVisualStyleBackColor = false;
@@ -108,7 +108,7 @@ namespace importantLib
             // 
             title_lbl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             title_lbl.BackColor = Color.FromArgb(56, 56, 56);
-#if NET462
+#if NET472
             title_lbl.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
 #endif
             title_lbl.ForeColor = Color.Silver;
@@ -116,7 +116,7 @@ namespace importantLib
             title_lbl.Name = "title_lbl";
             title_lbl.Size = new Size(Width - min_btn.Width - exit_btn.Width, titleElementDefaultHeight);
             title_lbl.TabIndex = 0;
-#if NET462
+#if NET472
             title_lbl.TextAlign = ContentAlignment.MiddleCenter;
 #endif
 

@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <AssemblyOriginatorKeyFile>MB-Studio-importantLib.pfx</AssemblyOriginatorKeyFile>
     <Title>importtantLib</Title>
-    <Version>2.2.0.0</Version>
+    <Version>2.3.0.0</Version>
     <Copyright>Copyright ©  2017 - 2019</Copyright>
     <Description>importantLib</Description>
     <Authors>J.SYS</Authors>
     <Company>J.SYS</Company>
     <SignAssembly>True</SignAssembly>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
     <DefineConstants>$(TargetFramework.Replace(".","_").ToUpper());$(DefineConstants)</DefineConstants>
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

@@ -1,4 +1,4 @@
-﻿#if NET462
+﻿#if NET472
 using Microsoft.Win32;
 #endif
 using System;
@@ -59,7 +59,7 @@ namespace importantLib
         {
             bool found_it = false;
 
-            #if NET462
+            #if NET472
             
             RegistryKey steamRegKey = null;
             try
