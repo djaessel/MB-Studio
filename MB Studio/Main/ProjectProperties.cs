@@ -592,8 +592,8 @@ namespace MB_Studio.Main
                     itemsFlagsString += '0';
                 itemsFlagsString += '|';
             }
-            Properties.Settings.Default.setItemsFlags[currentSetIndex] = itemsFlagsString.Remove(itemsFlagsString.Length - 1);
-            Properties.Settings.Default.setItems[currentSetIndex] = itemsString.Remove(itemsString.Length - 1);
+            Properties.Settings.Default.setItemsFlags[currentSetIndex] = itemsFlagsString.TrimEnd('|');
+            Properties.Settings.Default.setItems[currentSetIndex] = itemsString.TrimEnd('|');
             Properties.Settings.Default.Save();
             Properties.Settings.Default.Reload();
         }

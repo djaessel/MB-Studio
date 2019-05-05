@@ -835,7 +835,7 @@ namespace MB_Studio.Manager
 
         public static string[] GetItemsFromSetByIndex(int index)
         {
-            string[] array;
+            string[] array = null;
             string[] setXItems = Properties.Settings.Default.setItems[index].Split('|');
             if (!setXItems[0].Equals("-"))
             {
@@ -843,17 +843,19 @@ namespace MB_Studio.Manager
                 for (int i = 0; i < array.Length; i++)
                     array[i] = setXItems[i];
             }
-            else
-                array = null;
             return array;
         }
 
         public static string[] GetItemsFlagsFromSetByIndex(int index)
         {
-            StringCollection setItemsFlags = Properties.Settings.Default.setItemsFlags;
-            string[] array = new string[setItemsFlags.Count];
-            for (int i = 0; i < array.Length; i++)
-                array[i] = setItemsFlags[i];
+            string[] array = null;
+            string[] setItemsFlags = Properties.Settings.Default.setItemsFlags[index].Split('|');
+            if (!setItemsFlags[0].Equals("-"))
+            {
+                array = new string[setItemsFlags.Length];
+                for (int i = 0; i < array.Length; i++)
+                    array[i] = setItemsFlags[i];
+            }
             return array;
         }
 
@@ -906,37 +908,36 @@ namespace MB_Studio.Manager
             }
         }
 
-        private void Troop3DPreview(ListBox lb)
-        {
-            int selectedIndex = lb.SelectedIndex;
-            if (selectedIndex >= 0)
-            {
-                try
-                {
-                    string itemID = lb.SelectedItem.ToString().Split('-')[1].TrimStart();
-                    itemID = itemID.Substring(itemID.IndexOf('_') + 1);
-                    for (int i = 0; i < itemsRList.Count; i++)
-                    {
-                        if (itemID.Equals(itemsRList[i].ID))
-                        {
-                            Item itemX = (Item)itemsRList[i];
-                            for (int j = 0; j < itemX.Meshes.Count; j++)
-                            {
-                                string sss = itemX.Meshes[j].Name.Trim();
-                                Console.WriteLine("|" + sss + "|");
-                                Console.WriteLine("void Troop3DPreview(ListBox lb) : " + OpenBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
-
-                            }
-                            i = itemsRList.Count;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            }
-        }
+        //private void Troop3DPreview(ListBox lb)
+        //{
+        //    int selectedIndex = lb.SelectedIndex;
+        //    if (selectedIndex >= 0)
+        //    {
+        //        try
+        //        {
+        //            string itemID = lb.SelectedItem.ToString().Split('-')[1].TrimStart();
+        //            itemID = itemID.Substring(itemID.IndexOf('_') + 1);
+        //            for (int i = 0; i < itemsRList.Count; i++)
+        //            {
+        //                if (itemID.Equals(itemsRList[i].ID))
+        //                {
+        //                    Item itemX = (Item)itemsRList[i];
+        //                    for (int j = 0; j < itemX.Meshes.Count; j++)
+        //                    {
+        //                        string sss = itemX.Meshes[j].Name.Trim();
+        //                        Console.WriteLine("|" + sss + "|");
+        //                        Console.WriteLine("void Troop3DPreview(ListBox lb) : " + OpenBrfManager.AddMeshToTroop3DPreview(sss, 18));//item.R --> highest bone index (-1 to 18));
+        //                    }
+        //                    i = itemsRList.Count;
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.ToString());
+        //        }
+        //    }
+        //}
 
         #endregion
 
