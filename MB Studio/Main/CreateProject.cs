@@ -24,14 +24,13 @@ namespace MB_Studio.Main
 
         private void CreateProject_Load(object sender, EventArgs e)
         {
-            string modulesDir = ImportantMethods.GetDirectoryPathOnly(ProgramConsole.GetModuleInfoPath());
-
-            bool invalidModule = true;
             bool noNativeModuleIni = true;
+            string modulesDir = ImportantMethods.GetDirectoryPathOnly(ProgramConsole.GetModuleInfoPath());
             DialogResult dialogResult = DialogResult.OK;
             PathSelector pathSelector = new PathSelector("Modules");
             if (!Directory.Exists(modulesDir))
             {
+                bool invalidModule;
                 do
                 {
                     dialogResult = pathSelector.ShowDialog();
@@ -41,7 +40,8 @@ namespace MB_Studio.Main
                     invalidModule = (!Directory.Exists(modulesDir) || noNativeModuleIni);
 
                     pathSelector.SetError(invalidModule);
-                } while (invalidModule && dialogResult == DialogResult.OK);
+                }
+                while (invalidModule && dialogResult == DialogResult.OK);
             }
 
             if (dialogResult != DialogResult.OK)
@@ -50,6 +50,8 @@ namespace MB_Studio.Main
             }
             else
             {
+                ProgramConsole.SaveModuleInfoPath(modulesDir);
+
                 modulesDir += '\\';
 
                 string[] modules = Directory.GetDirectories(modulesDir.TrimEnd('\\'));
@@ -97,7 +99,6 @@ namespace MB_Studio.Main
         private void Create_btn_Click(object sender, EventArgs e)
         {
             bool newDir = false;
-            bool isOK = false;
             if (!useOriginalMod_cb.Checked)
             {
                 // !!! HAS TO BE HERE FOR NOW !!! //
@@ -108,7 +109,7 @@ namespace MB_Studio.Main
                 // !!! HAS TO BE HERE FOR NOW !!! //
             }
 
-            isOK = CreateProjectFolder();
+            bool isOK = CreateProjectFolder();
             if (!useOriginalMod_cb.Checked && isOK)
                 isOK = CreateModuleFolder(newDir);
 

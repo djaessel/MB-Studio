@@ -1,4 +1,5 @@
 /* OpenBRF -- by marco tarini. Provided under GNU General Public License */
+/* Edited for library usage by J.SYS aka Johandros */
 
 #include <QApplication>
 #include "mainwindow.h"

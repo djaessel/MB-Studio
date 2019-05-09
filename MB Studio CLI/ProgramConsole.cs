@@ -48,6 +48,22 @@ namespace MB_Studio_CLI
                 Process.Start("MB Studio.exe");
         }
 
+        public static bool SaveModuleInfoPath(string modulesDir)
+        {
+            bool success = false;
+            if (modulesDir != null)
+            {
+                modulesDir = modulesDir.TrimEnd('\\');
+                success = Directory.Exists(modulesDir);
+                if (success)
+                {
+                    modulesDir += @"\%MOD_NAME%\";
+                    File.WriteAllText(ModuleInfoPathFile, modulesDir);
+                }
+            }
+            return success;
+        }
+
         private static void ConsoleProgram()
         {
             IsConsole = true;
@@ -275,7 +291,7 @@ namespace MB_Studio_CLI
                     modPath = SetModPathWithSteam(modPath);
                     if (modPath != null)
                     {
-                        modPath = modPath + '\\'; //CodeReader.SetModPath(modPath + '\\');
+                        modPath += "\\"; //CodeReader.SetModPath(modPath + '\\');
                         found = true;
                     }
                     else
@@ -286,9 +302,14 @@ namespace MB_Studio_CLI
             if (!found)
                 modPath = GetModPathWithoutSteam(modPath);
 
-            string realPath = modPath.TrimEnd('\\');
-            realPath = realPath.Remove(realPath.LastIndexOf('\\'));
-            if (modPath != null && Directory.Exists(realPath))
+            string realPath = null;
+            if (modPath != null)
+            {
+                realPath = modPath.TrimEnd('\\');
+                realPath = realPath.Remove(realPath.LastIndexOf('\\'));
+            }
+
+            if (realPath != null && Directory.Exists(realPath))
             {
                 getMIP = GetModuleInfoPath();
                 Console.WriteLine(getMIP + ":" + modPath);

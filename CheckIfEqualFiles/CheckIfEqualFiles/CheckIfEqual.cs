@@ -76,7 +76,6 @@ namespace CheckIfEqualFiles
             }
             else
             {
-                //modulePath = @"F:\Program Files\Steam\steamapps\common\MountBlade Warband\Modules";
                 modulePath = ProgramConsole.GetModuleInfoPath();
                 if (modulePath.IndexOf('%') >= 0)
                     modulePath = modulePath.Remove(modulePath.IndexOf('%') - 1);
