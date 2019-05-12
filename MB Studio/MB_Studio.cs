@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Win32;
+using System.Reflection;
 
 namespace MB_Studio
 {
@@ -47,7 +48,7 @@ namespace MB_Studio
 
         private bool FullScreen = true;
 
-        private ScriptCommander scriptCommander = new ScriptCommander();
+        private readonly ScriptCommander scriptCommander = new ScriptCommander();
 
         // instance member to keep reference to splash form
         private SplashForm frmSplash;
@@ -107,8 +108,8 @@ namespace MB_Studio
             string configDirPath = Path.GetDirectoryName(Application.LocalUserAppDataPath);
             configDirPath = Path.GetDirectoryName(configDirPath);
             string appName = Application.ProductName.Replace(' ', '_');
-            //Console.WriteLine("ConfigPath: " + configDirPath);
-            string path = string.Empty;
+
+            string path = string.Empty; // TODO: use correct path later
             foreach (string dir in Directory.GetDirectories(configDirPath))
             {
                 string fxxx = Path.GetFileName(dir).Replace(' ', '_');
@@ -685,7 +686,7 @@ namespace MB_Studio
 
         #region GUI
 
-        protected override void SetFullScreenByHandle(IntPtr hWnd = default(IntPtr))
+        protected override void SetFullScreenByHandle(IntPtr hWnd = default)
         {
             base.SetFullScreenByHandle(hWnd);
             tabControl.Width = Width - projectExplorer_group.Width - 12;
@@ -772,7 +773,7 @@ namespace MB_Studio
             if (!specialForm)
                 form.FormBorderStyle = FormBorderStyle.None;
             else
-                form.Top = form.Top - ccc[0].Height;
+                form.Top -= ccc[0].Height;
 
             if (tabMode != TabMode.Default)
             {
@@ -808,7 +809,7 @@ namespace MB_Studio
             if (!specialForm)
                 frm.FormBorderStyle = FormBorderStyle.None;
             else
-                frm.Top = frm.Top - ccc[0].Height;
+                frm.Top -= ccc[0].Height;
             
             if (autoAdjust && tabControl.TabPages[index].HasChildren)
             {
@@ -943,56 +944,65 @@ namespace MB_Studio
             PrepareToolBar(projectShown);
             projectFiles_lb.Items.Clear();
 
-            // VORERST // - AddRange later with optimized file names(?)
-            projectFiles_lb.Items.Add("Troops");
-            projectFiles_lb.Items.Add("PartyTemplates");
-            projectFiles_lb.Items.Add("Parties");
-            projectFiles_lb.Items.Add("Menus");
-            projectFiles_lb.Items.Add("Items");
-            projectFiles_lb.Items.Add("Skills");
-            projectFiles_lb.Items.Add("Strings");
-            projectFiles_lb.Items.Add("Quests");
-            // VORERST //
-            // NEW SOLUTION - WIP //
+            List<string> managerItems = new List<string>();
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (Type t in assembly.GetTypes())
+                    if (t.BaseType != null && t.BaseType.ToString().ToUpper().EndsWith("TOOLFORM"))
+                        managerItems.Add(ConvertManagerNameToItemName(t.Name));
+
+            managerItems.Sort();
+            projectFiles_lb.Items.AddRange(managerItems.ToArray());
+
+            // Load custom manager
             scriptCommander.LoadManagers();
             foreach (ToolForm cm in scriptCommander.CustomManagers)
-                projectFiles_lb.Items.Add(cm.GetType().Name.Replace("Manager", "s"));
-            // NEW SOLUTION - WIP //
+                projectFiles_lb.Items.Add(ConvertManagerNameToItemName(cm.GetType().Name));
         }
 
         private void ProjectFiles_lb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SpecialForm form = null;
-
             if (projectFiles_lb.SelectedIndex >= 0)
             {
-                string item = projectFiles_lb.SelectedItem.ToString();
-                string itemManagerName = item.Remove(item.Length - 1) + "Manager";
+                SpecialForm form = null;
+                string item = ConvertItemNameToManagerName(projectFiles_lb.SelectedItem.ToString());
+                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    foreach (Type t in assembly.GetTypes())
+                    {
+                        if (t.BaseType != null && t.BaseType.ToString().ToUpper().EndsWith("TOOLFORM"))
+                            if (t.Name.Equals(item))
+                                form = (ToolForm)ImportantMethods.GetInstanceByClassName(t.FullName);
+                    }
+                }
 
-                if (item.Equals("Troops"))
-                    form = new TroopManager();
-                else if (item.Equals("PartyTemplates"))
-                    form = new PartyTemplateManager();
-                else if (item.Equals("Parties"))
-                    form = new PartyManager();
-                else if (item.Equals("Menus"))
-                    form = new MenuManager();
-                else if (item.Equals("Items"))
-                    form = new ItemManager();
-                else if (item.Equals("Skills"))
-                    form = new SkillManager();
-                else if (item.Equals("Strings"))
-                    form = new StringManager();
-                else if (item.Equals("Quests"))
-                    form = new SoundManager();
-                else
-                    foreach (ToolForm cm in scriptCommander.CustomManagers)
-                        if (cm.GetType().Name.Equals(itemManagerName))
-                            form = cm;
+                if (form != null)
+                    AddNewTab(form, TabMode.FillHeight);
             }
+        }
 
-            if (form != null)
-                AddNewTab(form, TabMode.FillHeight);
+        private string ConvertItemNameToManagerName(string itemName)
+        {
+            itemName = itemName.TrimEnd('s');
+
+            if (itemName.EndsWith("ie"))
+                itemName = itemName.Remove(itemName.Length - 2) + 'y'; // check later
+
+            itemName += "Manager";
+
+            return itemName;
+        }
+
+        private string ConvertManagerNameToItemName(string managerName)
+        {
+            if (managerName.EndsWith("Manager"))
+                managerName = managerName.Remove(managerName.LastIndexOf("Manager"));
+
+            if (managerName.EndsWith("y"))
+                managerName = managerName.TrimEnd('y') + "ie"; // check later
+
+            managerName += "s";
+
+            return managerName;
         }
 
         private void PrepareToolBar(bool projectShown = true)
