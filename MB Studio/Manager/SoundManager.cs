@@ -57,6 +57,7 @@ namespace MB_Studio.Manager
 
             #region Soundfiles
 
+            soundFiles_lb.Items.Clear();
             foreach (var soundFile in sound.SoundFiles)
                 soundFiles_lb.Items.Add(soundFile.Name);
 

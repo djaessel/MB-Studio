@@ -62,23 +62,23 @@
             this.plural_name_lbl.Location = new System.Drawing.Point(415, 112);
             this.plural_name_lbl.Size = new System.Drawing.Size(91, 16);
             this.plural_name_lbl.Text = "Description:";
-            this.plural_name_lbl.Visible = true;
-            // 
-            // plural_name_txt
-            // 
-            this.plural_name_txt.Visible = true;
             // 
             // name_lbl
             // 
             this.name_lbl.Location = new System.Drawing.Point(453, 87);
             this.name_lbl.Size = new System.Drawing.Size(53, 16);
             this.name_lbl.Text = "Name:";
+            this.name_lbl.Visible = false;
+            // 
+            // name_txt
+            // 
+            this.name_txt.Visible = false;
             // 
             // toolPanel
             // 
             this.toolPanel.Controls.Add(this.groupBox_1_gb);
             this.toolPanel.Controls.Add(this.showGroup_1_btn);
-            this.toolPanel.Size = new System.Drawing.Size(778, 253);
+            this.toolPanel.Size = new System.Drawing.Size(778, 60);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_0_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.showGroup_1_btn, 0);
             this.toolPanel.Controls.SetChildIndex(this.groupBox_1_gb, 0);
@@ -96,7 +96,6 @@
             this.groupBox_0_gb.Controls.Add(this.addSound_btn);
             this.groupBox_0_gb.Controls.Add(this.removeSound_btn);
             this.groupBox_0_gb.Controls.Add(this.soundFiles_lb);
-            this.groupBox_0_gb.Size = new System.Drawing.Size(737, 159);
             this.groupBox_0_gb.Text = "Sound Files";
             this.groupBox_0_gb.Controls.SetChildIndex(this.save_translation_btn, 0);
             this.groupBox_0_gb.Controls.SetChildIndex(this.language_cbb, 0);
@@ -205,6 +204,7 @@
             // 
             this.priority_tb.Location = new System.Drawing.Point(618, 69);
             this.priority_tb.Margin = new System.Windows.Forms.Padding(0);
+            this.priority_tb.Maximum = 15;
             this.priority_tb.Name = "priority_tb";
             this.priority_tb.Size = new System.Drawing.Size(104, 45);
             this.priority_tb.TabIndex = 10;
@@ -213,6 +213,7 @@
             // volume_tb
             // 
             this.volume_tb.Location = new System.Drawing.Point(618, 25);
+            this.volume_tb.Maximum = 15;
             this.volume_tb.Name = "volume_tb";
             this.volume_tb.Size = new System.Drawing.Size(104, 45);
             this.volume_tb.TabIndex = 9;
@@ -364,7 +365,7 @@
             // SoundManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(814, 443);
+            this.ClientSize = new System.Drawing.Size(814, 250);
             this.Name = "SoundManager";
             this.Text = "SoundManager";
             this.toolPanel.ResumeLayout(false);
