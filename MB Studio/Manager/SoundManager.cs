@@ -50,8 +50,8 @@ namespace MB_Studio.Manager
             streamFromHD_cb.Checked = (sound.FlagsGZ & 0x00000008) == 0x00000008;
             alwaysSendViaNetwork_cb.Checked = (sound.FlagsGZ & 0x00100000) == 0x00100000;
 
-            priority_tb.Value = (int)(sound.FlagsGZ & 0x000000F0);
-            volume_tb.Value = (int)(sound.FlagsGZ & 0x00000F00);
+            priority_tb.Value = (int)(sound.FlagsGZ & 0x000000F0) >> 4;
+            volume_tb.Value = (int)(sound.FlagsGZ & 0x00000F00) >> 8;
 
             #endregion
 
