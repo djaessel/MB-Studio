@@ -944,6 +944,9 @@ namespace MB_Studio
             PrepareToolBar(projectShown);
             projectFiles_lb.Items.Clear();
 
+            // Load custom manager
+            scriptCommander.LoadManagers();
+
             List<string> managerItems = new List<string>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 foreach (Type t in assembly.GetTypes())
@@ -952,11 +955,6 @@ namespace MB_Studio
 
             managerItems.Sort();
             projectFiles_lb.Items.AddRange(managerItems.ToArray());
-
-            // Load custom manager
-            scriptCommander.LoadManagers();
-            foreach (ToolForm cm in scriptCommander.CustomManagers)
-                projectFiles_lb.Items.Add(ConvertManagerNameToItemName(cm.GetType().Name));
         }
 
         private void ProjectFiles_lb_SelectedIndexChanged(object sender, EventArgs e)
