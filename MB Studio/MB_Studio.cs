@@ -103,7 +103,9 @@ namespace MB_Studio
             uint[] last = null;
             uint[] curVersCodes = new uint[curVal.Length];
             for (int i = 0; i < curVersCodes.Length; i++)
+            {
                 curVersCodes[i] = uint.Parse(curVal[i]);
+            }
             
             string configDirPath = Path.GetDirectoryName(Application.LocalUserAppDataPath);
             configDirPath = Path.GetDirectoryName(configDirPath);
@@ -377,6 +379,7 @@ namespace MB_Studio
         private bool LoadProject(string projectPath)
         {
             bool success = false;
+
             try
             {
                 ProgramConsole.LoadProject(projectPath, true);
@@ -385,6 +388,7 @@ namespace MB_Studio
                 success = true;
             }
             catch (Exception) { }
+
             return success;
         }
 
@@ -393,7 +397,9 @@ namespace MB_Studio
             string[] lastOpenedProjectPaths = ProgramConsole.GetLastOpenedProjectPaths();
             string[] lastOpenedProjectNames = ProgramConsole.GetLastOpenedProjectNames();
             for (int i = 0; i < lastOpenedProjectPaths.Length; i++)
+            {
                 zuletztVerwendet_panel.Controls.Add(GetLastProjectControl(lastOpenedProjectNames[i], lastOpenedProjectPaths[i]));
+            }
         }
 
         private Control GetLastProjectControl(string name, string path)
@@ -453,6 +459,7 @@ namespace MB_Studio
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information,
                     MessageBoxDefaultButton.Button1);
+
                 if (result == DialogResult.Yes)
                 {
                     ProgramConsole.RemoveProjectPathFromLastOpened(path);
@@ -495,7 +502,9 @@ namespace MB_Studio
         private void ProjectVorlagenSearch_txt_LostFocus(object sender, EventArgs e)
         {
             if (projectVorlagenSearch_txt.Text.Length == 0)
+            {
                 projectVorlagenSearch_txt.Text = " Search project template";
+            }
         }
 
         private void InitializeTabControl()
@@ -529,10 +538,12 @@ namespace MB_Studio
         private void Maxnorm_btn_Click(object sender, EventArgs e)
         {
             Screen s = Screen.FromHandle(Handle);
+
             if (FullScreen)
                 SetNormalScreen(s);//WindowState = FormWindowState.Maximized;
             else
                 SetFullScreenByHandle();//WindowState = FormWindowState.Normal;
+
             SetTabControlFixedHeight();
             FullScreen = !FullScreen;
         }
@@ -560,6 +571,7 @@ namespace MB_Studio
                                          tabRect.Top + (tabRect.Height - tabControl.Font.Height) / 2,
                                          (int)tabControl.Font.SizeInPoints,
                                          tabControl.Font.Height);
+
                 if (imageRect.Contains(e.Location))
                 {
                     tabControl.TabPages[i].Dispose();//.RemoveAt(i);
@@ -576,6 +588,7 @@ namespace MB_Studio
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
             );
+
             if (dlr == DialogResult.Yes)
             {
                 tabControl.SelectedIndex = 0;
@@ -615,8 +628,11 @@ namespace MB_Studio
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
             );
+
             if (dlr == DialogResult.Yes)
+            {
                 AddNewTab(new ImportsManagerGUI(), TabMode.FillTab); //new ImportsManagerGUI().Show();
+            }
         }
 
         private void Properties_ToolStrip_Click(object sender, EventArgs e)
@@ -643,7 +659,9 @@ namespace MB_Studio
         private void ProjectVorlagenSearch_txt_Click(object sender, EventArgs e)
         {
             if (projectVorlagenSearch_txt.Text.Equals(" Projektvorlagen suchen"))
+            {
                 projectVorlagenSearch_txt.Text = string.Empty;
+            }
         }
 
         private void OpenSelectedProject_btn_Click(object sender, EventArgs e)
@@ -671,8 +689,12 @@ namespace MB_Studio
         {
             projectBrowser_fbd.ShowDialog();
             if (projectBrowser_fbd.SelectedPath != null)
-                if (!projectBrowser_fbd.SelectedPath.Equals(string.Empty))
+            {
+                if (projectBrowser_fbd.SelectedPath.Length != 0)
+                {
                     LoadProject(projectBrowser_fbd.SelectedPath);
+                }
+            }
         }
 
         private void FileOpen_toolStrip_Click(object sender, EventArgs e)
