@@ -217,13 +217,16 @@ namespace MB_Studio
                 {
                     using (RegistryKey appReg = reg32.OpenSubKey(regKey))
                     {
-                        string oldProductVersion = appReg.GetValue("DisplayVersion", string.Empty).ToString();
-                        updateProductVersion = (oldProductVersion.Length != 0 && !oldProductVersion.Equals(Application.ProductVersion));
+                        if (appReg != null)
+                        {
+                            string oldProductVersion = appReg.GetValue("DisplayVersion", string.Empty).ToString();
+                            updateProductVersion = (oldProductVersion.Length != 0 && !oldProductVersion.Equals(Application.ProductVersion));
 
-                        string oldProductName = appReg.GetValue("DisplayName", string.Empty).ToString();
-                        updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductName));
+                            string oldProductName = appReg.GetValue("DisplayName", string.Empty).ToString();
+                            updateProductName = (oldProductName.Length != 0 && !oldProductName.Equals(Application.ProductName));
 
-                        foundKey = true;
+                            foundKey = true;
+                        }
                     }
                 }
             }
