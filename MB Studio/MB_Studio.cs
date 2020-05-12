@@ -1060,6 +1060,48 @@ namespace MB_Studio
 
         #endregion
 
+        #region Error_Handler
+
+        public static void Form_UIThreadException(object sender, ThreadExceptionEventArgs t)
+        {
+            DialogResult result = DialogResult.Cancel;
+            try
+            {
+                result = ShowThreadExceptionDialog("Windows Forms Error", t.Exception);
+            }
+            catch
+            {
+                try
+                {
+                    MessageBox.Show("Fatal Windows Forms Error",
+                        "Fatal Windows Forms Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
+                }
+                finally
+                {
+                    Application.Exit();
+                }
+            }
+
+            // Exits the program when the user clicks Abort.
+            if (result == DialogResult.Abort)
+                Application.Exit();
+        }
+
+        private static DialogResult ShowThreadExceptionDialog(string caption, Exception exception)
+        {
+            DialogResult result = MessageBox.Show(
+                "There was an error. Do you want to upload log?",
+                caption,
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1
+            );
+
+            return result;
+        }
+
+        #endregion
+
         #region Useful Methods
 
         public static string GetCorrectFileName(string filename)
