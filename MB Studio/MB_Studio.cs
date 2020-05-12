@@ -1073,8 +1073,12 @@ namespace MB_Studio
             {
                 try
                 {
-                    MessageBox.Show("Fatal Windows Forms Error",
-                        "Fatal Windows Forms Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
+                    MessageBox.Show(
+                        "Fatal Windows Forms Error",
+                        "Fatal Windows Forms Error",
+                        MessageBoxButtons.AbortRetryIgnore,
+                        MessageBoxIcon.Stop
+                    );
                 }
                 finally
                 {
@@ -1083,7 +1087,7 @@ namespace MB_Studio
             }
 
             // Exits the program when the user clicks Abort.
-            if (result == DialogResult.Abort)
+            if (result != DialogResult.Cancel)
                 Application.Exit();
         }
 
