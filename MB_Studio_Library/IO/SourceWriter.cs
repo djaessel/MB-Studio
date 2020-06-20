@@ -79,8 +79,9 @@ namespace MB_Studio_Library.IO
             if (objects == null)
                 objects = CodeReader.ReadAllObjects();
             foreach (List<Skriptum> list in objects)
-                if (!w.WriteObjectType(list, list[0].Typ))
-                    Console.WriteLine("UNKNOWN: " + list[0].ObjectTyp.ToString() + ':' + list.Count);
+                if (list.Count > 0)
+                    if (!w.WriteObjectType(list, list[0].Typ))
+                        Console.WriteLine("UNKNOWN: " + list[0].ObjectTyp.ToString() + ':' + list.Count);
             return objects.Count;
         }
 
