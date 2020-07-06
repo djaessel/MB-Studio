@@ -130,7 +130,7 @@ namespace MB_Studio_Library.IO
 
             PrepareAndProcessFiles();
 
-            //WriteIDFiles();
+            WriteIDFiles();
 
             ReadProcessAndBuild((string)paras[1]);
 

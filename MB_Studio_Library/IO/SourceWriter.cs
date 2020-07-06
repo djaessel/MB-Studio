@@ -76,20 +76,46 @@ namespace MB_Studio_Library.IO
         public static int WriteAllObjects(List<List<Skriptum>> objects = null)
         {
             SourceWriter w = new SourceWriter();
+
             if (objects == null)
                 objects = CodeReader.ReadAllObjects();
+
+            List<int> foundTypes = new List<int>();
+
             foreach (List<Skriptum> list in objects)
+            {
+                if (!w.WriteObjectType(list))
+                    Console.WriteLine("UNKNOWN: " + list[0].ObjectTyp.ToString() + ':' + list.Count);
+
                 if (list.Count > 0)
-                    if (!w.WriteObjectType(list, list[0].Typ))
-                        Console.WriteLine("UNKNOWN: " + list[0].ObjectTyp.ToString() + ':' + list.Count);
+                {
+                    foundTypes.Add(list[0].Typ);
+                }
+            }
+
+            // Write empty source for empty types
+            for (int type = (int)ObjectType.START; type < (int)ObjectType.END; type++)
+            {
+                if (!foundTypes.Contains(type))
+                {
+                    w.WriteObjectType(new List<Skriptum>(), type);
+                }
+            }
+
             return objects.Count;
         }
 
-        public bool WriteObjectType(List<Skriptum> list, int type)
+        public bool WriteObjectType(List<Skriptum> list, int type = -1)
         {
             bool b = true;
-            if (list.Count == 0) return b;
+
+            if (list.Count == 0 && type < 0) return b;
+
+            if (type < 0)
+                type = list[0].Typ;
+
             string sourceFile = ModuleFilesPath + SOURCES[type];
+
             if (sourceFile.Equals(SCRIPT_SOURCE))
                 WriteScripts(list);
             else if (sourceFile.Equals(MISSION_TEMPLATE_SOURCE))
@@ -294,7 +320,7 @@ namespace MB_Studio_Library.IO
                             if (s_trigger.ConsequencesBlock.Length > 2)
                             {
                                 wr.WriteLine(Environment.NewLine + "\t   [" + s_trigger.ConsequencesBlock[1].TrimStart('\t', ' '));
-                                for (int i = 1; i < s_trigger.ConsequencesBlock.Length; i++)
+                                for (int i = 2; i < s_trigger.ConsequencesBlock.Length; i++) // bug fix index was 1 before - double code error
                                     wr.WriteLine('\t' + s_trigger.ConsequencesBlock[i]);
                                 wr.Write("\t\t");
                             }
@@ -317,6 +343,7 @@ namespace MB_Studio_Library.IO
         public int WriteGameMenus(List<Skriptum> objects)
         {
             MakeBackupOfFile(GAME_MENU_SOURCE);
+
             using (StreamWriter wr = new StreamWriter(GAME_MENU_SOURCE))
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.GameMenu); //wr.WriteLine(gameMenusStart);
@@ -325,6 +352,7 @@ namespace MB_Studio_Library.IO
                     wr.WriteLine(Environment.NewLine + "  (\"" + gameMenu.ID + "\", " + gameMenu.Flags + ',');
                     wr.WriteLine("\t\"" + gameMenu.Text.Replace('_', ' ') + "\",");
                     wr.Write("\t\"" + gameMenu.MeshName + "\",");
+
                     if (gameMenu.OperationBlock.Length > 0)
                     {
                         wr.Write(Environment.NewLine + "\t[");
@@ -334,6 +362,7 @@ namespace MB_Studio_Library.IO
                     }
                     else
                         wr.Write(" [],");
+
                     if (gameMenu.MenuOptions.Length > 0)
                     {
                         wr.Write(Environment.NewLine + "\t[");
@@ -368,8 +397,10 @@ namespace MB_Studio_Library.IO
                     else
                         wr.WriteLine(" []),");
                 }
+
                 wr.WriteLine(Environment.NewLine + "] # GAME_MENUS END");
             }
+
             return objects.Count;
         }
 
@@ -898,7 +929,7 @@ namespace MB_Studio_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Animation);
                 foreach (Animation animation in objects)
                 {
-                    wr.WriteLine(" [\"" + animation.ID + "\", " + animation.Flags + ", " + animation.MasterFlags + ',');
+                    wr.WriteLine(" [\"" + animation.ID + "\", " + animation.Flags + ", " + animation.MasterFlags + ','); // MASTER FLAGS, 0x0001 - 0x0FFF missing
                     foreach (AnimationSequence anim_sequence in animation.Sequences)
                     {
                         wr.Write("   [" + CodeReader.Repl_CommaWDot(anim_sequence.Duration.ToString()) + ", \"" + anim_sequence.ResourceName + "\", " + anim_sequence.BeginFrame + ", "

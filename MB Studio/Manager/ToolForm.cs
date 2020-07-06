@@ -704,7 +704,7 @@ namespace MB_Studio.Manager
                     }
                     
                     SourceWriter.WriteAllObjects();
-                    new SourceWriter().WriteObjectType(types, ObjectTypeID);
+                    new SourceWriter().WriteObjectType(types);
 
                     if (newOne)
                         typeSelect_lb.SelectedIndex = typeSelect_lb.Items.Count - 1;

@@ -10,9 +10,11 @@
         public static readonly string[] CodePrefixes = {"script", "mt", "prsnt", "menu", "trp", "itm", "str", "simple_trigger", "trigger", "ip", "mesh", "track", "qst", "snd", "spr", "tab", "icon",
                                                     "dlga", "fac", "anim", "pt", "p", "skl", "pfx", "skin", "psys", "scn"};
 
+        [System.Flags]
         public enum ObjectType : int
         {
-            Script,
+            START,
+            Script = START,
             MissionTemplate,
             Presentation,
             GameMenu,
@@ -38,7 +40,8 @@
             PostFX,
             Skin,
             ParticleSystem,
-            Scene
+            Scene,
+            END = Scene,
         }
 
         public string ID { get; }
