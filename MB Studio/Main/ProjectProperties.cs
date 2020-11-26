@@ -321,12 +321,12 @@ namespace MB_Studio.Main
                     line = CodeReader.RemNTrimAllXtraSp(sr.ReadLine().Split('#')[0]); // check wether # not only for comment
                     if (line.Length != 0)
                     {
-                        sp = line.Split();
+                        sp = line.Replace(" ", string.Empty).Split('=');
                         line = sp[0].ToUpper();
                         if (!line.Equals("LOAD_RESOURCE") && !line.Equals("LOAD_MOD_RESOURCE"))
                         {
-                            if (sp.Length > 2)
-                                variables.Add(new HeaderVariable(sp[2], sp[0]));
+                            if (sp.Length > 1)
+                                variables.Add(new HeaderVariable(sp[1], sp[0]));
                             else
                                 variables.Add(new HeaderVariable("!VALUE_NOT_FOUND!", sp[0]));
 
@@ -427,6 +427,8 @@ namespace MB_Studio.Main
         {
             itemsets_panel.Visible = false;
             projects_panel.Visible = false;
+            moduleIniPanel.Visible = false;
+
             if (e.Node.Name.StartsWith("set_"))
             {
                 itemsets_panel.Visible = true;
@@ -456,8 +458,9 @@ namespace MB_Studio.Main
             {
                 new HeaderValueTool().ShowDialog();
             }
-            else if (e.Node.Name.StartsWith("Settings"))
+            else if (e.Node.Name.StartsWith("module_ini"))
             {
+                moduleIniPanel.Visible = true;
                 moduleIniPanel.BringToFront();
             }
         }
