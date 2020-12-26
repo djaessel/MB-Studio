@@ -64,7 +64,7 @@ namespace MB_Studio
 
         public static bool DebugMode = false;
 
-        public static bool RunAutoUpdate { get; private set; } = Properties.Settings.Default.runAutoUpdate;
+        //public static bool RunAutoUpdate { get; private set; } = Properties.Settings.Default.runAutoUpdate;
 
         public static bool Show3DView { get { return Properties.Settings.Default.show3DView; } }
 
@@ -81,11 +81,11 @@ namespace MB_Studio
             if (Properties.Settings.Default.firstRun)
                 AskForOldConfigImport();
 
-            if (RunAutoUpdate)
-                RunAutoUpdate = !File.Exists("debugMode.enabled");
+            //if (RunAutoUpdate)
+            //    RunAutoUpdate = !File.Exists("debugMode.enabled");
 
-            if (RunAutoUpdate)
-                CheckForUpdates();
+            //if (RunAutoUpdate)
+            //    CheckForUpdates();
 
             InitializeComponent();
 
@@ -256,15 +256,15 @@ namespace MB_Studio
             process.WaitForExit();
         }
         
-        private void CheckForUpdates()
-        {
-            Process process = new Process();
-            process.StartInfo.Arguments = "-gui " + Properties.Settings.Default.updateChannel + " . -startOE";
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.FileName = Application.StartupPath + "\\MB Studio Updater.exe";
-            process.Start();
-        }
+        //private void CheckForUpdates()
+        //{
+        //    Process process = new Process();
+        //    process.StartInfo.Arguments = "-gui " + Properties.Settings.Default.updateChannel + " . -startOE";
+        //    process.StartInfo.CreateNoWindow = true;
+        //    process.StartInfo.UseShellExecute = false;
+        //    process.StartInfo.FileName = Application.StartupPath + "\\MB Studio Updater.exe";
+        //    process.Start();
+        //}
 
         private void SetTabControlFixedHeight()
         {

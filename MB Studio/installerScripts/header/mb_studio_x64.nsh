@@ -35,7 +35,7 @@
 ;  File "..\universal\common\MB_Decompiler -CONSOLE.lnk"
 ;  File "x64\common\MB_Decompiler_GUI.exe"
 
-  File "..\updater\stable\x64\MB Studio Updater.exe"
+;  File "..\updater\stable\x64\MB Studio Updater.exe"
   
 ;  File "x64\common\MB_Decompiler_Library.dll"
   File "x64\common\MB Studio Library.dll"
