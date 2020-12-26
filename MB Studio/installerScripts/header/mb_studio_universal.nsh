@@ -11,7 +11,7 @@
 ;Definitions
 
 !define PRODUCT_NAME "MB Studio"
-!define PRODUCT_VERSION "3.2.1"
+!define PRODUCT_VERSION "3.2.2"
 !define MUI_BRANDINGTEXT "MB Studio"
 !define PUBLISHER_NAME "J.SYS"
 

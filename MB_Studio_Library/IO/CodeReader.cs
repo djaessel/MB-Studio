@@ -1135,6 +1135,7 @@ namespace MB_Studio_Library.IO
                             script = new string[int.Parse(scriptLines[0] + 1)];
                             script[0] = line;
                             //System.Windows.Forms.MessageBox.Show(line); // shows the script name
+                            // TODO: first discover unused vars with localvariable thingy
                             script = DecompileScriptCode(script, scriptLines);
                         }
                         else

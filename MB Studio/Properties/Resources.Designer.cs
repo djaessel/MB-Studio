@@ -61,7 +61,7 @@ namespace MB_Studio.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Marnid (Preview) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Marnid ähnelt.
         /// </summary>
         internal static string buildName {
             get {
