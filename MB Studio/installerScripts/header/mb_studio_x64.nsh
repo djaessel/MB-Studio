@@ -12,8 +12,8 @@
 ;--------------------------------
 ;Definitions
 
-!define SIZE_OF_FILE_64 "0x00018A2C"
-!define SIZE_OF_FILE_64_INT 100908 ;KB
+!define SIZE_OF_FILE_64 "0x000084D0" ; 0x00018A2C
+!define SIZE_OF_FILE_64_INT 34000 ;KB - old 100908
 
 ;--------------------------------
 ;Macros

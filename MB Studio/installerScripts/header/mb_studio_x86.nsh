@@ -12,8 +12,8 @@
 ;--------------------------------
 ;Definitions
 
-!define SIZE_OF_FILE_32 "0x000‭16D7D‬"
-!define SIZE_OF_FILE_32_INT 93565 ;KB
+!define SIZE_OF_FILE_32 "0x000‭07724‬" ; old 0x00016D7D
+!define SIZE_OF_FILE_32_INT 30500 ;KB - old 93565
 
 ;--------------------------------
 ;Macros
