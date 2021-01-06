@@ -1,0 +1,24 @@
+<!--
+	Only use height, width, positions etc. if you want to hardcode or you know what you are doing!
+-->
+
+<GroupBox id="0" text="Translation" height="245">
+
+  <!-- HARDCODED -->
+
+  <Button name="save_translation_btn" text="Save Translation" childIndex="0" />
+	
+	<ComboBox name="language_cbb" label="language_lbl" childIndex="1" />
+	<Label name="language_lbl" text="Language:" childIndex="2"  />
+
+	<TextBox name="singleNameTranslation_txt" label="singleNameTranslation_lbl" childIndex="3" />
+	<Label name="singleNameTranslation_lbl" text="Single Name:" childIndex="4" />
+	
+	<TextBox name="pluralNameTranslation_txt" label="pluralNameTranslation_lbl" childIndex="5" />
+	<Label name="pluralNameTranslation_lbl" text="Plural Name:" childIndex="6" />
+	
+	<!-- HARDCODED -->
+	
+  
+  
+</GroupBox>

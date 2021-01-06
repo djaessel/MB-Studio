@@ -1,0 +1,5 @@
+/*
+ * MyClassManager - C# Scripting
+*/
+
+

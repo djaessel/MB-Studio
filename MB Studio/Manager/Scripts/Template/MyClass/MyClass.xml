@@ -1,0 +1,22 @@
+<CustomManager>
+  <!-- Settings -->
+	<Name>MyClass</Name>
+	<Attributes objectTypeID="0" uses3DView="false" />
+	<Properties baseColor="a=255;r=56;g=56;b=56" />
+  <!-- Settings -->
+  <!-- C# Scripts -->
+	<Scripts>
+    <!-- Required -->
+		<Script name="Loading" src="\Required\Loading.cs" required="true" />
+		<Script name="Setup" src="\Required\Setup.cs" required="true" />
+		<Script name="Save" src="\Required\Save.cs" required="true" />
+		<Script name="Translation" src="\Required\Translation.cs" required="true" />
+    <!-- Required -->
+    <!-- Optional -->
+		<Script name="GUI" src="\Optional\GUI.cs" required="false" />
+		<Script name="ClickEvents" src="\Optional\ClickEvents.cs" required="false" />
+		<Script name="AddFromOtherMod" src="\Optional\AddFromOtherMod.cs" required="false" />
+    <!-- Optional -->
+	</Scripts>
+  <!-- C# Scripts -->
+</CustomManager>

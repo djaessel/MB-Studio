@@ -152,6 +152,30 @@
     <Compile Include="Main\PathSelector.Designer.cs">
       <DependentUpon>PathSelector.cs</DependentUpon>
     </Compile>
+    <None Include="Manager\Scripts\Template\MyClass\Optional\AddFromOtherMod.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\Optional\ClickEvents.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\Optional\GUI.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\README.MD">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\Required\Loading.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\Required\Save.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\Required\Setup.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\Required\Translation.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Manager\SoundManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +239,12 @@
     </Compile>
     <Compile Include="Manager\StringManager.Designer.cs">
       <DependentUpon>StringManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\Support\CustomManagerCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\Support\CustomManagerCreator.Designer.cs">
+      <DependentUpon>CustomManagerCreator.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\Support\External\AddTroopFromOtherMod.cs">
       <SubType>Form</SubType>
@@ -364,6 +394,9 @@
     <EmbeddedResource Include="Manager\StringManager.resx">
       <DependentUpon>StringManager.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Manager\Support\CustomManagerCreator.resx">
+      <DependentUpon>CustomManagerCreator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Manager\Support\External\AddTroopFromOtherMod.resx">
       <DependentUpon>AddTroopFromOtherMod.cs</DependentUpon>
     </EmbeddedResource>
@@ -510,6 +543,12 @@
     <Content Include="files\images\warband.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Manager\Scripts\Template\MyClass\MyClass.Designer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Manager\Scripts\Template\MyClass\MyClass.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Manager\Support\minimumRequiredForManager.txt" />
     <None Include="MB_Warband.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
