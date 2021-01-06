@@ -56,7 +56,7 @@ namespace MB_Studio.Manager
                             string properties = string.Empty;
                             string scripts = string.Empty;
 
-                            bool correctElement = false;
+                            bool correctElement;
 
                             xmlReader.ReadStartElement("CustomManager");
 
@@ -64,18 +64,17 @@ namespace MB_Studio.Manager
                             {
                                 correctElement = xmlReader.Name.Equals("Name");
 
-                                if (!correctElement) continue;
-
-                                name = xmlReader.ReadInnerXml();
+                                if (correctElement)
+                                {
+                                    name = xmlReader.ReadInnerXml();
+                                }
                             } while (xmlReader.MoveToElement() && !correctElement);
 
                             do
                             {
                                 correctElement = xmlReader.Name.Equals("Attributes");
 
-                                if (!correctElement) continue;
-
-                                if (xmlReader.HasAttributes)
+                                if (correctElement && xmlReader.HasAttributes)
                                 {
                                     int i = -1;
                                     while (xmlReader.MoveToNextAttribute())
@@ -92,9 +91,7 @@ namespace MB_Studio.Manager
                             {
                                 correctElement = xmlReader.Name.Equals("Properties");
 
-                                if (!correctElement) continue;
-
-                                if (xmlReader.HasAttributes)
+                                if (correctElement && xmlReader.HasAttributes)
                                 {
                                     int i = -1;
                                     while (xmlReader.MoveToNextAttribute())
@@ -111,27 +108,27 @@ namespace MB_Studio.Manager
                             {
                                 correctElement = xmlReader.Name.Equals("Scripts");
 
-                                if (!correctElement || xmlReader.IsEmptyElement) continue;
-
-                                while (xmlReader.Read())
+                                if (correctElement && !xmlReader.IsEmptyElement)
                                 {
-                                    if (xmlReader.Name.Equals("Scripts")) break;
-
-                                    if (!xmlReader.HasAttributes) continue;
-
-                                    for (int i = 0; i < xmlReader.AttributeCount; i++)
+                                    while (xmlReader.Read())
                                     {
-                                        xmlReader.MoveToNextAttribute();
-                                        scripts += xmlReader.GetAttribute(i);
-                                        if (i < xmlReader.AttributeCount - 1)
-                                            scripts += ',';
+                                        if (xmlReader.Name.Equals("Scripts")) break;
+
+                                        if (!xmlReader.HasAttributes) continue;
+
+                                        for (int i = 0; i < xmlReader.AttributeCount; i++)
+                                        {
+                                            xmlReader.MoveToNextAttribute();
+                                            scripts += xmlReader.GetAttribute(i);
+                                            if (i < xmlReader.AttributeCount - 1)
+                                                scripts += ',';
+                                        }
+
+                                        scripts += ';';
                                     }
 
-                                    scripts += ';';
+                                    xmlReader.ReadEndElement();
                                 }
-
-                                xmlReader.ReadEndElement();
-
                             } while (xmlReader.MoveToElement() && !correctElement);
 
                             Console.WriteLine("Attributes: " + attributes);// TODO: add to CustomManager creation process
