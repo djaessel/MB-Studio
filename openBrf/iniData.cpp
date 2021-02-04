@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <math.h>
 #include <QTextBrowser>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "brfData.h"
@@ -1036,7 +1037,14 @@ vector<IntArray> IniData::searchOneName(const QString &s, int type, bool cr) con
 		}
 	}
 	else {
-		MessageBoxA(NULL, "UNHANDLED_EXCEPTION - INVALID_KIND_FOR_SEARCH!", "ERROR", MB_ICONERROR);
+        //MessageBoxA(NULL, "UNHANDLED_EXCEPTION - INVALID_KIND_FOR_SEARCH!", "ERROR", MB_ICONERROR); // WINDOWS ONLY!!!
+        QMessageBox msgBox;
+        msgBox.setText("UNHANDLED_EXCEPTION - INVALID_KIND_FOR_SEARCH!");
+        msgBox.setInformativeText("Error!");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        /*int ret = */msgBox.exec();
 	}
 
 	return indices;

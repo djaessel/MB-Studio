@@ -47,6 +47,7 @@ namespace brfManager
         public extern static void ClearTempMeshesTroop3DPreview();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
+        // FIX ME: USE SOMETHING ELSE THAN SAFEARRAY LATER
         public static extern void GenerateStringsAndStoreInSafeArray(
             [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] ManagedStringArray,
             byte onlyCurrentModule,

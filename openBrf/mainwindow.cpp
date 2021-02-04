@@ -857,7 +857,14 @@ bool MainWindow::refreshReference(){
 		return true;
 	}
 
-	MessageBoxA(NULL, QString("ERROR: REFERENCE_PATH_NOT_FOUND\nReference Path: " + fn).toStdString().c_str(), "ERROR", MB_ICONERROR);
+    //MessageBoxA(NULL, QString("ERROR: REFERENCE_PATH_NOT_FOUND\nReference Path: " + fn).toStdString().c_str(), "ERROR", MB_ICONERROR);
+    QMessageBox msgBox;
+    msgBox.setText("ERROR: REFERENCE_PATH_NOT_FOUND\nReference Path: " + fn);
+    msgBox.setInformativeText("Error!");
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    /*int ret = */msgBox.exec();
 
 	loadedModReference = false;
 
@@ -3818,14 +3825,24 @@ bool MainWindow::makeMeshSkinned(BrfMesh &m, int bone, int skeleton, int carryPo
 bool MainWindow::hasDependencyProblems() {
 	bool hasProblems = !refreshReference();//Problems with Windows 7 SP1(?)
 	if (hasProblems) {
-		MessageBoxA(
-			NULL,
-			QString(QString("ERROR:") + " REFERENCE_NOT_LOADED_EXCEPTION\nProbably 'reference.brf' isn't in the same folder as openBrf or path is invalid!\n" + 
-				"Also check for possible problems with dependencies!\nPath: %1")
-				.arg(referenceFilename(/*0*/)).toStdString().c_str(),
-			"ERROR",
-			MB_ICONERROR
-		);
+        //MessageBoxA(
+        //	NULL,
+        //	QString(QString("ERROR:") + " REFERENCE_NOT_LOADED_EXCEPTION\nProbably 'reference.brf' isn't in the same folder as openBrf or path is invalid!\n" +
+        //		"Also check for possible problems with dependencies!\nPath: %1")
+        //		.arg(referenceFilename(/*0*/)).toStdString().c_str(),
+        //	"ERROR",
+        //	MB_ICONERROR
+        //); // WINDOWS ONLY !!!
+        QMessageBox msgBox;
+        msgBox.setText(QString(QString("ERROR:") + " REFERENCE_NOT_LOADED_EXCEPTION\nProbably 'reference.brf' isn't in the same folder as openBrf or path is invalid!\n" +
+                               "Also check for possible problems with dependencies!\nPath: %1")
+                                .arg(referenceFilename(/*0*/)).toStdString().c_str());
+        msgBox.setInformativeText("Error!");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        /*int ret = */msgBox.exec();
+
 	}
 	return hasProblems;
 }
@@ -4099,8 +4116,11 @@ void MainWindow::showTroop3DPreview(bool forceUpdate) {
 	if (!newFile || forceUpdate) {//for time saving
 		brfdata.mesh.clear();
 		//save();//workaround?
-		for each (BrfMesh m in tempMeshList)
+        //foreach (BrfMesh m, tempMeshList) // FOR QT
+        for each (BrfMesh m in tempMeshList) // FOR WINDOWS
+        {
 			brfdata.mesh.push_back(m);
+        }
 		save();//workaround? - save not needed for function but otherwise bug saves random data anyways
 		loadFile(xViewMeshFile);
 	}
@@ -4442,16 +4462,24 @@ void MainWindow::addCurFocusedTexture(vector<BrfTexture> &textures, vector<vecto
 	bool found = false;
 	BrfTexture t = brfdata.texture[selector->firstSelected()];
 
-	for each (vector<BrfTexture> vec in allTextures)
-		for each (BrfTexture tx in vec)
+	//foreach (vector<BrfTexture> vec, allTextures) // for QT ONLY
+    for each (vector<BrfTexture> vec in allTextures)
+    {
+		//foreach (BrfTexture tx, vec) // for QT ONLY
+        for each (BrfTexture tx in vec)
+        {
 			if (strcmp(tx.name, t.name) == 0)
 				found = true;
+        }
+    }
 
 	if (!found) {
-
-		for each (BrfTexture texture in textures)
+		//foreach (BrfTexture texture, textures) // for QT ONLY
+        for each (BrfTexture texture in textures)
+        {
 			if (strcmp(texture.name, t.name) == 0)
 				found = true;
+        }
 
 		if (!found) {
 			//maybe work with texture here
@@ -4473,9 +4501,12 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 		int curIdx = idxs[i];
 		BrfMesh mesh = brfdata.mesh[curIdx];
 
-		for each (BrfMesh m in meshs)
+        //foreach (BrfMesh m, meshs) // FOR QT
+        for each (BrfMesh m in meshs) // FOR WINDOWS
+        {
 			if (strcmp(m.name, mesh.name) == 0)
 				found = true;
+        }
 
 		if (!found) {
 
@@ -4488,9 +4519,12 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 				BrfMaterial material = brfdata.material[selector->firstSelected()];
 
 				found = false;
-				for each (BrfMaterial m in materials)
+                //foreach (BrfMaterial m, materials) // FOR QT
+                for each (BrfMaterial m in materials) // FOR WINDOWS
+                {
 					if (strcmp(m.name, material.name) == 0)
 						found = true;
+                }
 
 				if (!found)
 					materials.push_back(material);
@@ -4503,9 +4537,12 @@ void MainWindow::getSelectedMeshsAllData(vector<BrfMesh> &meshs, vector<BrfMater
 						BrfShader shader = brfdata.shader[selector->firstSelected()];
 
 						found = false;
-						for each (BrfShader s in shaders)
+                        //foreach (BrfShader s, shaders) // FOR QT
+                        for each (BrfShader s in shaders) // FOR WINDOWS
+                        {
 							if (strcmp(s.name, shader.name) == 0)
 								found = true;
+                        }
 
 						if (!found) {
 							//work with shader fallback here if needed
@@ -4591,46 +4628,68 @@ void MainWindow::addMeshsAllDataToMod(QString modNameX, vector<BrfMesh> &meshs, 
 
 	//CHECK DATA - SOME TEXTURES ARE WRONG OR MISSING!!!
 
-	for each (BrfMesh mesh in meshs) {
+    //foreach (BrfMesh mesh, meshs) // FOR QT
+    for each (BrfMesh mesh in meshs) // FOR WINDOWS
+	{
 		found = false;
 
-		for each (BrfMesh m in brfdata.mesh)
+        //foreach (BrfMesh m, brfdata.mesh) // FOR QT
+        for each (BrfMesh m in brfdata.mesh) // FOR WINDOWS
+        {
 			if (strcmp(m.name, mesh.name) == 0)
 				found = true;
+        }
 
 		if (!found)
 			brfdata.mesh.push_back(mesh);
 	}
 
-	for each (BrfMaterial material in materials) {
+    //foreach (BrfMaterial material, materials) // FOR QT
+    for each (BrfMaterial material in materials) // FOR WINDOWS
+	{
 		found = false;
 
-		for each (BrfMaterial m in brfdata.material)
+        ///foreach (BrfMaterial m, brfdata.material) // FOR QT
+        for each (BrfMaterial m in brfdata.material) // FOR WINDOWS
+        {
 			if (strcmp(m.name, material.name) == 0)
 				found = true;
+        }
 
 		if (!found)
 			brfdata.material.push_back(material);
 	}
 
-	for each (BrfShader shader in shaders) {
+    //foreach (BrfShader shader, shaders) // FOR QT
+    for each (BrfShader shader in shaders) // FOR WINDOWS
+	{
 		found = false;
 
-		for each (BrfShader s in brfdata.shader)
+        //foreach (BrfShader s, brfdata.shader) // FOR QT
+        for each (BrfShader s in brfdata.shader) // FOR WINDOWS
+        {
 			if (strcmp(s.name, shader.name) == 0)
 				found = true;
+        }
 
 		if (!found)
 			brfdata.shader.push_back(shader);
 	}
 
-	for each (vector<BrfTexture> textures in allTextures) {
-		for each (BrfTexture texture in textures) {
+    //foreach (vector<BrfTexture> textures, allTextures) // FOR QT
+    for each (vector<BrfTexture> textures in allTextures) // FOR WINDOWS
+	{
+        //foreach (BrfTexture texture, textures) // FOR QT
+        for each (BrfTexture texture in textures) // FOR WINDOWS
+		{
 			found = false;
 
-			for each (BrfTexture t in brfdata.texture)
+            //foreach (BrfTexture t, brfdata.texture) // FOR QT
+            for each (BrfTexture t in brfdata.texture) // FOR WINDOWS
+            {
 				if (strcmp(t.name, texture.name) == 0)
 					found = true;
+            }
 
 			if (!found) {
 				brfdata.texture.push_back(texture);

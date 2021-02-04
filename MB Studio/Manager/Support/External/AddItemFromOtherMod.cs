@@ -30,6 +30,7 @@ namespace MB_Studio.Manager.Support.External
         {
             base.Module_cbb_SelectedIndexChanged(sender, e);
 
+            // FIXME: FIND WAY TO GET THIS WITHOUT SAFEARRAY
             curMeshNames = ToolForm.OpenBrfManager.GetCurrentModuleAllMeshResourceNames();//commRes = false
 
             meshName_cbb.Items.Clear();

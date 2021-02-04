@@ -922,6 +922,7 @@ namespace MB_Studio.Manager
 
         private static void LoadOpenBrfLists()
         {
+            // FIX ME: FIND WAY WITHOUT USING SAFEARRAY
             modMeshResourceNames.AddRange(OpenBrfManager.GetCurrentModuleAllMeshResourceNames(true));
         }
 

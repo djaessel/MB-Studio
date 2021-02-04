@@ -5,12 +5,12 @@
 QT += opengl
 QT += xml
 
-CONFIG += exceptions
+CONFIG += exceptions dll
 
 
 # RC_FILE = openBrf.rc
 TARGET = openBrf
-TEMPLATE = app
+TEMPLATE = dll
 SOURCES += main.cpp \
     mainwindow.cpp \
     glwidgets.cpp \

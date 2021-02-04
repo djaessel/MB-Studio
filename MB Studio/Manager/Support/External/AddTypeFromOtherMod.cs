@@ -44,6 +44,7 @@ namespace MB_Studio.Manager.Support.External
 
             originalModuleName = ToolForm.OpenBrfManager.ModName;
 
+            // FIX ME: FIND WAY WITHOUT SAFEARRAY
             if (moduleNames.Count == 0)
                 moduleNames.AddRange(ToolForm.OpenBrfManager.GetAllModuleNames());
         }

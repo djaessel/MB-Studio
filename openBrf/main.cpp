@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include "mainwindow.h"
+#include <QMessageBox>
 
 using namespace std;
 
@@ -35,7 +36,14 @@ static bool windowShown = false;
 
 static void MainNotFoundErrorMessage()
 {
-	MessageBoxA(NULL, "CUR_WINDOW_NOT_FOUND", "ERROR", MB_ICONERROR);
+    //MessageBoxA(NULL, "CUR_WINDOW_NOT_FOUND", "ERROR", MB_ICONERROR); // Windows only!!!
+    QMessageBox msgBox;
+    msgBox.setText("Current Windows not found!");
+    msgBox.setInformativeText("Error!");
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    /*int ret = */msgBox.exec();
 }
 
 static bool CurWindowIsShown(bool showError = true)
@@ -149,13 +157,14 @@ DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(STRING modName) {
 		curWindow->copyCurMeshToMod(QString(modName));
 }
 
+///////////////////////////////////////////
+// FIND BETTER SOLUTION OR OPTIMIZE CODE //
 // CreateSafeArrayFromBSTRArray()
 // This function will create a SafeArray of BSTRs using the BSTR elements found inside
 // the first parameter "pBSTRArray".
 //
 // Note well that the output SafeArray will contain COPIES of the original BSTRs
 // inside the input parameter "pBSTRArray".
-//
 long CreateSafeArrayFromBSTRArray(
 	BSTR* pBSTRArray,
 	ULONG ulArraySize,
@@ -206,7 +215,7 @@ long CreateSafeArrayFromBSTRArray(
 
 	return lRet;
 }
-
+///////////////////////////////////////////
 // FIND BETTER SOLUTION OR OPTIMIZE CODE //
 DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, byte onlyCurrentModule, byte commonRes)
 {
@@ -237,10 +246,10 @@ DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeA
 		wstring nameList;
 		uint namesCount = allNames[i].size();
 		for (u_int j = 0; j < namesCount; j++) {
-			nameList.append(allNames[i][j]);
+            nameList.append(allNames[i][j]);
 			nameList.append(1, (wchar_t)';');
 		}
-		bstrArray.push_back(::SysAllocString((BSTR)nameList.c_str()));//bstrArray[i] = ::SysAllocString(allNames[i].c_str()));
+        bstrArray.push_back(::SysAllocString((BSTR)nameList.c_str()));//bstrArray[i] = ::SysAllocString(allNames[i].c_str()));
 	}
 
 	SAFEARRAY* pSafeArrayOfBSTR = NULL;
