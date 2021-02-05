@@ -86,8 +86,10 @@
 
 !define InstallCpp2017_32Bit "!insertmacro InstallCpp2017_32Bit"
 !macro InstallCpp2017_32Bit
+;Cpp2015-2019 NOW
   CreateDirectory "$PLUGINSDIR\vc_redist"
-  inetc::get "https://download.visualstudio.microsoft.com/download/pr/11687613/88b50ce70017bf10f2d56d60fcba6ab1/VC_redist.x86.exe" "$PLUGINSDIR\vc_redist\vc_redist.x86.exe"
+  inetc::get "https://aka.ms/vs/16/release/VC_redist.x86.exe" "$PLUGINSDIR\vc_redist\vc_redist.x86.exe"
+;  inetc::get "https://download.visualstudio.microsoft.com/download/pr/11687613/88b50ce70017bf10f2d56d60fcba6ab1/VC_redist.x86.exe" "$PLUGINSDIR\vc_redist\vc_redist.x86.exe"
   Pop $0 ;Return value from download - OK is good!
 ; Executes Installer for C++ Package
   ExecWait '"$PLUGINSDIR\vc_redist\vc_redist.x86.exe" /q /norestart'
