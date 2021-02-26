@@ -38,7 +38,7 @@ namespace MB_Studio_Library.Objects.Support
 
             ff = space + string.Empty + space + HexConverter.Hex2Dec(face1.Substring(3, 16)) + space + HexConverter.Hex2Dec(face1.Substring(19, 16)) + space +
                 HexConverter.Hex2Dec(face1.Substring(35, 16)) + space + HexConverter.Hex2Dec(face1.Substring(51, 16)) + space +
-                HexConverter.Hex2Dec(face2.Substring(3, 16)) + space + ff + space + HexConverter.Hex2Dec(face2.Substring(3, 16)) + space +
+                HexConverter.Hex2Dec(face2.Substring(3, 16)) + space + ff + space + HexConverter.Hex2Dec(face2.Substring(35, 16)) + space +
                 HexConverter.Hex2Dec(face2.Substring(51, 16)) + space;
 
             return ff;
